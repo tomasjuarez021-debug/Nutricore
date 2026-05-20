@@ -545,7 +545,35 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
   color:#ffaa44;
   font-weight:600;
 }
-.meal-actions{display:flex;gap:6px;margin-top:10px}
+.meal-actions{display:flex;gap:6px;margin-top:10px;align-items:center;flex-wrap:wrap}
+.meal-stepper{
+  display:flex;align-items:stretch;
+  background:rgba(20,22,30,.6);
+  border:1px solid rgba(255,107,0,.2);
+  border-radius:8px;
+  overflow:hidden;
+}
+.step-btn{
+  width:38px;font-size:18px;font-weight:700;
+  color:#ff6b00;
+  display:grid;place-items:center;
+  background:transparent;
+  transition:background .15s;
+  font-family:'Orbitron',sans-serif;
+}
+.step-btn:active{background:rgba(255,107,0,.15)}
+.step-btn:disabled{color:#3a3e4b;background:transparent;cursor:not-allowed}
+.step-count{
+  min-width:48px;padding:6px 8px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border-left:1px solid rgba(255,107,0,.15);
+  border-right:1px solid rgba(255,107,0,.15);
+  font-family:'Orbitron',sans-serif;
+  font-size:15px;font-weight:700;color:#5a5e6b;
+  line-height:1;
+}
+.step-count.on{color:#ff6b00;background:rgba(255,107,0,.06)}
+.step-count .step-lbl{font-size:7.5px;letter-spacing:.15em;color:#7a7f8e;font-weight:500;margin-top:2px}
 .btn{
   flex:1;
   padding:9px;
@@ -624,31 +652,54 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
 .cal-day{
   aspect-ratio:1;
   background:rgba(20,22,30,.4);
-  border:1px solid rgba(255,255,255,.03);
-  border-radius:7px;
+  border:1px solid rgba(255,255,255,.04);
+  border-radius:8px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  font-size:11px;color:#7a7f8e;
+  gap:2px;
+  font-size:12px;color:#7a7f8e;font-weight:500;
   position:relative;
   font-variant-numeric:tabular-nums;
+  cursor:pointer;
+  transition:transform .15s, border-color .15s;
 }
-.cal-day.empty{background:transparent;border-color:transparent}
-.cal-day.today{border-color:rgba(255,107,0,.5);color:#fff}
-.cal-day.complete-full{
-  background:linear-gradient(135deg,rgba(0,217,126,.18),rgba(0,168,95,.1));
-  border-color:rgba(0,217,126,.5);
+.cal-day:active{transform:scale(0.94)}
+.cal-day.empty{background:transparent;border-color:transparent;cursor:default}
+.cal-day.empty:active{transform:none}
+.cal-day.today{
+  border-color:#ff6b00;
+  box-shadow:0 0 0 1px rgba(255,107,0,.3) inset;
+  color:#fff;font-weight:700;
+}
+
+/* 3 niveles de cumplimiento nutricional */
+.cal-day.nutri-low{
+  background:rgba(193,71,71,.18);
+  border-color:rgba(193,71,71,.4);
+  color:#f5d4d4;
+}
+.cal-day.nutri-mid{
+  background:rgba(212,176,120,.18);
+  border-color:rgba(212,176,120,.4);
   color:#fff;
 }
-.cal-day.complete-high{
-  background:linear-gradient(135deg,rgba(255,107,0,.18),rgba(220,38,0,.1));
-  border-color:rgba(255,107,0,.4);
+.cal-day.nutri-high{
+  background:rgba(95,174,93,.22);
+  border-color:rgba(95,174,93,.5);
   color:#fff;
+  font-weight:600;
 }
-.cal-day-dot{
-  width:4px;height:4px;border-radius:50%;
-  margin-top:2px;
+
+.cal-day-pct{
+  font-size:8.5px;
+  letter-spacing:.05em;
+  opacity:.85;
+  font-family:'JetBrains Mono',monospace;
 }
-.cal-day.complete-full .cal-day-dot{background:#00d97e;box-shadow:0 0 4px #00d97e}
-.cal-day.complete-high .cal-day-dot{background:#ff6b00;box-shadow:0 0 4px #ff6b00}
+.cal-day.today.nutri-low,
+.cal-day.today.nutri-mid,
+.cal-day.today.nutri-high{
+  box-shadow:0 0 0 1px rgba(255,107,0,.5) inset;
+}
 
 .cal-legend{
   display:flex;gap:12px;flex-wrap:wrap;justify-content:center;
@@ -941,6 +992,13 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
 
     <div class="card">
       <div class="card-header">
+        <div class="card-title">› Tracker de ratios</div>
+      </div>
+      <div id="ratiosList"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
         <div class="card-title">› Comidas de hoy</div>
       </div>
       <div id="todayMeals"></div>
@@ -952,8 +1010,7 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
     <div class="page-title">DATABASE // MEALS</div>
     <h1 class="page-subtitle">Ideas de comida</h1>
     <input type="text" class="search" id="mealSearch" placeholder="Buscar por nombre o ingrediente...">
-    <div class="filters" id="catFilters"></div>
-    <div class="filters" id="sortFilters" style="margin-top:-4px"></div>
+    <div class="filters" id="sortFilters"></div>
     <div id="mealsList"></div>
   </section>
 
@@ -962,7 +1019,7 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
     <div class="page-title">DATABASE // INGREDIENTS</div>
     <h1 class="page-subtitle">Alimentos</h1>
     <p class="muted" style="font-size:11px;margin-bottom:14px;letter-spacing:.03em">
-      Base de <span id="ingTotalCount">108</span> ingredientes con macros, micros y perfil de aminoácidos.
+      Base de <span id="ingTotalCount">118</span> ingredientes con macros, micros y perfil de aminoácidos.
       <span class="accent">Tocá uno para ver el detalle.</span>
     </p>
     <input type="text" class="search" id="ingSearch" placeholder="Buscar ingrediente...">
@@ -983,9 +1040,9 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
     </div>
     <div class="cal-grid" id="calGrid"></div>
     <div class="cal-legend">
-      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#00d97e;box-shadow:0 0 4px #00d97e"></div>100%</div>
-      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#ff6b00;box-shadow:0 0 4px #ff6b00"></div>80-99%</div>
-      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#3a3e4b"></div>&lt;80%</div>
+      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#5fae5d"></div>Completa 80-100%+</div>
+      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#d4b078"></div>Regular 60-80%</div>
+      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#c14747"></div>Deficiente &lt;60%</div>
     </div>
 
     <div class="card" id="calDetailCard" style="display:none">
@@ -1154,126 +1211,140 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
 */
 const INGREDIENTS = [
   // CEREALES
-  {id:'oat',     cat:'cereal', name:'Avena',                per:100, unit:'g', kcal:389, p:16.9, c:66.3, f:6.9, Fe:4.7, B12:0,   Zn:4.0,  Ca:54,  O3:0.11, D:0,   Mg:177, fb:10.6, Na:2,   K:429},
-  {id:'rice_br', cat:'cereal', name:'Arroz integral cocido',per:100, unit:'g', kcal:123, p:2.7,  c:25.6, f:1.0, Fe:0.6, B12:0,   Zn:0.7,  Ca:10,  O3:0.02, D:0,   Mg:43,  fb:1.8,  Na:4,   K:86},
-  {id:'rice_wh', cat:'cereal', name:'Arroz blanco cocido',  per:100, unit:'g', kcal:130, p:2.7,  c:28.2, f:0.3, Fe:0.2, B12:0,   Zn:0.5,  Ca:10,  O3:0.01, D:0,   Mg:12,  fb:0.4,  Na:1,   K:35},
-  {id:'rice_bas',cat:'cereal', name:'Arroz basmati cocido', per:100, unit:'g', kcal:121, p:3.0,  c:25.2, f:0.4, Fe:0.4, B12:0,   Zn:0.6,  Ca:10,  O3:0.01, D:0,   Mg:13,  fb:0.5,  Na:1,   K:35},
-  {id:'quinoa',  cat:'cereal', name:'Quinoa cocida',        per:100, unit:'g', kcal:120, p:4.4,  c:21.3, f:1.9, Fe:1.5, B12:0,   Zn:1.1,  Ca:17,  O3:0.09, D:0,   Mg:64,  fb:2.8,  Na:7,   K:172},
-  {id:'cous',    cat:'cereal', name:'Cous cous cocido',     per:100, unit:'g', kcal:112, p:3.8,  c:23.2, f:0.2, Fe:0.4, B12:0,   Zn:0.3,  Ca:8,   O3:0.01, D:0,   Mg:8,   fb:1.4,  Na:5,   K:58},
-  {id:'burgol',  cat:'cereal', name:'Trigo burgol cocido',  per:100, unit:'g', kcal:83,  p:3.1,  c:18.6, f:0.2, Fe:1.0, B12:0,   Zn:0.6,  Ca:10,  O3:0.02, D:0,   Mg:32,  fb:4.5,  Na:5,   K:68},
-  {id:'mijo',    cat:'cereal', name:'Mijo cocido',          per:100, unit:'g', kcal:119, p:3.5,  c:23.7, f:1.0, Fe:0.6, B12:0,   Zn:0.9,  Ca:3,   O3:0.04, D:0,   Mg:44,  fb:1.3,  Na:2,   K:62},
-  {id:'polenta', cat:'cereal', name:'Polenta seca',         per:100, unit:'g', kcal:362, p:8.1,  c:76.9, f:1.4, Fe:1.1, B12:0,   Zn:0.6,  Ca:3,   O3:0.04, D:0,   Mg:32,  fb:7.3,  Na:5,   K:142},
-  {id:'pasta_int',cat:'cereal',name:'Fideos integrales cocidos',per:100,unit:'g',kcal:124,p:5.3, c:26.5, f:0.5, Fe:1.4, B12:0,   Zn:1.1,  Ca:8,   O3:0.04, D:0,   Mg:42,  fb:3.9,  Na:4,   K:62},
-  {id:'pasta',   cat:'cereal', name:'Fideos blancos cocidos',per:100,unit:'g', kcal:131, p:5.0,  c:25.0, f:1.1, Fe:1.3, B12:0,   Zn:0.5,  Ca:7,   O3:0.01, D:0,   Mg:18,  fb:1.8,  Na:6,   K:44},
-  {id:'pan_int', cat:'cereal', name:'Pan integral',         per:100, unit:'g', kcal:247, p:13.0, c:41.0, f:3.4, Fe:2.5, B12:0,   Zn:1.8,  Ca:107, O3:0.07, D:0,   Mg:82,  fb:6.8,  Na:472, K:248},
-  {id:'pan_arb', cat:'cereal', name:'Pan árabe integral',   per:100, unit:'g', kcal:262, p:9.8,  c:51.0, f:1.8, Fe:3.4, B12:0,   Zn:1.5,  Ca:88,  O3:0.02, D:0,   Mg:60,  fb:7.4,  Na:520, K:139},
-  {id:'tortilla',cat:'cereal', name:'Tortilla integral',    per:100, unit:'g', kcal:296, p:8.0,  c:50.0, f:7.4, Fe:2.7, B12:0,   Zn:1.4,  Ca:108, O3:0.04, D:0,   Mg:48,  fb:5.6,  Na:541, K:130},
-  {id:'gal_avena',cat:'cereal',name:'Galleta avena',        per:100, unit:'g', kcal:437, p:7.0,  c:65.0, f:17.0,Fe:3.0, B12:0,   Zn:1.5,  Ca:50,  O3:0.10, D:0,   Mg:60,  fb:5.0,  Na:380, K:200},
-  {id:'granola', cat:'cereal', name:'Granola',              per:100, unit:'g', kcal:471, p:10.1, c:64.0, f:20.3,Fe:3.9, B12:0,   Zn:2.5,  Ca:58,  O3:0.30, D:0,   Mg:107, fb:7.2,  Na:294, K:340},
-  {id:'pan_rall',cat:'cereal', name:'Pan rallado',          per:100, unit:'g', kcal:395, p:13.3, c:71.9, f:5.3, Fe:4.8, B12:0,   Zn:1.0,  Ca:183, O3:0.05, D:0,   Mg:34,  fb:4.5,  Na:732, K:152},
-  {id:'masa_emp',cat:'cereal', name:'Tapa empanada',        per:100, unit:'g', kcal:323, p:7.0,  c:55.0, f:8.0, Fe:2.5, B12:0,   Zn:0.8,  Ca:30,  O3:0.05, D:0,   Mg:25,  fb:2.0,  Na:580, K:130},
-  {id:'masa_pizza',cat:'cereal',name:'Masa pizza integral', per:100, unit:'g', kcal:280, p:9.5,  c:52.0, f:3.5, Fe:2.8, B12:0,   Zn:1.4,  Ca:40,  O3:0.05, D:0,   Mg:60,  fb:6.0,  Na:460, K:170},
-  {id:'masa_tarta',cat:'cereal',name:'Masa tarta integral', per:100, unit:'g', kcal:380, p:8.0,  c:48.0, f:18.0,Fe:2.4, B12:0,   Zn:1.2,  Ca:30,  O3:0.10, D:0,   Mg:50,  fb:5.0,  Na:520, K:140},
-  {id:'masa_hoj',cat:'cereal', name:'Masa hojaldre',        per:100, unit:'g', kcal:558, p:7.3,  c:45.1, f:38.5,Fe:2.1, B12:0,   Zn:0.6,  Ca:13,  O3:0.20, D:0,   Mg:14,  fb:1.6,  Na:619, K:101},
+  {id:'oat',     cat:'cereal', name:'Avena',                per:100, unit:'g', kcal:389, p:16.9, c:66.3, f:6.9, Fe:4.7, B12:0,   Zn:4.0,  Ca:54,  O3:0.11, ED:0, O6:2.4, D:0,   Mg:177, fb:10.6, Na:2,   K:429},
+  {id:'rice_br', cat:'cereal', name:'Arroz integral cocido',per:100, unit:'g', kcal:123, p:2.7,  c:25.6, f:1.0, Fe:0.6, B12:0,   Zn:0.7,  Ca:10,  O3:0.02, ED:0, O6:0.3, D:0,   Mg:43,  fb:1.8,  Na:4,   K:86},
+  {id:'rice_wh', cat:'cereal', name:'Arroz blanco cocido',  per:100, unit:'g', kcal:130, p:2.7,  c:28.2, f:0.3, Fe:0.2, B12:0,   Zn:0.5,  Ca:10,  O3:0.01, ED:0, O6:0.08, D:0,   Mg:12,  fb:0.4,  Na:1,   K:35},
+  {id:'rice_bas',cat:'cereal', name:'Arroz basmati cocido', per:100, unit:'g', kcal:121, p:3.0,  c:25.2, f:0.4, Fe:0.4, B12:0,   Zn:0.6,  Ca:10,  O3:0.01, ED:0, O6:0.1, D:0,   Mg:13,  fb:0.5,  Na:1,   K:35},
+  {id:'quinoa',  cat:'cereal', name:'Quinoa cocida',        per:100, unit:'g', kcal:120, p:4.4,  c:21.3, f:1.9, Fe:1.5, B12:0,   Zn:1.1,  Ca:17,  O3:0.09, ED:0, O6:0.97, D:0,   Mg:64,  fb:2.8,  Na:7,   K:172},
+  {id:'cous',    cat:'cereal', name:'Cous cous cocido',     per:100, unit:'g', kcal:112, p:3.8,  c:23.2, f:0.2, Fe:0.4, B12:0,   Zn:0.3,  Ca:8,   O3:0.01, ED:0, O6:0.1, D:0,   Mg:8,   fb:1.4,  Na:5,   K:58},
+  {id:'burgol',  cat:'cereal', name:'Trigo burgol cocido',  per:100, unit:'g', kcal:83,  p:3.1,  c:18.6, f:0.2, Fe:1.0, B12:0,   Zn:0.6,  Ca:10,  O3:0.02, ED:0, O6:0.1, D:0,   Mg:32,  fb:4.5,  Na:5,   K:68},
+  {id:'mijo',    cat:'cereal', name:'Mijo cocido',          per:100, unit:'g', kcal:119, p:3.5,  c:23.7, f:1.0, Fe:0.6, B12:0,   Zn:0.9,  Ca:3,   O3:0.04, ED:0, O6:0.4, D:0,   Mg:44,  fb:1.3,  Na:2,   K:62},
+  {id:'polenta', cat:'cereal', name:'Polenta seca',         per:100, unit:'g', kcal:362, p:8.1,  c:76.9, f:1.4, Fe:1.1, B12:0,   Zn:0.6,  Ca:3,   O3:0.04, ED:0, O6:1.74, D:0,   Mg:32,  fb:7.3,  Na:5,   K:142},
+  {id:'pasta_int',cat:'cereal',name:'Fideos integrales cocidos',per:100,unit:'g',kcal:124,p:5.3, c:26.5, f:0.5, Fe:1.4, B12:0,   Zn:1.1,  Ca:8,   O3:0.04, ED:0, O6:0.2, D:0,   Mg:42,  fb:3.9,  Na:4,   K:62},
+  {id:'pasta',   cat:'cereal', name:'Fideos blancos cocidos',per:100,unit:'g', kcal:131, p:5.0,  c:25.0, f:1.1, Fe:1.3, B12:0,   Zn:0.5,  Ca:7,   O3:0.01, ED:0, O6:0.4, D:0,   Mg:18,  fb:1.8,  Na:6,   K:44},
+  {id:'pan_int', cat:'cereal', name:'Pan integral',         per:100, unit:'g', kcal:247, p:13.0, c:41.0, f:3.4, Fe:2.5, B12:0,   Zn:1.8,  Ca:107, O3:0.07, ED:0, O6:1.2, D:0,   Mg:82,  fb:6.8,  Na:472, K:248},
+  {id:'pan_arb', cat:'cereal', name:'Pan árabe integral',   per:100, unit:'g', kcal:262, p:9.8,  c:51.0, f:1.8, Fe:3.4, B12:0,   Zn:1.5,  Ca:88,  O3:0.02, ED:0, O6:0.8, D:0,   Mg:60,  fb:7.4,  Na:520, K:139},
+  {id:'tortilla',cat:'cereal', name:'Tortilla integral',    per:100, unit:'g', kcal:296, p:8.0,  c:50.0, f:7.4, Fe:2.7, B12:0,   Zn:1.4,  Ca:108, O3:0.04, ED:0, O6:2.5, D:0,   Mg:48,  fb:5.6,  Na:541, K:130},
+  {id:'gal_avena',cat:'cereal',name:'Galleta avena',        per:100, unit:'g', kcal:437, p:7.0,  c:65.0, f:17.0,Fe:3.0, B12:0,   Zn:1.5,  Ca:50,  O3:0.10, ED:0, O6:7.5, D:0,   Mg:60,  fb:5.0,  Na:380, K:200},
+  {id:'granola', cat:'cereal', name:'Granola',              per:100, unit:'g', kcal:471, p:10.1, c:64.0, f:20.3,Fe:3.9, B12:0,   Zn:2.5,  Ca:58,  O3:0.30, ED:0, O6:6.5, D:0,   Mg:107, fb:7.2,  Na:294, K:340},
+  {id:'pan_rall',cat:'cereal', name:'Pan rallado',          per:100, unit:'g', kcal:395, p:13.3, c:71.9, f:5.3, Fe:4.8, B12:0,   Zn:1.0,  Ca:183, O3:0.05, ED:0, O6:1.1, D:0,   Mg:34,  fb:4.5,  Na:732, K:152},
+  {id:'masa_emp',cat:'cereal', name:'Tapa empanada',        per:100, unit:'g', kcal:323, p:7.0,  c:55.0, f:8.0, Fe:2.5, B12:0,   Zn:0.8,  Ca:30,  O3:0.05, ED:0, O6:3.5, D:0,   Mg:25,  fb:2.0,  Na:580, K:130},
+  {id:'masa_pizza',cat:'cereal',name:'Masa pizza integral', per:100, unit:'g', kcal:280, p:9.5,  c:52.0, f:3.5, Fe:2.8, B12:0,   Zn:1.4,  Ca:40,  O3:0.05, ED:0, O6:1.5, D:0,   Mg:60,  fb:6.0,  Na:460, K:170},
+  {id:'masa_tarta',cat:'cereal',name:'Masa tarta integral', per:100, unit:'g', kcal:380, p:8.0,  c:48.0, f:18.0,Fe:2.4, B12:0,   Zn:1.2,  Ca:30,  O3:0.10, ED:0, O6:8.5, D:0,   Mg:50,  fb:5.0,  Na:520, K:140},
+  {id:'masa_hoj',cat:'cereal', name:'Masa hojaldre',        per:100, unit:'g', kcal:558, p:7.3,  c:45.1, f:38.5,Fe:2.1, B12:0,   Zn:0.6,  Ca:13,  O3:0.20, ED:0, O6:16.5, D:0,   Mg:14,  fb:1.6,  Na:619, K:101},
   // LEGUMBRES
-  {id:'lent',    cat:'legumbre',name:'Lentejas cocidas',    per:100, unit:'g', kcal:116, p:9.0,  c:20.1, f:0.4, Fe:3.3, B12:0,   Zn:1.3,  Ca:19,  O3:0.04, D:0,   Mg:36,  fb:7.9,  Na:2,   K:369},
-  {id:'garb',    cat:'legumbre',name:'Garbanzos cocidos',   per:100, unit:'g', kcal:164, p:8.9,  c:27.4, f:2.6, Fe:2.9, B12:0,   Zn:1.5,  Ca:49,  O3:0.04, D:0,   Mg:48,  fb:7.6,  Na:7,   K:291},
-  {id:'tofu',    cat:'legumbre',name:'Tofu firme',          per:100, unit:'g', kcal:144, p:17.3, c:2.8,  f:8.7, Fe:2.7, B12:0,   Zn:1.6,  Ca:683, O3:0.58, D:0,   Mg:58,  fb:2.3,  Na:14,  K:237},
-  {id:'arvejas', cat:'legumbre',name:'Arvejas cocidas',     per:100, unit:'g', kcal:84,  p:5.4,  c:15.6, f:0.2, Fe:1.5, B12:0,   Zn:1.2,  Ca:27,  O3:0.04, D:0,   Mg:36,  fb:5.5,  Na:3,   K:271},
-  {id:'soja_sal',cat:'legumbre',name:'Salsa de soja',       per:100, unit:'g', kcal:53,  p:8.1,  c:4.9,  f:0.6, Fe:2.4, B12:0,   Zn:0.4,  Ca:17,  O3:0.05, D:0,   Mg:43,  fb:0.8,  Na:5586,K:212},
-  {id:'hummus',  cat:'legumbre',name:'Hummus',              per:100, unit:'g', kcal:166, p:7.9,  c:14.3, f:9.6, Fe:2.4, B12:0,   Zn:1.5,  Ca:38,  O3:0.10, D:0,   Mg:71,  fb:6.0,  Na:379, K:228},
-  {id:'falafel', cat:'legumbre',name:'Falafel',             per:100, unit:'g', kcal:333, p:13.3, c:31.8, f:17.8,Fe:3.4, B12:0,   Zn:1.5,  Ca:54,  O3:0.10, D:0,   Mg:82,  fb:4.9,  Na:294, K:585},
-  {id:'miso',    cat:'legumbre',name:'Pasta miso',          per:100, unit:'g', kcal:198, p:11.7, c:26.5, f:6.0, Fe:2.5, B12:0.1, Zn:2.6,  Ca:57,  O3:0.30, D:0,   Mg:48,  fb:5.4,  Na:3728,K:210},
+  {id:'lent',    cat:'legumbre',name:'Lentejas cocidas',    per:100, unit:'g', kcal:116, p:9.0,  c:20.1, f:0.4, Fe:3.3, B12:0,   Zn:1.3,  Ca:19,  O3:0.04, ED:0, O6:0.13, D:0,   Mg:36,  fb:7.9,  Na:2,   K:369},
+  {id:'garb',    cat:'legumbre',name:'Garbanzos cocidos',   per:100, unit:'g', kcal:164, p:8.9,  c:27.4, f:2.6, Fe:2.9, B12:0,   Zn:1.5,  Ca:49,  O3:0.04, ED:0, O6:1.16, D:0,   Mg:48,  fb:7.6,  Na:7,   K:291},
+  {id:'tofu',    cat:'legumbre',name:'Tofu firme',          per:100, unit:'g', kcal:144, p:17.3, c:2.8,  f:8.7, Fe:2.7, B12:0,   Zn:1.6,  Ca:683, O3:0.58, ED:0, O6:4.3, D:0,   Mg:58,  fb:2.3,  Na:14,  K:237},
+  {id:'arvejas', cat:'legumbre',name:'Arvejas cocidas',     per:100, unit:'g', kcal:84,  p:5.4,  c:15.6, f:0.2, Fe:1.5, B12:0,   Zn:1.2,  Ca:27,  O3:0.04, ED:0, O6:0.07, D:0,   Mg:36,  fb:5.5,  Na:3,   K:271},
+  {id:'soja_sal',cat:'legumbre',name:'Salsa de soja',       per:100, unit:'g', kcal:53,  p:8.1,  c:4.9,  f:0.6, Fe:2.4, B12:0,   Zn:0.4,  Ca:17,  O3:0.05, ED:0, O6:0.3, D:0,   Mg:43,  fb:0.8,  Na:5586,K:212},
+  {id:'hummus',  cat:'legumbre',name:'Hummus',              per:100, unit:'g', kcal:166, p:7.9,  c:14.3, f:9.6, Fe:2.4, B12:0,   Zn:1.5,  Ca:38,  O3:0.10, ED:0, O6:4.3, D:0,   Mg:71,  fb:6.0,  Na:379, K:228},
+  {id:'falafel', cat:'legumbre',name:'Falafel',             per:100, unit:'g', kcal:333, p:13.3, c:31.8, f:17.8,Fe:3.4, B12:0,   Zn:1.5,  Ca:54,  O3:0.10, ED:0, O6:8.8, D:0,   Mg:82,  fb:4.9,  Na:294, K:585},
+  {id:'miso',    cat:'legumbre',name:'Pasta miso',          per:100, unit:'g', kcal:198, p:11.7, c:26.5, f:6.0, Fe:2.5, B12:0.1, Zn:2.6,  Ca:57,  O3:0.30, ED:0, O6:2.9, D:0,   Mg:48,  fb:5.4,  Na:3728,K:210},
   // HUEVO Y LÁCTEOS
-  {id:'egg',     cat:'lact',   name:'Huevo',                per:50,  unit:'u', kcal:72,  p:6.3,  c:0.4,  f:5.0, Fe:0.9, B12:0.45,Zn:0.7,  Ca:28,  O3:0.04, D:1.1, Mg:6,   fb:0,    Na:71,  K:69},
-  {id:'milk',    cat:'lact',   name:'Leche entera',         per:100, unit:'g', kcal:61,  p:3.2,  c:4.8,  f:3.3, Fe:0,   B12:0.45,Zn:0.4,  Ca:113, O3:0.01, D:1.3, Mg:10,  fb:0,    Na:43,  K:132},
-  {id:'milk_alm',cat:'lact',   name:'Leche almendras (sin azúcar)',per:100,unit:'g',kcal:13,p:0.5,c:0.6, f:1.1, Fe:0.3, B12:0,   Zn:0.1,  Ca:188, O3:0.01, D:1.0, Mg:7,   fb:0.4,  Na:72,  K:30},
-  {id:'yog_grg', cat:'lact',   name:'Yogur griego natural', per:100, unit:'g', kcal:97,  p:9.0,  c:3.6,  f:5.0, Fe:0,   B12:0.75,Zn:0.5,  Ca:100, O3:0.02, D:0,   Mg:11,  fb:0,    Na:35,  K:141},
-  {id:'yog_nat', cat:'lact',   name:'Yogur natural',        per:100, unit:'g', kcal:61,  p:3.5,  c:4.7,  f:3.3, Fe:0,   B12:0.37,Zn:0.6,  Ca:121, O3:0.02, D:0.1, Mg:12,  fb:0,    Na:46,  K:155},
-  {id:'queso_cr',cat:'lact',   name:'Queso cremoso',        per:100, unit:'g', kcal:342, p:5.9,  c:4.1,  f:34.0,Fe:0.1, B12:0.43,Zn:0.5,  Ca:98,  O3:0.30, D:0.3, Mg:9,   fb:0,    Na:321, K:138},
-  {id:'queso_unt',cat:'lact',  name:'Queso untable',        per:100, unit:'g', kcal:255, p:8.0,  c:5.5,  f:23.0,Fe:0.1, B12:0.35,Zn:0.6,  Ca:140, O3:0.20, D:0.3, Mg:10,  fb:0,    Na:330, K:140},
-  {id:'queso_ps',cat:'lact',   name:'Queso port salut',     per:100, unit:'g', kcal:308, p:18.0, c:1.0,  f:25.0,Fe:0.2, B12:1.20,Zn:2.8,  Ca:550, O3:0.30, D:0.5, Mg:24,  fb:0,    Na:586, K:73},
-  {id:'queso_mz',cat:'lact',   name:'Mozzarella',           per:100, unit:'g', kcal:280, p:22.0, c:2.2,  f:22.0,Fe:0.2, B12:2.30,Zn:2.9,  Ca:505, O3:0.30, D:0.4, Mg:20,  fb:0,    Na:486, K:76},
-  {id:'queso_pm',cat:'lact',   name:'Parmesano rallado',    per:100, unit:'g', kcal:431, p:38.5, c:4.1,  f:29.0,Fe:0.8, B12:1.20,Zn:2.8,  Ca:1184,O3:0.40, D:0.7, Mg:44,  fb:0,    Na:1602,K:125},
-  {id:'queso_az',cat:'lact',   name:'Queso azul',           per:100, unit:'g', kcal:353, p:21.4, c:2.3,  f:28.7,Fe:0.3, B12:1.20,Zn:2.7,  Ca:528, O3:0.40, D:0.5, Mg:23,  fb:0,    Na:1395,K:256},
-  {id:'queso_cb',cat:'lact',   name:'Queso de cabra',       per:100, unit:'g', kcal:364, p:21.6, c:2.5,  f:29.8,Fe:1.9, B12:0.20,Zn:1.6,  Ca:298, O3:0.30, D:0.6, Mg:29,  fb:0,    Na:415, K:158},
-  {id:'feta',    cat:'lact',   name:'Queso feta',           per:100, unit:'g', kcal:264, p:14.2, c:4.1,  f:21.3,Fe:0.7, B12:1.70,Zn:2.9,  Ca:493, O3:0.30, D:0.4, Mg:19,  fb:0,    Na:1116,K:62},
-  {id:'ricota',  cat:'lact',   name:'Ricota',               per:100, unit:'g', kcal:174, p:11.3, c:3.0,  f:13.0,Fe:0.4, B12:0.34,Zn:1.2,  Ca:207, O3:0.20, D:0.2, Mg:11,  fb:0,    Na:84,  K:105},
-  {id:'burrata', cat:'lact',   name:'Burrata',              per:100, unit:'g', kcal:330, p:17.0, c:1.5,  f:28.0,Fe:0.2, B12:2.00,Zn:2.5,  Ca:430, O3:0.30, D:0.4, Mg:18,  fb:0,    Na:340, K:80},
-  {id:'manteca', cat:'lact',   name:'Manteca',              per:100, unit:'g', kcal:717, p:0.9,  c:0.1,  f:81.1,Fe:0,   B12:0.17,Zn:0.1,  Ca:24,  O3:0.30, D:1.5, Mg:2,   fb:0,    Na:11,  K:24},
+  {id:'egg',     cat:'lact',   name:'Huevo',                per:50,  unit:'u', kcal:72,  p:6.3,  c:0.4,  f:5.0, Fe:0.9, B12:0.45,Zn:0.7,  Ca:28,  O3:0.04, ED:35, O6:0.6, D:1.1, Mg:6,   fb:0,    Na:71,  K:69},
+  {id:'milk',    cat:'lact',   name:'Leche entera',         per:100, unit:'g', kcal:61,  p:3.2,  c:4.8,  f:3.3, Fe:0,   B12:0.45,Zn:0.4,  Ca:113, O3:0.01, ED:5, O6:0.08, D:1.3, Mg:10,  fb:0,    Na:43,  K:132},
+  {id:'milk_alm',cat:'lact',   name:'Leche almendras (sin azúcar)',per:100,unit:'g',kcal:13,p:0.5,c:0.6, f:1.1, Fe:0.3, B12:0,   Zn:0.1,  Ca:188, O3:0.01, ED:0, O6:0.4, D:1.0, Mg:7,   fb:0.4,  Na:72,  K:30},
+  {id:'yog_grg', cat:'lact',   name:'Yogur griego natural', per:100, unit:'g', kcal:97,  p:9.0,  c:3.6,  f:5.0, Fe:0,   B12:0.75,Zn:0.5,  Ca:100, O3:0.02, ED:5, O6:0.13, D:0,   Mg:11,  fb:0,    Na:35,  K:141},
+  {id:'yog_nat', cat:'lact',   name:'Yogur natural',        per:100, unit:'g', kcal:61,  p:3.5,  c:4.7,  f:3.3, Fe:0,   B12:0.37,Zn:0.6,  Ca:121, O3:0.02, ED:5, O6:0.08, D:0.1, Mg:12,  fb:0,    Na:46,  K:155},
+  {id:'queso_cr',cat:'lact',   name:'Queso cremoso',        per:100, unit:'g', kcal:342, p:5.9,  c:4.1,  f:34.0,Fe:0.1, B12:0.43,Zn:0.5,  Ca:98,  O3:0.30, ED:10, O6:0.7, D:0.3, Mg:9,   fb:0,    Na:321, K:138},
+  {id:'queso_unt',cat:'lact',  name:'Queso untable',        per:100, unit:'g', kcal:255, p:8.0,  c:5.5,  f:23.0,Fe:0.1, B12:0.35,Zn:0.6,  Ca:140, O3:0.20, ED:10, O6:0.5, D:0.3, Mg:10,  fb:0,    Na:330, K:140},
+  {id:'queso_ps',cat:'lact',   name:'Queso port salut',     per:100, unit:'g', kcal:308, p:18.0, c:1.0,  f:25.0,Fe:0.2, B12:1.20,Zn:2.8,  Ca:550, O3:0.30, ED:20, O6:0.5, D:0.5, Mg:24,  fb:0,    Na:586, K:73},
+  {id:'queso_mz',cat:'lact',   name:'Mozzarella',           per:100, unit:'g', kcal:280, p:22.0, c:2.2,  f:22.0,Fe:0.2, B12:2.30,Zn:2.9,  Ca:505, O3:0.30, ED:15, O6:0.4, D:0.4, Mg:20,  fb:0,    Na:486, K:76},
+  {id:'queso_pm',cat:'lact',   name:'Parmesano rallado',    per:100, unit:'g', kcal:431, p:38.5, c:4.1,  f:29.0,Fe:0.8, B12:1.20,Zn:2.8,  Ca:1184,O3:0.40, ED:30, O6:0.7, D:0.7, Mg:44,  fb:0,    Na:1602,K:125},
+  {id:'queso_az',cat:'lact',   name:'Queso azul',           per:100, unit:'g', kcal:353, p:21.4, c:2.3,  f:28.7,Fe:0.3, B12:1.20,Zn:2.7,  Ca:528, O3:0.40, ED:25, O6:0.7, D:0.5, Mg:23,  fb:0,    Na:1395,K:256},
+  {id:'queso_cb',cat:'lact',   name:'Queso de cabra',       per:100, unit:'g', kcal:364, p:21.6, c:2.5,  f:29.8,Fe:1.9, B12:0.20,Zn:1.6,  Ca:298, O3:0.30, ED:20, O6:0.7, D:0.6, Mg:29,  fb:0,    Na:415, K:158},
+  {id:'feta',    cat:'lact',   name:'Queso feta',           per:100, unit:'g', kcal:264, p:14.2, c:4.1,  f:21.3,Fe:0.7, B12:1.70,Zn:2.9,  Ca:493, O3:0.30, ED:15, O6:0.6, D:0.4, Mg:19,  fb:0,    Na:1116,K:62},
+  {id:'ricota',  cat:'lact',   name:'Ricota',               per:100, unit:'g', kcal:174, p:11.3, c:3.0,  f:13.0,Fe:0.4, B12:0.34,Zn:1.2,  Ca:207, O3:0.20, ED:10, O6:0.3, D:0.2, Mg:11,  fb:0,    Na:84,  K:105},
+  {id:'burrata', cat:'lact',   name:'Burrata',              per:100, unit:'g', kcal:330, p:17.0, c:1.5,  f:28.0,Fe:0.2, B12:2.00,Zn:2.5,  Ca:430, O3:0.30, ED:15, O6:0.6, D:0.4, Mg:18,  fb:0,    Na:340, K:80},
+  {id:'manteca', cat:'lact',   name:'Manteca',              per:100, unit:'g', kcal:717, p:0.9,  c:0.1,  f:81.1,Fe:0,   B12:0.17,Zn:0.1,  Ca:24,  O3:0.30, ED:20, O6:2.2, D:1.5, Mg:2,   fb:0,    Na:11,  K:24},
   // VEGETALES
-  {id:'espinaca',cat:'veg',    name:'Espinaca cruda',       per:100, unit:'g', kcal:23,  p:2.9,  c:3.6,  f:0.4, Fe:2.7, B12:0,   Zn:0.5,  Ca:99,  O3:0.14, D:0,   Mg:79,  fb:2.2,  Na:79,  K:558},
-  {id:'rucula',  cat:'veg',    name:'Rúcula',               per:100, unit:'g', kcal:25,  p:2.6,  c:3.7,  f:0.7, Fe:1.5, B12:0,   Zn:0.5,  Ca:160, O3:0.17, D:0,   Mg:47,  fb:1.6,  Na:27,  K:369},
-  {id:'lechuga', cat:'veg',    name:'Lechuga',              per:100, unit:'g', kcal:15,  p:1.4,  c:2.9,  f:0.2, Fe:0.9, B12:0,   Zn:0.2,  Ca:36,  O3:0.06, D:0,   Mg:13,  fb:1.3,  Na:28,  K:194},
-  {id:'tomate',  cat:'veg',    name:'Tomate',               per:100, unit:'g', kcal:18,  p:0.9,  c:3.9,  f:0.2, Fe:0.3, B12:0,   Zn:0.2,  Ca:10,  O3:0.00, D:0,   Mg:11,  fb:1.2,  Na:5,   K:237},
-  {id:'tomate_tr',cat:'veg',   name:'Tomate triturado',     per:100, unit:'g', kcal:32,  p:1.6,  c:7.3,  f:0.2, Fe:1.5, B12:0,   Zn:0.3,  Ca:14,  O3:0.02, D:0,   Mg:23,  fb:1.9,  Na:9,   K:293},
-  {id:'tomate_ch',cat:'veg',   name:'Tomate cherry',        per:100, unit:'g', kcal:18,  p:0.9,  c:3.9,  f:0.2, Fe:0.3, B12:0,   Zn:0.2,  Ca:10,  O3:0.00, D:0,   Mg:11,  fb:1.2,  Na:5,   K:237},
-  {id:'cebolla', cat:'veg',    name:'Cebolla',              per:100, unit:'g', kcal:40,  p:1.1,  c:9.3,  f:0.1, Fe:0.2, B12:0,   Zn:0.2,  Ca:23,  O3:0.00, D:0,   Mg:10,  fb:1.7,  Na:4,   K:146},
-  {id:'ajo',     cat:'veg',    name:'Ajo',                  per:100, unit:'g', kcal:149, p:6.4,  c:33.1, f:0.5, Fe:1.7, B12:0,   Zn:1.2,  Ca:181, O3:0.02, D:0,   Mg:25,  fb:2.1,  Na:17,  K:401},
-  {id:'morron',  cat:'veg',    name:'Morrón rojo',          per:100, unit:'g', kcal:31,  p:1.0,  c:6.0,  f:0.3, Fe:0.4, B12:0,   Zn:0.3,  Ca:7,   O3:0.03, D:0,   Mg:12,  fb:2.1,  Na:4,   K:211},
-  {id:'zanahoria',cat:'veg',   name:'Zanahoria',            per:100, unit:'g', kcal:41,  p:0.9,  c:9.6,  f:0.2, Fe:0.3, B12:0,   Zn:0.2,  Ca:33,  O3:0.00, D:0,   Mg:12,  fb:2.8,  Na:69,  K:320},
-  {id:'apio',    cat:'veg',    name:'Apio',                 per:100, unit:'g', kcal:16,  p:0.7,  c:3.0,  f:0.2, Fe:0.2, B12:0,   Zn:0.1,  Ca:40,  O3:0.00, D:0,   Mg:11,  fb:1.6,  Na:80,  K:260},
-  {id:'pepino',  cat:'veg',    name:'Pepino',               per:100, unit:'g', kcal:15,  p:0.7,  c:3.6,  f:0.1, Fe:0.3, B12:0,   Zn:0.2,  Ca:16,  O3:0.00, D:0,   Mg:13,  fb:0.5,  Na:2,   K:147},
-  {id:'brocoli', cat:'veg',    name:'Brócoli',              per:100, unit:'g', kcal:34,  p:2.8,  c:6.6,  f:0.4, Fe:0.7, B12:0,   Zn:0.4,  Ca:47,  O3:0.13, D:0,   Mg:21,  fb:2.6,  Na:33,  K:316},
-  {id:'zucchini',cat:'veg',    name:'Zucchini/Calabacín',   per:100, unit:'g', kcal:17,  p:1.2,  c:3.1,  f:0.3, Fe:0.4, B12:0,   Zn:0.3,  Ca:16,  O3:0.05, D:0,   Mg:18,  fb:1.0,  Na:8,   K:261},
-  {id:'berenjena',cat:'veg',   name:'Berenjena',            per:100, unit:'g', kcal:25,  p:1.0,  c:5.9,  f:0.2, Fe:0.2, B12:0,   Zn:0.2,  Ca:9,   O3:0.01, D:0,   Mg:14,  fb:3.0,  Na:2,   K:229},
-  {id:'calabaza',cat:'veg',    name:'Calabaza',             per:100, unit:'g', kcal:26,  p:1.0,  c:6.5,  f:0.1, Fe:0.8, B12:0,   Zn:0.3,  Ca:21,  O3:0.05, D:0,   Mg:12,  fb:0.5,  Na:1,   K:340},
-  {id:'papa',    cat:'veg',    name:'Papa',                 per:100, unit:'g', kcal:77,  p:2.0,  c:17.5, f:0.1, Fe:0.8, B12:0,   Zn:0.3,  Ca:12,  O3:0.01, D:0,   Mg:23,  fb:2.2,  Na:6,   K:425},
-  {id:'boniato', cat:'veg',    name:'Boniato/Batata',       per:100, unit:'g', kcal:86,  p:1.6,  c:20.1, f:0.1, Fe:0.6, B12:0,   Zn:0.3,  Ca:30,  O3:0.01, D:0,   Mg:25,  fb:3.0,  Na:55,  K:337},
-  {id:'hongos',  cat:'veg',    name:'Hongos portobello',    per:100, unit:'g', kcal:22,  p:2.1,  c:3.9,  f:0.4, Fe:0.4, B12:0.04,Zn:0.5,  Ca:3,   O3:0.00, D:0.3, Mg:9,   fb:1.3,  Na:9,   K:364},
-  {id:'champ',   cat:'veg',    name:'Champignones',         per:100, unit:'g', kcal:22,  p:3.1,  c:3.3,  f:0.3, Fe:0.5, B12:0.04,Zn:0.5,  Ca:3,   O3:0.00, D:0.2, Mg:9,   fb:1.0,  Na:5,   K:318},
-  {id:'acelga',  cat:'veg',    name:'Acelga',               per:100, unit:'g', kcal:19,  p:1.8,  c:3.7,  f:0.2, Fe:1.8, B12:0,   Zn:0.4,  Ca:51,  O3:0.00, D:0,   Mg:81,  fb:1.6,  Na:213, K:379},
-  {id:'aceit_n', cat:'veg',    name:'Aceitunas negras',     per:100, unit:'g', kcal:115, p:0.8,  c:6.3,  f:10.7,Fe:3.3, B12:0,   Zn:0.2,  Ca:88,  O3:0.10, D:0,   Mg:4,   fb:3.2,  Na:735, K:8},
-  {id:'maiz',    cat:'veg',    name:'Maíz cocido',          per:100, unit:'g', kcal:96,  p:3.4,  c:21.0, f:1.5, Fe:0.5, B12:0,   Zn:0.6,  Ca:3,   O3:0.02, D:0,   Mg:26,  fb:2.4,  Na:1,   K:218},
-  {id:'algas',   cat:'veg',    name:'Algas wakame',         per:100, unit:'g', kcal:45,  p:3.0,  c:9.1,  f:0.6, Fe:2.2, B12:0,   Zn:0.4,  Ca:150, O3:0.02, D:0,   Mg:107, fb:0.5,  Na:872, K:50},
+  {id:'espinaca',cat:'veg',    name:'Espinaca cruda',       per:100, unit:'g', kcal:23,  p:2.9,  c:3.6,  f:0.4, Fe:2.7, B12:0,   Zn:0.5,  Ca:99,  O3:0.14, ED:0, O6:0.03, D:0,   Mg:79,  fb:2.2,  Na:79,  K:558},
+  {id:'rucula',  cat:'veg',    name:'Rúcula',               per:100, unit:'g', kcal:25,  p:2.6,  c:3.7,  f:0.7, Fe:1.5, B12:0,   Zn:0.5,  Ca:160, O3:0.17, ED:0, O6:0.13, D:0,   Mg:47,  fb:1.6,  Na:27,  K:369},
+  {id:'lechuga', cat:'veg',    name:'Lechuga',              per:100, unit:'g', kcal:15,  p:1.4,  c:2.9,  f:0.2, Fe:0.9, B12:0,   Zn:0.2,  Ca:36,  O3:0.06, ED:0, O6:0.05, D:0,   Mg:13,  fb:1.3,  Na:28,  K:194},
+  {id:'tomate',  cat:'veg',    name:'Tomate',               per:100, unit:'g', kcal:18,  p:0.9,  c:3.9,  f:0.2, Fe:0.3, B12:0,   Zn:0.2,  Ca:10,  O3:0.00, ED:0, O6:0.08, D:0,   Mg:11,  fb:1.2,  Na:5,   K:237},
+  {id:'tomate_tr',cat:'veg',   name:'Tomate triturado',     per:100, unit:'g', kcal:32,  p:1.6,  c:7.3,  f:0.2, Fe:1.5, B12:0,   Zn:0.3,  Ca:14,  O3:0.02, ED:0, O6:0.12, D:0,   Mg:23,  fb:1.9,  Na:9,   K:293},
+  {id:'tomate_ch',cat:'veg',   name:'Tomate cherry',        per:100, unit:'g', kcal:18,  p:0.9,  c:3.9,  f:0.2, Fe:0.3, B12:0,   Zn:0.2,  Ca:10,  O3:0.00, ED:0, O6:0.08, D:0,   Mg:11,  fb:1.2,  Na:5,   K:237},
+  {id:'cebolla', cat:'veg',    name:'Cebolla',              per:100, unit:'g', kcal:40,  p:1.1,  c:9.3,  f:0.1, Fe:0.2, B12:0,   Zn:0.2,  Ca:23,  O3:0.00, ED:0, O6:0.02, D:0,   Mg:10,  fb:1.7,  Na:4,   K:146},
+  {id:'ajo',     cat:'veg',    name:'Ajo',                  per:100, unit:'g', kcal:149, p:6.4,  c:33.1, f:0.5, Fe:1.7, B12:0,   Zn:1.2,  Ca:181, O3:0.02, ED:0, O6:0.23, D:0,   Mg:25,  fb:2.1,  Na:17,  K:401},
+  {id:'morron',  cat:'veg',    name:'Morrón rojo',          per:100, unit:'g', kcal:31,  p:1.0,  c:6.0,  f:0.3, Fe:0.4, B12:0,   Zn:0.3,  Ca:7,   O3:0.03, ED:0, O6:0.07, D:0,   Mg:12,  fb:2.1,  Na:4,   K:211},
+  {id:'zanahoria',cat:'veg',   name:'Zanahoria',            per:100, unit:'g', kcal:41,  p:0.9,  c:9.6,  f:0.2, Fe:0.3, B12:0,   Zn:0.2,  Ca:33,  O3:0.00, ED:0, O6:0.12, D:0,   Mg:12,  fb:2.8,  Na:69,  K:320},
+  {id:'apio',    cat:'veg',    name:'Apio',                 per:100, unit:'g', kcal:16,  p:0.7,  c:3.0,  f:0.2, Fe:0.2, B12:0,   Zn:0.1,  Ca:40,  O3:0.00, ED:0, O6:0.08, D:0,   Mg:11,  fb:1.6,  Na:80,  K:260},
+  {id:'pepino',  cat:'veg',    name:'Pepino',               per:100, unit:'g', kcal:15,  p:0.7,  c:3.6,  f:0.1, Fe:0.3, B12:0,   Zn:0.2,  Ca:16,  O3:0.00, ED:0, O6:0.03, D:0,   Mg:13,  fb:0.5,  Na:2,   K:147},
+  {id:'brocoli', cat:'veg',    name:'Brócoli',              per:100, unit:'g', kcal:34,  p:2.8,  c:6.6,  f:0.4, Fe:0.7, B12:0,   Zn:0.4,  Ca:47,  O3:0.13, ED:0, O6:0.04, D:0,   Mg:21,  fb:2.6,  Na:33,  K:316},
+  {id:'zucchini',cat:'veg',    name:'Zucchini/Calabacín',   per:100, unit:'g', kcal:17,  p:1.2,  c:3.1,  f:0.3, Fe:0.4, B12:0,   Zn:0.3,  Ca:16,  O3:0.05, ED:0, O6:0.06, D:0,   Mg:18,  fb:1.0,  Na:8,   K:261},
+  {id:'berenjena',cat:'veg',   name:'Berenjena',            per:100, unit:'g', kcal:25,  p:1.0,  c:5.9,  f:0.2, Fe:0.2, B12:0,   Zn:0.2,  Ca:9,   O3:0.01, ED:0, O6:0.07, D:0,   Mg:14,  fb:3.0,  Na:2,   K:229},
+  {id:'calabaza',cat:'veg',    name:'Calabaza',             per:100, unit:'g', kcal:26,  p:1.0,  c:6.5,  f:0.1, Fe:0.8, B12:0,   Zn:0.3,  Ca:21,  O3:0.05, ED:0, O6:0.04, D:0,   Mg:12,  fb:0.5,  Na:1,   K:340},
+  {id:'papa',    cat:'veg',    name:'Papa',                 per:100, unit:'g', kcal:77,  p:2.0,  c:17.5, f:0.1, Fe:0.8, B12:0,   Zn:0.3,  Ca:12,  O3:0.01, ED:0, O6:0.04, D:0,   Mg:23,  fb:2.2,  Na:6,   K:425},
+  {id:'boniato', cat:'veg',    name:'Boniato/Batata',       per:100, unit:'g', kcal:86,  p:1.6,  c:20.1, f:0.1, Fe:0.6, B12:0,   Zn:0.3,  Ca:30,  O3:0.01, ED:0, O6:0.02, D:0,   Mg:25,  fb:3.0,  Na:55,  K:337},
+  {id:'hongos',  cat:'veg',    name:'Hongos portobello',    per:100, unit:'g', kcal:22,  p:2.1,  c:3.9,  f:0.4, Fe:0.4, B12:0.04,Zn:0.5,  Ca:3,   O3:0.00, ED:0, O6:0.2, D:0.3, Mg:9,   fb:1.3,  Na:9,   K:364},
+  {id:'champ',   cat:'veg',    name:'Champignones',         per:100, unit:'g', kcal:22,  p:3.1,  c:3.3,  f:0.3, Fe:0.5, B12:0.04,Zn:0.5,  Ca:3,   O3:0.00, ED:0, O6:0.16, D:0.2, Mg:9,   fb:1.0,  Na:5,   K:318},
+  {id:'acelga',  cat:'veg',    name:'Acelga',               per:100, unit:'g', kcal:19,  p:1.8,  c:3.7,  f:0.2, Fe:1.8, B12:0,   Zn:0.4,  Ca:51,  O3:0.00, ED:0, O6:0.04, D:0,   Mg:81,  fb:1.6,  Na:213, K:379},
+  {id:'aceit_n', cat:'veg',    name:'Aceitunas negras',     per:100, unit:'g', kcal:115, p:0.8,  c:6.3,  f:10.7,Fe:3.3, B12:0,   Zn:0.2,  Ca:88,  O3:0.10, ED:0, O6:0.84, D:0,   Mg:4,   fb:3.2,  Na:735, K:8},
+  {id:'maiz',    cat:'veg',    name:'Maíz cocido',          per:100, unit:'g', kcal:96,  p:3.4,  c:21.0, f:1.5, Fe:0.5, B12:0,   Zn:0.6,  Ca:3,   O3:0.02, ED:0, O6:0.59, D:0,   Mg:26,  fb:2.4,  Na:1,   K:218},
+  {id:'algas',   cat:'veg',    name:'Algas wakame',         per:100, unit:'g', kcal:45,  p:3.0,  c:9.1,  f:0.6, Fe:2.2, B12:0,   Zn:0.4,  Ca:150, O3:0.02, ED:0, O6:0.01, D:0,   Mg:107, fb:0.5,  Na:872, K:50},
   // FRUTAS
-  {id:'banana',  cat:'fruta',  name:'Banana',               per:120, unit:'u', kcal:107, p:1.3,  c:27.4, f:0.4, Fe:0.3, B12:0,   Zn:0.2,  Ca:6,   O3:0.04, D:0,   Mg:32,  fb:3.1,  Na:1,   K:430},
-  {id:'manzana', cat:'fruta',  name:'Manzana',              per:180, unit:'u', kcal:94,  p:0.5,  c:25.0, f:0.3, Fe:0.2, B12:0,   Zn:0.1,  Ca:11,  O3:0.02, D:0,   Mg:9,   fb:4.3,  Na:2,   K:191},
-  {id:'frutilla',cat:'fruta',  name:'Frutilla',             per:100, unit:'g', kcal:32,  p:0.7,  c:7.7,  f:0.3, Fe:0.4, B12:0,   Zn:0.1,  Ca:16,  O3:0.06, D:0,   Mg:13,  fb:2.0,  Na:1,   K:153},
-  {id:'fr_rojos',cat:'fruta',  name:'Frutos rojos mixtos',  per:100, unit:'g', kcal:43,  p:1.0,  c:9.7,  f:0.5, Fe:0.5, B12:0,   Zn:0.2,  Ca:18,  O3:0.10, D:0,   Mg:14,  fb:3.5,  Na:1,   K:140},
-  {id:'limon',   cat:'fruta',  name:'Limón',                per:80,  unit:'u', kcal:23,  p:0.9,  c:7.4,  f:0.2, Fe:0.5, B12:0,   Zn:0.1,  Ca:21,  O3:0.02, D:0,   Mg:7,   fb:2.2,  Na:2,   K:110},
-  {id:'palta',   cat:'fruta',  name:'Palta',                per:100, unit:'g', kcal:160, p:2.0,  c:8.5,  f:14.7,Fe:0.6, B12:0,   Zn:0.6,  Ca:12,  O3:0.11, D:0,   Mg:29,  fb:6.7,  Na:7,   K:485},
-  {id:'datil',   cat:'fruta',  name:'Dátil',                per:7,   unit:'u', kcal:20,  p:0.2,  c:5.3,  f:0.0, Fe:0.1, B12:0,   Zn:0.0,  Ca:3,   O3:0.00, D:0,   Mg:3,   fb:0.5,  Na:0,   K:46},
-  {id:'pasa',    cat:'fruta',  name:'Pasas de uva',         per:100, unit:'g', kcal:299, p:3.1,  c:79.2, f:0.5, Fe:1.9, B12:0,   Zn:0.2,  Ca:50,  O3:0.05, D:0,   Mg:32,  fb:3.7,  Na:11,  K:749},
+  {id:'banana',  cat:'fruta',  name:'Banana',               per:120, unit:'u', kcal:107, p:1.3,  c:27.4, f:0.4, Fe:0.3, B12:0,   Zn:0.2,  Ca:6,   O3:0.04, ED:0, O6:0.05, D:0,   Mg:32,  fb:3.1,  Na:1,   K:430},
+  {id:'manzana', cat:'fruta',  name:'Manzana',              per:180, unit:'u', kcal:94,  p:0.5,  c:25.0, f:0.3, Fe:0.2, B12:0,   Zn:0.1,  Ca:11,  O3:0.02, ED:0, O6:0.06, D:0,   Mg:9,   fb:4.3,  Na:2,   K:191},
+  {id:'frutilla',cat:'fruta',  name:'Frutilla',             per:100, unit:'g', kcal:32,  p:0.7,  c:7.7,  f:0.3, Fe:0.4, B12:0,   Zn:0.1,  Ca:16,  O3:0.06, ED:0, O6:0.09, D:0,   Mg:13,  fb:2.0,  Na:1,   K:153},
+  {id:'fr_rojos',cat:'fruta',  name:'Frutos rojos mixtos',  per:100, unit:'g', kcal:43,  p:1.0,  c:9.7,  f:0.5, Fe:0.5, B12:0,   Zn:0.2,  Ca:18,  O3:0.10, ED:0, O6:0.13, D:0,   Mg:14,  fb:3.5,  Na:1,   K:140},
+  {id:'limon',   cat:'fruta',  name:'Limón',                per:80,  unit:'u', kcal:23,  p:0.9,  c:7.4,  f:0.2, Fe:0.5, B12:0,   Zn:0.1,  Ca:21,  O3:0.02, ED:0, O6:0.06, D:0,   Mg:7,   fb:2.2,  Na:2,   K:110},
+  {id:'palta',   cat:'fruta',  name:'Palta',                per:100, unit:'g', kcal:160, p:2.0,  c:8.5,  f:14.7,Fe:0.6, B12:0,   Zn:0.6,  Ca:12,  O3:0.11, ED:0, O6:1.69, D:0,   Mg:29,  fb:6.7,  Na:7,   K:485},
+  {id:'datil',   cat:'fruta',  name:'Dátil',                per:7,   unit:'u', kcal:20,  p:0.2,  c:5.3,  f:0.0, Fe:0.1, B12:0,   Zn:0.0,  Ca:3,   O3:0.00, ED:0, O6:0.02, D:0,   Mg:3,   fb:0.5,  Na:0,   K:46},
+  {id:'pasa',    cat:'fruta',  name:'Pasas de uva',         per:100, unit:'g', kcal:299, p:3.1,  c:79.2, f:0.5, Fe:1.9, B12:0,   Zn:0.2,  Ca:50,  O3:0.05, ED:0, O6:0.06, D:0,   Mg:32,  fb:3.7,  Na:11,  K:749},
   // FRUTOS SECOS Y SEMILLAS
-  {id:'nuez',    cat:'fs',     name:'Nueces',               per:100, unit:'g', kcal:654, p:15.2, c:13.7, f:65.2,Fe:2.9, B12:0,   Zn:3.1,  Ca:98,  O3:9.08, D:0,   Mg:158, fb:6.7,  Na:2,   K:441},
-  {id:'almendra',cat:'fs',     name:'Almendras',            per:100, unit:'g', kcal:579, p:21.2, c:21.6, f:49.9,Fe:3.7, B12:0,   Zn:3.1,  Ca:269, O3:0.00, D:0,   Mg:270, fb:12.5, Na:1,   K:733},
-  {id:'mani',    cat:'fs',     name:'Maní',                 per:100, unit:'g', kcal:567, p:25.8, c:16.1, f:49.2,Fe:4.6, B12:0,   Zn:3.3,  Ca:92,  O3:0.00, D:0,   Mg:168, fb:8.5,  Na:18,  K:705},
-  {id:'mani_pst',cat:'fs',     name:'Manteca de maní',      per:100, unit:'g', kcal:588, p:25.0, c:20.0, f:50.0,Fe:1.9, B12:0,   Zn:2.5,  Ca:43,  O3:0.00, D:0,   Mg:154, fb:6.0,  Na:476, K:649},
-  {id:'chia',    cat:'fs',     name:'Semillas de chía',     per:100, unit:'g', kcal:486, p:16.5, c:42.1, f:30.7,Fe:7.7, B12:0,   Zn:4.6,  Ca:631, O3:17.83,D:0,   Mg:335, fb:34.4, Na:16,  K:407},
-  {id:'sesamo',  cat:'fs',     name:'Sésamo',               per:100, unit:'g', kcal:573, p:17.7, c:23.4, f:49.7,Fe:14.6,B12:0,   Zn:7.8,  Ca:975, O3:0.38, D:0,   Mg:351, fb:11.8, Na:11,  K:468},
-  {id:'tahini',  cat:'fs',     name:'Tahini',               per:100, unit:'g', kcal:595, p:17.0, c:21.2, f:53.8,Fe:8.9, B12:0,   Zn:4.6,  Ca:426, O3:0.21, D:0,   Mg:95,  fb:9.3,  Na:115, K:414},
-  {id:'sem_zap', cat:'fs',     name:'Semillas zapallo',     per:100, unit:'g', kcal:559, p:30.2, c:10.7, f:49.0,Fe:8.8, B12:0,   Zn:7.8,  Ca:46,  O3:0.18, D:0,   Mg:592, fb:6.0,  Na:7,   K:809},
+  {id:'nuez',    cat:'fs',     name:'Nueces',               per:100, unit:'g', kcal:654, p:15.2, c:13.7, f:65.2,Fe:2.9, B12:0,   Zn:3.1,  Ca:98,  O3:9.08, ED:0, O6:38.1, D:0,   Mg:158, fb:6.7,  Na:2,   K:441},
+  {id:'almendra',cat:'fs',     name:'Almendras',            per:100, unit:'g', kcal:579, p:21.2, c:21.6, f:49.9,Fe:3.7, B12:0,   Zn:3.1,  Ca:269, O3:0.00, ED:0, O6:12.3, D:0,   Mg:270, fb:12.5, Na:1,   K:733},
+  {id:'mani',    cat:'fs',     name:'Maní',                 per:100, unit:'g', kcal:567, p:25.8, c:16.1, f:49.2,Fe:4.6, B12:0,   Zn:3.3,  Ca:92,  O3:0.00, ED:0, O6:15.6, D:0,   Mg:168, fb:8.5,  Na:18,  K:705},
+  {id:'mani_pst',cat:'fs',     name:'Manteca de maní',      per:100, unit:'g', kcal:588, p:25.0, c:20.0, f:50.0,Fe:1.9, B12:0,   Zn:2.5,  Ca:43,  O3:0.00, ED:0, O6:14.5, D:0,   Mg:154, fb:6.0,  Na:476, K:649},
+  {id:'chia',    cat:'fs',     name:'Semillas de chía',     per:100, unit:'g', kcal:486, p:16.5, c:42.1, f:30.7,Fe:7.7, B12:0,   Zn:4.6,  Ca:631, O3:17.83, ED:0, O6:5.8,D:0,   Mg:335, fb:34.4, Na:16,  K:407},
+  {id:'sesamo',  cat:'fs',     name:'Sésamo',               per:100, unit:'g', kcal:573, p:17.7, c:23.4, f:49.7,Fe:14.6,B12:0,   Zn:7.8,  Ca:975, O3:0.38, ED:0, O6:21.4, D:0,   Mg:351, fb:11.8, Na:11,  K:468},
+  {id:'tahini',  cat:'fs',     name:'Tahini',               per:100, unit:'g', kcal:595, p:17.0, c:21.2, f:53.8,Fe:8.9, B12:0,   Zn:4.6,  Ca:426, O3:0.21, ED:0, O6:25.0, D:0,   Mg:95,  fb:9.3,  Na:115, K:414},
+  {id:'sem_zap', cat:'fs',     name:'Semillas zapallo',     per:100, unit:'g', kcal:559, p:30.2, c:10.7, f:49.0,Fe:8.8, B12:0,   Zn:7.8,  Ca:46,  O3:0.18, ED:0, O6:20.7, D:0,   Mg:592, fb:6.0,  Na:7,   K:809},
   // GRASAS Y CONDIMENTOS
-  {id:'oliva',   cat:'grasa',  name:'Aceite oliva',         per:100, unit:'g', kcal:884, p:0,    c:0,    f:100.0,Fe:0.6,B12:0,   Zn:0,    Ca:1,   O3:0.76, D:0,   Mg:0,   fb:0,    Na:2,   K:1},
-  {id:'coco_lec',cat:'grasa',  name:'Leche de coco',        per:100, unit:'g', kcal:230, p:2.3,  c:5.5,  f:23.8,Fe:1.6, B12:0,   Zn:0.7,  Ca:16,  O3:0.00, D:0,   Mg:37,  fb:2.2,  Na:15,  K:263},
-  {id:'miel',    cat:'grasa',  name:'Miel',                 per:100, unit:'g', kcal:304, p:0.3,  c:82.4, f:0,   Fe:0.4, B12:0,   Zn:0.2,  Ca:6,   O3:0.00, D:0,   Mg:2,   fb:0.2,  Na:4,   K:52},
-  {id:'vin_bal', cat:'grasa',  name:'Vinagre balsámico',    per:100, unit:'g', kcal:88,  p:0.5,  c:17.0, f:0,   Fe:0.7, B12:0,   Zn:0.1,  Ca:27,  O3:0.00, D:0,   Mg:12,  fb:0,    Na:23,  K:112},
+  {id:'oliva',   cat:'grasa',  name:'Aceite oliva',         per:100, unit:'g', kcal:884, p:0,    c:0,    f:100.0,Fe:0.6,B12:0,   Zn:0,    Ca:1,   O3:0.76, ED:0, O6:9.8, D:0,   Mg:0,   fb:0,    Na:2,   K:1},
+  {id:'coco_lec',cat:'grasa',  name:'Leche de coco',        per:100, unit:'g', kcal:230, p:2.3,  c:5.5,  f:23.8,Fe:1.6, B12:0,   Zn:0.7,  Ca:16,  O3:0.00, ED:0, O6:0.4, D:0,   Mg:37,  fb:2.2,  Na:15,  K:263},
+  {id:'miel',    cat:'grasa',  name:'Miel',                 per:100, unit:'g', kcal:304, p:0.3,  c:82.4, f:0,   Fe:0.4, B12:0,   Zn:0.2,  Ca:6,   O3:0.00, ED:0, O6:0, D:0,   Mg:2,   fb:0.2,  Na:4,   K:52},
+  {id:'vin_bal', cat:'grasa',  name:'Vinagre balsámico',    per:100, unit:'g', kcal:88,  p:0.5,  c:17.0, f:0,   Fe:0.7, B12:0,   Zn:0.1,  Ca:27,  O3:0.00, ED:0, O6:0, D:0,   Mg:12,  fb:0,    Na:23,  K:112},
 
   // ===== FUENTES PROTEICAS VEGETARIANAS (NUEVAS) =====
   // Datos USDA FoodData Central + literatura (Mariotti 2019, Gardner 2019).
-  {id:'seitan',  cat:'legumbre',name:'Seitán',               per:100, unit:'g', kcal:141, p:25.0, c:14.0, f:1.9, Fe:5.2, B12:0,   Zn:0.9,  Ca:142, O3:0.04, D:0,   Mg:42,  fb:0.6,  Na:485, K:100},
-  {id:'tempeh',  cat:'legumbre',name:'Tempeh',               per:100, unit:'g', kcal:192, p:20.3, c:7.6,  f:10.8,Fe:2.7, B12:0.08,Zn:1.1,  Ca:111, O3:0.18, D:0,   Mg:81,  fb:0,    Na:9,   K:412},
-  {id:'edamame', cat:'legumbre',name:'Edamame (vainas)',     per:100, unit:'g', kcal:121, p:11.9, c:8.9,  f:5.2, Fe:2.3, B12:0,   Zn:1.4,  Ca:63,  O3:0.55, D:0,   Mg:64,  fb:5.2,  Na:6,   K:436},
-  {id:'lent_roj',cat:'legumbre',name:'Lentejas rojas cocidas',per:100,unit:'g', kcal:100, p:7.6,  c:17.5, f:0.4, Fe:2.4, B12:0,   Zn:1.0,  Ca:14,  O3:0.04, D:0,   Mg:21,  fb:7.0,  Na:238, K:220},
-  {id:'porotos_n',cat:'legumbre',name:'Porotos negros cocidos',per:100,unit:'g',kcal:132, p:8.9,  c:23.7, f:0.5, Fe:2.1, B12:0,   Zn:1.1,  Ca:27,  O3:0.18, D:0,   Mg:70,  fb:8.7,  Na:1,   K:355},
-  {id:'porotos_a',cat:'legumbre',name:'Porotos alubia cocidos',per:100,unit:'g',kcal:127, p:8.7,  c:22.8, f:0.5, Fe:2.9, B12:0,   Zn:1.0,  Ca:35,  O3:0.10, D:0,   Mg:42,  fb:6.4,  Na:6,   K:405},
-  {id:'tvp',     cat:'legumbre',name:'Soja texturizada hidratada',per:100,unit:'g',kcal:122,p:13.0,c:7.0,f:0.5, Fe:2.5, B12:0,   Zn:1.2,  Ca:60,  O3:0.20, D:0,   Mg:50,  fb:4.5,  Na:8,   K:300},
-  {id:'lev_nut', cat:'legumbre',name:'Levadura nutricional', per:100, unit:'g', kcal:325, p:50.0, c:36.0, f:6.0, Fe:11.0,B12:38.0,Zn:8.0,  Ca:30,  O3:0,    D:0,   Mg:200, fb:21.0, Na:30,  K:1900},
-  {id:'whey',    cat:'lact',   name:'Whey protein (scoop 30g)',per:30,unit:'u', kcal:120, p:24.0, c:3.0,  f:1.5, Fe:0.3, B12:0.8, Zn:1.0,  Ca:140, O3:0,    D:1.5, Mg:30,  fb:0,    Na:60,  K:170},
-  {id:'soja_pro',cat:'legumbre',name:'Proteína soja aislada (scoop 30g)',per:30,unit:'u',kcal:108,p:25.0,c:1.0,f:0.5,Fe:4.0,B12:0,Zn:1.5,Ca:50,  O3:0,    D:0,   Mg:40,  fb:1.0,  Na:300, K:200},
-  {id:'arv_pro', cat:'legumbre',name:'Proteína arveja aislada (scoop 30g)',per:30,unit:'u',kcal:108,p:24.0,c:1.5,f:1.5,Fe:5.0,B12:0,Zn:1.0,Ca:100, O3:0.05, D:0,   Mg:30,  fb:0.5,  Na:380, K:50},
-  {id:'clara',   cat:'lact',   name:'Clara de huevo',       per:100, unit:'g', kcal:52,  p:10.9, c:0.7,  f:0.2, Fe:0.1, B12:0.09,Zn:0.0,  Ca:7,   O3:0,    D:0,   Mg:11,  fb:0,    Na:166, K:163},
-  {id:'lupino',  cat:'legumbre',name:'Lupinos cocidos',      per:100, unit:'g', kcal:119, p:15.6, c:9.9,  f:2.9, Fe:1.2, B12:0,   Zn:1.4,  Ca:51,  O3:0.20, D:0,   Mg:54,  fb:2.8,  Na:228, K:245},
+  {id:'seitan',  cat:'legumbre',name:'Seitán',               per:100, unit:'g', kcal:141, p:25.0, c:14.0, f:1.9, Fe:5.2, B12:0,   Zn:0.9,  Ca:142, O3:0.04, ED:0, O6:1.2, D:0,   Mg:42,  fb:0.6,  Na:485, K:100},
+  {id:'tempeh',  cat:'legumbre',name:'Tempeh',               per:100, unit:'g', kcal:192, p:20.3, c:7.6,  f:10.8,Fe:2.7, B12:0.08,Zn:1.1,  Ca:111, O3:0.18, ED:0, O6:3.7, D:0,   Mg:81,  fb:0,    Na:9,   K:412},
+  {id:'edamame', cat:'legumbre',name:'Edamame (vainas)',     per:100, unit:'g', kcal:121, p:11.9, c:8.9,  f:5.2, Fe:2.3, B12:0,   Zn:1.4,  Ca:63,  O3:0.55, ED:0, O6:1.9, D:0,   Mg:64,  fb:5.2,  Na:6,   K:436},
+  {id:'lent_roj',cat:'legumbre',name:'Lentejas rojas cocidas',per:100,unit:'g', kcal:100, p:7.6,  c:17.5, f:0.4, Fe:2.4, B12:0,   Zn:1.0,  Ca:14,  O3:0.04, ED:0, O6:0.13, D:0,   Mg:21,  fb:7.0,  Na:238, K:220},
+  {id:'porotos_n',cat:'legumbre',name:'Porotos negros cocidos',per:100,unit:'g',kcal:132, p:8.9,  c:23.7, f:0.5, Fe:2.1, B12:0,   Zn:1.1,  Ca:27,  O3:0.18, ED:0, O6:0.1, D:0,   Mg:70,  fb:8.7,  Na:1,   K:355},
+  {id:'porotos_a',cat:'legumbre',name:'Porotos alubia cocidos',per:100,unit:'g',kcal:127, p:8.7,  c:22.8, f:0.5, Fe:2.9, B12:0,   Zn:1.0,  Ca:35,  O3:0.10, ED:0, O6:0.13, D:0,   Mg:42,  fb:6.4,  Na:6,   K:405},
+  {id:'tvp',     cat:'legumbre',name:'Soja texturizada hidratada',per:100,unit:'g',kcal:122,p:13.0,c:7.0,f:0.5, Fe:2.5, B12:0,   Zn:1.2,  Ca:60,  O3:0.20, ED:0, O6:1.8, D:0,   Mg:50,  fb:4.5,  Na:8,   K:300},
+  {id:'lev_nut', cat:'legumbre',name:'Levadura nutricional', per:100, unit:'g', kcal:325, p:50.0, c:36.0, f:6.0, Fe:11.0,B12:38.0,Zn:8.0,  Ca:30,  O3:0, ED:0, O6:1.5,    D:0,   Mg:200, fb:21.0, Na:30,  K:1900},
+  {id:'whey',    cat:'lact',   name:'Whey protein (scoop 30g)',per:30,unit:'u', kcal:120, p:24.0, c:3.0,  f:1.5, Fe:0.3, B12:0.8, Zn:1.0,  Ca:140, O3:0, ED:0, O6:0.5,    D:1.5, Mg:30,  fb:0,    Na:60,  K:170},
+  {id:'soja_pro',cat:'legumbre',name:'Proteína soja aislada (scoop 30g)',per:30,unit:'u',kcal:108,p:25.0,c:1.0,f:0.5,Fe:4.0,B12:0,Zn:1.5,Ca:50,  O3:0, ED:0, O6:1.0,    D:0,   Mg:40,  fb:1.0,  Na:300, K:200},
+  {id:'arv_pro', cat:'legumbre',name:'Proteína arveja aislada (scoop 30g)',per:30,unit:'u',kcal:108,p:24.0,c:1.5,f:1.5,Fe:5.0,B12:0,Zn:1.0,Ca:100, O3:0.05, ED:0, O6:0.05, D:0,   Mg:30,  fb:0.5,  Na:380, K:50},
+  {id:'clara',   cat:'lact',   name:'Clara de huevo',       per:100, unit:'g', kcal:52,  p:10.9, c:0.7,  f:0.2, Fe:0.1, B12:0.09,Zn:0.0,  Ca:7,   O3:0, ED:0, O6:0.05,    D:0,   Mg:11,  fb:0,    Na:166, K:163},
+  {id:'lupino',  cat:'legumbre',name:'Lupinos cocidos',      per:100, unit:'g', kcal:119, p:15.6, c:9.9,  f:2.9, Fe:1.2, B12:0,   Zn:1.4,  Ca:51,  O3:0.20, ED:0, O6:0.9, D:0,   Mg:54,  fb:2.8,  Na:228, K:245},
 
   // ===== PROTEÍNAS ANIMALES (para comparar — NO vegetarianas) =====
   // Datos USDA cocidos (sin piel ni grasa visible). Pescados y mariscos altos en B12, O3 (EPA+DHA), D.
-  {id:'pollo_p', cat:'animal', name:'Pollo pechuga cocido',   per:100, unit:'g', kcal:165, p:31.0, c:0,    f:3.6, Fe:1.0, B12:0.3, Zn:1.0,  Ca:15,  O3:0.05, D:0.1, Mg:29,  fb:0,    Na:74,  K:256},
-  {id:'pollo_m', cat:'animal', name:'Pollo muslo cocido',     per:100, unit:'g', kcal:209, p:26.0, c:0,    f:10.9,Fe:1.3, B12:0.3, Zn:2.4,  Ca:12,  O3:0.10, D:0.1, Mg:23,  fb:0,    Na:88,  K:230},
-  {id:'carne_m', cat:'animal', name:'Carne magra (lomo) cocida',per:100,unit:'g',kcal:217, p:30.0, c:0,    f:10.0,Fe:2.6, B12:2.5, Zn:6.0,  Ca:11,  O3:0.05, D:0.2, Mg:25,  fb:0,    Na:60,  K:330},
-  {id:'salmon',  cat:'animal', name:'Salmón cocido',          per:100, unit:'g', kcal:208, p:22.1, c:0,    f:13.4,Fe:0.5, B12:3.2, Zn:0.6,  Ca:13,  O3:2.3,  D:13.1,Mg:30,  fb:0,    Na:59,  K:384},
-  {id:'atun',    cat:'animal', name:'Atún al natural lata',   per:100, unit:'g', kcal:116, p:25.5, c:0,    f:1.0, Fe:1.0, B12:2.5, Zn:0.7,  Ca:11,  O3:0.27, D:1.0, Mg:27,  fb:0,    Na:247, K:237},
-  {id:'merluza', cat:'animal', name:'Merluza cocida',         per:100, unit:'g', kcal:88,  p:20.0, c:0,    f:0.7, Fe:0.4, B12:0.9, Zn:0.4,  Ca:14,  O3:0.20, D:0.7, Mg:30,  fb:0,    Na:81,  K:310}
+  {id:'pollo_p', cat:'animal', name:'Pollo pechuga cocido',   per:100, unit:'g', kcal:165, p:31.0, c:0,    f:3.6, Fe:1.0, B12:0.3, Zn:1.0,  Ca:15,  O3:0.05, ED:0, O6:0.7, D:0.1, Mg:29,  fb:0,    Na:74,  K:256},
+  {id:'pollo_m', cat:'animal', name:'Pollo muslo cocido',     per:100, unit:'g', kcal:209, p:26.0, c:0,    f:10.9,Fe:1.3, B12:0.3, Zn:2.4,  Ca:12,  O3:0.10, ED:0, O6:1.9, D:0.1, Mg:23,  fb:0,    Na:88,  K:230},
+  {id:'carne_m', cat:'animal', name:'Carne magra (lomo) cocida',per:100,unit:'g',kcal:217, p:30.0, c:0,    f:10.0,Fe:2.6, B12:2.5, Zn:6.0,  Ca:11,  O3:0.05, ED:0, O6:0.5, D:0.2, Mg:25,  fb:0,    Na:60,  K:330},
+  {id:'salmon',  cat:'animal', name:'Salmón cocido',          per:100, unit:'g', kcal:208, p:22.1, c:0,    f:13.4,Fe:0.5, B12:3.2, Zn:0.6,  Ca:13,  O3:2.3, ED:1800, O6:1.0,  D:13.1,Mg:30,  fb:0,    Na:59,  K:384},
+  {id:'atun',    cat:'animal', name:'Atún al natural lata',   per:100, unit:'g', kcal:116, p:25.5, c:0,    f:1.0, Fe:1.0, B12:2.5, Zn:0.7,  Ca:11,  O3:0.27, ED:300, O6:0.1, D:1.0, Mg:27,  fb:0,    Na:247, K:237},
+  {id:'merluza', cat:'animal', name:'Merluza cocida',         per:100, unit:'g', kcal:88,  p:20.0, c:0,    f:0.7, Fe:0.4, B12:0.9, Zn:0.4,  Ca:14,  O3:0.20, ED:200, O6:0.05, D:0.7, Mg:30,  fb:0,    Na:81,  K:310},
+
+  // ===== PANES DE MOLDE (ARGENTINA) =====
+  // Datos por 100g. Una feta típica de pan lactal ≈ 25-30g (3-4 fetas en 100g).
+  // Aproximaciones razonables de las marcas más comunes (Bimbo, Fargo, Lactal, Bauducco).
+  {id:'pan_lact',   cat:'cereal', name:'Pan lactal blanco (Bimbo/Fargo)',  per:100, unit:'g', kcal:280, p:8.5,  c:51.0, f:4.0, Fe:2.7, B12:0, Zn:0.8, Ca:140, O3:0.10, ED:0, O6:1.5, D:0, Mg:25, fb:2.4,  Na:480, K:120},
+  {id:'pan_lact_int',cat:'cereal',name:'Pan lactal integral',              per:100, unit:'g', kcal:255, p:10.0, c:43.0, f:4.5, Fe:3.0, B12:0, Zn:1.5, Ca:130, O3:0.12, ED:0, O6:1.8, D:0, Mg:65, fb:6.5,  Na:450, K:230},
+  {id:'pan_lact_salv',cat:'cereal',name:'Pan lactal con salvado',          per:100, unit:'g', kcal:262, p:9.5,  c:45.0, f:4.5, Fe:3.2, B12:0, Zn:1.4, Ca:120, O3:0.10, ED:0, O6:1.8, D:0, Mg:60, fb:7.0,  Na:470, K:215},
+  {id:'pan_lact_sem',cat:'cereal',name:'Pan lactal multisemillas',         per:100, unit:'g', kcal:295, p:11.0, c:42.0, f:8.0, Fe:3.5, B12:0, Zn:1.8, Ca:110, O3:0.50, ED:0, O6:3.5, D:0, Mg:85, fb:6.8,  Na:440, K:240},
+  {id:'pan_lact_cer',cat:'cereal',name:'Pan lactal 9 cereales (Oroweat)',  per:100, unit:'g', kcal:270, p:10.5, c:44.0, f:5.5, Fe:3.0, B12:0, Zn:1.5, Ca:130, O3:0.30, ED:0, O6:2.2, D:0, Mg:70, fb:6.0,  Na:430, K:225},
+  {id:'pan_lact_neg',cat:'cereal',name:'Pan lactal negro / centeno',       per:100, unit:'g', kcal:259, p:8.5,  c:48.0, f:3.4, Fe:2.8, B12:0, Zn:1.2, Ca:73,  O3:0.10, ED:0, O6:1.4, D:0, Mg:40, fb:5.8,  Na:603, K:208},
+  {id:'pan_lact_avena',cat:'cereal',name:'Pan lactal con avena',           per:100, unit:'g', kcal:269, p:10.0, c:46.0, f:5.0, Fe:2.9, B12:0, Zn:1.6, Ca:120, O3:0.15, ED:0, O6:2.0, D:0, Mg:55, fb:5.5,  Na:450, K:200},
+  {id:'pan_lact_cer0',cat:'cereal',name:'Pan lactal Cero&Cero (Bimbo)',    per:100, unit:'g', kcal:225, p:10.0, c:38.0, f:3.5, Fe:2.5, B12:0, Zn:1.3, Ca:115, O3:0.10, ED:0, O6:1.4, D:0, Mg:60, fb:8.5,  Na:430, K:215},
+  {id:'pan_arts',  cat:'cereal', name:'Pan artesano (Bimbo Artesano)',     per:100, unit:'g', kcal:275, p:9.0,  c:50.0, f:4.0, Fe:2.6, B12:0, Zn:1.0, Ca:135, O3:0.10, ED:0, O6:1.6, D:0, Mg:35, fb:3.5,  Na:475, K:155},
+  {id:'pan_brioche',cat:'cereal',name:'Pan brioche/lactal con manteca',    per:100, unit:'g', kcal:325, p:9.0,  c:48.0, f:10.0,Fe:2.5, B12:0.1,Zn:0.9,Ca:150,O3:0.10, ED:0, O6:4.0, D:0.2,Mg:25,fb:2.0,  Na:480, K:130}
 ];
 
 const INGR_BY_ID = {};
@@ -1384,7 +1455,19 @@ const AA_DATA = {
   'carne_m':  {diaas:112,aa:{Lys:85,Leu:80,SAA:40,Trp:12,Thr:45,Ile:50,Val:55,His:35,AAA:80}},
   'salmon':   {diaas:108,aa:{Lys:90,Leu:80,SAA:42,Trp:12,Thr:45,Ile:50,Val:55,His:30,AAA:80}},
   'atun':     {diaas:113,aa:{Lys:90,Leu:80,SAA:42,Trp:12,Thr:45,Ile:50,Val:55,His:30,AAA:80}},
-  'merluza':  {diaas:108,aa:{Lys:90,Leu:80,SAA:42,Trp:12,Thr:45,Ile:50,Val:55,His:30,AAA:80}}
+  'merluza':  {diaas:108,aa:{Lys:90,Leu:80,SAA:42,Trp:12,Thr:45,Ile:50,Val:55,His:30,AAA:80}},
+  // ===== PANES =====
+  // Perfil tipo trigo, Lys limitante. DIAAS varía con integral (más fibra → menos digest)
+  'pan_lact':       {diaas:42, aa:{Lys:22,Leu:70,SAA:40,Trp:10,Thr:30,Ile:38,Val:45,His:22,AAA:80}},
+  'pan_lact_int':   {diaas:48, aa:{Lys:28,Leu:70,SAA:40,Trp:12,Thr:30,Ile:38,Val:45,His:23,AAA:80}},
+  'pan_lact_salv':  {diaas:48, aa:{Lys:28,Leu:70,SAA:40,Trp:12,Thr:30,Ile:38,Val:45,His:23,AAA:80}},
+  'pan_lact_sem':   {diaas:55, aa:{Lys:34,Leu:70,SAA:42,Trp:13,Thr:32,Ile:40,Val:47,His:24,AAA:82}},
+  'pan_lact_cer':   {diaas:52, aa:{Lys:32,Leu:70,SAA:42,Trp:12,Thr:32,Ile:40,Val:47,His:23,AAA:82}},
+  'pan_lact_neg':   {diaas:47, aa:{Lys:30,Leu:68,SAA:40,Trp:11,Thr:32,Ile:38,Val:45,His:23,AAA:78}},
+  'pan_lact_avena': {diaas:55, aa:{Lys:32,Leu:72,SAA:43,Trp:12,Thr:33,Ile:40,Val:50,His:23,AAA:85}},
+  'pan_lact_cer0':  {diaas:50, aa:{Lys:30,Leu:70,SAA:40,Trp:12,Thr:31,Ile:38,Val:45,His:23,AAA:80}},
+  'pan_arts':       {diaas:45, aa:{Lys:24,Leu:70,SAA:40,Trp:11,Thr:30,Ile:38,Val:45,His:22,AAA:80}},
+  'pan_brioche':    {diaas:55, aa:{Lys:38,Leu:75,SAA:42,Trp:11,Thr:35,Ile:42,Val:50,His:24,AAA:85}}
 };
 
 /* Calidad proteica combinada de una receta.
@@ -1525,7 +1608,7 @@ const MEALS = [
    Calcula los nutrientes totales de una comida sumando ingredientes.
    Para unit='u': multiplica los valores por qty (cantidad de unidades).
    Para unit='g': escala por qty/per (gramos consumidos sobre referencia). */
-const NUTRI_KEYS = ['kcal','p','c','f','Fe','B12','Zn','Ca','O3','D','Mg','fb','Na','K'];
+const NUTRI_KEYS = ['kcal','p','c','f','Fe','B12','Zn','Ca','O3','ED','O6','D','Mg','fb','Na','K'];
 function computeMealNutrition(meal){
   const out = {};
   NUTRI_KEYS.forEach(k => { out[k] = 0; });
@@ -1548,6 +1631,8 @@ function computeMealNutrition(meal){
   out.Zn = +out.Zn.toFixed(2);
   out.Ca = Math.round(out.Ca);
   out.O3 = +out.O3.toFixed(2);
+  out.ED = Math.round(out.ED);
+  out.O6 = +out.O6.toFixed(2);
   out.D = +out.D.toFixed(2);
   out.Mg = Math.round(out.Mg);
   out.fb = +out.fb.toFixed(1);
@@ -1592,12 +1677,12 @@ let state = {
   customMeals: [],    // comidas agregadas manualmente por el usuario
   currentTab: 'resumen',
   catFilter: 'todos',
-  sortBy: 'priority', // 'priority' | 'protein' | 'quality' | 'kcal'
+  sortBy: 'quality', // 'quality' | 'protein'
   search: '',
   calMonth: null,     // {y:2026, m:5}
   expanded: new Set(),// ids de meal cards abiertos (no persiste)
   ingCatFilter: 'todos',
-  ingClassFilter: 'todos',
+  ingSort: 'protein',
   ingSearch: '',
   ingExpanded: new Set()
 };
@@ -1611,9 +1696,9 @@ function loadState(){
       if(parsed.selectedByDate) state.selectedByDate = parsed.selectedByDate;
       if(parsed.shopChecks) state.shopChecks = parsed.shopChecks;
       if(Array.isArray(parsed.customMeals)) state.customMeals = parsed.customMeals;
+      console.log(`[NUTRI CORE] State cargado: ${state.customMeals.length} recetas custom, ${Object.keys(state.selectedByDate).length} días con comidas`);
 
       // Migración: limpiar referencias a comidas que ya no existen
-      // (versiones viejas de la app tenían 15-75 recetas; ahora hay 5)
       const validIds = new Set([...MEALS.map(m => m.id), ...state.customMeals.map(m => m.id)]);
       let cleaned = 0;
       Object.keys(state.selectedByDate).forEach(dk => {
@@ -1624,10 +1709,12 @@ function loadState(){
       });
       if(cleaned > 0){
         saveState();
-        console.log(`Limpieza: ${cleaned} referencias a recetas eliminadas`);
+        console.log(`[NUTRI CORE] Limpieza: ${cleaned} referencias a recetas eliminadas`);
       }
+    } else {
+      console.log('[NUTRI CORE] Sin state previo en localStorage (primera vez o se borró)');
     }
-  }catch(e){console.warn('load error',e)}
+  }catch(e){console.warn('[NUTRI CORE] load error',e)}
 }
 function saveState(){
   try{
@@ -1637,8 +1724,12 @@ function saveState(){
       shopChecks: state.shopChecks,
       customMeals: state.customMeals
     }));
-  }catch(e){console.warn('save error',e)}
+  }catch(e){console.warn('[NUTRI CORE] save error',e)}
 }
+// Save defensivo al cerrar/ocultar pestaña
+window.addEventListener('beforeunload', () => saveState());
+window.addEventListener('pagehide', () => saveState());
+document.addEventListener('visibilitychange', () => { if(document.hidden) saveState(); });
 
 /* Devuelve una comida por id buscando primero en builtins, después en customs.
    Si la comida usa el nuevo formato (items + qty), la hidrata calculando
@@ -1683,7 +1774,8 @@ function baseDRI(age, sex){
     D  : age >= 71 ? 20 : 15,
     B12: 2.4,
     fb : (age <= 50) ? (m ? 38 : 25) : (m ? 30 : 21),
-    O3 : m ? 1.6 : 1.1,
+    O3 : m ? 1.6 : 1.1, // alias legacy
+    ALA: m ? 1.6 : 1.1,
     K  : m ? 3400 : 2600,
     Na : 2300  // Chronic Disease Risk Reduction (CDRR), no AI
   };
@@ -1756,11 +1848,23 @@ function computeTargets(p){
      diario realista de suplementación. */
   const b12Target = p.vegan ? 50 : base.B12;
 
-  /* OMEGA 3 — AI base es ALA. Vegetarianos tienen conversión ALA→EPA/DHA muy baja
-     (~5% a EPA, <0.5% a DHA según Brenna 2009, Burdge 2002). ISSFAL y Academy of
-     Nutrition recomiendan ~250mg EPA+DHA directos (algas) o duplicar ALA si
-     no se consume DHA preformado. Aplico ×1.5 para ovo-lacto, ×2 para vegano. */
-  const o3Target = +(base.O3 * (p.vegan ? 2 : 1.5)).toFixed(1);
+  /* OMEGA 3 — Separado en ALA y EPA+DHA por biología:
+     - ALA (vegetal): AI 1.6g hombre, 1.1g mujer (IOM 2002). Solo ~5% se convierte
+       a EPA y <0.5% a DHA (Brenna 2009, Burdge 2002), por eso ALA solo no
+       garantiza estado óptimo de EPA+DHA.
+     - EPA+DHA (preformados, marinos): ISSFAL recomienda 500mg/día mantenimiento,
+       hasta 1500mg para efecto antiinflamatorio (Calder 2013).
+     Vegetarianos sin pescado: si no consumen aceite de algas, casi cero EPA+DHA.
+     Aumentamos target ALA ×1.5 (ovo-lacto) o ×2 (vegano) para compensar parcialmente
+     la baja conversión, pero el indicador EPA+DHA queda en rojo hasta suplementar. */
+  const alaTarget = +(base.ALA * (p.vegan ? 2 : 1.5)).toFixed(1);
+  const epaDhaTarget = p.activity >= 1.55 ? 1500 : 500; // performance vs mantenimiento, en mg
+
+  /* OMEGA 6 (LA) — AI IOM 17g hombre, 12g mujer adulto.
+     Es esencial pero la dieta moderna lo aporta en exceso (~20g típico).
+     El target funciona como referencia: cumplir AI sí, pero sin pasarse 2-3x.
+     Lo crítico es el RATIO con omega 3: ideal ω6:ω3 <4:1 (Simopoulos 2002). */
+  const o6Target = p.sex === 'm' ? 17 : 12;
 
   /* CALCIO — Vegetarianos ovo-lacto: igual que omnívoros. Veganos: igual RDA
      pero requiere atención a fuentes (vegetales de hoja, tofu fortificado,
@@ -1777,7 +1881,10 @@ function computeTargets(p){
     B12: b12Target,
     Zn: zincTarget,
     Ca: caTarget,
-    O3: o3Target,
+    O3: alaTarget,        // legacy: ahora es target de ALA
+    ALA: alaTarget,
+    ED: epaDhaTarget,     // EPA+DHA en mg
+    O6: o6Target,         // omega 6 (LA) AI g/día
     D : dTarget,
     Mg: base.Mg,
     fb: base.fb,
@@ -1801,7 +1908,7 @@ function fmtDate(d){
 
 /* ==================== AGGREGATE NUTRIENTS ==================== */
 function aggregateMeals(mealIds){
-  const agg = {kcal:0,p:0,c:0,f:0,Fe:0,B12:0,Zn:0,Ca:0,O3:0,D:0,Mg:0,fb:0,Na:0,K:0};
+  const agg = {kcal:0,p:0,c:0,f:0,Fe:0,B12:0,Zn:0,Ca:0,O3:0,ED:0,O6:0,D:0,Mg:0,fb:0,Na:0,K:0};
   mealIds.forEach(id => {
     const m = getMealById(id);
     if(!m) return;
@@ -1846,6 +1953,53 @@ function priorityScore(m){
   const protNorm = Math.min((m.p || 0) / 35 * 100, 100);
   const qual = qualityScore(m);
   return Math.round(protNorm * 0.6 + qual * 0.4);
+}
+
+/* Render del bloque de micronutrientes de una receta (vista compacta).
+   Muestra los 10 micros + omega 6 + ratio en grid 2x6. */
+function renderMealMicrosSection(m){
+  if(!m || !m.kcal) return '';
+  const o3Total = (m.O3 || 0) + (m.ED || 0) / 1000;
+  const o6 = m.O6 || 0;
+  const ratio = o3Total > 0.05 ? (o6 / o3Total) : null;
+  const items = [
+    {lbl:'Hierro',     sub:'Fe',         val:(m.Fe||0).toFixed(2),     unit:'mg'},
+    {lbl:'B12',        sub:'cobalamina', val:(m.B12||0).toFixed(2),    unit:'µg'},
+    {lbl:'Zinc',       sub:'Zn',         val:(m.Zn||0).toFixed(2),     unit:'mg'},
+    {lbl:'Calcio',     sub:'Ca',         val:Math.round(m.Ca||0),      unit:'mg'},
+    {lbl:'Magnesio',   sub:'Mg',         val:Math.round(m.Mg||0),      unit:'mg'},
+    {lbl:'Fibra',      sub:'',           val:(m.fb||0).toFixed(1),     unit:'g'},
+    {lbl:'Omega 3 ALA',    sub:'vegetal',     val:(m.O3||0).toFixed(2),     unit:'g'},
+    {lbl:'Omega 3 EPA+DHA',sub:'preformados', val:Math.round(m.ED||0),      unit:'mg'},
+    {lbl:'Omega 6',    sub:'LA',         val:(m.O6||0).toFixed(2),     unit:'g'},
+    {lbl:'Vit D',      sub:'',           val:(m.D||0).toFixed(2),      unit:'µg'},
+    {lbl:'Sodio',      sub:'Na',         val:Math.round(m.Na||0),      unit:'mg'},
+    {lbl:'Potasio',    sub:'K',          val:Math.round(m.K||0),       unit:'mg'}
+  ];
+  let ratioHtml = '';
+  if(ratio !== null){
+    const cls = ratio < 4 ? '#5fae5d' : (ratio < 8 ? '#ff6b00' : (ratio < 15 ? '#d4a04a' : '#c14747'));
+    ratioHtml = `
+      <div style="margin-top:8px;padding:8px 10px;background:rgba(20,22,30,.5);border:1px solid ${cls}33;border-radius:6px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#7a7f8e;font-weight:600">Ratio Ω6 : Ω3</span>
+        <span style="font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;color:${cls}">${ratio < 100 ? ratio.toFixed(1) : '99+'} : 1</span>
+      </div>
+    `;
+  }
+  return `
+    <div class="detail-section">
+      <div class="detail-title">› Micronutrientes (total receta)</div>
+      <div style="margin-top:4px">
+        ${items.map(it => `
+          <div class="ing-micro-row">
+            <div class="ing-micro-name">${it.lbl}${it.sub ? ` <span class="sub">${it.sub}</span>` : ''}</div>
+            <div class="ing-micro-val">${it.val} ${it.unit}</div>
+          </div>
+        `).join('')}
+      </div>
+      ${ratioHtml}
+    </div>
+  `;
 }
 
 /* Render del bloque de calidad proteica + sugerencia de complemento */
@@ -1944,8 +2098,7 @@ function renderResumen(){
   ];
   document.getElementById('kpiGrid').innerHTML = macroKpis.map(k => {
     const pctReal = k.target > 0 ? k.val/k.target : 0;
-    const pctVis = Math.min(pctReal, 1.2); // barra capped a 120% visual
-    // Verde desde 95% (objetivo cumplido o casi). Rojo solo si excede mucho (>140%)
+    const pctVis = Math.min(pctReal, 1.2);
     const cls = pctReal >= 0.95 && pctReal <= 1.4 ? 'complete' : (pctReal > 1.4 ? 'over' : '');
     return `
       <div class="kpi">
@@ -2002,7 +2155,9 @@ function renderResumen(){
     {key:'B12',name:'B12',       sub:'cobalamina', unit:'µg', type:'target', target:targets.B12, ul:null},
     {key:'Zn', name:'Zinc',      sub:'Zn',         unit:'mg', type:'target', target:targets.Zn,  ul:ulMap.Zn},
     {key:'Ca', name:'Calcio',    sub:'Ca',         unit:'mg', type:'target', target:targets.Ca,  ul:ulMap.Ca},
-    {key:'O3', name:'Omega 3',   sub:'ALA+EPA+DHA',unit:'g',  type:'target', target:targets.O3,  ul:null},
+    {key:'O3', name:'Omega 3 ALA',     sub:'vegetal',     unit:'g',  type:'target', target:targets.ALA, ul:null},
+    {key:'ED', name:'Omega 3 EPA+DHA', sub:'pescado/algas',unit:'mg',type:'target', target:targets.ED, ul:null},
+    {key:'O6', name:'Omega 6',         sub:'aceites/fr.secos',unit:'g',type:'limit',target:targets.O6*2.5, ul:null},
     {key:'D',  name:'Vit D',     sub:'colecalciferol', unit:'µg', type:'target', target:targets.D, ul:ulMap.D},
     {key:'Mg', name:'Magnesio',  sub:'Mg',         unit:'mg', type:'target', target:targets.Mg,  ul:null},
     {key:'fb', name:'Fibra',     sub:'total',      unit:'g',  type:'target', target:targets.fb,  ul:null},
@@ -2047,7 +2202,78 @@ function renderResumen(){
     `;
   }).join('');
 
-  // Today meals
+  // ===== Tracker de ratios =====
+  // Dos ratios omega 6:3 según metodología académica:
+  //
+  // 1) DIETARIO (Simopoulos 2002, estándar académico): suma lineal de todos
+  //    los omega 3 sobre todos los omega 6, sin factores de conversión.
+  //    Es lo que reportan los papers y los food trackers. Ideal <4:1.
+  //
+  // 2) FUNCIONAL (basado en metodología tipo OmegaCheck/AA:EPA):
+  //    refleja qué omega 3 tu cuerpo realmente va a usar. Aplica los
+  //    factores de conversión: ALA → EPA ~5% (Brenna 2009, Burdge 2002).
+  //    Ratio = LA / (ALA × 0.05 + EPA + DHA en g).
+  //    Es más estricto y útil para dietas vegetarianas sin pescado/algas.
+  //
+  // La diferencia entre ambos te dice cuánto de tu omega 3 es "nominal" vs
+  // "biodisponible": si el dietario sale bien pero el funcional mal, casi
+  // todo tu omega 3 es ALA y necesitás EPA+DHA directos.
+  const alaG = totals.O3 || 0;
+  const epaDhaG = (totals.ED || 0) / 1000;
+  const o3DietaryG = alaG + epaDhaG;
+  const o3FunctionalG = alaG * 0.05 + epaDhaG;
+  const o6G = totals.O6 || 0;
+  const ratiosEl = document.getElementById('ratiosList');
+  const ratios = [];
+
+  function classifyRatio(r){
+    if(r < 4)        return {cls:'good', label:'Excelente'};
+    if(r < 8)        return {cls:'',     label:'Aceptable'};
+    if(r < 15)       return {cls:'warn', label:'Alto — bajá omega 6'};
+    return                  {cls:'over', label:'Crítico'};
+  }
+  function ratioPct(r){ return r >= 16 ? 1 : (r / 16); }
+  function ratioDisp(r){ return r < 100 ? `${r.toFixed(1)} : 1` : '99+ : 1'; }
+
+  if(o3DietaryG > 0.05 || o6G > 0.05){
+    const r = o3DietaryG > 0 ? (o6G / o3DietaryG) : 999;
+    const c = classifyRatio(r);
+    ratios.push({
+      name: 'Ω6 : Ω3 dietario',
+      sub:  'suma lineal · estándar Simopoulos',
+      val:  ratioDisp(r),
+      detail: `Ω3 total ${o3DietaryG.toFixed(2)}g · Ω6 ${o6G.toFixed(2)}g · ideal <4:1`,
+      pct: ratioPct(r), cls: c.cls, label: c.label
+    });
+    const rf = o3FunctionalG > 0 ? (o6G / o3FunctionalG) : 999;
+    const cf = classifyRatio(rf);
+    ratios.push({
+      name: 'Ω6 : Ω3 funcional',
+      sub:  'con conversión ALA→EPA (5%)',
+      val:  ratioDisp(rf),
+      detail: `Ω3 efectivo ${o3FunctionalG.toFixed(2)}g (ALA×0.05 + EPA+DHA) · refleja biodisponibilidad real`,
+      pct: ratioPct(rf), cls: cf.cls, label: cf.label
+    });
+  }
+
+  if(ratios.length === 0){
+    ratiosEl.innerHTML = `<div class="empty-state" style="padding:14px 0;font-size:11px">Sumá comidas hoy para ver los ratios.</div>`;
+  } else {
+    const colorOf = (c) => c === 'good' ? '#5fae5d' : (c === 'warn' ? '#d4a04a' : (c === 'over' ? '#c14747' : '#ff6b00'));
+    ratiosEl.innerHTML = ratios.map(r => `
+      <div class="micro-row">
+        <div class="micro-name">${r.name} <span class="sub">${r.sub}</span></div>
+        <div class="micro-progress"><div class="micro-progress-fill ${r.cls}" style="width:${r.pct*100}%"></div></div>
+        <div class="micro-value">${r.val}</div>
+      </div>
+      <div style="font-size:10px;color:#7a7f8e;padding:0 0 8px 0;letter-spacing:.02em">
+        <span style="color:${colorOf(r.cls)};font-weight:600">${r.label}</span>
+        <span style="color:#5a5e6b;margin-left:6px">·</span>
+        <span style="margin-left:6px">${r.detail}</span>
+      </div>
+    `).join('');
+  }
+
   const todayEl = document.getElementById('todayMeals');
   if(selected.length === 0){
     todayEl.innerHTML = `<div class="empty-state">Sin comidas seleccionadas hoy. Andá a Ideas para sumar.</div>`;
@@ -2106,21 +2332,10 @@ function renderPieCard(label, segments){
 
 /* ==================== IDEAS ==================== */
 function renderIdeas(){
-  // Category filters
-  const cats = ['todos','desayuno','almuerzo','cena'];
-  document.getElementById('catFilters').innerHTML = cats.map(c =>
-    `<button class="filter-chip ${state.catFilter===c?'active':''}" data-cat="${c}">${c}</button>`
-  ).join('');
-  document.querySelectorAll('[data-cat]').forEach(btn => {
-    btn.onclick = () => { state.catFilter = btn.dataset.cat; renderIdeas(); };
-  });
-
-  // Sort chips
+  // Sort chips (sin filtros de categoría desayuno/almuerzo/cena)
   const sorts = [
-    {k:'priority', l:'Prioridad'},
-    {k:'protein',  l:'Proteína'},
-    {k:'quality',  l:'Calidad'},
-    {k:'kcal',     l:'Kcal'}
+    {k:'quality',  l:'Calidad nutricional'},
+    {k:'protein',  l:'Proteína'}
   ];
   document.getElementById('sortFilters').innerHTML = sorts.map(s =>
     `<button class="filter-chip ${state.sortBy===s.k?'active':''}" data-sort="${s.k}">↓ ${s.l}</button>`
@@ -2138,7 +2353,6 @@ function renderIdeas(){
   const tk = todayKey();
   const selected = state.selectedByDate[tk] || [];
   let filtered = allMeals().filter(m => {
-    if(state.catFilter !== 'todos' && m.cat !== state.catFilter) return false;
     if(state.search){
       const hay = (m.name + ' ' + (m.ing||[]).join(' ') + ' ' + (m.tags||[]).join(' ')).toLowerCase();
       if(!hay.includes(state.search)) return false;
@@ -2148,11 +2362,9 @@ function renderIdeas(){
 
   // Sorting
   const sortFn = {
-    priority: (a,b) => priorityScore(b) - priorityScore(a),
-    protein:  (a,b) => (b.p||0) - (a.p||0),
     quality:  (a,b) => qualityScore(b) - qualityScore(a),
-    kcal:     (a,b) => (b.kcal||0) - (a.kcal||0)
-  }[state.sortBy] || ((a,b) => priorityScore(b) - priorityScore(a));
+    protein:  (a,b) => (b.p||0) - (a.p||0)
+  }[state.sortBy] || ((a,b) => qualityScore(b) - qualityScore(a));
   filtered.sort(sortFn);
 
   const list = document.getElementById('mealsList');
@@ -2171,6 +2383,7 @@ function renderIdeas(){
     const score = qualityScore(m);
     const tier = qualityTier(score);
     const isCustom = !!m.custom;
+    const selectedCount = selected.filter(x => x === m.id).length;
     return `
     <div class="meal ${selected.includes(m.id) ? 'selected' : ''} ${state.expanded.has(m.id) ? 'expanded' : ''}" data-meal="${m.id}">
       <div class="meal-head" data-expand="${m.id}">
@@ -2198,16 +2411,17 @@ function renderIdeas(){
         </div>
         ${(m.tags && m.tags.length) ? `<div class="meal-tags" style="margin-bottom:10px">${m.tags.map(t=>`<span class="meal-tag">${t}</span>`).join('')}</div>` : ''}
         <div class="detail-section">
-          <div class="detail-title">› Densidad nutricional</div>
+          <div class="detail-title">› Calidad nutricional</div>
           <div style="display:flex;align-items:center;gap:10px;margin-top:4px">
             <div class="q-badge q-${tier}" style="min-width:56px;height:32px;font-size:14px;padding:0 10px">${score}<span class="pct">%</span></div>
             <div style="flex:1">
-              <div style="font-size:11px;color:#c5c8d2">Prioridad: <span style="color:#ff6b00;font-family:Orbitron;font-weight:700">${priorityScore(m)}/100</span></div>
-              <div style="font-size:10px;color:#7a7f8e;margin-top:2px">60% proteína · 40% micros por kcal</div>
+              <div style="font-size:11px;color:#c5c8d2">Densidad de micronutrientes por kcal</div>
+              <div style="font-size:10px;color:#7a7f8e;margin-top:2px">Promedio % de RDA cubierto por cada 100 kcal del alimento</div>
             </div>
           </div>
         </div>
         ${m.protQuality ? renderProteinQualitySection(m.protQuality) : ''}
+        ${renderMealMicrosSection(m)}
         ${(m.ing && m.ing.length) ? `
         <div class="detail-section">
           <div class="detail-title">› Ingredientes</div>
@@ -2228,10 +2442,15 @@ function renderIdeas(){
           </div>
         </div>
         <div class="meal-actions">
-          <button class="btn ${selected.includes(m.id) ? 'danger' : 'primary'}" data-toggle="${m.id}">
-            ${selected.includes(m.id) ? 'Quitar de hoy' : 'Sumar a hoy'}
-          </button>
-          ${isCustom ? `<button class="btn ghost" data-delcustom="${m.id}">Eliminar</button>` : ''}
+          <div class="meal-stepper">
+            <button class="step-btn minus" data-dec="${m.id}" ${selectedCount === 0 ? 'disabled' : ''}>−</button>
+            <div class="step-count ${selectedCount > 0 ? 'on' : ''}">${selectedCount}<span class="step-lbl">hoy</span></div>
+            <button class="step-btn plus" data-inc="${m.id}">+</button>
+          </div>
+          ${isCustom ? `
+            <button class="btn ghost" data-editcustom="${m.id}">Editar</button>
+            <button class="btn ghost" data-delcustom="${m.id}">Eliminar</button>
+          ` : ''}
         </div>
       </div>
     </div>
@@ -2239,8 +2458,14 @@ function renderIdeas(){
 
   document.getElementById('addMealBtn').onclick = openAddMealModal;
 
-  list.querySelectorAll('[data-toggle]').forEach(btn => {
-    btn.onclick = (e) => { e.stopPropagation(); toggleMeal(btn.dataset.toggle); };
+  list.querySelectorAll('[data-inc]').forEach(btn => {
+    btn.onclick = (e) => { e.stopPropagation(); incrementMeal(btn.dataset.inc, +1); };
+  });
+  list.querySelectorAll('[data-dec]').forEach(btn => {
+    btn.onclick = (e) => { e.stopPropagation(); if(!btn.disabled) incrementMeal(btn.dataset.dec, -1); };
+  });
+  list.querySelectorAll('[data-editcustom]').forEach(btn => {
+    btn.onclick = (e) => { e.stopPropagation(); openEditMealModal(btn.dataset.editcustom); };
   });
   list.querySelectorAll('[data-delcustom]').forEach(btn => {
     btn.onclick = (e) => { e.stopPropagation(); deleteCustomMeal(btn.dataset.delcustom); };
@@ -2256,18 +2481,32 @@ function renderIdeas(){
   });
 }
 
-function toggleMeal(id){
+/* Incrementa o decrementa la cantidad de una comida en el día actual.
+   selectedByDate[dk] es un array con repetición: si tiene 2x 'r03',
+   significa que comió esa receta 2 veces hoy. */
+function incrementMeal(id, delta){
   const tk = todayKey();
   if(!state.selectedByDate[tk]) state.selectedByDate[tk] = [];
   const arr = state.selectedByDate[tk];
-  const i = arr.indexOf(id);
-  if(i >= 0){ arr.splice(i,1); toast('Quitada'); }
-  else { arr.push(id); toast('Sumada a hoy'); }
+  if(delta > 0){
+    arr.push(id);
+    toast('+1 hoy');
+  } else {
+    const i = arr.indexOf(id);
+    if(i >= 0){ arr.splice(i,1); toast('−1 hoy'); }
+    else { toast('Ya está en 0'); return; }
+  }
   if(arr.length === 0) delete state.selectedByDate[tk];
   saveState();
   if(state.currentTab === 'ideas') renderIdeas();
   if(state.currentTab === 'resumen') renderResumen();
   if(state.currentTab === 'compras') renderShop();
+}
+/* Alias mantenido por compatibilidad — funciona como toggle de 1 unidad */
+function toggleMeal(id){
+  const tk = todayKey();
+  const count = (state.selectedByDate[tk] || []).filter(x => x === id).length;
+  incrementMeal(id, count === 0 ? 1 : -1);
 }
 
 /* ==================== ALIMENTOS ==================== */
@@ -2295,12 +2534,10 @@ function ingredientClass(ing){
   return 'C';
 }
 
-const ING_CLASSES = [
-  {k:'todos', label:'Todas clases'},
-  {k:'S',     label:'S · referencia'},
-  {k:'A',     label:'A · completa'},
-  {k:'B',     label:'B · casi'},
-  {k:'C',     label:'C · incompleta'}
+const ING_SORTS = [
+  {k:'protein',  label:'↓ Proteína'},
+  {k:'class',    label:'↓ Clase proteica'},
+  {k:'name',     label:'A–Z'}
 ];
 
 function renderAlimentos(){
@@ -2315,12 +2552,12 @@ function renderAlimentos(){
     btn.onclick = () => { state.ingCatFilter = btn.dataset.icat; renderAlimentos(); };
   });
 
-  // Protein class filters
-  document.getElementById('ingClassFilters').innerHTML = ING_CLASSES.map(c =>
-    `<button class="filter-chip ${state.ingClassFilter===c.k?'active':''}" data-iclass="${c.k}">${c.label}</button>`
+  // Sort chips
+  document.getElementById('ingClassFilters').innerHTML = ING_SORTS.map(s =>
+    `<button class="filter-chip ${state.ingSort===s.k?'active':''}" data-isort="${s.k}">${s.label}</button>`
   ).join('');
-  document.querySelectorAll('[data-iclass]').forEach(btn => {
-    btn.onclick = () => { state.ingClassFilter = btn.dataset.iclass; renderAlimentos(); };
+  document.querySelectorAll('[data-isort]').forEach(btn => {
+    btn.onclick = () => { state.ingSort = btn.dataset.isort; renderAlimentos(); };
   });
 
   // Search
@@ -2332,13 +2569,24 @@ function renderAlimentos(){
   let list = INGREDIENTS.filter(i => {
     if(state.ingCatFilter !== 'todos' && i.cat !== state.ingCatFilter) return false;
     if(state.ingSearch && !i.name.toLowerCase().includes(state.ingSearch)) return false;
-    if(state.ingClassFilter !== 'todos'){
-      const cls = ingredientClass(i);
-      if(cls !== state.ingClassFilter) return false;
-    }
     return true;
   });
-  list.sort((a,b) => a.name.localeCompare(b.name, 'es'));
+
+  // Sort
+  const classRank = {S:0, A:1, B:2, C:3, null:4};
+  const protPerStdPortion = (i) => i.unit === 'u' ? i.p : i.p; // ya está por unidad o por 100g
+  if(state.ingSort === 'protein'){
+    list.sort((a,b) => protPerStdPortion(b) - protPerStdPortion(a));
+  } else if(state.ingSort === 'class'){
+    list.sort((a,b) => {
+      const ra = classRank[ingredientClass(a)] ?? 4;
+      const rb = classRank[ingredientClass(b)] ?? 4;
+      if(ra !== rb) return ra - rb;
+      return protPerStdPortion(b) - protPerStdPortion(a); // tiebreaker: más proteína primero
+    });
+  } else {
+    list.sort((a,b) => a.name.localeCompare(b.name, 'es'));
+  }
 
   const listEl = document.getElementById('ingList');
   if(list.length === 0){
@@ -2405,7 +2653,9 @@ function renderIngDetail(i){
       <div class="ing-micro-row"><div class="ing-micro-name">B12 <span class="sub">cobalamina</span></div><div class="ing-micro-val">${i.B12} µg</div></div>
       <div class="ing-micro-row"><div class="ing-micro-name">Zinc <span class="sub">Zn</span></div><div class="ing-micro-val">${i.Zn} mg</div></div>
       <div class="ing-micro-row"><div class="ing-micro-name">Calcio <span class="sub">Ca</span></div><div class="ing-micro-val">${i.Ca} mg</div></div>
-      <div class="ing-micro-row"><div class="ing-micro-name">Omega 3 <span class="sub">ALA</span></div><div class="ing-micro-val">${i.O3} g</div></div>
+      <div class="ing-micro-row"><div class="ing-micro-name">Omega 3 <span class="sub">ALA vegetal</span></div><div class="ing-micro-val">${i.O3} g</div></div>
+      <div class="ing-micro-row"><div class="ing-micro-name">Omega 3 <span class="sub">EPA+DHA</span></div><div class="ing-micro-val">${i.ED || 0} mg</div></div>
+      <div class="ing-micro-row"><div class="ing-micro-name">Omega 6 <span class="sub">LA</span></div><div class="ing-micro-val">${i.O6 || 0} g</div></div>
       <div class="ing-micro-row"><div class="ing-micro-name">Vit D <span class="sub"></span></div><div class="ing-micro-val">${i.D} µg</div></div>
       <div class="ing-micro-row"><div class="ing-micro-name">Magnesio <span class="sub">Mg</span></div><div class="ing-micro-val">${i.Mg} mg</div></div>
       <div class="ing-micro-row"><div class="ing-micro-name">Fibra</div><div class="ing-micro-val">${i.fb} g</div></div>
@@ -2488,15 +2738,18 @@ function renderCalendar(){
     const dk = `${y}-${String(m+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
     const sel = state.selectedByDate[dk] || [];
     let cls = '';
-    let dot = '';
+    let pctHtml = '';
     if(sel.length > 0){
       const tot = aggregateMeals(sel);
       const pct = completionPercent(targets, tot);
-      if(pct >= 1){ cls = 'complete-full'; dot = '<div class="cal-day-dot"></div>'; }
-      else if(pct >= 0.8){ cls = 'complete-high'; dot = '<div class="cal-day-dot"></div>'; }
+      const pctRound = Math.round(pct * 100);
+      if(pct >= 0.8)      cls = 'nutri-high';
+      else if(pct >= 0.6) cls = 'nutri-mid';
+      else                cls = 'nutri-low';
+      pctHtml = `<div class="cal-day-pct">${pctRound}%</div>`;
     }
     if(dk === todayK) cls += ' today';
-    html += `<div class="cal-day ${cls}" data-dk="${dk}"><div>${day}</div>${dot}</div>`;
+    html += `<div class="cal-day ${cls}" data-dk="${dk}"><div>${day}</div>${pctHtml}</div>`;
   }
   document.getElementById('calGrid').innerHTML = html;
 
@@ -2644,19 +2897,40 @@ function saveProfile(){
 /* ==================== ADD MEAL MODAL (Builder) ====================
    Modal para crear receta basada en ingredientes con cantidad editable. */
 let nmItems = []; // ítems en construcción {id, qty}
+let nmEditingId = null; // si está editando, id de la receta custom
 
 function openAddMealModal(){
   // Reset
+  nmEditingId = null;
   nmItems = [];
   document.getElementById('nmName').value = '';
   document.getElementById('nmPrep').value = '';
   document.getElementById('nmIngSearch').value = '';
   document.getElementById('nmIngResults').style.display = 'none';
-  document.getElementById('nmCat').value = ['desayuno','almuerzo','cena'].includes(state.catFilter) ? state.catFilter : 'desayuno';
+  document.getElementById('nmCat').value = 'almuerzo';
+  document.querySelector('#addMealModal .modal-title').textContent = '› Nueva receta';
+  document.getElementById('saveNewMeal').textContent = 'Guardar receta';
   renderNmItems();
   renderNmPreview();
   document.getElementById('addMealModal').classList.add('show');
   setTimeout(() => document.getElementById('nmName').focus(), 300);
+}
+
+function openEditMealModal(id){
+  const meal = state.customMeals.find(m => m.id === id);
+  if(!meal || !meal.items){ toast('No se puede editar (es starter)'); return; }
+  nmEditingId = id;
+  nmItems = meal.items.map(it => ({id:it.id, qty:it.qty})); // copia
+  document.getElementById('nmName').value = meal.name;
+  document.getElementById('nmPrep').value = meal.prep || '';
+  document.getElementById('nmIngSearch').value = '';
+  document.getElementById('nmIngResults').style.display = 'none';
+  document.getElementById('nmCat').value = meal.cat;
+  document.querySelector('#addMealModal .modal-title').textContent = '› Editar receta';
+  document.getElementById('saveNewMeal').textContent = 'Guardar cambios';
+  renderNmItems();
+  renderNmPreview();
+  document.getElementById('addMealModal').classList.add('show');
 }
 function closeAddMealModal(){
   document.getElementById('addMealModal').classList.remove('show');
@@ -2700,6 +2974,8 @@ function renderNmPreview(){
   const fakeMeal = {items: nmItems};
   const n = computeMealNutrition(fakeMeal);
   const pq = computeProteinQuality(fakeMeal);
+  // Hidratar para que renderMealMicrosSection reciba los campos directos
+  const hydrated = {...n, ing: [], tags: []};
   document.getElementById('nmPreview').innerHTML = `
     <div style="font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:#ff6b00;margin-bottom:8px;font-weight:700">› Total receta</div>
     <div class="nm-preview-row">
@@ -2708,13 +2984,8 @@ function renderNmPreview(){
       <div><div class="nm-preview-val">${n.c}g</div><div class="nm-preview-lbl">carb</div></div>
       <div><div class="nm-preview-val">${n.f}g</div><div class="nm-preview-lbl">grasa</div></div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px;font-size:10px;color:#c5c8d2">
-      <div><span class="muted">Fe</span> ${n.Fe}mg</div>
-      <div><span class="muted">B12</span> ${n.B12}µg</div>
-      <div><span class="muted">Ca</span> ${n.Ca}mg</div>
-      <div><span class="muted">Fibra</span> ${n.fb}g</div>
-    </div>
     ${pq ? renderProteinQualitySection(pq) : ''}
+    ${nmItems.length > 0 ? renderMealMicrosSection(hydrated) : ''}
   `;
 }
 
@@ -2754,6 +3025,25 @@ function saveNewMeal(){
   if(!name){ toast('Falta el nombre'); return; }
   if(nmItems.length === 0){ toast('Sumá al menos un ingrediente'); return; }
 
+  if(nmEditingId){
+    // Modo edición: actualizar receta existente
+    const idx = state.customMeals.findIndex(m => m.id === nmEditingId);
+    if(idx >= 0){
+      state.customMeals[idx] = {
+        ...state.customMeals[idx],
+        cat: document.getElementById('nmCat').value,
+        name,
+        items: nmItems.filter(it => it.qty > 0),
+        prep: document.getElementById('nmPrep').value.trim()
+      };
+      saveState();
+      closeAddMealModal();
+      toast('Cambios guardados');
+      renderIdeas();
+      return;
+    }
+  }
+  // Modo nueva receta
   const meal = {
     id: 'u' + Date.now().toString(36),
     cat: document.getElementById('nmCat').value,
