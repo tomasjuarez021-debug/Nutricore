@@ -106,7 +106,7 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
   -webkit-backdrop-filter:blur(24px);
   border-top:1px solid rgba(232,160,32,.2);
   padding:8px 6px calc(8px + env(safe-area-inset-bottom));
-  display:grid;grid-template-columns:repeat(4,1fr);gap:2px;
+  display:grid;grid-template-columns:repeat(5,1fr);gap:2px;
 }
 .tab{
   padding:7px 1px;
@@ -1014,6 +1014,16 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
     <div id="ingList"></div>
   </section>
 
+  <!-- PAGE: SUPLEMENTOS -->
+  <section class="page" id="page-suplementos">
+    <div class="page-title">STACK // SUPPLEMENTS</div>
+    <h1 class="page-subtitle">Suplementos</h1>
+    <p class="muted" style="font-size:11px;margin-bottom:14px;letter-spacing:.05em">
+      Lo que tomás hoy se suma a los totales del día. <span class="accent">La app lleva la cuenta del envase.</span>
+    </p>
+    <div id="suppList"></div>
+  </section>
+
   <!-- PAGE: CALENDARIO -->
   <section class="page" id="page-calendario">
     <div class="page-title">TIMELINE // HISTORY</div>
@@ -1053,6 +1063,10 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
       <svg viewBox="0 0 24 24"><path d="M4 4h16v4H4zM4 12h16v4H4zM4 20h10"/></svg>
       Ingredientes
     </button>
+    <button class="tab" data-tab="suplementos">
+      <svg viewBox="0 0 24 24"><g transform="rotate(-45 12 12)"><rect x="2" y="8.5" width="20" height="7" rx="3.5"/><path d="M12 8.5v7"/></g></svg>
+      Suplementos
+    </button>
     <button class="tab" data-tab="calendario">
       <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>
       Calendario
@@ -1086,6 +1100,48 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
       <div id="nmPreview" style="background:rgba(232,160,32,.05);border:1px solid rgba(232,160,32,.15);border-radius:10px;padding:12px;margin-top:14px"></div>
 
       <button class="btn primary" style="margin-top:14px;width:100%" id="saveNewMeal">Guardar receta</button>
+    </div>
+  </div>
+
+  <!-- MODAL: SUPLEMENTO -->
+  <div class="modal-bg" id="suppModal">
+    <div class="modal">
+      <button class="modal-close" id="closeSupp">×</button>
+      <div class="modal-title" id="suppModalTitle">› Nuevo suplemento</div>
+
+      <div id="suppPresets" style="display:flex;gap:6px;overflow-x:auto;margin-bottom:14px;padding-bottom:4px" class="scroll-x"></div>
+
+      <div class="field">
+        <label class="field-label">Nombre *</label>
+        <input type="text" id="spName" placeholder="ej: B12 1000µg">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label class="field-label">Unidad</label>
+          <select id="spUnit">
+            <option value="pastilla">Pastilla</option>
+            <option value="cápsula">Cápsula</option>
+            <option value="scoop">Scoop</option>
+            <option value="ml">ml</option>
+            <option value="sobre">Sobre</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label">Dosis por día</label>
+          <input type="number" id="spDosesPerDay" min="0" step="0.5" value="1">
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label">Unidades por envase</label>
+        <input type="number" id="spPackSize" min="1" step="1" value="60">
+      </div>
+
+      <div class="field-label" style="margin-top:14px;color:#e8a020">› Aporte por dosis</div>
+      <div id="spNutrients" class="ing-grid-2" style="gap:8px 12px;margin-bottom:4px"></div>
+
+      <div style="display:flex;gap:6px;margin-top:16px">
+        <button class="btn primary" id="saveSupp">Guardar</button>
+      </div>
     </div>
   </div>
 
@@ -1649,6 +1705,8 @@ let state = {
        cargados en selectedByDate siguen apuntando a la receta correcta. */
   customMeals: [],
   hiddenMeals: [],    // ids de recetas base eliminadas por el usuario
+  supplements: [],    // {id,name,unit,perDose:{},dosesPerDay,packSize,consumedBase}
+  suppByDate: {},     // {'2026-08-07': {s01: 1, s02: 2}} dosis tomadas por día
   currentTab: 'resumen',
   sortBy: 'quality', // 'quality' | 'protein'
   search: '',
@@ -1669,6 +1727,8 @@ function loadState(){
       if(parsed.selectedByDate) state.selectedByDate = parsed.selectedByDate;
       if(Array.isArray(parsed.customMeals)) state.customMeals = parsed.customMeals;
       if(Array.isArray(parsed.hiddenMeals)) state.hiddenMeals = parsed.hiddenMeals;
+      if(Array.isArray(parsed.supplements)) state.supplements = parsed.supplements;
+      if(parsed.suppByDate) state.suppByDate = parsed.suppByDate;
       console.log(`[NUTRI CORE] State cargado: ${state.customMeals.length} recetas custom, ${state.hiddenMeals.length} base eliminadas, ${Object.keys(state.selectedByDate).length} días con comidas`);
 
       // Migración: limpiar referencias a comidas que ya no existen o fueron eliminadas
@@ -1696,7 +1756,9 @@ function saveState(){
       profile: state.profile,
       selectedByDate: state.selectedByDate,
       customMeals: state.customMeals,
-      hiddenMeals: state.hiddenMeals
+      hiddenMeals: state.hiddenMeals,
+      supplements: state.supplements,
+      suppByDate: state.suppByDate
     }));
   }catch(e){console.warn('[NUTRI CORE] save error',e)}
 }
@@ -1913,13 +1975,111 @@ function fmtDate(d){
 
 /* ==================== AGGREGATE NUTRIENTS ==================== */
 function aggregateMeals(mealIds){
-  const agg = {kcal:0,p:0,c:0,f:0,Fe:0,B12:0,Zn:0,Ca:0,O3:0,ED:0,O6:0,D:0,Mg:0,fb:0,Na:0,K:0};
+  const agg = {kcal:0,p:0,c:0,f:0,Fe:0,B12:0,Zn:0,Ca:0,O3:0,ED:0,O6:0,D:0,Mg:0,fb:0,Na:0,K:0,cr:0};
   mealIds.forEach(id => {
     const m = getMealById(id);
     if(!m) return;
     Object.keys(agg).forEach(k => { agg[k] += (m[k] || 0); });
   });
   return agg;
+}
+
+/* ==================== SUPLEMENTOS ====================
+   Un suplemento aporta nutrientes por dosis y se consume de un envase.
+   Las dosis se registran por día igual que las comidas, así el historial
+   queda honesto y el envase se descuenta solo con lo que realmente tomaste. */
+
+/* Nutrientes que un suplemento puede aportar. Las claves son las mismas que
+   usa el resto de la app, salvo 'cr' (creatina), que no existe en comida. */
+const SUPP_NUTRIENTS = [
+  {key:'B12', name:'B12',       unit:'µg'},
+  {key:'cr',  name:'Creatina',  unit:'g'},
+  {key:'D',   name:'Vit D',     unit:'µg'},
+  {key:'Fe',  name:'Hierro',    unit:'mg'},
+  {key:'Zn',  name:'Zinc',      unit:'mg'},
+  {key:'Ca',  name:'Calcio',    unit:'mg'},
+  {key:'Mg',  name:'Magnesio',  unit:'mg'},
+  {key:'ED',  name:'EPA+DHA',   unit:'mg'},
+  {key:'O3',  name:'Omega 3 ALA', unit:'g'}
+];
+
+/* Presets con dosis comerciales típicas, para no cargar todo a mano. */
+const SUPP_PRESETS = [
+  {name:'B12 1000µg',           unit:'pastilla', dosesPerDay:1, packSize:60, perDose:{B12:1000}},
+  {name:'Creatina monohidrato', unit:'scoop',    dosesPerDay:1, packSize:60, perDose:{cr:5}},
+  {name:'Vitamina D3 2000UI',   unit:'cápsula',  dosesPerDay:1, packSize:60, perDose:{D:50}},
+  {name:'Omega 3 EPA+DHA',      unit:'cápsula',  dosesPerDay:2, packSize:60, perDose:{ED:500}},
+  {name:'Hierro 30mg',          unit:'pastilla', dosesPerDay:1, packSize:60, perDose:{Fe:30}},
+  {name:'Zinc 15mg',            unit:'pastilla', dosesPerDay:1, packSize:60, perDose:{Zn:15}},
+  {name:'Magnesio 300mg',       unit:'pastilla', dosesPerDay:1, packSize:60, perDose:{Mg:300}}
+];
+
+/* Dosis de mantenimiento de creatina: 3-5 g/día (ISSN position stand,
+   Kreider 2017). Uso 5g. No tiene RDA porque no es un nutriente esencial. */
+const CREATINA_TARGET = 5;
+
+function getSuppById(id){ return state.supplements.find(s => s.id === id) || null; }
+
+/* Dosis tomadas de un suplemento en una fecha. */
+function suppDoses(dk, id){
+  const day = state.suppByDate[dk];
+  return (day && day[id]) || 0;
+}
+
+/* Nutrientes aportados por todos los suplementos tomados en una fecha. */
+function aggregateSupplements(dk){
+  const agg = {};
+  const day = state.suppByDate[dk] || {};
+  Object.keys(day).forEach(id => {
+    const sup = getSuppById(id);
+    if(!sup) return;
+    const n = day[id] || 0;
+    Object.keys(sup.perDose || {}).forEach(k => {
+      agg[k] = (agg[k] || 0) + (sup.perDose[k] || 0) * n;
+    });
+  });
+  return agg;
+}
+
+/* Totales del día = comidas + suplementos. Es lo que consumen el resumen,
+   el calendario y el score de cumplimiento. */
+function dayTotals(dk){
+  const tot = aggregateMeals(state.selectedByDate[dk] || []);
+  const sup = aggregateSupplements(dk);
+  Object.keys(sup).forEach(k => { tot[k] = (tot[k] || 0) + sup[k]; });
+  return tot;
+}
+
+/* ¿El día tiene algo cargado, comida o suplemento? */
+function dayHasData(dk){
+  const meals = (state.selectedByDate[dk] || []).length > 0;
+  const sup = Object.values(state.suppByDate[dk] || {}).some(v => v > 0);
+  return meals || sup;
+}
+
+/* Dosis registradas de un suplemento en toda la historia. */
+function suppTotalDoses(sup){
+  let total = 0;
+  Object.keys(state.suppByDate).forEach(dk => {
+    total += state.suppByDate[dk][sup.id] || 0;
+  });
+  return total;
+}
+/* Unidades gastadas del envase actual.
+   Se mide contra consumedBase, la cuenta histórica al momento de reponer, y
+   no contra una fecha: con fechas, reponer el mismo día no descontaba nada
+   porque las dosis de hoy seguían cayendo dentro del envase nuevo. */
+function suppConsumed(sup){
+  return Math.max(suppTotalDoses(sup) - (sup.consumedBase || 0), 0);
+}
+function suppRemaining(sup){
+  return Math.max((sup.packSize || 0) - suppConsumed(sup), 0);
+}
+/* Días que aguanta lo que queda, al ritmo declarado. null si no hay ritmo. */
+function suppDaysLeft(sup){
+  const perDay = +sup.dosesPerDay || 0;
+  if(perDay <= 0) return null;
+  return Math.floor(suppRemaining(sup) / perDay);
 }
 
 /* Índice de calidad nutricional: densidad de micros por 100 kcal.
@@ -2091,6 +2251,7 @@ function switchTab(tab){
   if(tab === 'resumen') renderResumen();
   if(tab === 'comidas') renderComidas();
   if(tab === 'ingredientes') renderIngredientes();
+  if(tab === 'suplementos') renderSuplementos();
   if(tab === 'calendario') renderCalendar();
 }
 
@@ -2099,7 +2260,7 @@ function renderResumen(){
   document.getElementById('dateStamp').textContent = fmtDate(new Date());
   const tk = todayKey();
   const selected = state.selectedByDate[tk] || [];
-  const totals = aggregateMeals(selected);
+  const totals = dayTotals(tk);
   const targets = computeTargets(state.profile);
 
   // KPI cards (macros)
@@ -2184,6 +2345,11 @@ function renderResumen(){
     {key:'K',  name:'Potasio',   sub:'K',          unit:'mg', type:'target', target:targets.K,   ul:null},
     {key:'Na', name:'Sodio',     sub:'no exceder', unit:'mg', type:'limit',  target:targets.Na,  ul:null}
   ];
+  /* La creatina no viene de la comida en cantidad relevante ni tiene RDA, así
+     que solo aparece en la lista si tenés un suplemento que la aporte. */
+  if(state.supplements.some(sp => (sp.perDose||{}).cr > 0)){
+    microDef.push({key:'cr', name:'Creatina', sub:'suplemento', unit:'g', type:'target', target:CREATINA_TARGET, ul:null});
+  }
   document.getElementById('microList').innerHTML = microDef.map(m => {
     const val = totals[m.key] || 0;
     const pct = m.target > 0 ? val/m.target : 0;
@@ -2764,8 +2930,8 @@ function renderCalendar(){
     const sel = state.selectedByDate[dk] || [];
     let cls = '';
     let pctHtml = '';
-    if(sel.length > 0){
-      const tot = aggregateMeals(sel);
+    if(dayHasData(dk)){
+      const tot = dayTotals(dk);
       const pct = completionPercent(targets, tot);
       const pctRound = Math.round(pct * 100);
       if(pct >= 0.8)      cls = 'nutri-high';
@@ -2789,11 +2955,11 @@ function showCalDetail(dk){
   const sel = state.selectedByDate[dk] || [];
   card.style.display = 'block';
 
-  if(sel.length === 0){
+  if(!dayHasData(dk)){
     detail.innerHTML = `<div class="empty-state">Sin registros para ${dk}</div>`;
     return;
   }
-  const tot = aggregateMeals(sel);
+  const tot = dayTotals(dk);
   const targets = computeTargets(state.profile);
   const pct = Math.round(completionPercent(targets, tot) * 100);
   const meals = sel.map(id => getMealById(id)).filter(Boolean);
@@ -2812,6 +2978,205 @@ function showCalDetail(dk){
     <div style="font-size:9px;letter-spacing:.2em;color:#a08a74;text-transform:uppercase;margin-bottom:6px">› Comidas</div>
     ${meals.map(m => `<div class="today-meal"><div class="today-meal-info"><div class="today-meal-name">${m.name}</div></div></div>`).join('')}
   `;
+}
+
+/* ==================== SUPLEMENTOS: VISTA ==================== */
+function renderSuplementos(){
+  const el = document.getElementById('suppList');
+  const tk = todayKey();
+  const addBtn = `
+    <button class="btn-add-meal" id="addSuppBtn">
+      <span class="plus">+</span> Agregar suplemento
+    </button>`;
+
+  if(state.supplements.length === 0){
+    el.innerHTML = addBtn + `<div class="empty-state">Sin suplementos cargados. Sumá el primero para que la app lo cuente en tus totales.</div>`;
+    document.getElementById('addSuppBtn').onclick = () => openSuppModal();
+    return;
+  }
+
+  el.innerHTML = addBtn + state.supplements.map(sup => {
+    const hoy = suppDoses(tk, sup.id);
+    const quedan = suppRemaining(sup);
+    const dias = suppDaysLeft(sup);
+    const vacio = quedan <= 0;
+    const bajo = !vacio && dias !== null && dias <= 7;
+
+    let estado, estadoCls;
+    if(vacio){ estado = 'Se acabó — reponé'; estadoCls = 'over'; }
+    else if(bajo){ estado = `Quedan ${dias} día${dias===1?'':'s'}`; estadoCls = 'warn'; }
+    else if(dias !== null){ estado = `Quedan ${dias} días`; estadoCls = 'good'; }
+    else { estado = 'Sin ritmo definido'; estadoCls = 'low'; }
+
+    const aporte = Object.keys(sup.perDose || {})
+      .filter(k => sup.perDose[k] > 0)
+      .map(k => {
+        const def = SUPP_NUTRIENTS.find(n => n.key === k);
+        return def ? `${def.name} ${sup.perDose[k]}${def.unit}` : '';
+      }).filter(Boolean).join(' · ');
+
+    const pctEnvase = sup.packSize > 0 ? Math.max(0, Math.min(quedan / sup.packSize, 1)) : 0;
+
+    return `
+    <div class="meal" data-supp="${sup.id}">
+      <div style="padding:12px 14px">
+        <div style="display:flex;align-items:flex-start;gap:10px">
+          <div style="flex:1;min-width:0">
+            <div class="meal-name">${sup.name}</div>
+            <div class="meal-head-meta" style="flex-wrap:wrap">
+              <span class="meal-stat"><span class="lbl">por ${sup.unit}</span></span>
+            </div>
+            ${aporte ? `<div style="font-size:10.5px;color:#dccbb6;margin-top:5px;line-height:1.5">${aporte}</div>` : ''}
+          </div>
+        </div>
+
+        <div class="meal-macros" style="grid-template-columns:repeat(3,1fr)">
+          <div class="meal-macro"><div class="meal-macro-val">${hoy}</div><div class="meal-macro-lbl">hoy</div></div>
+          <div class="meal-macro"><div class="meal-macro-val">${quedan}</div><div class="meal-macro-lbl">quedan</div></div>
+          <div class="meal-macro"><div class="meal-macro-val">${sup.dosesPerDay}</div><div class="meal-macro-lbl">por día</div></div>
+        </div>
+
+        <div class="micro-progress" style="width:100%;height:5px;margin-bottom:6px">
+          <div class="micro-progress-fill ${estadoCls}" style="width:${pctEnvase*100}%"></div>
+        </div>
+        <div style="font-size:10px;letter-spacing:.06em;color:${vacio ? '#ff7a5c' : (bajo ? '#d9932b' : '#a08a74')};margin-bottom:10px">
+          ${estado} · envase de ${sup.packSize} ${sup.unit}${sup.packSize===1?'':'s'}
+        </div>
+
+        <div class="meal-actions">
+          <div class="meal-stepper">
+            <button class="step-btn" data-sdec="${sup.id}" ${hoy === 0 ? 'disabled' : ''}>−</button>
+            <div class="step-count ${hoy > 0 ? 'on' : ''}">${hoy}<span class="step-lbl">hoy</span></div>
+            <button class="step-btn" data-sinc="${sup.id}">+</button>
+          </div>
+          <button class="btn ghost" data-srefill="${sup.id}">Repuse</button>
+          <button class="btn ghost" data-sedit="${sup.id}">Editar</button>
+          <button class="btn ghost" data-sdel="${sup.id}">Eliminar</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('addSuppBtn').onclick = () => openSuppModal();
+  el.querySelectorAll('[data-sinc]').forEach(b => b.onclick = () => changeSuppDose(b.dataset.sinc, +1));
+  el.querySelectorAll('[data-sdec]').forEach(b => b.onclick = () => { if(!b.disabled) changeSuppDose(b.dataset.sdec, -1); });
+  el.querySelectorAll('[data-srefill]').forEach(b => b.onclick = () => refillSupp(b.dataset.srefill));
+  el.querySelectorAll('[data-sedit]').forEach(b => b.onclick = () => openSuppModal(b.dataset.sedit));
+  el.querySelectorAll('[data-sdel]').forEach(b => b.onclick = () => deleteSupp(b.dataset.sdel));
+}
+
+function changeSuppDose(id, delta){
+  const tk = todayKey();
+  if(!state.suppByDate[tk]) state.suppByDate[tk] = {};
+  const actual = state.suppByDate[tk][id] || 0;
+  const nuevo = Math.max(actual + delta, 0);
+  if(nuevo === 0) delete state.suppByDate[tk][id];
+  else state.suppByDate[tk][id] = nuevo;
+  if(Object.keys(state.suppByDate[tk]).length === 0) delete state.suppByDate[tk];
+  saveState();
+  renderSuplementos();
+  toast(delta > 0 ? '+1 dosis' : '−1 dosis');
+}
+
+/* Reponer congela la cuenta actual como punto de partida del envase nuevo.
+   El historial de dosis por día no se toca. */
+function refillSupp(id){
+  const sup = getSuppById(id);
+  if(!sup) return;
+  sup.consumedBase = suppTotalDoses(sup);
+  saveState();
+  renderSuplementos();
+  toast('Envase repuesto');
+}
+
+function deleteSupp(id){
+  const sup = getSuppById(id);
+  if(!sup) return;
+  if(!confirm(`¿Eliminar "${sup.name}"? Se borran también las dosis registradas.`)) return;
+  state.supplements = state.supplements.filter(x => x.id !== id);
+  Object.keys(state.suppByDate).forEach(dk => {
+    delete state.suppByDate[dk][id];
+    if(Object.keys(state.suppByDate[dk]).length === 0) delete state.suppByDate[dk];
+  });
+  saveState();
+  renderSuplementos();
+  toast('Eliminado');
+}
+
+/* ==================== SUPLEMENTOS: MODAL ==================== */
+let spEditingId = null;
+
+function openSuppModal(id){
+  spEditingId = id || null;
+  const sup = id ? getSuppById(id) : null;
+  document.getElementById('suppModalTitle').textContent = sup ? '› Editar suplemento' : '› Nuevo suplemento';
+  document.getElementById('spName').value = sup ? sup.name : '';
+  document.getElementById('spUnit').value = sup ? sup.unit : 'pastilla';
+  document.getElementById('spDosesPerDay').value = sup ? sup.dosesPerDay : 1;
+  document.getElementById('spPackSize').value = sup ? sup.packSize : 60;
+
+  // Presets solo al crear: sobrescribirían una carga existente
+  const presetsEl = document.getElementById('suppPresets');
+  presetsEl.style.display = sup ? 'none' : 'flex';
+  presetsEl.innerHTML = SUPP_PRESETS.map((pr, i) =>
+    `<button class="filter-chip" style="text-transform:none" data-preset="${i}">${pr.name}</button>`).join('');
+  presetsEl.querySelectorAll('[data-preset]').forEach(b => {
+    b.onclick = () => aplicarPreset(SUPP_PRESETS[+b.dataset.preset]);
+  });
+
+  renderSuppNutrientFields(sup ? sup.perDose : {});
+  document.getElementById('suppModal').classList.add('show');
+  if(!sup) setTimeout(() => document.getElementById('spName').focus(), 300);
+}
+function closeSuppModal(){ document.getElementById('suppModal').classList.remove('show'); }
+
+function renderSuppNutrientFields(perDose){
+  document.getElementById('spNutrients').innerHTML = SUPP_NUTRIENTS.map(n => `
+    <div>
+      <label class="field-label" style="margin-bottom:3px">${n.name} <span style="color:#9a8370;text-transform:none">${n.unit}</span></label>
+      <input type="number" class="nm-item-qty" style="width:100%;text-align:left" min="0" step="any"
+             id="sp_${n.key}" value="${(perDose && perDose[n.key]) || ''}" placeholder="0">
+    </div>`).join('');
+}
+
+function aplicarPreset(pr){
+  document.getElementById('spName').value = pr.name;
+  document.getElementById('spUnit').value = pr.unit;
+  document.getElementById('spDosesPerDay').value = pr.dosesPerDay;
+  document.getElementById('spPackSize').value = pr.packSize;
+  renderSuppNutrientFields(pr.perDose);
+}
+
+function saveSupp(){
+  const name = document.getElementById('spName').value.trim();
+  if(!name){ toast('Falta el nombre'); return; }
+
+  const perDose = {};
+  SUPP_NUTRIENTS.forEach(n => {
+    const v = +document.getElementById('sp_' + n.key).value;
+    if(v > 0) perDose[n.key] = v;
+  });
+  if(Object.keys(perDose).length === 0){ toast('Cargá al menos un nutriente por dosis'); return; }
+
+  const datos = {
+    name,
+    unit: document.getElementById('spUnit').value,
+    dosesPerDay: +document.getElementById('spDosesPerDay').value || 0,
+    packSize: +document.getElementById('spPackSize').value || 0,
+    perDose
+  };
+
+  if(spEditingId){
+    const idx = state.supplements.findIndex(x => x.id === spEditingId);
+    if(idx >= 0) state.supplements[idx] = {...state.supplements[idx], ...datos};
+    toast('Cambios guardados');
+  } else {
+    state.supplements.push({id:'s' + Date.now().toString(36), consumedBase: 0, ...datos});
+    toast('Suplemento agregado');
+  }
+  saveState();
+  closeSuppModal();
+  renderSuplementos();
 }
 
 /* ==================== PROFILE MODAL ==================== */
@@ -3116,6 +3481,12 @@ function init(){
   // Builder: search input para agregar ingredientes
   document.getElementById('nmIngSearch').oninput = (e) => nmSearchIngredients(e.target.value);
   document.getElementById('nmIngSearch').onfocus = (e) => { if(e.target.value) nmSearchIngredients(e.target.value); };
+  // Modal de suplementos
+  document.getElementById('closeSupp').onclick = closeSuppModal;
+  document.getElementById('saveSupp').onclick = saveSupp;
+  document.getElementById('suppModal').onclick = (e) => {
+    if(e.target.id === 'suppModal') closeSuppModal();
+  };
   // Calendar nav
   document.getElementById('calPrev').onclick = () => {
     state.calMonth.m--;
