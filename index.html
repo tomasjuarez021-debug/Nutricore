@@ -1655,7 +1655,13 @@ const DEFAULT_PROFILE = {age:28,sex:'m',weight:75,height:175,activity:1.55,goal:
 let state = {
   profile: {...DEFAULT_PROFILE},
   selectedByDate: {}, // {'2026-05-17': ['d01','a05','c10']}
-  customMeals: [],    // comidas agregadas manualmente por el usuario
+  /* customMeals guarda dos cosas:
+     - recetas nuevas del usuario, con id propio ('u...')
+     - ediciones de recetas base, que conservan el id original ('r03'). En ese
+       caso la entrada pisa a la builtin en vez de duplicarla, así los días ya
+       cargados en selectedByDate siguen apuntando a la receta correcta. */
+  customMeals: [],
+  hiddenMeals: [],    // ids de recetas base eliminadas por el usuario
   currentTab: 'resumen',
   catFilter: 'todos',
   sortBy: 'quality', // 'quality' | 'protein'
@@ -1676,10 +1682,12 @@ function loadState(){
       if(parsed.profile) state.profile = {...DEFAULT_PROFILE, ...parsed.profile};
       if(parsed.selectedByDate) state.selectedByDate = parsed.selectedByDate;
       if(Array.isArray(parsed.customMeals)) state.customMeals = parsed.customMeals;
-      console.log(`[NUTRI CORE] State cargado: ${state.customMeals.length} recetas custom, ${Object.keys(state.selectedByDate).length} días con comidas`);
+      if(Array.isArray(parsed.hiddenMeals)) state.hiddenMeals = parsed.hiddenMeals;
+      console.log(`[NUTRI CORE] State cargado: ${state.customMeals.length} recetas custom, ${state.hiddenMeals.length} base eliminadas, ${Object.keys(state.selectedByDate).length} días con comidas`);
 
-      // Migración: limpiar referencias a comidas que ya no existen
-      const validIds = new Set([...MEALS.map(m => m.id), ...state.customMeals.map(m => m.id)]);
+      // Migración: limpiar referencias a comidas que ya no existen o fueron eliminadas
+      const hidden = new Set(state.hiddenMeals);
+      const validIds = new Set([...MEALS.map(m => m.id), ...state.customMeals.map(m => m.id)].filter(id => !hidden.has(id)));
       let cleaned = 0;
       Object.keys(state.selectedByDate).forEach(dk => {
         const before = state.selectedByDate[dk].length;
@@ -1701,7 +1709,8 @@ function saveState(){
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
       profile: state.profile,
       selectedByDate: state.selectedByDate,
-      customMeals: state.customMeals
+      customMeals: state.customMeals,
+      hiddenMeals: state.hiddenMeals
     }));
   }catch(e){console.warn('[NUTRI CORE] save error',e)}
 }
@@ -1710,17 +1719,29 @@ window.addEventListener('beforeunload', () => saveState());
 window.addEventListener('pagehide', () => saveState());
 document.addEventListener('visibilitychange', () => { if(document.hidden) saveState(); });
 
-/* Devuelve una comida por id buscando primero en builtins, después en customs.
-   Si la comida usa el nuevo formato (items + qty), la hidrata calculando
-   nutrientes desde la base de ingredientes. */
+/* Devuelve una comida por id. Si usa el formato items + qty, la hidrata
+   calculando nutrientes desde la base de ingredientes. */
 function getMealById(id){
-  const raw = MEALS.find(x => x.id === id) || state.customMeals.find(x => x.id === id);
+  // customMeals primero: una edición de receta base comparte id con la builtin
+  // y tiene que ganarle.
+  const raw = state.customMeals.find(x => x.id === id) || MEALS.find(x => x.id === id);
   if(!raw) return null;
   return raw.items ? hydrateMeal(raw) : raw; // si tiene 'items', hidratar; sino devolver directo (custom viejo)
 }
-/* Todas las comidas (builtin + custom), hidratadas. Customs al inicio. */
+/* Todas las comidas (builtin + custom), hidratadas. Customs al inicio.
+   Se excluyen las base eliminadas y las base pisadas por una edición. */
 function allMeals(){
-  return [...state.customMeals, ...MEALS].map(m => m.items ? hydrateMeal(m) : m);
+  const overridden = new Set(state.customMeals.map(m => m.id));
+  const hidden = new Set(state.hiddenMeals);
+  const builtins = MEALS.filter(m => !overridden.has(m.id) && !hidden.has(m.id));
+  return [...state.customMeals.filter(m => !hidden.has(m.id)), ...builtins]
+    .map(m => m.items ? hydrateMeal(m) : m);
+}
+/* Una receta es "base" si su id existe en MEALS, la haya editado o no. */
+function isBuiltinId(id){ return MEALS.some(m => m.id === id); }
+/* Cuántas recetas base están ocultas o modificadas (para ofrecer restaurar). */
+function baseChangesCount(){
+  return state.hiddenMeals.length + state.customMeals.filter(m => isBuiltinId(m.id)).length;
 }
 
 /* ==================== TARGETS — BASE CIENTÍFICA ====================
@@ -2381,10 +2402,14 @@ function renderComidas(){
   filtered.sort(sortFn);
 
   const list = document.getElementById('mealsList');
+  const cambios = baseChangesCount();
   const addBtnHtml = `
     <button class="btn-add-meal" id="addMealBtn">
       <span class="plus">+</span> Crear receta con ingredientes
     </button>
+    ${cambios > 0 ? `<button class="btn ghost" id="restoreBaseBtn" style="width:100%;margin-bottom:12px">
+      Restaurar recetas base (${cambios})
+    </button>` : ''}
   `;
   if(filtered.length === 0){
     list.innerHTML = addBtnHtml + `<div class="empty-state">No hay coincidencias.</div>`;
@@ -2395,14 +2420,17 @@ function renderComidas(){
   list.innerHTML = addBtnHtml + filtered.map(m => {
     const score = qualityScore(m);
     const tier = qualityTier(score);
-    const isCustom = !!m.custom;
+    const esBase = isBuiltinId(m.id);
+    const editada = esBase && state.customMeals.some(c => c.id === m.id);
+    const etiqueta = editada ? 'EDITADA' : (esBase ? '' : 'PROPIA');
+    const editable = !!m.items;
     const selectedCount = selected.filter(x => x === m.id).length;
     return `
     <div class="meal ${selected.includes(m.id) ? 'selected' : ''} ${state.expanded.has(m.id) ? 'expanded' : ''}" data-meal="${m.id}">
       <div class="meal-head" data-expand="${m.id}">
         <div class="meal-sel-mark"></div>
         <div class="meal-head-info">
-          <div class="meal-name">${m.name}${isCustom ? ' <span style="font-size:8px;color:#e8a020;letter-spacing:.15em;font-weight:600;margin-left:4px">[CUSTOM]</span>' : ''}</div>
+          <div class="meal-name">${m.name}${etiqueta ? ` <span style="font-size:8px;color:#e8a020;letter-spacing:.15em;font-weight:600;margin-left:4px">[${etiqueta}]</span>` : ''}</div>
           <div class="meal-head-meta">
             <span class="meal-stat"><span class="lbl">Prot</span><span class="val">${m.p}g</span></span>
             <span class="sep"></span>
@@ -2460,10 +2488,8 @@ function renderComidas(){
             <div class="step-count ${selectedCount > 0 ? 'on' : ''}">${selectedCount}<span class="step-lbl">hoy</span></div>
             <button class="step-btn plus" data-inc="${m.id}">+</button>
           </div>
-          ${isCustom ? `
-            <button class="btn ghost" data-editcustom="${m.id}">Editar</button>
-            <button class="btn ghost" data-delcustom="${m.id}">Eliminar</button>
-          ` : ''}
+          ${editable ? `<button class="btn ghost" data-editmeal="${m.id}">Editar</button>` : ''}
+          <button class="btn ghost" data-delmeal="${m.id}">Eliminar</button>
         </div>
       </div>
     </div>
@@ -2477,12 +2503,14 @@ function renderComidas(){
   list.querySelectorAll('[data-dec]').forEach(btn => {
     btn.onclick = (e) => { e.stopPropagation(); if(!btn.disabled) incrementMeal(btn.dataset.dec, -1); };
   });
-  list.querySelectorAll('[data-editcustom]').forEach(btn => {
-    btn.onclick = (e) => { e.stopPropagation(); openEditMealModal(btn.dataset.editcustom); };
+  list.querySelectorAll('[data-editmeal]').forEach(btn => {
+    btn.onclick = (e) => { e.stopPropagation(); openEditMealModal(btn.dataset.editmeal); };
   });
-  list.querySelectorAll('[data-delcustom]').forEach(btn => {
-    btn.onclick = (e) => { e.stopPropagation(); deleteCustomMeal(btn.dataset.delcustom); };
+  list.querySelectorAll('[data-delmeal]').forEach(btn => {
+    btn.onclick = (e) => { e.stopPropagation(); deleteMeal(btn.dataset.delmeal); };
   });
+  const restoreBtn = document.getElementById('restoreBaseBtn');
+  if(restoreBtn) restoreBtn.onclick = restoreBaseMeals;
   list.querySelectorAll('[data-expand]').forEach(head => {
     head.onclick = () => {
       const id = head.dataset.expand;
@@ -2878,8 +2906,9 @@ function openAddMealModal(){
 }
 
 function openEditMealModal(id){
-  const meal = state.customMeals.find(m => m.id === id);
-  if(!meal || !meal.items){ toast('No se puede editar (es starter)'); return; }
+  // Puede ser una receta propia, una base ya editada o una base intacta.
+  const meal = state.customMeals.find(m => m.id === id) || MEALS.find(m => m.id === id);
+  if(!meal || !meal.items){ toast('Esta receta no se puede editar'); return; }
   nmEditingId = id;
   nmItems = meal.items.map(it => ({id:it.id, qty:it.qty})); // copia
   document.getElementById('nmName').value = meal.name;
@@ -2987,22 +3016,32 @@ function saveNewMeal(){
   if(nmItems.length === 0){ toast('Sumá al menos un ingrediente'); return; }
 
   if(nmEditingId){
-    // Modo edición: actualizar receta existente
+    const cambios = {
+      cat: document.getElementById('nmCat').value,
+      name,
+      items: nmItems.filter(it => it.qty > 0),
+      prep: document.getElementById('nmPrep').value.trim()
+    };
     const idx = state.customMeals.findIndex(m => m.id === nmEditingId);
     if(idx >= 0){
-      state.customMeals[idx] = {
-        ...state.customMeals[idx],
-        cat: document.getElementById('nmCat').value,
-        name,
-        items: nmItems.filter(it => it.qty > 0),
-        prep: document.getElementById('nmPrep').value.trim()
-      };
-      saveState();
-      closeAddMealModal();
-      toast('Cambios guardados');
-      renderComidas();
-      return;
+      state.customMeals[idx] = {...state.customMeals[idx], ...cambios};
+    } else {
+      /* Primera edición de una receta base: se guarda una entrada con el MISMO
+         id, que pisa a la builtin. Conservar el id es lo que evita romper los
+         días ya cargados en selectedByDate. */
+      const base = MEALS.find(m => m.id === nmEditingId);
+      state.customMeals.unshift({
+        id: nmEditingId,
+        tags: base && base.tags ? base.tags : [],
+        ...cambios,
+        custom: true
+      });
     }
+    saveState();
+    closeAddMealModal();
+    toast('Cambios guardados');
+    renderComidas();
+    return;
   }
   // Modo nueva receta
   const meal = {
@@ -3021,8 +3060,20 @@ function saveNewMeal(){
   renderComidas();
 }
 
-function deleteCustomMeal(id){
-  if(!confirm('¿Eliminar esta receta custom?')) return;
+/* Elimina cualquier receta, propia o base.
+   - Propia: se borra de customMeals y no vuelve.
+   - Base: se agrega a hiddenMeals y se descarta la edición si la había. No se
+     toca el array MEALS, así que siempre se puede restaurar.
+   En ambos casos se quitan las referencias de los días ya cargados, porque
+   dejarlas apuntando a una receta que ya no existe rompe el resumen. */
+function deleteMeal(id){
+  const base = isBuiltinId(id);
+  const msg = base
+    ? '¿Eliminar esta receta base? Se saca de la lista y de los días donde esté cargada. Podés restaurarla después.'
+    : '¿Eliminar esta receta? No se puede deshacer.';
+  if(!confirm(msg)) return;
+
+  if(base && !state.hiddenMeals.includes(id)) state.hiddenMeals.push(id);
   state.customMeals = state.customMeals.filter(m => m.id !== id);
   Object.keys(state.selectedByDate).forEach(dk => {
     state.selectedByDate[dk] = state.selectedByDate[dk].filter(x => x !== id);
@@ -3031,7 +3082,20 @@ function deleteCustomMeal(id){
   state.expanded.delete(id);
   saveState();
   renderComidas();
-  toast('Eliminada');
+  toast(base ? 'Receta base eliminada' : 'Eliminada');
+}
+
+/* Devuelve las recetas base a su versión original: repone las eliminadas y
+   descarta las ediciones. Las recetas propias no se tocan. */
+function restoreBaseMeals(){
+  const n = baseChangesCount();
+  if(n === 0) return;
+  if(!confirm(`¿Restaurar ${n} receta${n>1?'s':''} base a su versión original? Se pierden las ediciones y vuelven las eliminadas. Tus recetas propias no se tocan.`)) return;
+  state.hiddenMeals = [];
+  state.customMeals = state.customMeals.filter(m => !isBuiltinId(m.id));
+  saveState();
+  renderComidas();
+  toast('Recetas base restauradas');
 }
 
 /* ==================== TOAST ==================== */
