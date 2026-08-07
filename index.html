@@ -753,10 +753,6 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
   margin-bottom:6px;
 }
 .today-meal-info{flex:1}
-.today-meal-cat{
-  font-size:8px;letter-spacing:.2em;color:#e8a020;
-  margin-bottom:2px;font-weight:600;
-}
 .today-meal-name{font-size:12px;color:#f5ece0}
 .today-meal-rm{
   width:26px;height:26px;
@@ -1075,15 +1071,6 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
         <label class="field-label">Nombre *</label>
         <input type="text" id="nmName" placeholder="ej: Mi licuado post-gym">
       </div>
-      <div class="field">
-        <label class="field-label">Categoría *</label>
-        <select id="nmCat">
-          <option value="desayuno">Desayuno</option>
-          <option value="almuerzo">Almuerzo</option>
-          <option value="cena">Cena</option>
-        </select>
-      </div>
-
       <div class="field-label" style="margin-top:14px;color:#e8a020">› Ingredientes</div>
       <div id="nmItemsList" style="margin-bottom:8px"></div>
       <div style="position:relative">
@@ -1565,23 +1552,23 @@ function suggestComplement(quality){
    qty es la cantidad en la unidad del ingrediente (g o unidades). */
 const MEALS = [
   // DESAYUNO
-  {id:'r01', cat:'desayuno', name:'Bowl proteico de yogur, frutos rojos y semillas',
+  {id:'r01', name:'Bowl proteico de yogur, frutos rojos y semillas',
    items:[{id:'yog_grg',qty:200},{id:'whey',qty:1},{id:'fr_rojos',qty:100},{id:'chia',qty:15},{id:'almendra',qty:15}],
    prep:'Yogur en bowl, sumá una medida de whey y revolvé. Frutos rojos, chía y almendras arriba. ~36g prot.'},
 
   // ALMUERZOS
-  {id:'r02', cat:'almuerzo', name:'Wok de tempeh con brócoli y quinoa',
+  {id:'r02', name:'Wok de tempeh con brócoli y quinoa',
    items:[{id:'tempeh',qty:150},{id:'quinoa',qty:180},{id:'brocoli',qty:120},{id:'morron',qty:80},{id:'soja_sal',qty:12},{id:'sesamo',qty:8},{id:'ajo',qty:5}],
    prep:'Quinoa cocida aparte. Tempeh en cubos dorado. Sumá brócoli, morrón, ajo. Soja y sésamo al final. Servir sobre quinoa.'},
-  {id:'r03', cat:'almuerzo', name:'Buddha bowl de seitán y lentejas',
+  {id:'r03', name:'Buddha bowl de seitán y lentejas',
    items:[{id:'seitan',qty:60},{id:'lent',qty:200},{id:'boniato',qty:150},{id:'espinaca',qty:60},{id:'tahini',qty:15},{id:'limon',qty:0.5}],
    prep:'Boniato al horno 25 min. Seitán salteado 3 min cada lado. Lentejas tibias. Armá bowl: espinaca base, seitán, lentejas, boniato. Dressing tahini+limón. Combo seitán+lentejas: las lentejas aportan la lisina que falta al seitán y el seitán aporta la metionina que falta a las lentejas.'},
 
   // CENAS
-  {id:'r04', cat:'cena', name:'Omelette con espinaca, queso y semillas',
+  {id:'r04', name:'Omelette con espinaca, queso y semillas',
    items:[{id:'egg',qty:3},{id:'espinaca',qty:120},{id:'queso_ps',qty:40},{id:'sem_zap',qty:10},{id:'tomate',qty:60},{id:'oliva',qty:5}],
    prep:'Salteá espinaca. Batí huevos, volcá en sartén, agregá queso, espinaca y plegá. Semillas y tomate arriba.'},
-  {id:'r05', cat:'cena', name:'Tofu marinado con vegetales asados',
+  {id:'r05', name:'Tofu marinado con vegetales asados',
    items:[{id:'tofu',qty:180},{id:'brocoli',qty:150},{id:'morron',qty:100},{id:'cebolla',qty:80},{id:'soja_sal',qty:10},{id:'ajo',qty:5},{id:'oliva',qty:8},{id:'sesamo',qty:5}],
    prep:'Tofu marinado en soja+ajo 20 min. Vegetales al horno con oliva 25 min 200°C. Sumá tofu los últimos 10 min. Sésamo arriba.'}
 ];
@@ -1663,7 +1650,6 @@ let state = {
   customMeals: [],
   hiddenMeals: [],    // ids de recetas base eliminadas por el usuario
   currentTab: 'resumen',
-  catFilter: 'todos',
   sortBy: 'quality', // 'quality' | 'protein'
   search: '',
   calMonth: null,     // {y:2026, m:5}
@@ -2318,7 +2304,6 @@ function renderResumen(){
       return `
         <div class="today-meal">
           <div class="today-meal-info">
-            <div class="today-meal-cat">${m.cat.toUpperCase()}</div>
             <div class="today-meal-name">${m.name}</div>
           </div>
           <button class="today-meal-rm" data-rm="${id}" aria-label="Quitar">×</button>
@@ -2825,7 +2810,7 @@ function showCalDetail(dk){
       <div><div style="font-family:Outfit;font-size:13px;color:#fff">${Math.round(tot.f)}g</div><div style="font-size:8px;color:#a08a74;letter-spacing:.15em">GRASA</div></div>
     </div>
     <div style="font-size:9px;letter-spacing:.2em;color:#a08a74;text-transform:uppercase;margin-bottom:6px">› Comidas</div>
-    ${meals.map(m => `<div class="today-meal"><div class="today-meal-info"><div class="today-meal-cat">${m.cat.toUpperCase()}</div><div class="today-meal-name">${m.name}</div></div></div>`).join('')}
+    ${meals.map(m => `<div class="today-meal"><div class="today-meal-info"><div class="today-meal-name">${m.name}</div></div></div>`).join('')}
   `;
 }
 
@@ -2896,7 +2881,6 @@ function openAddMealModal(){
   document.getElementById('nmPrep').value = '';
   document.getElementById('nmIngSearch').value = '';
   document.getElementById('nmIngResults').style.display = 'none';
-  document.getElementById('nmCat').value = 'almuerzo';
   document.querySelector('#addMealModal .modal-title').textContent = '› Nueva receta';
   document.getElementById('saveNewMeal').textContent = 'Guardar receta';
   renderNmItems();
@@ -2915,7 +2899,6 @@ function openEditMealModal(id){
   document.getElementById('nmPrep').value = meal.prep || '';
   document.getElementById('nmIngSearch').value = '';
   document.getElementById('nmIngResults').style.display = 'none';
-  document.getElementById('nmCat').value = meal.cat;
   document.querySelector('#addMealModal .modal-title').textContent = '› Editar receta';
   document.getElementById('saveNewMeal').textContent = 'Guardar cambios';
   renderNmItems();
@@ -3017,7 +3000,6 @@ function saveNewMeal(){
 
   if(nmEditingId){
     const cambios = {
-      cat: document.getElementById('nmCat').value,
       name,
       items: nmItems.filter(it => it.qty > 0),
       prep: document.getElementById('nmPrep').value.trim()
@@ -3046,7 +3028,6 @@ function saveNewMeal(){
   // Modo nueva receta
   const meal = {
     id: 'u' + Date.now().toString(36),
-    cat: document.getElementById('nmCat').value,
     name,
     items: nmItems.filter(it => it.qty > 0),
     prep: document.getElementById('nmPrep').value.trim(),
