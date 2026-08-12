@@ -126,6 +126,22 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
 .page.active{display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
+/* El título queda pegado bajo la barra de marca en vez de irse con el scroll.
+   El top es la altura de .header: 14 + 38 (alto del botón de perfil) + 12 + 1
+   de borde. Si cambia el padding de .header, hay que mover este valor. */
+.page-head{
+  position:sticky;top:65px;z-index:30;
+  margin:-18px -18px 14px;
+  padding:14px 18px 10px;
+  background:linear-gradient(180deg, rgba(21,16,17,.98) 78%, rgba(21,16,17,0) 100%);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+}
+/* filete dorado del logo, para que el título se lea como una barra propia */
+.page-head::after{
+  content:'';position:absolute;left:18px;right:18px;bottom:8px;height:1px;
+  background:linear-gradient(90deg, rgba(232,160,32,.55), rgba(232,160,32,.06));
+}
 .page-title{
   font-family:'Outfit',sans-serif;
   font-size:10px;letter-spacing:.28em;
@@ -138,9 +154,10 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
   border-radius:50%;box-shadow:0 0 8px #e8a020;
 }
 .page-subtitle{
-  font-size:22px;font-weight:700;margin-bottom:18px;
+  font-size:22px;font-weight:700;
   letter-spacing:-.02em;font-family:'Outfit',sans-serif;
 }
+.page-head .page-subtitle{margin-bottom:0}
 
 /* ============ CARDS ============ */
 /* El panel repite la estructura del logo: campo bordó apagado, esquina
@@ -271,39 +288,17 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
    filas de chips que quedaban sueltas y con scroll horizontal. */
 .filter-select{
   width:100%;
-  padding:11px 13px;
-  background:rgba(44,31,33,.82);
-  border:1px solid rgba(232,160,32,.22);
+  padding:12px 14px;
+  background:linear-gradient(180deg, rgba(232,160,32,.13), rgba(232,160,32,.05));
+  border:1px solid rgba(232,160,32,.45);
   border-radius:10px;
-  font-size:12px;letter-spacing:.06em;
-  color:#f5ece0;
+  font-size:12.5px;letter-spacing:.06em;font-weight:600;
+  color:#f5c862;
   margin-bottom:8px;
+  box-shadow:0 2px 10px rgba(0,0,0,.25);
 }
-.filter-select:focus{outline:none;border-color:rgba(232,160,32,.5)}
-
-/* ============ FILTERS ============ */
-.filters{
-  display:flex;gap:6px;overflow-x:auto;
-  margin-bottom:14px;padding-bottom:4px;
-  scrollbar-width:none;
-}
-.filters::-webkit-scrollbar{display:none}
-.filter-chip{
-  padding:7px 14px;
-  background:rgba(44,31,33,.82);
-  border:1px solid rgba(232,160,32,.15);
-  border-radius:20px;
-  font-size:10px;letter-spacing:.15em;text-transform:uppercase;
-  color:#b39c85;
-  white-space:nowrap;
-  font-weight:600;
-  transition:all .2s;
-}
-.filter-chip.active{
-  background:linear-gradient(135deg,rgba(232,160,32,.2),rgba(181,115,10,.15));
-  border-color:rgba(232,160,32,.5);
-  color:#e8a020;
-}
+.filter-select:focus{outline:none;border-color:#e8a020;color:#f5ece0}
+.filter-select option{background:#241a1b;color:#f5ece0;font-weight:400}
 
 /* Sello keto: verde hoja cuando la porción entra en el tope de carbos. */
 .k-badge{
@@ -455,17 +450,6 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
   cursor:pointer;user-select:none;
 }
 .ing-head:active{background:rgba(232,160,32,.04)}
-.ing-cat-mark{
-  width:6px;height:30px;border-radius:3px;flex-shrink:0;
-}
-.ing-cat-cereal{background:linear-gradient(180deg,#dcb45c,#b08d3a)}
-.ing-cat-legumbre{background:linear-gradient(180deg,#a06848,#7d4f37)}
-.ing-cat-lact{background:linear-gradient(180deg,#e4e1d6,#b5b3a8)}
-.ing-cat-veg{background:linear-gradient(180deg,#a7c46a,#6f9224)}
-.ing-cat-fruta{background:linear-gradient(180deg,#e08a72,#a85c48)}
-.ing-cat-fs{background:linear-gradient(180deg,#b5946a,#86694a)}
-.ing-cat-grasa{background:linear-gradient(180deg,#dda85e,#a87c33)}
-.ing-cat-animal{background:linear-gradient(180deg,#e08a72,#a84a38)}
 .ing-info{flex:1;min-width:0}
 .ing-name{
   font-size:13px;font-weight:600;color:#fff;
@@ -739,26 +723,26 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
 
 /* 3 niveles de cumplimiento nutricional */
 .cal-day.nutri-low{
-  background:rgba(255,122,92,.18);
-  border-color:rgba(255,122,92,.4);
-  color:#ffd9cd;
+  background:rgba(255,122,92,.42);
+  border-color:#ff7a5c;
+  color:#fff;font-weight:600;
 }
 .cal-day.nutri-mid{
-  background:rgba(220,180,92,.18);
-  border-color:rgba(220,180,92,.4);
-  color:#fff;
+  background:rgba(232,160,32,.42);
+  border-color:#e8a020;
+  color:#fff;font-weight:600;
 }
 .cal-day.nutri-high{
-  background:rgba(143,190,46,.22);
-  border-color:rgba(143,190,46,.5);
-  color:#fff;
-  font-weight:600;
+  background:rgba(143,190,46,.45);
+  border-color:#8fbe2e;
+  color:#fff;font-weight:700;
 }
 
 .cal-day-pct{
-  font-size:8.5px;
-  letter-spacing:.05em;
-  opacity:.85;
+  font-size:9px;
+  letter-spacing:.04em;
+  opacity:1;
+  font-weight:700;
   font-family:'JetBrains Mono',monospace;
 }
 .cal-day.today.nutri-low,
@@ -774,7 +758,7 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
   color:#a08a74;
 }
 .cal-legend-item{display:flex;align-items:center;gap:5px}
-.cal-legend-dot{width:8px;height:8px;border-radius:50%}
+.cal-legend-dot{width:10px;height:10px;border-radius:3px}
 
 /* ============ TODAY MEALS ============ */
 .today-meal{
@@ -954,14 +938,15 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
 .accent{color:#e8a020}
 .search{
   width:100%;
-  padding:10px 13px;
-  background:rgba(44,31,33,.82);
-  border:1px solid rgba(232,160,32,.15);
-  border-radius:8px;
+  padding:11px 14px;
+  background:rgba(44,31,33,.85);
+  border:1px solid rgba(232,160,32,.25);
+  border-radius:10px;
   font-size:13px;color:#fff;
-  margin-bottom:12px;
+  margin-bottom:10px;
 }
-.search:focus{outline:none;border-color:rgba(232,160,32,.45)}
+.search::placeholder{color:#9a8370}
+.search:focus{outline:none;border-color:rgba(232,160,32,.6);background:rgba(50,36,38,.9)}
 .scroll-x{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .scroll-x::-webkit-scrollbar{display:none}
 </style>
@@ -982,8 +967,10 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
 
   <!-- PAGE: RESUMEN -->
   <section class="page active" id="page-resumen">
-    <div class="page-title">SYSTEM // OVERVIEW</div>
-    <h1 class="page-subtitle">Resumen del día</h1>
+    <div class="page-head">
+      <div class="page-title">SYSTEM // OVERVIEW</div>
+      <h1 class="page-subtitle">Resumen del día</h1>
+    </div>
     <div class="date-stamp"><span class="sys">[SYS]</span> <span id="dateStamp"></span></div>
 
     <div class="kpi-grid" id="kpiGrid"></div>
@@ -1026,17 +1013,21 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
 
   <!-- PAGE: IDEAS -->
   <section class="page" id="page-comidas">
-    <div class="page-title">DATABASE // MEALS</div>
-    <h1 class="page-subtitle">Comidas</h1>
+    <div class="page-head">
+      <div class="page-title">DATABASE // MEALS</div>
+      <h1 class="page-subtitle">Comidas</h1>
+    </div>
     <input type="text" class="search" id="mealSearch" placeholder="Buscar por nombre o ingrediente...">
-    <div class="filters" id="sortFilters"></div>
+    <select class="filter-select" id="mealSortSelect" aria-label="Ordenar por"></select>
     <div id="mealsList"></div>
   </section>
 
   <!-- PAGE: ALIMENTOS -->
   <section class="page" id="page-ingredientes">
-    <div class="page-title">DATABASE // INGREDIENTS</div>
-    <h1 class="page-subtitle">Ingredientes</h1>
+    <div class="page-head">
+      <div class="page-title">DATABASE // INGREDIENTS</div>
+      <h1 class="page-subtitle">Ingredientes</h1>
+    </div>
     <p class="muted" style="font-size:11px;margin-bottom:14px;letter-spacing:.03em">
       Base de <span id="ingTotalCount">118</span> ingredientes con macros, micros y perfil de aminoácidos.
       <span class="accent">Tocá uno para ver el detalle.</span>
@@ -1049,8 +1040,10 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
 
   <!-- PAGE: CALENDARIO -->
   <section class="page" id="page-calendario">
-    <div class="page-title">TIMELINE // HISTORY</div>
-    <h1 class="page-subtitle">Calendario</h1>
+    <div class="page-head">
+      <div class="page-title">TIMELINE // HISTORY</div>
+      <h1 class="page-subtitle">Calendario</h1>
+    </div>
 
     <div class="cal-month-head">
       <button class="cal-nav-btn" id="calPrev">‹</button>
@@ -1060,7 +1053,7 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
     <div class="cal-grid" id="calGrid"></div>
     <div class="cal-legend">
       <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#8fbe2e"></div>Completa 80-100%+</div>
-      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#d4b078"></div>Regular 60-80%</div>
+      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#e8a020"></div>Regular 60-80%</div>
       <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#ff7a5c"></div>Deficiente &lt;60%</div>
     </div>
 
@@ -1758,10 +1751,6 @@ function allMeals(){
 }
 /* Una receta es "base" si su id existe en MEALS, la haya editado o no. */
 function isBuiltinId(id){ return MEALS.some(m => m.id === id); }
-/* Cuántas recetas base están ocultas o modificadas (para ofrecer restaurar). */
-function baseChangesCount(){
-  return state.hiddenMeals.length + state.customMeals.filter(m => isBuiltinId(m.id)).length;
-}
 
 /* ==================== TARGETS — BASE CIENTÍFICA ====================
    Todas las RDA/AI/UL son del NIH Office of Dietary Supplements (ODS),
@@ -2401,17 +2390,15 @@ function renderPieCard(label, segments){
 
 /* ==================== IDEAS ==================== */
 function renderComidas(){
-  // Sort chips (sin filtros de categoría desayuno/almuerzo/cena)
+  // Orden: un desplegable a lo ancho, igual que en Ingredientes
   const sorts = [
-    {k:'quality',  l:'Calidad nutricional'},
-    {k:'protein',  l:'Proteína'}
+    {k:'quality',  l:'↓ Calidad nutricional'},
+    {k:'protein',  l:'↓ Proteína'}
   ];
-  document.getElementById('sortFilters').innerHTML = sorts.map(s =>
-    `<button class="filter-chip ${state.sortBy===s.k?'active':''}" data-sort="${s.k}">↓ ${s.l}</button>`
-  ).join('');
-  document.querySelectorAll('[data-sort]').forEach(btn => {
-    btn.onclick = () => { state.sortBy = btn.dataset.sort; renderComidas(); };
-  });
+  const sortSel = document.getElementById('mealSortSelect');
+  sortSel.innerHTML = sorts.map(o => `<option value="${o.k}">Orden: ${o.l}</option>`).join('');
+  sortSel.value = state.sortBy;
+  sortSel.onchange = () => { state.sortBy = sortSel.value; renderComidas(); };
 
   // Search
   const searchEl = document.getElementById('mealSearch');
@@ -2437,14 +2424,10 @@ function renderComidas(){
   filtered.sort(sortFn);
 
   const list = document.getElementById('mealsList');
-  const cambios = baseChangesCount();
   const addBtnHtml = `
     <button class="btn-add-meal" id="addMealBtn">
       <span class="plus">+</span> Crear receta con ingredientes
     </button>
-    ${cambios > 0 ? `<button class="btn ghost" id="restoreBaseBtn" style="width:100%;margin-bottom:12px">
-      Restaurar recetas base (${cambios})
-    </button>` : ''}
   `;
   if(filtered.length === 0){
     list.innerHTML = addBtnHtml + `<div class="empty-state">No hay coincidencias.</div>`;
@@ -2457,7 +2440,7 @@ function renderComidas(){
     const tier = qualityTier(score);
     const esBase = isBuiltinId(m.id);
     const editada = esBase && state.customMeals.some(c => c.id === m.id);
-    const etiqueta = editada ? 'EDITADA' : (esBase ? '' : 'PROPIA');
+    const etiqueta = editada ? 'EDITADA' : '';
     const editable = !!m.items;
     const selectedCount = selected.filter(x => x === m.id).length;
     return `
@@ -2541,8 +2524,6 @@ function renderComidas(){
   list.querySelectorAll('[data-delmeal]').forEach(btn => {
     btn.onclick = (e) => { e.stopPropagation(); deleteMeal(btn.dataset.delmeal); };
   });
-  const restoreBtn = document.getElementById('restoreBaseBtn');
-  if(restoreBtn) restoreBtn.onclick = restoreBaseMeals;
   list.querySelectorAll('[data-expand]').forEach(head => {
     head.onclick = () => {
       const id = head.dataset.expand;
@@ -2669,7 +2650,6 @@ function renderIngredientes(){
     return `
     <div class="ing-card ${isExp?'expanded':''}" data-iid="${i.id}">
       <div class="ing-head" data-iexpand="${i.id}">
-        <div class="ing-cat-mark ing-cat-${i.cat}"></div>
         <div class="ing-info">
           <div class="ing-name">${i.name}</div>
           <div class="ing-meta">
@@ -3107,18 +3087,6 @@ function deleteMeal(id){
   toast(base ? 'Receta base eliminada' : 'Eliminada');
 }
 
-/* Devuelve las recetas base a su versión original: repone las eliminadas y
-   descarta las ediciones. Las recetas propias no se tocan. */
-function restoreBaseMeals(){
-  const n = baseChangesCount();
-  if(n === 0) return;
-  if(!confirm(`¿Restaurar ${n} receta${n>1?'s':''} base a su versión original? Se pierden las ediciones y vuelven las eliminadas. Tus recetas propias no se tocan.`)) return;
-  state.hiddenMeals = [];
-  state.customMeals = state.customMeals.filter(m => !isBuiltinId(m.id));
-  saveState();
-  renderComidas();
-  toast('Recetas base restauradas');
-}
 
 /* ==================== TOAST ==================== */
 let toastTimer;
