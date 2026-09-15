@@ -106,7 +106,7 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
   -webkit-backdrop-filter:blur(24px);
   border-top:1px solid rgba(232,160,32,.2);
   padding:8px 6px calc(8px + env(safe-area-inset-bottom));
-  display:grid;grid-template-columns:repeat(3,1fr);gap:2px;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:2px;
 }
 .tab{
   padding:7px 1px;
@@ -218,6 +218,12 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
   color:#e8a020;
   background:linear-gradient(180deg,rgba(107,10,24,.5),rgba(107,10,24,.2));
   box-shadow:inset 0 0 0 1px rgba(232,160,32,.3);
+}
+.tab-tag{
+  font-size:7px;letter-spacing:.04em;
+  color:#8fbe2e;
+  text-transform:none;font-weight:600;
+  line-height:1;
 }
 .seg-btn .seg-tag{
   font-size:7px;letter-spacing:.06em;
@@ -1086,6 +1092,9 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
   animation:fadeIn .25s ease;
 }
 .modal-bg.show{display:flex}
+/* Un modal abierto sobre otro (el catálogo desde el calendario) necesita
+   quedar por encima: con el mismo z-index gana el último del DOM. */
+.modal-bg.apilado{z-index:120}
 .modal{
   width:100%;max-width:480px;max-height:90vh;
   background:linear-gradient(180deg, #221b1c 0%, #151011 100%);
@@ -1248,35 +1257,12 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
     </button>
   </header>
 
-  <!-- PAGE: RESUMEN -->
-  <section class="page active" id="page-resumen">
+  <!-- PAGE: OVERALL -->
+  <section class="page active" id="page-overall">
     <div class="page-head">
-      <div class="page-title" id="subKicker">SYSTEM // OVERVIEW</div>
-      <h1 class="page-subtitle" id="subTitle">Resumen del día</h1>
+      <div class="page-title">SYSTEM // OVERVIEW</div>
+      <h1 class="page-subtitle">Resumen del día</h1>
     </div>
-
-    <!-- Las cuatro ventanas del día -->
-    <nav class="seg" id="segNav">
-      <button class="seg-btn active" data-sub="overall">
-        <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3zM13 21h8V11h-8zM3 21h8v-6H3zM13 3v6h8V3z"/></svg>
-        Overall
-      </button>
-      <button class="seg-btn" data-sub="club">
-        <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.3 2.9-5.6 6.5-5.6s6.5 2.3 6.5 5.6"/><circle cx="17.5" cy="9.5" r="2.4"/><path d="M17 15c2.6.2 4.5 2 4.5 4.4"/></svg>
-        Club
-      </button>
-      <button class="seg-btn" data-sub="agua">
-        <svg viewBox="0 0 24 24"><path d="M12 3c3.5 4.2 6 7.3 6 10.3A6 6 0 0 1 6 13.3C6 10.3 8.5 7.2 12 3z"/></svg>
-        Agua<span class="seg-tag" id="segAguaTag"></span>
-      </button>
-      <button class="seg-btn" data-sub="ayuno">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></svg>
-        Ayuno<span class="seg-tag" id="segAyunoTag"></span>
-      </button>
-    </nav>
-
-    <!-- ===== OVERALL ===== -->
-    <div class="subpanel active" id="sub-overall">
     <div class="date-stamp"><span class="sys">[SYS]</span> <span id="dateStamp"></span></div>
 
     <!-- El día de un vistazo -->
@@ -1290,6 +1276,9 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
       <div id="todayMeals"></div>
       <button class="btn-add-meal" id="goToMeals" style="margin-top:10px;margin-bottom:0">
         <span class="plus">+</span> Sumar una comida
+      </button>
+      <button class="btn ghost" id="openCal" style="width:100%;margin-top:8px">
+        Ver calendario y días anteriores
       </button>
     </div>
 
@@ -1330,10 +1319,14 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
         <div id="ratiosList"></div>
       </div>
     </div>
-    </div><!-- /sub-overall -->
+  </section>
 
-    <!-- ===== CLUB ===== -->
-    <div class="subpanel" id="sub-club">
+  <!-- PAGE: CLUB -->
+  <section class="page" id="page-club">
+    <div class="page-head">
+      <div class="page-title">SOCIAL // CLUB</div>
+      <h1 class="page-subtitle">Club</h1>
+    </div>
       <div class="card">
         <div class="club-empty">
           <div class="club-ico">
@@ -1378,80 +1371,94 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
         </div>
       </div>
     </div>
-
-    <!-- ===== AGUA ===== -->
-    <div class="subpanel" id="sub-agua">
-      <div class="hero" id="aguaCard"></div>
-      <div class="card">
-        <div class="card-header"><div class="card-title">› Esta semana</div></div>
-        <div id="aguaSemana"></div>
-      </div>
-    </div>
-
-    <!-- ===== AYUNO ===== -->
-    <div class="subpanel" id="sub-ayuno">
-      <div class="hero" id="ayunoCard"></div>
-      <div class="card">
-        <div class="card-header"><div class="card-title">› Últimos 7 días</div></div>
-        <div id="ayunoSemana"></div>
-      </div>
-    </div>
   </section>
 
-  <!-- PAGE: IDEAS -->
-  <section class="page" id="page-comidas">
+  <!-- PAGE: WATER -->
+  <section class="page" id="page-water">
     <div class="page-head">
-      <div class="page-title">DATABASE // MEALS</div>
-      <h1 class="page-subtitle">Comidas</h1>
+      <div class="page-title">HYDRATION // WATER</div>
+      <h1 class="page-subtitle">Agua</h1>
     </div>
-    <div class="hint">Tocá − o + para sumar una comida al día. Abrí la tarjeta para ver macros, micros y preparación.</div>
-    <input type="text" class="search" id="mealSearch" placeholder="Buscar por nombre o ingrediente...">
-    <select class="filter-select" id="mealSortSelect" aria-label="Ordenar por"></select>
-    <div id="mealsList"></div>
+    <div class="hero" id="aguaCard"></div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">› Esta semana</div></div>
+      <div id="aguaSemana"></div>
+    </div>
   </section>
 
-  <!-- PAGE: CALENDARIO -->
-  <section class="page" id="page-calendario">
+  <!-- PAGE: FAST -->
+  <section class="page" id="page-fast">
     <div class="page-head">
-      <div class="page-title">TIMELINE // HISTORY</div>
-      <h1 class="page-subtitle">Calendario</h1>
+      <div class="page-title">TIMING // FASTING</div>
+      <h1 class="page-subtitle">Ayuno</h1>
     </div>
-
-    <div class="cal-month-head">
-      <button class="cal-nav-btn" id="calPrev">‹</button>
-      <div class="cal-month-name" id="calMonthName"></div>
-      <button class="cal-nav-btn" id="calNext">›</button>
-    </div>
-    <div class="cal-grid" id="calGrid"></div>
-    <div class="cal-legend">
-      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#8fbe2e"></div>Completa 80-100%+</div>
-      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#e8a020"></div>Regular 60-80%</div>
-      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#ff7a5c"></div>Deficiente &lt;60%</div>
-    </div>
-
-    <div class="card" id="calDetailCard" style="display:none">
-      <div class="card-header">
-        <div class="card-title">› Detalle del día</div>
-      </div>
-      <div id="calDetail"></div>
+    <div class="hero" id="ayunoCard"></div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">› Últimos 7 días</div></div>
+      <div id="ayunoSemana"></div>
     </div>
   </section>
+
 
   <!-- TABS -->
   <nav class="tabs">
-    <button class="tab active" data-tab="resumen">
-      <svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7M5 10v10h14V10"/></svg>
-      Inicio
+    <button class="tab active" data-tab="overall">
+      <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3zM13 21h8V11h-8zM3 21h8v-6H3zM13 3v6h8V3z"/></svg>
+      Overall
     </button>
-    <button class="tab" data-tab="comidas">
-      <svg viewBox="0 0 24 24"><path d="M12 2v6M12 22v-6M2 12h6M22 12h-6M5 5l4 4M19 5l-4 4M5 19l4-4M19 19l-4-4"/></svg>
-      Comidas
+    <button class="tab" data-tab="club">
+      <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.3 2.9-5.6 6.5-5.6s6.5 2.3 6.5 5.6"/><circle cx="17.5" cy="9.5" r="2.4"/><path d="M17 15c2.6.2 4.5 2 4.5 4.4"/></svg>
+      Club
     </button>
-    <button class="tab" data-tab="calendario">
-      <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>
-      Calendario
+    <button class="tab" data-tab="water">
+      <svg viewBox="0 0 24 24"><path d="M12 3c3.5 4.2 6 7.3 6 10.3A6 6 0 0 1 6 13.3C6 10.3 8.5 7.2 12 3z"/></svg>
+      Water<span class="tab-tag" id="segAguaTag"></span>
+    </button>
+    <button class="tab" data-tab="fast">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></svg>
+      Fast<span class="tab-tag" id="segAyunoTag"></span>
     </button>
   </nav>
+
+  <!-- MODAL: CATÁLOGO DE COMIDAS -->
+  <div class="modal-bg" id="mealsModal">
+    <div class="modal">
+      <button class="modal-close" id="closeMeals">×</button>
+      <div class="modal-title">› Sumar comida</div>
+      <div class="hint" id="mealsModalFecha"></div>
+      <input type="text" class="search" id="mealSearch" placeholder="Buscar por nombre o ingrediente...">
+      <select class="filter-select" id="mealSortSelect" aria-label="Ordenar por"></select>
+      <div id="mealsList"></div>
+    </div>
+  </div>
+
+  <!-- MODAL: CALENDARIO -->
+  <div class="modal-bg" id="calModal">
+    <div class="modal">
+      <button class="modal-close" id="closeCal">×</button>
+      <div class="modal-title">› Calendario</div>
+      <div class="hint">Tocá un día para ver su detalle y cambiar lo que comiste.</div>
+
+      <div class="cal-month-head">
+        <button class="cal-nav-btn" id="calPrev">‹</button>
+        <div class="cal-month-name" id="calMonthName"></div>
+        <button class="cal-nav-btn" id="calNext">›</button>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+      <div class="cal-legend">
+        <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#8fbe2e"></div>Completa 80-100%+</div>
+        <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#e8a020"></div>Regular 60-80%</div>
+        <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#ff7a5c"></div>Deficiente &lt;60%</div>
+      </div>
+
+      <div class="card" id="calDetailCard" style="display:none">
+        <div class="card-header">
+          <div class="card-title">› Detalle del día</div>
+        </div>
+        <div id="calDetail"></div>
+      </div>
+    </div>
+  </div>
 
   <!-- MODAL: AGREGAR COMIDA -->
   <div class="modal-bg" id="addMealModal">
@@ -2066,7 +2073,7 @@ let state = {
   customMeals: [],
   hiddenMeals: [],    // ids de recetas base eliminadas por el usuario
   accOpen: {ingbrowser: true}, // qué acordeones dejó abiertos el usuario
-  subTab: 'overall',  // ventana activa dentro de Inicio
+  editDate: null,     // día que se está editando; null = hoy (no se persiste)
   /* Agua: por día se guarda la lista de vasos, no el total. Así el total es
      la suma y "deshacer" es sacar el último. */
   waterByDate: {},    // {'2026-09-15': [250,330,250]}
@@ -2096,7 +2103,7 @@ function loadState(){
       if(Array.isArray(parsed.customMeals)) state.customMeals = parsed.customMeals;
       if(Array.isArray(parsed.hiddenMeals)) state.hiddenMeals = parsed.hiddenMeals;
       if(parsed.accOpen) state.accOpen = parsed.accOpen;
-      if(parsed.subTab) state.subTab = parsed.subTab;
+      if(parsed.currentTab) state.currentTab = parsed.currentTab;
       if(parsed.waterByDate) state.waterByDate = parsed.waterByDate;
       if(typeof parsed.waterGoal === 'number') state.waterGoal = parsed.waterGoal;
       if(parsed.fast) state.fast = {...state.fast, ...parsed.fast};
@@ -2131,7 +2138,7 @@ function saveState(){
       customMeals: state.customMeals,
       hiddenMeals: state.hiddenMeals,
       accOpen: state.accOpen,
-      subTab: state.subTab,
+      currentTab: state.currentTab,
       waterByDate: state.waterByDate,
       waterGoal: state.waterGoal,
       fast: state.fast,
@@ -2542,34 +2549,7 @@ function completionPercent(targets, totals){
   return n ? sum/n : 0;
 }
 
-/* ==================== SUB-VENTANAS DE INICIO ====================
-   Overall / Club / Agua / Ayuno viven dentro de la pestaña Inicio, igual que
-   la barra de arriba de la app de referencia. */
-const SUB_META = {
-  overall: {kicker:'SYSTEM // OVERVIEW', title:'Resumen del día'},
-  club:    {kicker:'SOCIAL // CLUB',     title:'Club'},
-  agua:    {kicker:'HYDRATION // WATER', title:'Agua'},
-  ayuno:   {kicker:'TIMING // FASTING',  title:'Ayuno'}
-};
-
-function switchSub(sub){
-  if(!SUB_META[sub]) sub = 'overall';
-  state.subTab = sub;
-  saveState();
-  document.querySelectorAll('[data-sub]').forEach(b => b.classList.toggle('active', b.dataset.sub === sub));
-  document.querySelectorAll('.subpanel').forEach(p => p.classList.toggle('active', p.id === 'sub-' + sub));
-  document.getElementById('subKicker').textContent = SUB_META[sub].kicker;
-  document.getElementById('subTitle').textContent = SUB_META[sub].title;
-
-  if(sub === 'overall') renderResumen();
-  if(sub === 'agua')    renderAgua();
-  if(sub === 'ayuno')   renderAyuno();
-  // El reloj del ayuno solo corre mientras se está mirando.
-  if(sub === 'ayuno') startFastTicker(); else stopFastTicker();
-  renderSegTags();
-}
-
-/* Los dos contadores chicos de la barra segmentada. */
+/* Los dos contadores chicos de las pestañas Water y Fast. */
 function renderSegTags(){
   const ml = aguaTotal(todayKey());
   document.getElementById('segAguaTag').textContent = ml > 0 ? (ml >= 1000 ? (ml/1000).toFixed(1)+'L' : ml+'ml') : '';
@@ -2921,14 +2901,69 @@ function fmtHora(d){
 }
 
 /* ==================== TABS ==================== */
+const TABS = ['overall','club','water','fast'];
+
 function switchTab(tab){
+  // Versiones viejas guardaban 'resumen', 'comidas' o 'calendario'.
+  if(!TABS.includes(tab)) tab = 'overall';
   state.currentTab = tab;
+  saveState();
   document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
   document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.id === 'page-'+tab));
-  if(tab === 'resumen') switchSub(state.subTab || 'overall');
-  else stopFastTicker();
-  if(tab === 'comidas') renderComidas();
-  if(tab === 'calendario') renderCalendar();
+  if(tab === 'overall') renderResumen();
+  if(tab === 'water')   renderAgua();
+  if(tab === 'fast')    renderAyuno();
+  // El reloj del ayuno solo corre mientras se está mirando esa pestaña.
+  if(tab === 'fast') startFastTicker(); else stopFastTicker();
+  renderSegTags();
+}
+
+/* ==================== DÍA QUE SE ESTÁ EDITANDO ====================
+   Normalmente se carga el día de hoy, pero desde el calendario se puede
+   abrir otro día y corregirlo. editDate en null significa hoy. */
+function targetDateKey(){ return state.editDate || todayKey(); }
+function editandoOtroDia(){ return !!state.editDate && state.editDate !== todayKey(); }
+function fmtDiaCorto(dk){
+  const [y,m,d] = dk.split('-').map(Number);
+  return new Date(y, m-1, d).toLocaleDateString('es-AR', {weekday:'short', day:'numeric', month:'short'});
+}
+
+/* ==================== MODAL: CATÁLOGO DE COMIDAS ==================== */
+function openMealsModal(dk){
+  state.editDate = dk || null;
+  const modal = document.getElementById('mealsModal');
+  modal.classList.toggle('apilado', document.getElementById('calModal').classList.contains('show'));
+  document.getElementById('mealsModalFecha').textContent = editandoOtroDia()
+    ? `Estás cargando el ${fmtDiaCorto(state.editDate)}. Tocá − o + para cambiar las cantidades.`
+    : 'Tocá − o + para sumar una comida a hoy. Abrí la tarjeta para ver macros, micros y preparación.';
+  renderComidas();
+  document.getElementById('mealsModal').classList.add('show');
+}
+function closeMealsModal(){
+  const modal = document.getElementById('mealsModal');
+  modal.classList.remove('show');
+  modal.classList.remove('apilado');
+  // Si se venía del calendario, se sigue editando ese día ahí.
+  const desdeCal = document.getElementById('calModal').classList.contains('show');
+  if(desdeCal){
+    renderCalendar();
+    if(state.editDate) showCalDetail(state.editDate);
+  } else {
+    state.editDate = null;
+  }
+  if(state.currentTab === 'overall') renderResumen();
+}
+
+/* ==================== MODAL: CALENDARIO ==================== */
+function openCalModal(){
+  document.getElementById('calDetailCard').style.display = 'none';
+  renderCalendar();
+  document.getElementById('calModal').classList.add('show');
+}
+function closeCalModal(){
+  document.getElementById('calModal').classList.remove('show');
+  state.editDate = null;
+  if(state.currentTab === 'overall') renderResumen();
 }
 
 /* ==================== RESUMEN ==================== */
@@ -3112,7 +3147,7 @@ function renderResumen(){
 
   const todayEl = document.getElementById('todayMeals');
   if(selected.length === 0){
-    todayEl.innerHTML = `<div class="empty-state">Sin comidas seleccionadas hoy. Andá a Comidas para sumar.</div>`;
+    todayEl.innerHTML = `<div class="empty-state">Todavía sin comidas hoy. Sumá la primera con el botón de abajo.</div>`;
   } else {
     todayEl.innerHTML = selected.map(id => {
       const m = getMealById(id);
@@ -3417,25 +3452,30 @@ function renderComidas(){
    selectedByDate[dk] es un array con repetición: si tiene 2x 'r03',
    significa que comió esa receta 2 veces hoy. */
 function incrementMeal(id, delta){
-  const tk = todayKey();
+  const tk = targetDateKey();
+  const cuando = editandoOtroDia() ? fmtDiaCorto(tk) : 'hoy';
   if(!state.selectedByDate[tk]) state.selectedByDate[tk] = [];
   const arr = state.selectedByDate[tk];
   if(delta > 0){
     arr.push(id);
-    toast('+1 hoy');
+    toast(`+1 ${cuando}`);
   } else {
     const i = arr.indexOf(id);
-    if(i >= 0){ arr.splice(i,1); toast('−1 hoy'); }
+    if(i >= 0){ arr.splice(i,1); toast(`−1 ${cuando}`); }
     else { toast('Ya está en 0'); return; }
   }
   if(arr.length === 0) delete state.selectedByDate[tk];
   saveState();
-  if(state.currentTab === 'comidas') renderComidas();
-  if(state.currentTab === 'resumen') renderResumen();
+  if(document.getElementById('mealsModal').classList.contains('show')) renderComidas();
+  if(document.getElementById('calModal').classList.contains('show')){
+    renderCalendar();
+    if(state.editDate) showCalDetail(state.editDate);
+  }
+  if(state.currentTab === 'overall') renderResumen();
 }
 /* Alias mantenido por compatibilidad — funciona como toggle de 1 unidad */
 function toggleMeal(id){
-  const tk = todayKey();
+  const tk = targetDateKey();
   const count = (state.selectedByDate[tk] || []).filter(x => x === id).length;
   incrementMeal(id, count === 0 ? 1 : -1);
 }
@@ -3703,10 +3743,23 @@ function showCalDetail(dk){
   const card = document.getElementById('calDetailCard');
   const detail = document.getElementById('calDetail');
   const sel = state.selectedByDate[dk] || [];
+  // El día abierto pasa a ser el que se edita, así sumar o quitar va a él.
+  state.editDate = dk;
   card.style.display = 'block';
 
+  const botonSumar = `
+    <button class="btn-add-meal" id="calAddMeal" style="margin:10px 0 0">
+      <span class="plus">+</span> Sumar comida a este día
+    </button>`;
+
   if(sel.length === 0){
-    detail.innerHTML = `<div class="empty-state">Sin registros para ${dk}</div>`;
+    detail.innerHTML = `
+      <div style="margin-bottom:4px;font-size:12px;color:#dccbb6">
+        <span class="muted">Fecha:</span> ${fmtDiaCorto(dk)}
+      </div>
+      <div class="empty-state">Sin comidas cargadas este día</div>
+      ${botonSumar}`;
+    document.getElementById('calAddMeal').onclick = () => openMealsModal(dk);
     return;
   }
   const tot = aggregateMeals(sel);
@@ -3716,7 +3769,7 @@ function showCalDetail(dk){
 
   detail.innerHTML = `
     <div style="margin-bottom:12px;font-size:12px;color:#dccbb6">
-      <span class="muted">Fecha:</span> ${dk}
+      <span class="muted">Fecha:</span> ${fmtDiaCorto(dk)}
       <span style="margin-left:8px"><span class="muted">Cumplimiento:</span> <span class="accent">${pct}%</span></span>
     </div>
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px;text-align:center">
@@ -3726,8 +3779,22 @@ function showCalDetail(dk){
       <div><div style="font-family:Outfit;font-size:13px;color:#fff">${Math.round(tot.f)}g</div><div style="font-size:8px;color:#a08a74;letter-spacing:.15em">GRASA</div></div>
     </div>
     <div style="font-size:9px;letter-spacing:.2em;color:#a08a74;text-transform:uppercase;margin-bottom:6px">› Comidas</div>
-    ${meals.map(m => `<div class="today-meal"><div class="today-meal-info"><div class="today-meal-name">${m.name}</div></div></div>`).join('')}
+    ${meals.map((m, idx) => `
+      <div class="today-meal">
+        <div class="today-meal-thumb" ${state.mealPhotos[m.id] ? `style="background-image:url('${state.mealPhotos[m.id]}')"` : ''}>${state.mealPhotos[m.id] ? '' : '🍽'}</div>
+        <div class="today-meal-info">
+          <div class="today-meal-name">${m.name}</div>
+          <div class="today-meal-macros">${m.kcal} kcal · P ${m.p}g · C ${m.c}g · G ${m.f}g</div>
+        </div>
+        <button class="today-meal-rm" data-calrm="${m.id}" aria-label="Quitar">×</button>
+      </div>`).join('')}
+    ${botonSumar}
   `;
+
+  detail.querySelectorAll('[data-calrm]').forEach(btn => {
+    btn.onclick = () => incrementMeal(btn.dataset.calrm, -1);
+  });
+  document.getElementById('calAddMeal').onclick = () => openMealsModal(dk);
 }
 
 /* ==================== PROFILE MODAL ==================== */
@@ -4069,11 +4136,17 @@ function init(){
   };
   document.getElementById('nmFotoDel').onclick = () => { nmFoto = null; pintarFotoPrev(); };
 
-  // Barra segmentada de Inicio
-  document.querySelectorAll('[data-sub]').forEach(b => {
-    b.onclick = () => switchSub(b.dataset.sub);
-  });
-  document.getElementById('goToMeals').onclick = () => switchTab('comidas');
+  // Catálogo de comidas y calendario, los dos en modal
+  document.getElementById('goToMeals').onclick = () => openMealsModal(null);
+  document.getElementById('closeMeals').onclick = closeMealsModal;
+  document.getElementById('mealsModal').onclick = (e) => {
+    if(e.target.id === 'mealsModal') closeMealsModal();
+  };
+  document.getElementById('openCal').onclick = openCalModal;
+  document.getElementById('closeCal').onclick = closeCalModal;
+  document.getElementById('calModal').onclick = (e) => {
+    if(e.target.id === 'calModal') closeCalModal();
+  };
 
   // Acordeones: delegado, así funciona también dentro de los modales
   document.addEventListener('click', (e) => {
@@ -4082,7 +4155,7 @@ function init(){
   });
   applyAccState();
 
-  switchSub(state.subTab || 'overall');
+  switchTab(state.currentTab || 'overall');
 
   // PWA: register service worker
   if('serviceWorker' in navigator){
