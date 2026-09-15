@@ -106,7 +106,7 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
   -webkit-backdrop-filter:blur(24px);
   border-top:1px solid rgba(232,160,32,.2);
   padding:8px 6px calc(8px + env(safe-area-inset-bottom));
-  display:grid;grid-template-columns:repeat(4,1fr);gap:2px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:2px;
 }
 .tab{
   padding:7px 1px;
@@ -194,6 +194,128 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
   color:#b39c85;
   font-weight:600;
 }
+
+/* ============ HERO: EL DÍA DE UN VISTAZO ============ */
+.hero{
+  background:linear-gradient(150deg, rgba(58,32,35,.9) 0%, rgba(38,22,24,.94) 100%);
+  border:1px solid rgba(232,160,32,.28);
+  border-radius:20px;
+  padding:18px 16px 16px;
+  margin-bottom:12px;
+  position:relative;overflow:hidden;
+}
+/* el arco del logo, otra vez, como ornamento */
+.hero::after{
+  content:'';position:absolute;pointer-events:none;
+  width:230px;height:230px;top:-168px;right:-80px;
+  border-radius:50%;border:1.5px solid rgba(232,160,32,.16);
+}
+.gauge-wrap{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:4px}
+.gauge{width:190px;flex-shrink:0;position:relative}
+.gauge svg{display:block;width:100%;height:auto}
+.gauge-center{
+  position:absolute;left:0;right:0;bottom:4px;
+  text-align:center;
+}
+.gauge-num{
+  font-family:'Outfit',sans-serif;
+  font-size:34px;font-weight:800;line-height:1;
+  color:#f5ece0;font-variant-numeric:tabular-nums;
+}
+.gauge-unit{font-size:9px;letter-spacing:.24em;color:#a08a74;margin-top:3px;text-transform:uppercase}
+.gauge-sides{display:flex;justify-content:space-between;margin:-6px 4px 14px}
+.gauge-side{text-align:center;flex:1}
+.gauge-side-val{
+  font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;
+  font-variant-numeric:tabular-nums;
+}
+.gauge-side-lbl{font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:#a08a74;margin-top:2px}
+
+/* Medidores de macro: etiqueta, valor/objetivo y barra. */
+.meters{display:grid;gap:10px}
+.meter-top{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:5px}
+.meter-name{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#dccbb6;font-weight:600}
+.meter-val{
+  font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;
+  color:#f5ece0;font-variant-numeric:tabular-nums;
+}
+.meter-val .t{color:#9a8370;font-weight:500}
+.meter-bar{height:7px;background:rgba(0,0,0,.3);border-radius:4px;overflow:hidden}
+.meter-fill{height:100%;border-radius:4px;transition:width .45s cubic-bezier(.2,.8,.2,1)}
+.meter-fill.prot{background:linear-gradient(90deg,#f5c862,#e8a020)}
+.meter-fill.carb{background:linear-gradient(90deg,#a8d43e,#8fbe2e)}
+.meter-fill.grasa{background:linear-gradient(90deg,#e8a08a,#e08a72)}
+.meter-fill.over{background:linear-gradient(90deg,#ff9c85,#ff7a5c)}
+
+/* Línea de ayuda: explica qué mira cada bloque. */
+.hint{
+  font-size:10px;line-height:1.5;color:#a08a74;
+  letter-spacing:.02em;
+  margin:-4px 0 10px;
+}
+
+/* El + de cada fila del explorador suma el ingrediente a la receta. */
+.ing-add{
+  width:26px;height:26px;flex-shrink:0;
+  display:grid;place-items:center;
+  border-radius:7px;
+  border:1px solid rgba(232,160,32,.45);
+  background:rgba(232,160,32,.12);
+  color:#e8a020;
+  font-size:16px;font-weight:700;line-height:1;
+}
+.ing-add:active{background:rgba(232,160,32,.3);transform:scale(.92)}
+
+/* Macros de cada comida del día, como en la fila de un tracker. */
+.today-meal-macros{
+  font-size:10px;color:#a08a74;letter-spacing:.03em;margin-top:3px;
+  font-variant-numeric:tabular-nums;
+}
+
+/* ============ ACORDEÓN ============ */
+.acc{
+  background:linear-gradient(150deg, rgba(58,32,35,.85) 0%, rgba(38,22,24,.9) 100%);
+  border:1px solid rgba(232,160,32,.2);
+  border-radius:16px;
+  margin-bottom:10px;
+  overflow:hidden;
+}
+.acc-head{
+  width:100%;
+  display:flex;align-items:center;gap:10px;
+  padding:14px 15px;
+  cursor:pointer;user-select:none;
+  text-align:left;
+}
+.acc-head:active{background:rgba(232,160,32,.05)}
+.acc-ico{
+  width:26px;height:26px;flex-shrink:0;
+  display:grid;place-items:center;
+  border-radius:8px;
+  background:rgba(232,160,32,.12);
+  border:1px solid rgba(232,160,32,.3);
+  color:#e8a020;
+  font-size:13px;
+}
+.acc-title{
+  flex:1;min-width:0;
+  font-family:'Outfit',sans-serif;
+  font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+  color:#f5ece0;font-weight:700;
+}
+.acc-sum{
+  font-size:10px;color:#a08a74;letter-spacing:.04em;
+  margin-top:2px;text-transform:none;font-weight:400;font-family:'JetBrains Mono',monospace;
+}
+.acc-chev{
+  width:20px;height:20px;flex-shrink:0;
+  display:grid;place-items:center;color:#a08a74;
+  transition:transform .25s ease;
+}
+.acc.open .acc-chev{transform:rotate(180deg);color:#e8a020}
+.acc-body{display:none;padding:0 15px 15px;border-top:1px solid rgba(232,160,32,.12)}
+.acc.open .acc-body{display:block;animation:detailIn .25s ease}
+.acc-body > *:first-child{margin-top:12px}
 
 /* ============ KPI GRID ============ */
 .kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
@@ -851,18 +973,6 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
   border-radius:5px;
 }
 .nm-item-rm:active{background:rgba(255,122,92,.15);color:#ff8a70}
-.nm-search-result{
-  padding:9px 12px;
-  font-size:12px;color:#f5ece0;
-  border-bottom:1px solid rgba(255,255,255,.04);
-  cursor:pointer;
-  display:flex;justify-content:space-between;align-items:center;gap:8px;
-}
-.nm-search-result:last-child{border-bottom:none}
-.nm-search-result:active{background:rgba(232,160,32,.08)}
-.nm-search-result .cat-tag{
-  font-size:9px;color:#a08a74;letter-spacing:.1em;text-transform:uppercase;
-}
 .nm-empty{text-align:center;padding:14px;color:#9a8370;font-size:11px;letter-spacing:.05em}
 .nm-preview-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center}
 .nm-preview-val{font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;color:#fff}
@@ -973,41 +1083,53 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
     </div>
     <div class="date-stamp"><span class="sys">[SYS]</span> <span id="dateStamp"></span></div>
 
-    <div class="kpi-grid" id="kpiGrid"></div>
+    <!-- El día de un vistazo -->
+    <div class="hero" id="heroCard"></div>
 
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">› Distribución macros</div>
-      </div>
-      <div class="pie-grid" id="pieGrid"></div>
-    </div>
-
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">› Macronutrientes</div>
-      </div>
-      <div id="macroList"></div>
-    </div>
-
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">› Micronutrientes</div>
-      </div>
-      <div id="microList"></div>
-    </div>
-
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">› Tracker de ratios</div>
-      </div>
-      <div id="ratiosList"></div>
-    </div>
-
+    <!-- Lo que comiste hoy: lo único que se mira todos los días -->
     <div class="card">
       <div class="card-header">
         <div class="card-title">› Comidas de hoy</div>
       </div>
       <div id="todayMeals"></div>
+    </div>
+
+    <!-- El detalle queda plegado: está todo, pero no de golpe -->
+    <div class="acc" data-acc="macros">
+      <div class="acc-head" data-acctoggle="macros">
+        <div class="acc-ico">◐</div>
+        <div class="acc-title">Macronutrientes<div class="acc-sum" id="sumMacros"></div></div>
+        <div class="acc-chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg></div>
+      </div>
+      <div class="acc-body">
+        <div class="hint">Cuánta energía, proteína, carbo y grasa llevás contra tu objetivo del día.</div>
+        <div id="macroList"></div>
+        <div class="pie-grid" id="pieGrid" style="margin-top:14px"></div>
+      </div>
+    </div>
+
+    <div class="acc" data-acc="micros">
+      <div class="acc-head" data-acctoggle="micros">
+        <div class="acc-ico">✦</div>
+        <div class="acc-title">Micronutrientes<div class="acc-sum" id="sumMicros"></div></div>
+        <div class="acc-chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg></div>
+      </div>
+      <div class="acc-body">
+        <div class="hint">Hierro, B12, zinc, calcio y compañía. La barra verde es objetivo cumplido; el aviso de UL marca cuándo te estás pasando del límite seguro.</div>
+        <div id="microList"></div>
+      </div>
+    </div>
+
+    <div class="acc" data-acc="ratios">
+      <div class="acc-head" data-acctoggle="ratios">
+        <div class="acc-ico">⇄</div>
+        <div class="acc-title">Balance omega<div class="acc-sum" id="sumRatios"></div></div>
+        <div class="acc-chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg></div>
+      </div>
+      <div class="acc-body">
+        <div class="hint">La relación omega 6 : omega 3. Cuanto más baja, mejor: lo ideal es menos de 4 a 1.</div>
+        <div id="ratiosList"></div>
+      </div>
     </div>
   </section>
 
@@ -1017,25 +1139,10 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
       <div class="page-title">DATABASE // MEALS</div>
       <h1 class="page-subtitle">Comidas</h1>
     </div>
+    <div class="hint">Tocá − o + para sumar una comida al día. Abrí la tarjeta para ver macros, micros y preparación.</div>
     <input type="text" class="search" id="mealSearch" placeholder="Buscar por nombre o ingrediente...">
     <select class="filter-select" id="mealSortSelect" aria-label="Ordenar por"></select>
     <div id="mealsList"></div>
-  </section>
-
-  <!-- PAGE: ALIMENTOS -->
-  <section class="page" id="page-ingredientes">
-    <div class="page-head">
-      <div class="page-title">DATABASE // INGREDIENTS</div>
-      <h1 class="page-subtitle">Ingredientes</h1>
-    </div>
-    <p class="muted" style="font-size:11px;margin-bottom:14px;letter-spacing:.03em">
-      Base de <span id="ingTotalCount">118</span> ingredientes con macros, micros y perfil de aminoácidos.
-      <span class="accent">Tocá uno para ver el detalle.</span>
-    </p>
-    <input type="text" class="search" id="ingSearch" placeholder="Buscar ingrediente...">
-    <select class="filter-select" id="ingCatSelect" aria-label="Filtrar por categoría"></select>
-    <select class="filter-select" id="ingSortSelect" aria-label="Ordenar por"></select>
-    <div id="ingList"></div>
   </section>
 
   <!-- PAGE: CALENDARIO -->
@@ -1075,10 +1182,6 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
       <svg viewBox="0 0 24 24"><path d="M12 2v6M12 22v-6M2 12h6M22 12h-6M5 5l4 4M19 5l-4 4M5 19l4-4M19 19l-4-4"/></svg>
       Comidas
     </button>
-    <button class="tab" data-tab="ingredientes">
-      <svg viewBox="0 0 24 24"><path d="M4 4h16v4H4zM4 12h16v4H4zM4 20h10"/></svg>
-      Ingredientes
-    </button>
     <button class="tab" data-tab="calendario">
       <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>
       Calendario
@@ -1097,11 +1200,23 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
         <label class="field-label">Nombre *</label>
         <input type="text" id="nmName" placeholder="ej: Mi licuado post-gym">
       </div>
-      <div class="field-label" style="margin-top:14px;color:#e8a020">› Ingredientes</div>
+      <div class="field-label" style="margin-top:14px;color:#e8a020">› Ingredientes de la receta</div>
       <div id="nmItemsList" style="margin-bottom:8px"></div>
-      <div style="position:relative">
-        <input type="text" id="nmIngSearch" class="search" placeholder="Buscar ingrediente para agregar..." autocomplete="off" style="margin-bottom:0">
-        <div id="nmIngResults" style="display:none;position:absolute;top:100%;left:0;right:0;z-index:5;background:#221b1c;border:1px solid rgba(232,160,32,.3);border-radius:8px;max-height:240px;overflow-y:auto;margin-top:4px"></div>
+
+      <!-- La base de ingredientes completa, acá donde se usa -->
+      <div class="acc" data-acc="ingbrowser" style="margin-top:12px">
+        <div class="acc-head" data-acctoggle="ingbrowser">
+          <div class="acc-ico">☰</div>
+          <div class="acc-title">Explorar la base<div class="acc-sum"><span id="ingTotalCount">118</span> ingredientes con macros, micros y aminoácidos</div></div>
+          <div class="acc-chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg></div>
+        </div>
+        <div class="acc-body">
+          <div class="hint">Tocá un ingrediente para ver su detalle, o el + para sumarlo a la receta.</div>
+          <input type="text" class="search" id="ingSearch" placeholder="Buscar ingrediente...">
+          <select class="filter-select" id="ingCatSelect" aria-label="Filtrar por categoría"></select>
+          <select class="filter-select" id="ingSortSelect" aria-label="Ordenar por"></select>
+          <div id="ingList"></div>
+        </div>
       </div>
 
       <div class="field-label" style="margin-top:14px;color:#e8a020">› Preparación (opcional)</div>
@@ -1675,6 +1790,7 @@ let state = {
        cargados en selectedByDate siguen apuntando a la receta correcta. */
   customMeals: [],
   hiddenMeals: [],    // ids de recetas base eliminadas por el usuario
+  accOpen: {ingbrowser: true}, // qué acordeones dejó abiertos el usuario
   currentTab: 'resumen',
   sortBy: 'quality', // 'quality' | 'protein'
   search: '',
@@ -1695,6 +1811,7 @@ function loadState(){
       if(parsed.selectedByDate) state.selectedByDate = parsed.selectedByDate;
       if(Array.isArray(parsed.customMeals)) state.customMeals = parsed.customMeals;
       if(Array.isArray(parsed.hiddenMeals)) state.hiddenMeals = parsed.hiddenMeals;
+      if(parsed.accOpen) state.accOpen = parsed.accOpen;
       console.log(`[NUTRI CORE] State cargado: ${state.customMeals.length} recetas custom, ${state.hiddenMeals.length} base eliminadas, ${Object.keys(state.selectedByDate).length} días con comidas`);
 
       // Migración: limpiar referencias a comidas que ya no existen o fueron eliminadas
@@ -1722,7 +1839,8 @@ function saveState(){
       profile: state.profile,
       selectedByDate: state.selectedByDate,
       customMeals: state.customMeals,
-      hiddenMeals: state.hiddenMeals
+      hiddenMeals: state.hiddenMeals,
+      accOpen: state.accOpen
     }));
   }catch(e){console.warn('[NUTRI CORE] save error',e)}
 }
@@ -2129,7 +2247,6 @@ function switchTab(tab){
   document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.id === 'page-'+tab));
   if(tab === 'resumen') renderResumen();
   if(tab === 'comidas') renderComidas();
-  if(tab === 'ingredientes') renderIngredientes();
   if(tab === 'calendario') renderCalendar();
 }
 
@@ -2141,29 +2258,8 @@ function renderResumen(){
   const totals = aggregateMeals(selected);
   const targets = computeTargets(state.profile);
 
-  // KPI cards (macros)
-  const macroKpis = [
-    {lbl:'KCAL',val:totals.kcal,target:targets.kcal,unit:''},
-    {lbl:'PROTEÍNA',val:totals.p,target:targets.protein,unit:'g'},
-    {lbl:'CARBOS',val:totals.c,target:targets.carb,unit:'g'},
-    {lbl:'GRASA',val:totals.f,target:targets.fat,unit:'g'}
-  ];
-  document.getElementById('kpiGrid').innerHTML = macroKpis.map(k => {
-    const pctReal = k.target > 0 ? k.val/k.target : 0;
-    const pctVis = Math.min(pctReal, 1.2);
-    // En keto el carbo es un techo: pasarse es 'over', quedarse abajo está bien.
-    const asLimit = k.lbl === 'CARBOS' && targets.carbIsLimit;
-    const cls = asLimit
-      ? (pctReal > 1 ? 'over' : 'complete')
-      : (pctReal >= 0.95 && pctReal <= 1.4 ? 'complete' : (pctReal > 1.4 ? 'over' : ''));
-    return `
-      <div class="kpi">
-        <div class="kpi-label">${k.lbl}</div>
-        <div class="kpi-value">${Math.round(k.val)}<span class="unit">${k.unit} / ${Math.round(k.target)}${k.unit}</span></div>
-        <div class="kpi-bar"><div class="kpi-bar-fill ${cls}" style="width:${Math.min(pctVis*100,100)}%"></div></div>
-      </div>
-    `;
-  }).join('');
+  renderHero(totals, targets);
+  renderAccSummaries(totals, targets);
 
   // Pie charts: macro distribution + completion
   document.getElementById('pieGrid').innerHTML = `
@@ -2344,6 +2440,7 @@ function renderResumen(){
         <div class="today-meal">
           <div class="today-meal-info">
             <div class="today-meal-name">${m.name}</div>
+            <div class="today-meal-macros">${m.kcal} kcal · P ${m.p}g · C ${m.c}g · G ${m.f}g</div>
           </div>
           <button class="today-meal-rm" data-rm="${id}" aria-label="Quitar">×</button>
         </div>
@@ -2353,6 +2450,104 @@ function renderResumen(){
       btn.onclick = () => { toggleMeal(btn.dataset.rm); };
     });
   }
+}
+
+/* Panel principal: el arco de calorías y los tres medidores de macro.
+   Es lo único que se ve sin desplegar nada. */
+function renderHero(totals, targets){
+  const kcal = Math.round(totals.kcal);
+  const obj  = Math.round(targets.kcal);
+  const resta = Math.max(obj - kcal, 0);
+  const pct = obj > 0 ? Math.min(kcal / obj, 1) : 0;
+
+  // Semicírculo de radio 84: la longitud del arco es PI * 84.
+  const LARGO = Math.PI * 84;
+  const pasado = kcal > obj * 1.05;
+  const colorArco = pasado ? '#ff7a5c' : (pct >= 0.95 ? '#8fbe2e' : '#e8a020');
+
+  const macros = [
+    {k:'prot',  name:'Proteína', val:totals.p, target:targets.protein, limite:false},
+    {k:'carb',  name:'Carbos',   val:totals.c, target:targets.carb,    limite:!!targets.carbIsLimit},
+    {k:'grasa', name:'Grasa',    val:totals.f, target:targets.fat,     limite:false}
+  ];
+
+  document.getElementById('heroCard').innerHTML = `
+    <div class="gauge-wrap">
+      <div class="gauge">
+        <svg viewBox="0 0 200 112">
+          <path d="M16 100 A84 84 0 0 1 184 100" fill="none" stroke="rgba(0,0,0,.32)" stroke-width="13" stroke-linecap="round"/>
+          <path d="M16 100 A84 84 0 0 1 184 100" fill="none" stroke="${colorArco}" stroke-width="13" stroke-linecap="round"
+                stroke-dasharray="${LARGO}" stroke-dashoffset="${LARGO * (1 - pct)}"
+                style="transition:stroke-dashoffset .5s cubic-bezier(.2,.8,.2,1)"/>
+        </svg>
+        <div class="gauge-center">
+          <div class="gauge-num">${kcal}</div>
+          <div class="gauge-unit">kcal de hoy</div>
+        </div>
+      </div>
+    </div>
+    <div class="gauge-sides">
+      <div class="gauge-side">
+        <div class="gauge-side-val" style="color:${pasado ? '#ff7a5c' : '#8fbe2e'}">${pasado ? '+' + (kcal - obj) : resta}</div>
+        <div class="gauge-side-lbl">${pasado ? 'Te pasaste' : 'Restante'}</div>
+      </div>
+      <div class="gauge-side">
+        <div class="gauge-side-val" style="color:#e8a020">${obj}</div>
+        <div class="gauge-side-lbl">Objetivo${targets.carbIsLimit ? ' · keto' : ''}</div>
+      </div>
+    </div>
+    <div class="meters">
+      ${macros.map(m => {
+        const p = m.target > 0 ? m.val / m.target : 0;
+        // En keto el carbo es techo: pasarlo se marca, quedarse abajo no.
+        const excedido = m.limite ? p > 1 : p > 1.4;
+        return `
+        <div>
+          <div class="meter-top">
+            <span class="meter-name">${m.name}${m.limite ? ' · máx' : ''}</span>
+            <span class="meter-val">${m.val.toFixed(0)}g <span class="t">/ ${Math.round(m.target)}g</span></span>
+          </div>
+          <div class="meter-bar">
+            <div class="meter-fill ${excedido ? 'over' : m.k}" style="width:${Math.min(p * 100, 100)}%"></div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+  `;
+}
+
+/* Resumen de una línea para cada acordeón cerrado: así el detalle queda
+   plegado sin que el bloque deje de decir algo. */
+function renderAccSummaries(totals, targets){
+  const pctKcal = targets.kcal > 0 ? Math.round(totals.kcal / targets.kcal * 100) : 0;
+  document.getElementById('sumMacros').textContent =
+    `${pctKcal}% de la energía · P ${Math.round(totals.p)}g · C ${Math.round(totals.c)}g · G ${Math.round(totals.f)}g`;
+
+  const claves = ['Fe','B12','Zn','Ca','D','Mg','fb','K'];
+  const cumplidos = claves.filter(k => targets[k] > 0 && (totals[k] || 0) >= targets[k]).length;
+  document.getElementById('sumMicros').textContent = `${cumplidos} de ${claves.length} objetivos cubiertos`;
+
+  const ala = totals.O3 || 0, ed = (totals.ED || 0) / 1000, o6 = totals.O6 || 0;
+  const o3 = ala + ed;
+  document.getElementById('sumRatios').textContent = o3 > 0
+    ? `Omega 6 : 3 = ${(o6 / o3).toFixed(1)} a 1`
+    : 'Sin datos de omega todavía';
+}
+
+/* Acordeones: qué bloque está abierto se guarda, para no tener que volver a
+   abrir lo mismo en cada visita. */
+function toggleAcc(id){
+  const el = document.querySelector(`[data-acc="${id}"]`);
+  if(!el) return;
+  const abierto = !el.classList.contains('open');
+  el.classList.toggle('open', abierto);
+  state.accOpen[id] = abierto;
+  saveState();
+}
+function applyAccState(){
+  document.querySelectorAll('[data-acc]').forEach(el => {
+    el.classList.toggle('open', !!state.accOpen[el.dataset.acc]);
+  });
 }
 
 function renderPieCard(label, segments){
@@ -2660,6 +2855,7 @@ function renderIngredientes(){
         </div>
         ${esIngredienteKeto(i) ? `<span class="k-badge" title="Apto keto: ${carbosPor100g(i).toFixed(1)}g de carbo por 100g">K</span>` : ''}
         <div class="ing-val-mini"><span style="font-size:8px;font-weight:500;color:#a08a74;margin-right:3px">P</span>${i.p}<span style="font-size:8px;font-weight:500;color:#a08a74;margin-left:1px">g</span></div>
+        <button class="ing-add" data-iadd="${i.id}" title="Sumar a la receta" aria-label="Sumar a la receta">+</button>
         <div class="ing-chevron">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg>
         </div>
@@ -2679,6 +2875,22 @@ function renderIngredientes(){
       head.closest('.ing-card').classList.toggle('expanded');
     };
   });
+  listEl.querySelectorAll('[data-iadd]').forEach(btn => {
+    btn.onclick = (e) => { e.stopPropagation(); nmAddIngrediente(btn.dataset.iadd); };
+  });
+}
+
+/* Suma un ingrediente a la receta que se está armando, con una cantidad
+   inicial razonable: 100g, o 1 si se mide por unidad. */
+function nmAddIngrediente(id){
+  const ing = INGR_BY_ID[id];
+  if(!ing) return;
+  const ya = nmItems.find(it => it.id === id);
+  if(ya){ toast('Ya está en la receta'); return; }
+  nmItems.push({id, qty: ing.unit === 'u' ? 1 : 100});
+  renderNmItems();
+  renderNmPreview();
+  toast(`+ ${ing.name}`);
 }
 
 function renderIngDetail(i){
@@ -2900,12 +3112,11 @@ function openAddMealModal(){
   nmItems = [];
   document.getElementById('nmName').value = '';
   document.getElementById('nmPrep').value = '';
-  document.getElementById('nmIngSearch').value = '';
-  document.getElementById('nmIngResults').style.display = 'none';
   document.querySelector('#addMealModal .modal-title').textContent = '› Nueva receta';
   document.getElementById('saveNewMeal').textContent = 'Guardar receta';
   renderNmItems();
   renderNmPreview();
+  renderIngredientes();
   document.getElementById('addMealModal').classList.add('show');
   setTimeout(() => document.getElementById('nmName').focus(), 300);
 }
@@ -2918,12 +3129,11 @@ function openEditMealModal(id){
   nmItems = meal.items.map(it => ({id:it.id, qty:it.qty})); // copia
   document.getElementById('nmName').value = meal.name;
   document.getElementById('nmPrep').value = meal.prep || '';
-  document.getElementById('nmIngSearch').value = '';
-  document.getElementById('nmIngResults').style.display = 'none';
   document.querySelector('#addMealModal .modal-title').textContent = '› Editar receta';
   document.getElementById('saveNewMeal').textContent = 'Guardar cambios';
   renderNmItems();
   renderNmPreview();
+  renderIngredientes();
   document.getElementById('addMealModal').classList.add('show');
 }
 function closeAddMealModal(){
@@ -2933,7 +3143,7 @@ function closeAddMealModal(){
 function renderNmItems(){
   const el = document.getElementById('nmItemsList');
   if(nmItems.length === 0){
-    el.innerHTML = `<div class="nm-empty">Sin ingredientes — buscá abajo para sumar</div>`;
+    el.innerHTML = `<div class="nm-empty">Todavía sin ingredientes — sumalos con el + del explorador</div>`;
     return;
   }
   el.innerHTML = nmItems.map((it, idx) => {
@@ -2983,36 +3193,6 @@ function renderNmPreview(){
   `;
 }
 
-function nmSearchIngredients(query){
-  const q = (query || '').trim().toLowerCase();
-  const resultsEl = document.getElementById('nmIngResults');
-  if(!q){ resultsEl.style.display = 'none'; return; }
-  const matches = INGREDIENTS.filter(i => i.name.toLowerCase().includes(q)).slice(0, 12);
-  if(matches.length === 0){
-    resultsEl.innerHTML = `<div class="nm-empty">Sin resultados</div>`;
-    resultsEl.style.display = 'block';
-    return;
-  }
-  resultsEl.innerHTML = matches.map(i =>
-    `<div class="nm-search-result" data-add="${i.id}"><div>${i.name}</div><div class="cat-tag">${i.cat}</div></div>`
-  ).join('');
-  resultsEl.querySelectorAll('[data-add]').forEach(el => {
-    el.onclick = () => {
-      const id = el.dataset.add;
-      const ing = INGR_BY_ID[id];
-      // Si ya está, sumar 1 (en u) o el per (en g) por simplicidad; sino, agregar con default
-      const defaultQty = ing.unit === 'u' ? 1 : ing.per;
-      const existing = nmItems.find(x => x.id === id);
-      if(existing){ toast('Ya estaba — ajustá cantidad'); }
-      else { nmItems.push({id, qty: defaultQty}); }
-      document.getElementById('nmIngSearch').value = '';
-      resultsEl.style.display = 'none';
-      renderNmItems();
-      renderNmPreview();
-    };
-  });
-  resultsEl.style.display = 'block';
-}
 
 function saveNewMeal(){
   const name = document.getElementById('nmName').value.trim();
@@ -3123,8 +3303,6 @@ function init(){
   };
   document.getElementById('saveNewMeal').onclick = saveNewMeal;
   // Builder: search input para agregar ingredientes
-  document.getElementById('nmIngSearch').oninput = (e) => nmSearchIngredients(e.target.value);
-  document.getElementById('nmIngSearch').onfocus = (e) => { if(e.target.value) nmSearchIngredients(e.target.value); };
   // Calendar nav
   document.getElementById('calPrev').onclick = () => {
     state.calMonth.m--;
@@ -3136,6 +3314,13 @@ function init(){
     if(state.calMonth.m > 11){ state.calMonth.m = 0; state.calMonth.y++; }
     renderCalendar();
   };
+  // Acordeones: delegado, así funciona también dentro de los modales
+  document.addEventListener('click', (e) => {
+    const head = e.target.closest('[data-acctoggle]');
+    if(head) toggleAcc(head.dataset.acctoggle);
+  });
+  applyAccState();
+
   renderResumen();
 
   // PWA: register service worker
