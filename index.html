@@ -195,6 +195,179 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
   font-weight:600;
 }
 
+/* ============ BARRA SEGMENTADA (overall / club / agua / ayuno) ============ */
+.seg{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:4px;
+  background:rgba(38,27,29,.7);
+  border:1px solid rgba(232,160,32,.18);
+  border-radius:12px;
+  padding:4px;
+  margin-bottom:14px;
+}
+.seg-btn{
+  padding:8px 2px 7px;
+  border-radius:9px;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  font-size:8px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;
+  color:#a08a74;
+  transition:background .2s, color .2s;
+}
+.seg-btn svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.9}
+.seg-btn.active{
+  color:#e8a020;
+  background:linear-gradient(180deg,rgba(107,10,24,.5),rgba(107,10,24,.2));
+  box-shadow:inset 0 0 0 1px rgba(232,160,32,.3);
+}
+.seg-btn .seg-tag{
+  font-size:7px;letter-spacing:.06em;
+  color:#8fbe2e;
+  text-transform:none;font-weight:600;
+}
+.subpanel{display:none}
+.subpanel.active{display:block;animation:fadeIn .22s ease}
+
+/* ============ AGUA ============ */
+.agua-top{display:flex;align-items:center;gap:16px;margin-bottom:14px}
+.bottle{width:78px;flex-shrink:0}
+.bottle svg{display:block;width:100%;height:auto}
+.agua-cifras{flex:1;min-width:0;text-align:right}
+.agua-pct{
+  font-family:'Outfit',sans-serif;font-size:20px;font-weight:800;
+  color:#6fc5e8;
+}
+.agua-pct span{font-size:10px;color:#a08a74;font-weight:500;letter-spacing:.1em;margin-left:4px}
+.agua-goal{
+  font-size:10.5px;color:#a08a74;letter-spacing:.04em;margin-top:2px;
+  display:flex;align-items:center;justify-content:flex-end;gap:6px;
+}
+.agua-goal button{
+  width:22px;height:22px;display:grid;place-items:center;
+  border-radius:6px;border:1px solid rgba(232,160,32,.35);
+  color:#e8a020;font-size:11px;background:rgba(232,160,32,.08);
+}
+.agua-ml{
+  font-family:'Outfit',sans-serif;font-size:30px;font-weight:800;
+  color:#f5ece0;line-height:1.1;margin-top:6px;
+  font-variant-numeric:tabular-nums;
+}
+.agua-ml span{font-size:10px;color:#a08a74;font-weight:500;letter-spacing:.1em;margin-left:4px}
+.agua-last{font-size:9.5px;color:#9a8370;letter-spacing:.05em;margin-top:2px}
+.agua-adds{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px}
+.agua-add{
+  flex:1;min-width:64px;
+  padding:9px 4px;
+  border-radius:10px;
+  border:1px solid rgba(111,197,232,.4);
+  background:rgba(111,197,232,.1);
+  color:#6fc5e8;
+  font-family:'Outfit',sans-serif;
+  font-size:14px;font-weight:700;line-height:1.1;
+}
+.agua-add small{display:block;font-size:8px;letter-spacing:.14em;color:#a08a74;font-weight:500;margin-top:2px}
+.agua-add:active{background:rgba(111,197,232,.28);transform:scale(.96)}
+.agua-add.undo{flex:0 0 46px;min-width:46px;border-color:rgba(232,160,32,.35);background:rgba(232,160,32,.08);color:#e8a020;font-size:15px}
+
+/* ============ AYUNO ============ */
+.ring-wrap{display:grid;place-items:center;margin:4px 0 14px;position:relative}
+.ring{width:210px;max-width:64vw;position:relative}
+.ring svg{display:block;width:100%;height:auto;transform:rotate(-90deg)}
+.ring-center{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.ring-lbl{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#a08a74}
+.ring-time{
+  font-family:'Outfit',sans-serif;font-size:31px;font-weight:800;
+  color:#f5ece0;font-variant-numeric:tabular-nums;line-height:1.15;
+}
+.ring-sub{font-size:9.5px;color:#9a8370;letter-spacing:.06em;margin-top:2px}
+.fast-times{
+  display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:center;
+  background:rgba(40,28,30,.78);
+  border:1px solid rgba(232,160,32,.16);
+  border-radius:12px;padding:11px 13px;margin-bottom:10px;
+}
+.fast-time-lbl{font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;color:#a08a74}
+.fast-time-val{font-size:12px;color:#f5ece0;font-weight:600;margin-top:3px}
+
+/* ============ REPORTE SEMANAL (agua y ayuno) ============ */
+.wk-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.wk-stat{
+  background:rgba(40,28,30,.78);
+  border:1px solid rgba(232,160,32,.14);
+  border-radius:11px;padding:10px 12px;
+  display:flex;align-items:center;gap:9px;
+}
+.wk-stat-ico{font-size:16px;line-height:1}
+.wk-stat-val{font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:#f5ece0;font-variant-numeric:tabular-nums}
+.wk-stat-lbl{font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:#a08a74;margin-top:1px}
+.wk-chart{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;align-items:end;height:104px}
+.wk-col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:4px}
+.wk-col-val{font-size:8.5px;color:#a08a74;font-variant-numeric:tabular-nums}
+.wk-bar{width:100%;border-radius:5px 5px 2px 2px;min-height:3px;transition:height .4s ease}
+.wk-col-dow{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#9a8370}
+.wk-col.hoy .wk-col-dow{color:#e8a020;font-weight:700}
+
+/* ============ CLUB ============ */
+.club-empty{text-align:center;padding:10px 4px 4px}
+.club-ico{
+  width:58px;height:58px;margin:0 auto 12px;
+  display:grid;place-items:center;border-radius:18px;
+  background:rgba(232,160,32,.1);
+  border:1px solid rgba(232,160,32,.3);
+  color:#e8a020;
+}
+.club-ico svg{width:28px;height:28px;stroke:currentColor;fill:none;stroke-width:1.7}
+.club-title{font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:#f5ece0;margin-bottom:6px}
+.club-txt{font-size:11.5px;color:#a08a74;line-height:1.6;max-width:300px;margin:0 auto 14px}
+.club-estado{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
+  color:#e0a071;
+  border:1px solid rgba(224,160,113,.35);
+  background:rgba(224,160,113,.08);
+  border-radius:20px;padding:6px 13px;margin-bottom:16px;
+}
+.club-estado::before{content:'';width:7px;height:7px;border-radius:50%;background:#e0a071}
+.club-lista{text-align:left;display:grid;gap:8px}
+.club-item{
+  display:flex;gap:10px;align-items:flex-start;
+  background:rgba(40,28,30,.7);
+  border:1px solid rgba(232,160,32,.12);
+  border-radius:11px;padding:11px 12px;
+}
+.club-item-n{
+  width:22px;height:22px;flex-shrink:0;
+  display:grid;place-items:center;border-radius:7px;
+  background:rgba(232,160,32,.12);border:1px solid rgba(232,160,32,.28);
+  color:#e8a020;font-size:10px;font-weight:700;font-family:'Outfit',sans-serif;
+}
+.club-item-t{font-size:11.5px;color:#dccbb6;font-weight:600}
+.club-item-d{font-size:10px;color:#9a8370;line-height:1.5;margin-top:2px}
+
+/* ============ FOTO DE COMIDA ============ */
+.meal-thumb{
+  width:44px;height:44px;flex-shrink:0;
+  border-radius:10px;
+  background:rgba(232,160,32,.08) center/cover no-repeat;
+  border:1px solid rgba(232,160,32,.22);
+  display:grid;place-items:center;
+  color:#a08a74;font-size:15px;
+}
+.today-meal-thumb{
+  width:38px;height:38px;flex-shrink:0;margin-right:10px;
+  border-radius:9px;
+  background:rgba(232,160,32,.08) center/cover no-repeat;
+  border:1px solid rgba(232,160,32,.18);
+  display:grid;place-items:center;
+  color:#9a8370;font-size:13px;
+}
+.foto-row{display:flex;align-items:center;gap:12px;margin-top:6px}
+.foto-prev{
+  width:60px;height:60px;flex-shrink:0;border-radius:12px;
+  background:rgba(232,160,32,.06) center/cover no-repeat;
+  border:1px dashed rgba(232,160,32,.35);
+  display:grid;place-items:center;color:#a08a74;font-size:19px;
+}
+
 /* ============ HERO: EL DÍA DE UN VISTAZO ============ */
 .hero{
   background:linear-gradient(150deg, rgba(58,32,35,.9) 0%, rgba(38,22,24,.94) 100%);
@@ -1078,9 +1251,32 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
   <!-- PAGE: RESUMEN -->
   <section class="page active" id="page-resumen">
     <div class="page-head">
-      <div class="page-title">SYSTEM // OVERVIEW</div>
-      <h1 class="page-subtitle">Resumen del día</h1>
+      <div class="page-title" id="subKicker">SYSTEM // OVERVIEW</div>
+      <h1 class="page-subtitle" id="subTitle">Resumen del día</h1>
     </div>
+
+    <!-- Las cuatro ventanas del día -->
+    <nav class="seg" id="segNav">
+      <button class="seg-btn active" data-sub="overall">
+        <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3zM13 21h8V11h-8zM3 21h8v-6H3zM13 3v6h8V3z"/></svg>
+        Overall
+      </button>
+      <button class="seg-btn" data-sub="club">
+        <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.3 2.9-5.6 6.5-5.6s6.5 2.3 6.5 5.6"/><circle cx="17.5" cy="9.5" r="2.4"/><path d="M17 15c2.6.2 4.5 2 4.5 4.4"/></svg>
+        Club
+      </button>
+      <button class="seg-btn" data-sub="agua">
+        <svg viewBox="0 0 24 24"><path d="M12 3c3.5 4.2 6 7.3 6 10.3A6 6 0 0 1 6 13.3C6 10.3 8.5 7.2 12 3z"/></svg>
+        Agua<span class="seg-tag" id="segAguaTag"></span>
+      </button>
+      <button class="seg-btn" data-sub="ayuno">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></svg>
+        Ayuno<span class="seg-tag" id="segAyunoTag"></span>
+      </button>
+    </nav>
+
+    <!-- ===== OVERALL ===== -->
+    <div class="subpanel active" id="sub-overall">
     <div class="date-stamp"><span class="sys">[SYS]</span> <span id="dateStamp"></span></div>
 
     <!-- El día de un vistazo -->
@@ -1092,6 +1288,9 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
         <div class="card-title">› Comidas de hoy</div>
       </div>
       <div id="todayMeals"></div>
+      <button class="btn-add-meal" id="goToMeals" style="margin-top:10px;margin-bottom:0">
+        <span class="plus">+</span> Sumar una comida
+      </button>
     </div>
 
     <!-- El detalle queda plegado: está todo, pero no de golpe -->
@@ -1129,6 +1328,72 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
       <div class="acc-body">
         <div class="hint">La relación omega 6 : omega 3. Cuanto más baja, mejor: lo ideal es menos de 4 a 1.</div>
         <div id="ratiosList"></div>
+      </div>
+    </div>
+    </div><!-- /sub-overall -->
+
+    <!-- ===== CLUB ===== -->
+    <div class="subpanel" id="sub-club">
+      <div class="card">
+        <div class="club-empty">
+          <div class="club-ico">
+            <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.3 2.9-5.6 6.5-5.6s6.5 2.3 6.5 5.6"/><circle cx="17.5" cy="9.5" r="2.4"/><path d="M17 15c2.6.2 4.5 2 4.5 4.4"/></svg>
+          </div>
+          <div class="club-title">El club todavía no está conectado</div>
+          <div class="club-txt">
+            Para compartir progreso con otras personas la app necesita un servidor.
+            Nada de esto funciona hasta conectar Firebase.
+          </div>
+          <div class="club-estado">Sin conexión</div>
+          <div class="club-lista">
+            <div class="club-item">
+              <div class="club-item-n">1</div>
+              <div>
+                <div class="club-item-t">Cuenta y sesión</div>
+                <div class="club-item-d">Firebase Authentication, para que tus datos te sigan entre el celular y la compu.</div>
+              </div>
+            </div>
+            <div class="club-item">
+              <div class="club-item-n">2</div>
+              <div>
+                <div class="club-item-t">Tus datos en la nube</div>
+                <div class="club-item-d">Hoy todo vive en el navegador: si borrás los datos del sitio, se pierde. Firestore lo resuelve y además sincroniza.</div>
+              </div>
+            </div>
+            <div class="club-item">
+              <div class="club-item-n">3</div>
+              <div>
+                <div class="club-item-t">Grupos y tabla</div>
+                <div class="club-item-d">Sumar gente, ver rachas y comparar cumplimiento de la semana.</div>
+              </div>
+            </div>
+            <div class="club-item">
+              <div class="club-item-n">4</div>
+              <div>
+                <div class="club-item-t">Recetas compartidas</div>
+                <div class="club-item-d">Publicar una receta con su foto y que otros la sumen a su día.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== AGUA ===== -->
+    <div class="subpanel" id="sub-agua">
+      <div class="hero" id="aguaCard"></div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">› Esta semana</div></div>
+        <div id="aguaSemana"></div>
+      </div>
+    </div>
+
+    <!-- ===== AYUNO ===== -->
+    <div class="subpanel" id="sub-ayuno">
+      <div class="hero" id="ayunoCard"></div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">› Últimos 7 días</div></div>
+        <div id="ayunoSemana"></div>
       </div>
     </div>
   </section>
@@ -1175,8 +1440,8 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
   <!-- TABS -->
   <nav class="tabs">
     <button class="tab active" data-tab="resumen">
-      <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3zM13 21h8V11h-8zM3 21h8v-6H3zM13 3v6h8V3z"/></svg>
-      Resumen
+      <svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7M5 10v10h14V10"/></svg>
+      Inicio
     </button>
     <button class="tab" data-tab="comidas">
       <svg viewBox="0 0 24 24"><path d="M12 2v6M12 22v-6M2 12h6M22 12h-6M5 5l4 4M19 5l-4 4M5 19l4-4M19 19l-4-4"/></svg>
@@ -1200,6 +1465,16 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
         <label class="field-label">Nombre *</label>
         <input type="text" id="nmName" placeholder="ej: Mi licuado post-gym">
       </div>
+      <div class="field-label" style="margin-top:14px;color:#e8a020">› Foto (opcional)</div>
+      <div class="foto-row">
+        <div class="foto-prev" id="nmFotoPrev">＋</div>
+        <div style="flex:1;min-width:0">
+          <button class="btn ghost" id="nmFotoBtn" style="width:100%;margin-bottom:6px">Elegir foto</button>
+          <button class="btn ghost" id="nmFotoDel" style="width:100%;display:none">Quitar foto</button>
+          <input type="file" id="nmFotoInput" accept="image/*" style="display:none">
+        </div>
+      </div>
+
       <div class="field-label" style="margin-top:14px;color:#e8a020">› Ingredientes de la receta</div>
       <div id="nmItemsList" style="margin-bottom:8px"></div>
 
@@ -1791,6 +2066,15 @@ let state = {
   customMeals: [],
   hiddenMeals: [],    // ids de recetas base eliminadas por el usuario
   accOpen: {ingbrowser: true}, // qué acordeones dejó abiertos el usuario
+  subTab: 'overall',  // ventana activa dentro de Inicio
+  /* Agua: por día se guarda la lista de vasos, no el total. Así el total es
+     la suma y "deshacer" es sacar el último. */
+  waterByDate: {},    // {'2026-09-15': [250,330,250]}
+  waterGoal: null,    // ml/día; null = calculado desde el peso
+  fast: {plan:'16:8', startISO:null}, // ayuno en curso
+  fastLog: [],        // [{start, end, h}] ayunos terminados
+  mealPhotos: {},     // {mealId: dataURL} — aparte de la receta, así también
+                      // se le puede poner foto a una receta base sin editarla
   currentTab: 'resumen',
   sortBy: 'quality', // 'quality' | 'protein'
   search: '',
@@ -1812,6 +2096,12 @@ function loadState(){
       if(Array.isArray(parsed.customMeals)) state.customMeals = parsed.customMeals;
       if(Array.isArray(parsed.hiddenMeals)) state.hiddenMeals = parsed.hiddenMeals;
       if(parsed.accOpen) state.accOpen = parsed.accOpen;
+      if(parsed.subTab) state.subTab = parsed.subTab;
+      if(parsed.waterByDate) state.waterByDate = parsed.waterByDate;
+      if(typeof parsed.waterGoal === 'number') state.waterGoal = parsed.waterGoal;
+      if(parsed.fast) state.fast = {...state.fast, ...parsed.fast};
+      if(Array.isArray(parsed.fastLog)) state.fastLog = parsed.fastLog;
+      if(parsed.mealPhotos) state.mealPhotos = parsed.mealPhotos;
       console.log(`[NUTRI CORE] State cargado: ${state.customMeals.length} recetas custom, ${state.hiddenMeals.length} base eliminadas, ${Object.keys(state.selectedByDate).length} días con comidas`);
 
       // Migración: limpiar referencias a comidas que ya no existen o fueron eliminadas
@@ -1840,9 +2130,21 @@ function saveState(){
       selectedByDate: state.selectedByDate,
       customMeals: state.customMeals,
       hiddenMeals: state.hiddenMeals,
-      accOpen: state.accOpen
+      accOpen: state.accOpen,
+      subTab: state.subTab,
+      waterByDate: state.waterByDate,
+      waterGoal: state.waterGoal,
+      fast: state.fast,
+      fastLog: state.fastLog,
+      mealPhotos: state.mealPhotos
     }));
-  }catch(e){console.warn('[NUTRI CORE] save error',e)}
+  }catch(e){
+    console.warn('[NUTRI CORE] save error',e);
+    // Las fotos son lo único que puede llenar localStorage (~5MB).
+    if(e && (e.name === 'QuotaExceededError' || e.code === 22)){
+      toast('Sin espacio: borrá alguna foto');
+    }
+  }
 }
 // Save defensivo al cerrar/ocultar pestaña
 window.addEventListener('beforeunload', () => saveState());
@@ -2240,12 +2542,391 @@ function completionPercent(targets, totals){
   return n ? sum/n : 0;
 }
 
+/* ==================== SUB-VENTANAS DE INICIO ====================
+   Overall / Club / Agua / Ayuno viven dentro de la pestaña Inicio, igual que
+   la barra de arriba de la app de referencia. */
+const SUB_META = {
+  overall: {kicker:'SYSTEM // OVERVIEW', title:'Resumen del día'},
+  club:    {kicker:'SOCIAL // CLUB',     title:'Club'},
+  agua:    {kicker:'HYDRATION // WATER', title:'Agua'},
+  ayuno:   {kicker:'TIMING // FASTING',  title:'Ayuno'}
+};
+
+function switchSub(sub){
+  if(!SUB_META[sub]) sub = 'overall';
+  state.subTab = sub;
+  saveState();
+  document.querySelectorAll('[data-sub]').forEach(b => b.classList.toggle('active', b.dataset.sub === sub));
+  document.querySelectorAll('.subpanel').forEach(p => p.classList.toggle('active', p.id === 'sub-' + sub));
+  document.getElementById('subKicker').textContent = SUB_META[sub].kicker;
+  document.getElementById('subTitle').textContent = SUB_META[sub].title;
+
+  if(sub === 'overall') renderResumen();
+  if(sub === 'agua')    renderAgua();
+  if(sub === 'ayuno')   renderAyuno();
+  // El reloj del ayuno solo corre mientras se está mirando.
+  if(sub === 'ayuno') startFastTicker(); else stopFastTicker();
+  renderSegTags();
+}
+
+/* Los dos contadores chicos de la barra segmentada. */
+function renderSegTags(){
+  const ml = aguaTotal(todayKey());
+  document.getElementById('segAguaTag').textContent = ml > 0 ? (ml >= 1000 ? (ml/1000).toFixed(1)+'L' : ml+'ml') : '';
+  const f = fastRestante();
+  document.getElementById('segAyunoTag').textContent = f ? (f.cumplido ? '✓' : f.corto) : '';
+}
+
+/* ==================== AGUA ==================== */
+/* Meta diaria: la que puso el usuario, o 35 ml por kg de peso, que es la
+   referencia práctica habitual (EFSA recomienda 2.0-2.5 L totales al día). */
+function metaAgua(){
+  if(typeof state.waterGoal === 'number' && state.waterGoal > 0) return state.waterGoal;
+  return Math.round((state.profile.weight || 70) * 35 / 50) * 50;
+}
+function aguaVasos(dk){ return state.waterByDate[dk] || []; }
+function aguaTotal(dk){ return aguaVasos(dk).reduce((a,b) => a + b, 0); }
+
+function aguaSumar(ml){
+  const dk = todayKey();
+  if(!state.waterByDate[dk]) state.waterByDate[dk] = [];
+  state.waterByDate[dk].push(ml);
+  saveState(); renderAgua(); renderSegTags();
+  toast(`+${ml} ml`);
+}
+function aguaDeshacer(){
+  const dk = todayKey();
+  const v = state.waterByDate[dk];
+  if(!v || v.length === 0){ toast('Nada que deshacer'); return; }
+  const ml = v.pop();
+  if(v.length === 0) delete state.waterByDate[dk];
+  saveState(); renderAgua(); renderSegTags();
+  toast(`−${ml} ml`);
+}
+function aguaEditarMeta(){
+  const v = prompt('Meta de agua por día, en ml:', metaAgua());
+  if(v === null) return;
+  const n = Math.round(+v);
+  if(!n || n < 200 || n > 8000){ toast('Poné un valor entre 200 y 8000'); return; }
+  state.waterGoal = n;
+  saveState(); renderAgua(); renderSegTags();
+  toast('Meta actualizada');
+}
+
+function renderAgua(){
+  const dk = todayKey();
+  const vasos = aguaVasos(dk);
+  const ml = aguaTotal(dk);
+  const meta = metaAgua();
+  const pct = meta > 0 ? Math.min(ml / meta, 1) : 0;
+  const pctTxt = Math.round((meta > 0 ? ml / meta : 0) * 100);
+
+  // Botella: el relleno crece desde abajo dentro del cuerpo (y de 26 a 96).
+  const alto = 70 * pct;
+  const y = 96 - alto;
+
+  document.getElementById('aguaCard').innerHTML = `
+    <div class="agua-top">
+      <div class="bottle">
+        <svg viewBox="0 0 60 104">
+          <defs><clipPath id="cuerpoBotella">
+            <path d="M18 26h24a4 4 0 0 1 4 4v66a4 4 0 0 1-4 4H18a4 4 0 0 1-4-4V30a4 4 0 0 1 4-4z"/>
+          </clipPath></defs>
+          <rect x="23" y="6" width="14" height="10" rx="3" fill="rgba(111,197,232,.3)"/>
+          <path d="M18 26h24a4 4 0 0 1 4 4v66a4 4 0 0 1-4 4H18a4 4 0 0 1-4-4V30a4 4 0 0 1 4-4z"
+                fill="rgba(0,0,0,.28)" stroke="rgba(111,197,232,.45)" stroke-width="1.6"/>
+          <g clip-path="url(#cuerpoBotella)">
+            <rect x="14" y="${y}" width="32" height="${alto}" fill="rgba(111,197,232,.55)"
+                  style="transition:y .45s ease, height .45s ease"/>
+          </g>
+          <path d="M22 16h16v10H22z" fill="rgba(111,197,232,.18)"/>
+        </svg>
+      </div>
+      <div class="agua-cifras">
+        <div class="agua-pct">${pctTxt}%<span>completado</span></div>
+        <div class="agua-goal">meta ${meta.toLocaleString('es-AR')} ml
+          <button id="aguaMeta" aria-label="Cambiar la meta">✎</button>
+        </div>
+        <div class="agua-ml">${ml.toLocaleString('es-AR')}<span>ml</span></div>
+        <div class="agua-last">${vasos.length ? `último: ${vasos[vasos.length-1]} ml · ${vasos.length} vaso${vasos.length===1?'':'s'}` : 'todavía sin registrar'}</div>
+      </div>
+    </div>
+    <div class="agua-adds">
+      <button class="agua-add" data-agua="250">250<small>ml</small></button>
+      <button class="agua-add" data-agua="330">330<small>ml</small></button>
+      <button class="agua-add" data-agua="500">500<small>ml</small></button>
+      <button class="agua-add undo" id="aguaUndo" aria-label="Deshacer">↺</button>
+    </div>
+    <div class="hint" style="margin:8px 0 0">Tocá un vaso para sumarlo. La meta se calcula sobre tu peso, pero podés cambiarla con el lápiz.</div>
+  `;
+  document.getElementById('aguaMeta').onclick = aguaEditarMeta;
+  document.getElementById('aguaUndo').onclick = aguaDeshacer;
+  document.querySelectorAll('[data-agua]').forEach(b => b.onclick = () => aguaSumar(+b.dataset.agua));
+
+  // Reporte de la semana
+  const dias = ultimos7();
+  const valores = dias.map(d => aguaTotal(d.dk));
+  const maxV = Math.max(...valores, metaAgua());
+  const cumplidos = dias.filter((d,i) => valores[i] >= metaAgua()).length;
+  const prom = valores.reduce((a,b)=>a+b,0) / 7;
+
+  document.getElementById('aguaSemana').innerHTML = `
+    <div class="wk-stats">
+      <div class="wk-stat">
+        <div class="wk-stat-ico">🔥</div>
+        <div><div class="wk-stat-val">${rachaAgua()}</div><div class="wk-stat-lbl">días seguidos</div></div>
+      </div>
+      <div class="wk-stat">
+        <div class="wk-stat-ico">📊</div>
+        <div><div class="wk-stat-val">${(prom/1000).toFixed(1)}L</div><div class="wk-stat-lbl">promedio/día</div></div>
+      </div>
+    </div>
+    <div class="wk-chart">
+      ${dias.map((d,i) => {
+        const v = valores[i];
+        const h = maxV > 0 ? Math.max((v / maxV) * 74, v > 0 ? 4 : 3) : 3;
+        const ok = v >= metaAgua();
+        return `<div class="wk-col ${d.hoy ? 'hoy' : ''}">
+          <div class="wk-col-val">${v > 0 ? (v/1000).toFixed(1) : ''}</div>
+          <div class="wk-bar" style="height:${h}px;background:${v === 0 ? 'rgba(111,197,232,.14)' : (ok ? '#6fc5e8' : 'rgba(111,197,232,.5)')}"></div>
+          <div class="wk-col-dow">${d.dow}</div>
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="hint" style="margin:10px 0 0">${cumplidos} de los últimos 7 días llegaste a la meta.</div>
+  `;
+}
+
+function rachaAgua(){
+  let n = 0;
+  for(let i = 0; i < 400; i++){
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const dk = claveFecha(d);
+    if(aguaTotal(dk) >= metaAgua()) n++;
+    else break;
+  }
+  return n;
+}
+
+/* ==================== AYUNO ==================== */
+const PLANES_AYUNO = {'16:8':16, '18:6':18, '20:4':20, 'OMAD':23};
+
+/* Estado del ayuno en curso. null si no hay ninguno activo. */
+function fastRestante(){
+  const f = state.fast;
+  if(!f || !f.startISO) return null;
+  const horas = PLANES_AYUNO[f.plan] || 16;
+  const inicio = new Date(f.startISO);
+  const fin = new Date(inicio.getTime() + horas * 3600e3);
+  const restaMs = fin - Date.now();
+  const transcurridoMs = Date.now() - inicio;
+  const cumplido = restaMs <= 0;
+  /* Mientras falta, el reloj cuenta lo que queda. Una vez cumplido pasa a
+     mostrar lo transcurrido: el excedente solo se lee como confusión. */
+  const reloj = (ms) => {
+    const a = Math.max(ms, 0);
+    const hh = String(Math.floor(a / 3600e3)).padStart(2,'0');
+    const mm = String(Math.floor((a % 3600e3) / 60e3)).padStart(2,'0');
+    const ss = String(Math.floor((a % 60e3) / 1000)).padStart(2,'0');
+    return `${hh}:${mm}:${ss}`;
+  };
+  const faltan = reloj(restaMs);
+  return {
+    inicio, fin, horas, cumplido,
+    pct: Math.min(transcurridoMs / (horas * 3600e3), 1),
+    reloj: cumplido ? reloj(transcurridoMs) : faltan,
+    corto: cumplido ? '✓' : faltan.slice(0,5),
+    horasHechas: transcurridoMs / 3600e3
+  };
+}
+
+function fastIniciar(){
+  state.fast.startISO = new Date().toISOString();
+  saveState(); renderAyuno(); renderSegTags(); startFastTicker();
+  toast('Ayuno iniciado');
+}
+function fastTerminar(){
+  const f = fastRestante();
+  if(!f) return;
+  if(f.horasHechas >= 0.5){
+    state.fastLog.push({start: state.fast.startISO, end: new Date().toISOString(), h: +f.horasHechas.toFixed(2)});
+    if(state.fastLog.length > 400) state.fastLog = state.fastLog.slice(-400);
+  }
+  state.fast.startISO = null;
+  saveState(); renderAyuno(); renderSegTags(); stopFastTicker();
+  toast(f.cumplido ? `Ayuno cumplido: ${f.horasHechas.toFixed(1)}h` : `Cortado a las ${f.horasHechas.toFixed(1)}h`);
+}
+function fastCancelar(){
+  if(!confirm('¿Descartar este ayuno? No queda registrado.')) return;
+  state.fast.startISO = null;
+  saveState(); renderAyuno(); renderSegTags(); stopFastTicker();
+  toast('Descartado');
+}
+function fastCambiarPlan(plan){
+  state.fast.plan = plan;
+  saveState(); renderAyuno(); renderSegTags();
+}
+
+let fastTimer = null;
+function startFastTicker(){
+  stopFastTicker();
+  if(!state.fast.startISO) return;
+  fastTimer = setInterval(() => {
+    const f = fastRestante();
+    const el = document.getElementById('fastReloj');
+    if(!f || !el){ stopFastTicker(); return; }
+    el.textContent = f.reloj;
+    const arco = document.getElementById('fastArco');
+    if(arco){
+      const L = 2 * Math.PI * 92;
+      arco.setAttribute('stroke-dashoffset', String(L * (1 - f.pct)));
+    }
+  }, 1000);
+}
+function stopFastTicker(){ if(fastTimer){ clearInterval(fastTimer); fastTimer = null; } }
+
+function renderAyuno(){
+  const f = fastRestante();
+  const L = 2 * Math.PI * 92;
+  const plan = state.fast.plan;
+  const horas = PLANES_AYUNO[plan];
+  const color = !f ? 'rgba(232,160,32,.35)' : (f.cumplido ? '#8fbe2e' : '#e8a020');
+  const pct = f ? f.pct : 0;
+
+  document.getElementById('ayunoCard').innerHTML = `
+    <div class="ring-wrap">
+      <div class="ring">
+        <svg viewBox="0 0 200 200">
+          <circle cx="100" cy="100" r="92" fill="none" stroke="rgba(0,0,0,.3)" stroke-width="12"/>
+          <circle id="fastArco" cx="100" cy="100" r="92" fill="none" stroke="${color}" stroke-width="12"
+                  stroke-linecap="round" stroke-dasharray="${L}" stroke-dashoffset="${L * (1 - pct)}"
+                  style="transition:stroke-dashoffset .5s ease"/>
+        </svg>
+        <div class="ring-center">
+          ${f ? `
+            <div class="ring-lbl">${f.cumplido ? 'Llevás' : 'Restante'} (${plan})</div>
+            <div class="ring-time" id="fastReloj">${f.reloj}</div>
+            <div class="ring-sub">${f.cumplido ? `objetivo de ${horas}h cumplido` : `de ${horas}h`}</div>
+          ` : `
+            <div class="ring-lbl">Sin ayuno activo</div>
+            <div class="ring-time" style="font-size:22px">${plan}</div>
+            <div class="ring-sub">${horas}h de ayuno</div>
+          `}
+        </div>
+      </div>
+    </div>
+
+    ${f ? `
+      <div class="fast-times">
+        <div><div class="fast-time-lbl">Empezó</div><div class="fast-time-val">${fmtHora(f.inicio)}</div></div>
+        <div><div class="fast-time-lbl">Termina</div><div class="fast-time-val">${fmtHora(f.fin)}</div></div>
+        <button class="btn ghost" id="fastCancel" style="flex:0 0 auto;padding:8px 12px" aria-label="Descartar">×</button>
+      </div>
+      <button class="btn primary" style="width:100%" id="fastEnd">Terminar ayuno</button>
+    ` : `
+      <div class="field" style="margin-bottom:10px">
+        <label class="field-label">Plan</label>
+        <select class="filter-select" id="fastPlan" style="margin-bottom:0">
+          ${Object.keys(PLANES_AYUNO).map(k => `<option value="${k}" ${k===plan?'selected':''}>${k} · ${PLANES_AYUNO[k]}h de ayuno</option>`).join('')}
+        </select>
+      </div>
+      <button class="btn primary" style="width:100%" id="fastStart">Empezar ayuno</button>
+    `}
+    <div class="hint" style="margin:10px 0 0">${f ? 'El reloj corre solo. Terminar lo guarda en el historial; la × lo descarta.' : 'Elegí el plan y arrancá cuando termines de comer.'}</div>
+  `;
+
+  const bStart = document.getElementById('fastStart');
+  if(bStart) bStart.onclick = fastIniciar;
+  const bEnd = document.getElementById('fastEnd');
+  if(bEnd) bEnd.onclick = fastTerminar;
+  const bCancel = document.getElementById('fastCancel');
+  if(bCancel) bCancel.onclick = fastCancelar;
+  const selPlan = document.getElementById('fastPlan');
+  if(selPlan) selPlan.onchange = () => fastCambiarPlan(selPlan.value);
+
+  // Reporte: las horas se cuentan en el día en que terminó el ayuno.
+  const dias = ultimos7();
+  const porDia = {};
+  state.fastLog.forEach(r => {
+    const dk = claveFecha(new Date(r.end));
+    porDia[dk] = Math.max(porDia[dk] || 0, r.h);
+  });
+  const valores = dias.map(d => porDia[d.dk] || 0);
+  const maxV = Math.max(...valores, horas);
+  const conAyuno = valores.filter(v => v > 0).length;
+  const prom = conAyuno > 0 ? valores.reduce((a,b)=>a+b,0) / conAyuno : 0;
+
+  document.getElementById('ayunoSemana').innerHTML = `
+    <div class="wk-stats">
+      <div class="wk-stat">
+        <div class="wk-stat-ico">🔥</div>
+        <div><div class="wk-stat-val">${rachaAyuno()}</div><div class="wk-stat-lbl">días seguidos</div></div>
+      </div>
+      <div class="wk-stat">
+        <div class="wk-stat-ico">📊</div>
+        <div><div class="wk-stat-val">${prom.toFixed(1)}h</div><div class="wk-stat-lbl">promedio</div></div>
+      </div>
+    </div>
+    <div class="wk-chart">
+      ${dias.map((d,i) => {
+        const v = valores[i];
+        const h = maxV > 0 ? Math.max((v / maxV) * 74, v > 0 ? 4 : 3) : 3;
+        const ok = v >= horas;
+        return `<div class="wk-col ${d.hoy ? 'hoy' : ''}">
+          <div class="wk-col-val">${v > 0 ? v.toFixed(1) : ''}</div>
+          <div class="wk-bar" style="height:${h}px;background:${v === 0 ? 'rgba(232,160,32,.14)' : (ok ? '#8fbe2e' : 'rgba(232,160,32,.55)')}"></div>
+          <div class="wk-col-dow">${d.dow}</div>
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="hint" style="margin:10px 0 0">${conAyuno === 0 ? 'Todavía sin ayunos registrados.' : `${conAyuno} de los últimos 7 días con ayuno registrado. La barra se pone verde cuando llega a las ${horas}h.`}</div>
+  `;
+}
+
+function rachaAyuno(){
+  const porDia = {};
+  state.fastLog.forEach(r => {
+    const dk = claveFecha(new Date(r.end));
+    porDia[dk] = Math.max(porDia[dk] || 0, r.h);
+  });
+  const meta = PLANES_AYUNO[state.fast.plan] || 16;
+  let n = 0;
+  for(let i = 0; i < 400; i++){
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const v = porDia[claveFecha(d)] || 0;
+    // El día de hoy no rompe la racha si todavía no cerraste el ayuno.
+    if(v >= meta) n++;
+    else if(i === 0) continue;
+    else break;
+  }
+  return n;
+}
+
+/* ==================== AYUDANTES DE FECHA ==================== */
+function claveFecha(d){
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+/* Los últimos 7 días, del más viejo al de hoy. */
+function ultimos7(){
+  const dows = ['D','L','M','M','J','V','S'];
+  const out = [];
+  for(let i = 6; i >= 0; i--){
+    const d = new Date(); d.setDate(d.getDate() - i);
+    out.push({dk: claveFecha(d), dow: dows[d.getDay()], hoy: i === 0});
+  }
+  return out;
+}
+function fmtHora(d){
+  return d.toLocaleTimeString('es-AR', {hour:'2-digit', minute:'2-digit', hour12:false});
+}
+
 /* ==================== TABS ==================== */
 function switchTab(tab){
   state.currentTab = tab;
   document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
   document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.id === 'page-'+tab));
-  if(tab === 'resumen') renderResumen();
+  if(tab === 'resumen') switchSub(state.subTab || 'overall');
+  else stopFastTicker();
   if(tab === 'comidas') renderComidas();
   if(tab === 'calendario') renderCalendar();
 }
@@ -2438,6 +3119,7 @@ function renderResumen(){
       if(!m) return '';
       return `
         <div class="today-meal">
+          <div class="today-meal-thumb" ${state.mealPhotos[m.id] ? `style="background-image:url('${state.mealPhotos[m.id]}')"` : ''}>${state.mealPhotos[m.id] ? '' : '🍽'}</div>
           <div class="today-meal-info">
             <div class="today-meal-name">${m.name}</div>
             <div class="today-meal-macros">${m.kcal} kcal · P ${m.p}g · C ${m.c}g · G ${m.f}g</div>
@@ -2642,6 +3324,7 @@ function renderComidas(){
     <div class="meal ${selected.includes(m.id) ? 'selected' : ''} ${state.expanded.has(m.id) ? 'expanded' : ''}" data-meal="${m.id}">
       <div class="meal-head" data-expand="${m.id}">
         <div class="meal-sel-mark"></div>
+        <div class="meal-thumb" ${state.mealPhotos[m.id] ? `style="background-image:url('${state.mealPhotos[m.id]}')"` : ''}>${state.mealPhotos[m.id] ? '' : '🍽'}</div>
         <div class="meal-head-info">
           <div class="meal-name">${m.name}${etiqueta ? ` <span style="font-size:8px;color:#e8a020;letter-spacing:.15em;font-weight:600;margin-left:4px">[${etiqueta}]</span>` : ''}</div>
           <div class="meal-head-meta">
@@ -3110,6 +3793,7 @@ function openAddMealModal(){
   // Reset
   nmEditingId = null;
   nmItems = [];
+  nmFoto = null;
   document.getElementById('nmName').value = '';
   document.getElementById('nmPrep').value = '';
   document.querySelector('#addMealModal .modal-title').textContent = '› Nueva receta';
@@ -3117,6 +3801,7 @@ function openAddMealModal(){
   renderNmItems();
   renderNmPreview();
   renderIngredientes();
+  pintarFotoPrev();
   document.getElementById('addMealModal').classList.add('show');
   setTimeout(() => document.getElementById('nmName').focus(), 300);
 }
@@ -3126,6 +3811,7 @@ function openEditMealModal(id){
   const meal = state.customMeals.find(m => m.id === id) || MEALS.find(m => m.id === id);
   if(!meal || !meal.items){ toast('Esta receta no se puede editar'); return; }
   nmEditingId = id;
+  nmFoto = state.mealPhotos[id] || null;
   nmItems = meal.items.map(it => ({id:it.id, qty:it.qty})); // copia
   document.getElementById('nmName').value = meal.name;
   document.getElementById('nmPrep').value = meal.prep || '';
@@ -3134,6 +3820,7 @@ function openEditMealModal(id){
   renderNmItems();
   renderNmPreview();
   renderIngredientes();
+  pintarFotoPrev();
   document.getElementById('addMealModal').classList.add('show');
 }
 function closeAddMealModal(){
@@ -3194,6 +3881,62 @@ function renderNmPreview(){
 }
 
 
+/* Foto de la receta en construcción. Se guarda aparte de la receta, en
+   state.mealPhotos, así también se le puede poner foto a una receta base. */
+let nmFoto = null;
+
+/* Las fotos van a localStorage, que tiene unos 5MB para TODO el estado, así
+   que se recomprimen a 320px de lado y JPEG 0.72: unos 20-30 KB cada una. */
+function comprimirFoto(file){
+  return new Promise((resolve, reject) => {
+    const fr = new FileReader();
+    fr.onerror = () => reject(new Error('No se pudo leer el archivo'));
+    fr.onload = () => {
+      const img = new Image();
+      img.onerror = () => reject(new Error('No se pudo abrir la imagen'));
+      img.onload = () => {
+        const LADO = 320;
+        // Recorte cuadrado centrado: las miniaturas son cuadradas.
+        const min = Math.min(img.width, img.height);
+        const sx = (img.width - min) / 2, sy = (img.height - min) / 2;
+        const c = document.createElement('canvas');
+        c.width = c.height = LADO;
+        const ctx = c.getContext('2d');
+        ctx.drawImage(img, sx, sy, min, min, 0, 0, LADO, LADO);
+        resolve(c.toDataURL('image/jpeg', 0.72));
+      };
+      img.src = fr.result;
+    };
+    fr.readAsDataURL(file);
+  });
+}
+
+function pintarFotoPrev(){
+  const prev = document.getElementById('nmFotoPrev');
+  const del = document.getElementById('nmFotoDel');
+  if(nmFoto){
+    prev.style.backgroundImage = `url('${nmFoto}')`;
+    prev.textContent = '';
+    del.style.display = 'block';
+  } else {
+    prev.style.backgroundImage = 'none';
+    prev.textContent = '＋';
+    del.style.display = 'none';
+  }
+}
+
+async function nmElegirFoto(file){
+  if(!file) return;
+  try{
+    nmFoto = await comprimirFoto(file);
+    pintarFotoPrev();
+    toast('Foto lista');
+  }catch(e){
+    console.warn('[NUTRI CORE] foto', e);
+    toast('No se pudo usar esa imagen');
+  }
+}
+
 function saveNewMeal(){
   const name = document.getElementById('nmName').value.trim();
   if(!name){ toast('Falta el nombre'); return; }
@@ -3220,6 +3963,8 @@ function saveNewMeal(){
         custom: true
       });
     }
+    if(nmFoto) state.mealPhotos[nmEditingId] = nmFoto;
+    else delete state.mealPhotos[nmEditingId];
     saveState();
     closeAddMealModal();
     toast('Cambios guardados');
@@ -3236,6 +3981,7 @@ function saveNewMeal(){
     custom: true
   };
   state.customMeals.unshift(meal);
+  if(nmFoto) state.mealPhotos[meal.id] = nmFoto;
   saveState();
   closeAddMealModal();
   toast('Receta guardada');
@@ -3262,6 +4008,7 @@ function deleteMeal(id){
     if(state.selectedByDate[dk].length === 0) delete state.selectedByDate[dk];
   });
   state.expanded.delete(id);
+  delete state.mealPhotos[id];
   saveState();
   renderComidas();
   toast(base ? 'Receta base eliminada' : 'Eliminada');
@@ -3314,6 +4061,20 @@ function init(){
     if(state.calMonth.m > 11){ state.calMonth.m = 0; state.calMonth.y++; }
     renderCalendar();
   };
+  // Foto de la receta
+  document.getElementById('nmFotoBtn').onclick = () => document.getElementById('nmFotoInput').click();
+  document.getElementById('nmFotoInput').onchange = (e) => {
+    nmElegirFoto(e.target.files && e.target.files[0]);
+    e.target.value = ''; // permite volver a elegir la misma foto
+  };
+  document.getElementById('nmFotoDel').onclick = () => { nmFoto = null; pintarFotoPrev(); };
+
+  // Barra segmentada de Inicio
+  document.querySelectorAll('[data-sub]').forEach(b => {
+    b.onclick = () => switchSub(b.dataset.sub);
+  });
+  document.getElementById('goToMeals').onclick = () => switchTab('comidas');
+
   // Acordeones: delegado, así funciona también dentro de los modales
   document.addEventListener('click', (e) => {
     const head = e.target.closest('[data-acctoggle]');
@@ -3321,7 +4082,7 @@ function init(){
   });
   applyAccState();
 
-  renderResumen();
+  switchSub(state.subTab || 'overall');
 
   // PWA: register service worker
   if('serviceWorker' in navigator){
