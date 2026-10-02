@@ -148,7 +148,7 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
   -webkit-backdrop-filter:blur(24px);
   border-top:1px solid var(--linea);
   padding:8px 6px calc(8px + env(safe-area-inset-bottom));
-  display:grid;grid-template-columns:repeat(5,1fr);gap:2px;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:2px;
 }
 .tab{
   padding:7px 1px;
@@ -1439,7 +1439,7 @@ body{font-size:14px;letter-spacing:-.003em;background:var(--bg);color:var(--text
   display:grid;place-items:center;transition:transform .2s;
 }
 .fab:active{transform:scale(.92)}
-body.screen-open .fab,body.en-lab .fab{opacity:0;pointer-events:none}
+body.screen-open .fab{opacity:0;pointer-events:none}
 body.screen-open{overflow:hidden}
 
 /* ---- Ventanas a pantalla completa ---- */
@@ -1756,6 +1756,23 @@ body.screen-open{overflow:hidden}
 .lab-actions{display:grid;grid-template-columns:1fr 1fr 1.4fr;gap:8px}
 .lab-actions .btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:10px 6px;font-size:13px}
 .lab-actions .ico{width:15px;height:15px}
+
+/* ---- Lab como ventana ---- */
+.lab-btn{background:var(--grad)!important;border-color:transparent!important}
+.lab-btn svg{stroke:#fff!important}
+.lab-intro{font-size:13px;color:var(--text-3);margin:0 2px 12px;line-height:1.45}
+.lab-card.big{padding:16px;margin-bottom:16px}
+.lab-card.big .lab-name{font-size:19px}
+.lab-item{width:100%;text-align:left;padding:6px 8px 6px 6px;border-radius:14px;border:1px dashed transparent;transition:background .15s,border-color .15s}
+.lab-item:not([disabled]):active{background:rgba(var(--brand-rgb),.08);border-color:rgba(var(--brand-rgb),.4)}
+.lab-item .swap{color:var(--text-4);display:grid;place-items:center}
+.lab-item .swap .ico{width:16px;height:16px}
+.lab-sec{font-size:13px;font-weight:700;color:var(--text-3);margin:4px 2px 8px}
+.lab-foot{gap:8px}
+.lab-foot .btn{padding:13px 14px;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.lab-foot #labNext{flex:1;font-size:15px}
+.lab-foot .ico{width:18px;height:18px}
+.lab-foot .btn:disabled{opacity:.4}
 </style>
 </head>
 <body>
@@ -1768,6 +1785,9 @@ body.screen-open{overflow:hidden}
       <div class="brand-text">Picoteo</div>
     </div>
     <div class="head-actions">
+      <button class="profile-btn lab-btn" id="openLab" aria-label="Lab de platos" title="Lab: probá ideas de platos">
+        <svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6L4.5 18.5A2 2 0 0 0 6.2 21.5h11.6a2 2 0 0 0 1.7-3L14 9V3"/><path d="M7 15h10"/></svg>
+      </button>
       <button class="profile-btn" id="openLibrary" aria-label="Explorar alimentos" title="Explorar alimentos">
         <svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5M8 7h7M8 11h5"/></svg>
       </button>
@@ -1845,15 +1865,6 @@ body.screen-open{overflow:hidden}
         <div id="ratiosList"></div>
       </div>
     </div>
-  </section>
-
-  <!-- PAGE: LAB -->
-  <section class="page" id="page-lab">
-    <div class="page-head">
-      <div class="page-title">Generador de platos</div>
-      <h1 class="page-subtitle">Lab</h1>
-    </div>
-    <div id="labBody"></div>
   </section>
 
   <!-- PAGE: CLUB -->
@@ -1940,10 +1951,6 @@ body.screen-open{overflow:hidden}
       <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3zM13 21h8V11h-8zM3 21h8v-6H3zM13 3v6h8V3z"/></svg>
       Overall
     </button>
-    <button class="tab" data-tab="lab">
-      <svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6L4.5 18.5A2 2 0 0 0 6.2 21.5h11.6a2 2 0 0 0 1.7-3L14 9V3"/><path d="M7 15h10"/></svg>
-      Lab
-    </button>
     <button class="tab" data-tab="club">
       <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.3 2.9-5.6 6.5-5.6s6.5 2.3 6.5 5.6"/><circle cx="17.5" cy="9.5" r="2.4"/><path d="M17 15c2.6.2 4.5 2 4.5 4.4"/></svg>
       Club
@@ -1989,6 +1996,23 @@ body.screen-open{overflow:hidden}
     <div class="screen-foot">
       <div class="foot-sum" id="logFootSum"></div>
       <button class="btn primary" id="logDone">Listo</button>
+    </div>
+  </div>
+
+  <!-- VENTANA: LAB DE PLATOS -->
+  <div class="screen" id="labScreen" aria-hidden="true">
+    <div class="screen-top">
+      <button class="icon-btn" id="labClose" aria-label="Volver">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="screen-title">Lab</div>
+      <div style="width:38px"></div>
+    </div>
+    <div class="screen-body" id="labBody"></div>
+    <div class="screen-foot lab-foot">
+      <button class="btn" id="labSave" aria-label="Guardar receta"></button>
+      <button class="btn primary" id="labNext"></button>
+      <button class="btn" id="labAdd">+ Sumar</button>
     </div>
   </div>
 
@@ -2909,7 +2933,7 @@ let state = {
   logSearch: '',
   logCat: 'todos',
   logOpen: null,      // receta desplegada en el registro
-  lab: {modo:'comida', pins:[], seed:1, busca:''},
+  lab: {modo:'comida', pins:[], seed:1, busca:'', idx:0},
   lib: {tab:'ing', cat:'todos', sort:'p', recSort:'quality', search:'', open:null},
   currentTab: 'resumen',
   sortBy: 'quality', // 'quality' | 'protein'
@@ -3935,7 +3959,7 @@ function fmtHora(d){
 }
 
 /* ==================== TABS ==================== */
-const TABS = ['overall','lab','club','water','fast'];
+const TABS = ['overall','club','water','fast'];
 
 function switchTab(tab){
   // Versiones viejas guardaban 'resumen', 'comidas' o 'calendario'.
@@ -3946,9 +3970,7 @@ function switchTab(tab){
   document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.id === 'page-'+tab));
   if(tab === 'overall') renderResumen();
   if(tab === 'water')   renderAgua();
-  if(tab === 'lab')     { labCache = null; renderLab(); }
-  // En el Lab cada plato tiene su propio botón de sumar: el flotante estorba.
-  document.body.classList.toggle('en-lab', tab === 'lab');
+
   if(tab === 'fast')    renderAyuno();
   // El reloj del ayuno solo corre mientras se está mirando esa pestaña.
   if(tab === 'fast') startFastTicker(); else stopFastTicker();
@@ -5331,7 +5353,7 @@ function abrirPantalla(id){
 function cerrarPantalla(id){
   document.getElementById(id).classList.remove('open', 'top');
   document.getElementById(id).setAttribute('aria-hidden', 'true');
-  if(!isOpen('logScreen') && !isOpen('libScreen')) document.body.classList.remove('screen-open');
+  if(!isOpen('logScreen') && !isOpen('libScreen') && !isOpen('labScreen')) document.body.classList.remove('screen-open');
 }
 
 function openLogScreen(dk){
@@ -6214,13 +6236,13 @@ function labGenerar(modo, seed, cuantas){
       const f = fijos.find(x => x.rol === rol && !usados.has(x.i.id));
       let i = f ? f.i : null;
       for(let k = 0; !i && k < 8; k++){ const c = pick(pool[sl]); if(c && !usados.has(c.id)) i = c; }
-      if(i){ usados.add(i.id); items.push({i, rol}); }
+      if(i){ usados.add(i.id); items.push({i, rol, slot:sl}); }
     });
     fijos.forEach(f => { if(!usados.has(f.i.id)){ usados.add(f.i.id); items.push({i:f.i, rol:f.rol}); } });
     if(items.length < 2) continue;
     const {n: nut, err} = resolver(items, T);
     const micro = bajos.reduce((a, k) => a + Math.min((nut[k] || 0) / (t[k] / 3), 1), 0);
-    cand.push({items:items.map(x => ({id:x.i.id, qty:x.q, rol:x.rol})), nut, err, score: err - micro * 0.08});
+    cand.push({items:items.map(x => ({id:x.i.id, qty:x.q, rol:x.rol, slot:x.slot})), nut, err, score: err - micro * 0.08});
   }
   cand.sort((a, b) => a.score - b.score);
   const platos = [], vistos = new Set();
@@ -6233,7 +6255,7 @@ function labGenerar(modo, seed, cuantas){
     platos.push(c);
     if(platos.length >= cuantas) break;
   }
-  return {T, platos, bajos};
+  return {T, platos, bajos, pool};
 }
 
 function nombrePlato(c, modo){
@@ -6244,95 +6266,126 @@ function nombrePlato(c, modo){
   return `${tipo} de ${lista}`;
 }
 
+/* Ventana del Lab: un plato por vez, grande. "Otra idea" pasa al siguiente,
+   tocar un ingrediente lo cambia por otro del mismo tipo y recalcula. */
+const LAB_ATAJOS = ['pollo_p','egg','tofu','atun','carne_m','lent','rice_br','pasta','papa','boniato','quinoa','palta'];
 let labCache = null;
+function labRegenerar(){
+  const L = state.lab;
+  labCache = {...labGenerar(L.modo, L.seed, 12)};
+  L.idx = 0;
+}
+function openLab(){
+  if(!labCache) labRegenerar();
+  abrirPantalla('labScreen');
+  renderLab();
+}
+function closeLab(){ cerrarPantalla('labScreen'); }
+function labPlato(){ return labCache && labCache.platos.length ? labCache.platos[state.lab.idx % labCache.platos.length] : null; }
+
+function labCambiarIngrediente(k){
+  const c = labPlato(); if(!c) return;
+  const x = c.items[k]; if(!x.slot) return;
+  const usados = new Set(c.items.map(y => y.id));
+  const opciones = labCache.pool[x.slot].filter(i => !usados.has(i.id));
+  if(!opciones.length) return;
+  const nuevo = opciones[Math.floor(Math.random() * opciones.length)];
+  const items = c.items.map((y, n) => ({i: INGR_BY_ID[n === k ? nuevo.id : y.id], rol: n === k ? (rolDe(nuevo) || y.rol) : y.rol, slot: y.slot}));
+  const {n: nut, err} = resolver(items, labCache.T);
+  labCache.platos[state.lab.idx % labCache.platos.length] = {items: items.map(y => ({id:y.i.id, qty:y.q, rol:y.rol, slot:y.slot})), nut, err};
+  renderLab();
+}
+
 function renderLab(){
   const el = document.getElementById('labBody');
   const L = state.lab;
-  if(!labCache || labCache.modo !== L.modo || labCache.seed !== L.seed || labCache.pins !== L.pins.join(',')){
-    labCache = {modo:L.modo, seed:L.seed, pins:L.pins.join(','), ...labGenerar(L.modo, L.seed, 3)};
-  }
-  const {T, platos, bajos} = labCache;
+  const T = labCache.T, c = labPlato();
+  const diet = dietaDe(state.profile);
+  const atajos = LAB_ATAJOS.map(id => INGR_BY_ID[id]).filter(i => i && ingApto(i, diet));
   const q = norm(L.busca || '');
-  const sugeridos = q ? INGREDIENTS.filter(i => rolDe(i) && !NO_RECO.has(i.id) && ingApto(i, dietaDe(state.profile)) && norm(i.name).includes(q) && !L.pins.includes(i.id)).slice(0, 6) : [];
+  const encontrados = q ? INGREDIENTS.filter(i => rolDe(i) && !NO_RECO.has(i.id) && ingApto(i, diet) && norm(i.name).includes(q) && !L.pins.includes(i.id)).slice(0, 6) : [];
   const t = computeTargets(state.profile, todayKey());
   const barra = (v, obj) => `<div class="bar"><i class="${v > obj * 1.15 ? 'over' : (v >= obj * 0.9 ? 'good' : '')}" style="width:${Math.min(v / Math.max(obj, 1) * 100, 100)}%"></i></div>`;
+  const modos = {comida:'Comida', proxima:'Lo que me falta', post:'Post-entreno', snack:'Snack'};
 
   el.innerHTML = `
+    <div class="lab-intro">Probá combinaciones. Tocá un ingrediente para cambiarlo y la app recalcula los gramos.</div>
     <div class="chips scroll-x" style="padding-top:0">
-      ${Object.keys(LAB_MODOS).map(k => `<button class="chip ${L.modo === k ? 'active' : ''}" data-lmodo="${k}">${LAB_MODOS[k].l}</button>`).join('')}
+      ${Object.keys(modos).map(k => `<button class="chip ${L.modo === k ? 'active' : ''}" data-lmodo="${k}">${modos[k]}</button>`).join('')}
     </div>
-    ${T ? `<div class="lab-target"><span class="lab-desc">${LAB_MODOS[L.modo].d}</span><br>Objetivo <b>${T.kcal} kcal</b> · P ${T.p} g · C ${T.c} g · G ${T.f} g${bajos && bajos.length ? `<br><span>Priorizando ${bajos.slice(0,3).map(k => MICRO_NOMBRE[k] ? MICRO_NOMBRE[k].replace(/^(el|la) /, '') : k).join(', ')}, que hoy venís bajo</span>` : ''}</div>` : ''}
-    <div class="lab-pins">
-      <div class="search-wrap" style="margin:0">
-        ${ico('search')}
-        <input type="search" class="search" id="labBusca" placeholder="Quiero usar… (pollo, arroz, tofu)" value="${escapeHtml(L.busca || '')}" autocomplete="off">
-      </div>
-      ${sugeridos.length ? `<div class="lab-sug">${sugeridos.map(i => `<button class="chip" data-lpin="${i.id}">+ ${i.name}</button>`).join('')}</div>` : ''}
-      ${L.pins.length ? `<div class="lab-sug">${L.pins.map(id => `<button class="chip active" data-lunpin="${id}">${INGR_BY_ID[id].name} ×</button>`).join('')}</div>` : ''}
+    ${!T ? `<div class="empty">${ico('star')}<br>Ya cubriste lo que te faltaba hoy.<br>Probá con "Comida" o "Snack".</div>` :
+      !c ? `<div class="empty">No salió ninguna combinación con eso. Sacá algún ingrediente fijado.</div>` : (() => {
+      const m = Math.max(0, Math.round(100 - c.err * 45));
+      const micros = ['Fe','Ca','Mg','fb','K','Zn','B12','D'].map(x => ({x, pct: t[x] ? Math.round((c.nut[x] || 0) / t[x] * 100) : 0}))
+        .sort((a, b) => b.pct - a.pct).slice(0, 3);
+      return `
+      <div class="lab-card big">
+        <div class="lab-top">
+          <div class="lab-name">${nombrePlato(c, L.modo)}</div>
+          <div class="lab-match ${m >= 85 ? 'good' : ''}">${m}%<small>match</small></div>
+        </div>
+        <div class="lab-items">
+          ${c.items.map((x, k) => { const i = INGR_BY_ID[x.id]; return `
+            <button class="lab-item" data-lswap="${k}" ${x.slot ? '' : 'disabled'}>
+              ${ingThumb(i)}<span>${nombreCorto(i)}</span><b>${qtyLabel(i, x.qty)}</b>
+              ${x.slot ? `<i class="swap">${ico('swap')}</i>` : ''}
+            </button>`; }).join('')}
+        </div>
+        <div class="lab-macros">
+          <div><span>kcal</span><b>${c.nut.kcal}<small>/${T.kcal}</small></b>${barra(c.nut.kcal, T.kcal)}</div>
+          <div><span>Prot</span><b>${Math.round(c.nut.p)}<small>/${T.p}g</small></b>${barra(c.nut.p, T.p)}</div>
+          <div><span>Carbo</span><b>${Math.round(c.nut.c)}<small>/${T.c}g</small></b>${barra(c.nut.c, T.c)}</div>
+          <div><span>Grasa</span><b>${Math.round(c.nut.f)}<small>/${T.f}g</small></b>${barra(c.nut.f, T.f)}</div>
+        </div>
+        <div class="lab-micros">${micros.map(z => `<span>${(MICRO_NOMBRE[z.x] || z.x).replace(/^(el|la) /, '')} ${z.pct}%</span>`).join('')}<em>del día</em></div>
+      </div>`; })()}
+    <div class="lab-sec">Quiero usar</div>
+    <div class="lab-sug">
+      ${L.pins.map(id => `<button class="chip active" data-lunpin="${id}">${nombreCorto(INGR_BY_ID[id])} ×</button>`).join('')}
+      ${atajos.filter(i => !L.pins.includes(i.id)).map(i => `<button class="chip" data-lpin="${i.id}">${nombreCorto(i)}</button>`).join('')}
     </div>
-    <div class="lab-head"><span>${platos.length ? 'Combinaciones para vos' : ''}</span><button class="link-btn" id="labShuffle">${ico('swap')} Otras ideas</button></div>
-    ${!T ? `<div class="empty">${ico('star')}<br>Ya cubriste lo que te faltaba hoy. Probá con "Una comida" o "Snack".</div>` :
-      !platos.length ? `<div class="empty">No encontré combinaciones con esos ingredientes. Probá sacar alguno.</div>` :
-      platos.map((c, k) => {
-        const m = Math.max(0, Math.round(100 - c.err * 45));
-        const micros = ['Fe','Ca','Mg','fb','K','Zn','B12','D'].map(x => ({x, pct: t[x] ? Math.round((c.nut[x] || 0) / t[x] * 100) : 0}))
-          .sort((a, b) => b.pct - a.pct).slice(0, 3);
-        return `
-        <div class="lab-card">
-          <div class="lab-top">
-            <div class="lab-name">${nombrePlato(c, L.modo)}</div>
-            <div class="lab-match ${m >= 85 ? 'good' : ''}">${m}%<small>match</small></div>
-          </div>
-          <div class="lab-items">
-            ${c.items.map(x => { const i = INGR_BY_ID[x.id]; return `<div class="lab-item">${ingThumb(i)}<span>${nombreCorto(i)}</span><b>${qtyLabel(i, x.qty)}</b></div>`; }).join('')}
-          </div>
-          <div class="lab-macros">
-            <div><span>kcal</span><b>${c.nut.kcal}<small>/${T.kcal}</small></b>${barra(c.nut.kcal, T.kcal)}</div>
-            <div><span>Prot</span><b>${Math.round(c.nut.p)}<small>/${T.p}g</small></b>${barra(c.nut.p, T.p)}</div>
-            <div><span>Carbo</span><b>${Math.round(c.nut.c)}<small>/${T.c}g</small></b>${barra(c.nut.c, T.c)}</div>
-            <div><span>Grasa</span><b>${Math.round(c.nut.f)}<small>/${T.f}g</small></b>${barra(c.nut.f, T.f)}</div>
-          </div>
-          <div class="lab-micros">${micros.map(z => `<span>${(MICRO_NOMBRE[z.x] || z.x).replace(/^(el|la) /, '')} ${z.pct}%</span>`).join('')}<em>del día</em></div>
-          <div class="lab-actions">
-            <button class="btn" data-lotra="${k}">${ico('swap')}Otra</button>
-            <button class="btn" data-lsave="${k}">${ico('star')}Guardar</button>
-            <button class="btn primary" data-ladd="${k}">+ Sumar</button>
-          </div>
-        </div>`;
-      }).join('')}
+    <div class="search-wrap" style="margin-top:8px">
+      ${ico('search')}
+      <input type="search" class="search" id="labBusca" placeholder="Buscar otro ingrediente…" value="${escapeHtml(L.busca || '')}" autocomplete="off">
+    </div>
+    ${encontrados.length ? `<div class="lab-sug">${encontrados.map(i => `<button class="chip" data-lpin="${i.id}">+ ${i.name}</button>`).join('')}</div>` : ''}
   `;
-  el.querySelectorAll('[data-lmodo]').forEach(b => b.onclick = () => { L.modo = b.dataset.lmodo; saveState(); renderLab(); });
+  // pie
+  const saveB = document.getElementById('labSave'), nextB = document.getElementById('labNext'), addB = document.getElementById('labAdd');
+  saveB.innerHTML = ico('star'); nextB.innerHTML = `${ico('swap')} Otra idea`;
+  [saveB, addB].forEach(b => b.disabled = !c);
+
+  el.querySelectorAll('[data-lmodo]').forEach(b => b.onclick = () => { L.modo = b.dataset.lmodo; saveState(); labRegenerar(); renderLab(); });
+  el.querySelectorAll('[data-lswap]').forEach(b => b.onclick = () => labCambiarIngrediente(+b.dataset.lswap));
+  el.querySelectorAll('[data-lpin]').forEach(b => b.onclick = () => { L.pins.push(b.dataset.lpin); L.busca = ''; saveState(); labRegenerar(); renderLab(); });
+  el.querySelectorAll('[data-lunpin]').forEach(b => b.onclick = () => { L.pins = L.pins.filter(x => x !== b.dataset.lunpin); saveState(); labRegenerar(); renderLab(); });
   const busca = document.getElementById('labBusca');
   busca.oninput = () => { L.busca = busca.value; renderLab(); const n = document.getElementById('labBusca'); n.focus(); n.setSelectionRange(n.value.length, n.value.length); };
-  el.querySelectorAll('[data-lpin]').forEach(b => b.onclick = () => { L.pins.push(b.dataset.lpin); L.busca = ''; saveState(); renderLab(); });
-  el.querySelectorAll('[data-lunpin]').forEach(b => b.onclick = () => { L.pins = L.pins.filter(x => x !== b.dataset.lunpin); saveState(); renderLab(); });
-  document.getElementById('labShuffle').onclick = () => { L.seed++; renderLab(); };
-  el.querySelectorAll('[data-lotra]').forEach(b => b.onclick = () => {
-    // Reemplaza solo esa tarjeta por la mejor que todavía no se mostró.
-    const k = +b.dataset.lotra;
-    const ya = new Set(labCache.platos.map(c => c.items.map(x => x.id).join('+')));
-    for(let s = 1; s < 20; s++){
-      const otra = labGenerar(L.modo, L.seed * 97 + s * 13 + k, 3).platos.find(c => !ya.has(c.items.map(x => x.id).join('+')));
-      if(otra){ labCache.platos[k] = otra; break; }
-    }
-    renderLab();
-  });
-  el.querySelectorAll('[data-ladd]').forEach(b => b.onclick = () => {
-    const c = labCache.platos[+b.dataset.ladd], tk = todayKey();
-    if(!state.selectedByDate[tk]) state.selectedByDate[tk] = [];
-    c.items.forEach(x => { state.selectedByDate[tk].push(ingEntryId(x.id, x.qty)); state.lastQty[x.id] = x.qty; });
-    saveState(); labCache = null; renderLab(); renderSegTags();
-    toast('Plato sumado a hoy');
-  });
-  el.querySelectorAll('[data-lsave]').forEach(b => b.onclick = () => {
-    const c = labCache.platos[+b.dataset.lsave];
-    const meal = {id:'u' + Date.now().toString(36), name:nombrePlato(c, L.modo), items:c.items.map(x => ({id:x.id, qty:x.qty})), prep:'Generada en el Lab.', tags:[], custom:true};
-    state.customMeals.unshift(meal);
-    if(!state.favs.includes(meal.id)) state.favs.unshift(meal.id);
-    saveState();
-    toast('Guardada en recetas y favoritos');
-  });
 }
+function labOtra(){
+  const L = state.lab;
+  L.idx++;
+  if(!labCache.platos.length || L.idx >= labCache.platos.length){ L.seed++; labRegenerar(); }
+  renderLab();
+  document.getElementById('labBody').scrollTop = 0;
+}
+function labSumar(){
+  const c = labPlato(); if(!c) return;
+  const tk = todayKey();
+  if(!state.selectedByDate[tk]) state.selectedByDate[tk] = [];
+  c.items.forEach(x => { state.selectedByDate[tk].push(ingEntryId(x.id, x.qty)); state.lastQty[x.id] = x.qty; });
+  saveState(); refreshViews(); renderSegTags();
+  toast('Plato sumado a hoy');
+}
+function labGuardar(){
+  const c = labPlato(); if(!c) return;
+  const meal = {id:'u' + Date.now().toString(36), name:nombrePlato(c, state.lab.modo), items:c.items.map(x => ({id:x.id, qty:x.qty})), prep:'Creada en el Lab.', tags:[], custom:true};
+  state.customMeals.unshift(meal);
+  state.favs.unshift(meal.id);
+  saveState();
+  toast('Guardada en tus recetas y favoritos');
+}
+
 /* ==================== TOAST ==================== */
 let toastTimer;
 function toast(msg){
@@ -6397,6 +6450,11 @@ function init(){
   document.getElementById('logLibrary').onclick = openLibrary;
   document.getElementById('logSearch').oninput = (e) => { state.logSearch = e.target.value.trim(); renderLog(); };
   document.getElementById('openLibrary').onclick = openLibrary;
+  document.getElementById('openLab').onclick = openLab;
+  document.getElementById('labClose').onclick = closeLab;
+  document.getElementById('labNext').onclick = labOtra;
+  document.getElementById('labAdd').onclick = labSumar;
+  document.getElementById('labSave').onclick = labGuardar;
   document.getElementById('libClose').onclick = closeLibrary;
   document.getElementById('libSearch').oninput = (e) => { state.lib.search = e.target.value.trim(); renderLib(); };
   document.getElementById('libSort').onchange = (e) => {
@@ -6416,6 +6474,7 @@ function init(){
     if(e.key !== 'Escape') return;
     if(document.getElementById('qtySheet').classList.contains('show')) closeQtySheet();
     else if(isOpen('libScreen')) closeLibrary();
+    else if(isOpen('labScreen')) closeLab();
     else if(isOpen('logScreen')) closeLogScreen();
   });
   document.getElementById('openCal').onclick = openCalModal;
