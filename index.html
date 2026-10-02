@@ -1594,6 +1594,46 @@ body.screen-open{overflow:hidden}
 .lib-val small{font-size:11px;color:var(--text-3);margin-left:2px}
 .lib-val .bar{height:4px;margin-top:5px}
 .lib-val .vd{display:block;font-size:10.5px;color:var(--text-3);margin-top:3px}
+
+/* ---- Íconos SVG ---- */
+.ico{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;display:block}
+.ico.xs{width:11px;height:11px;display:inline-block;vertical-align:-1px;stroke-width:2.4}
+.row-thumb .ico{width:24px;height:24px}
+.row-thumb.today-meal-thumb{width:40px;height:40px;border-radius:12px;margin-right:10px}
+.row-thumb.today-meal-thumb .ico{width:20px;height:20px}
+.row-thumb.meal-thumb{width:44px;height:44px}
+.star .ico{width:21px;height:21px}
+.star.on .ico{fill:#f5b301;stroke:#f5b301}
+.star.sm{width:28px;height:24px}
+.star.sm .ico{width:17px;height:17px}
+.fav-btn{display:flex;align-items:center;justify-content:center;gap:6px}
+.fav-btn .ico{width:18px;height:18px}
+.fav-btn.on .ico{fill:#f5b301;stroke:#f5b301}
+.empty .big{display:flex;justify-content:center;color:var(--text-4)}
+.empty .big .ico{width:38px;height:38px;stroke-width:1.5}
+.qfav-lbl .ico{width:14px;height:14px;fill:#f5b301;stroke:#f5b301}
+.acc-ico .ico{width:17px;height:17px;color:var(--brand)}
+.wk-stat-ico{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;background:rgba(var(--brand-rgb),.1);color:var(--brand)}
+.wk-stat-ico .ico{width:19px;height:19px}
+.agua-goal button .ico{width:12px;height:12px;stroke-width:2.2}
+
+/* ---- Ayuno: horario desde / hasta ---- */
+.fast-times label{display:block;min-width:0}
+.fast-times{grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto}
+.time-in{
+  width:100%;margin-top:4px;padding:8px 10px;border-radius:10px;
+  border:1px solid var(--line);background:var(--panel);color:var(--text);
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;min-width:0;
+}
+.time-in::-webkit-calendar-picker-indicator{margin-left:2px;padding:0;width:14px}
+.time-in::-webkit-datetime-edit{padding:0}
+.time-in{padding:8px 6px 8px 9px}
+.time-in:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(var(--brand-rgb),.12)}
+.fast-dur{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:15px;color:var(--brand);padding:0 4px;align-self:end;margin-bottom:9px}
+.fast-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fast-btns .btn{padding:13px 8px}
+.fast-past{display:grid;gap:10px;margin-top:10px;padding:12px;border-radius:14px;background:var(--panel-2);border:1px solid var(--line)}
+.fast-past .time-in{font-size:15px}
 </style>
 </head>
 <body>
@@ -1645,7 +1685,7 @@ body.screen-open{overflow:hidden}
     <!-- El detalle queda plegado: está todo, pero no de golpe -->
     <div class="acc" data-acc="macros">
       <div class="acc-head" data-acctoggle="macros">
-        <div class="acc-ico">◐</div>
+        <div class="acc-ico"><svg class="ico" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9h-9z"/><path d="M15 2.6A9 9 0 0 1 21.4 9H15z"/></svg></div>
         <div class="acc-title">Macronutrientes<div class="acc-sum" id="sumMacros"></div></div>
         <div class="acc-chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg></div>
       </div>
@@ -1658,7 +1698,7 @@ body.screen-open{overflow:hidden}
 
     <div class="acc" data-acc="micros">
       <div class="acc-head" data-acctoggle="micros">
-        <div class="acc-ico">✦</div>
+        <div class="acc-ico"><svg class="ico" viewBox="0 0 24 24"><path d="M12 3l1.9 5.6L19.5 10.5l-5.6 1.9L12 18l-1.9-5.6L4.5 10.5l5.6-1.9z"/><path d="M19 17v4M17 19h4"/></svg></div>
         <div class="acc-title">Micronutrientes<div class="acc-sum" id="sumMicros"></div></div>
         <div class="acc-chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg></div>
       </div>
@@ -1670,7 +1710,7 @@ body.screen-open{overflow:hidden}
 
     <div class="acc" data-acc="ratios">
       <div class="acc-head" data-acctoggle="ratios">
-        <div class="acc-ico">⇄</div>
+        <div class="acc-ico"><svg class="ico" viewBox="0 0 24 24"><path d="M4 8h15l-3.5-3.5M20 16H5l3.5 3.5"/></svg></div>
         <div class="acc-title">Balance omega<div class="acc-sum" id="sumRatios"></div></div>
         <div class="acc-chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg></div>
       </div>
@@ -1906,7 +1946,7 @@ body.screen-open{overflow:hidden}
       <!-- La base de ingredientes completa, acá donde se usa -->
       <div class="acc" data-acc="ingbrowser" style="margin-top:12px">
         <div class="acc-head" data-acctoggle="ingbrowser">
-          <div class="acc-ico">☰</div>
+          <div class="acc-ico"><svg class="ico" viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5M8.5 7.5h6M8.5 11h4"/></svg></div>
           <div class="acc-title">Explorar la base<div class="acc-sum"><span id="ingTotalCount">118</span> ingredientes con macros, micros y aminoácidos</div></div>
           <div class="acc-chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg></div>
         </div>
@@ -2155,6 +2195,67 @@ const INGREDIENTS = [
   {id:'pan_lact_cer0',cat:'cereal',name:'Pan lactal Cero&Cero (Bimbo)',    per:100, unit:'g', kcal:225, p:10.0, c:38.0, f:3.5, Fe:2.5, B12:0, Zn:1.3, Ca:115, O3:0.10, ED:0, O6:1.4, D:0, Mg:60, fb:8.5,  Na:430, K:215},
   {id:'pan_arts',  cat:'cereal', name:'Pan artesano (Bimbo Artesano)',     per:100, unit:'g', kcal:275, p:9.0,  c:50.0, f:4.0, Fe:2.6, B12:0, Zn:1.0, Ca:135, O3:0.10, ED:0, O6:1.6, D:0, Mg:35, fb:3.5,  Na:475, K:155},
   {id:'pan_brioche',cat:'cereal',name:'Pan brioche/lactal con manteca',    per:100, unit:'g', kcal:325, p:9.0,  c:48.0, f:10.0,Fe:2.5, B12:0.1,Zn:0.9,Ca:150,O3:0.10, ED:0, O6:4.0, D:0.2,Mg:25,fb:2.0,  Na:480, K:130},
+  // ===== COMIDAS TÍPICAS ARGENTINAS Y TOPPINGS (estimaciones por porción casera / de pizzería) =====
+  {id:'pizza_muzza', cat:'arg', name:'Pizza de muzzarella (porción)', per:130, unit:'u', ico:'pizza', kcal:330, p:14, c:38, f:13, Fe:2.4, B12:0.6, Zn:1.6, Ca:260, O3:0.15, ED:0, O6:1.5, D:0.2, Mg:25, fb:2, Na:700, K:180},
+  {id:'pizza_napo', cat:'arg', name:'Pizza napolitana (porción)', per:140, unit:'u', ico:'pizza', kcal:320, p:14, c:38, f:12, Fe:2.5, B12:0.6, Zn:1.6, Ca:250, O3:0.15, ED:0, O6:1.6, D:0.2, Mg:28, fb:2.5, Na:680, K:260},
+  {id:'pizza_fugazzeta', cat:'arg', name:'Fugazzeta (porción)', per:140, unit:'u', ico:'pizza', kcal:370, p:15, c:40, f:17, Fe:2.3, B12:0.7, Zn:1.8, Ca:300, O3:0.15, ED:0, O6:2, D:0.2, Mg:26, fb:2.4, Na:720, K:200},
+  {id:'pizza_fugazza', cat:'arg', name:'Fugazza (porción)', per:110, unit:'u', ico:'pizza', kcal:290, p:7, c:42, f:10, Fe:2.2, B12:0, Zn:0.7, Ca:40, O3:0.1, ED:0, O6:1.8, D:0, Mg:20, fb:2.5, Na:600, K:150},
+  {id:'pizza_jym', cat:'arg', name:'Pizza jamón y morrones (porción)', per:140, unit:'u', ico:'pizza', kcal:350, p:17, c:38, f:14, Fe:2.5, B12:0.7, Zn:2, Ca:250, O3:0.15, ED:0, O6:1.7, D:0.4, Mg:28, fb:2.4, Na:900, K:260},
+  {id:'pizza_calabresa', cat:'arg', name:'Pizza con longaniza (porción)', per:135, unit:'u', ico:'pizza', kcal:380, p:16, c:37, f:19, Fe:2.5, B12:0.8, Zn:2.1, Ca:240, O3:0.2, ED:0, O6:2.4, D:0.3, Mg:26, fb:2, Na:1000, K:230},
+  {id:'pizza_rucula', cat:'arg', name:'Pizza rúcula y crudo (porción)', per:140, unit:'u', ico:'pizza', kcal:360, p:18, c:37, f:15, Fe:2.7, B12:0.8, Zn:2.1, Ca:280, O3:0.2, ED:0, O6:1.8, D:0.3, Mg:30, fb:2.3, Na:1050, K:300},
+  {id:'pizza_cuatroq', cat:'arg', name:'Pizza cuatro quesos (porción)', per:135, unit:'u', ico:'pizza', kcal:390, p:18, c:36, f:19, Fe:2, B12:0.9, Zn:2.3, Ca:380, O3:0.2, ED:0, O6:1.4, D:0.3, Mg:27, fb:1.8, Na:900, K:170},
+  {id:'pizza_anana', cat:'arg', name:'Pizza jamón y ananá (porción)', per:140, unit:'u', ico:'pizza', kcal:340, p:15, c:42, f:12, Fe:2.2, B12:0.6, Zn:1.7, Ca:240, O3:0.15, ED:0, O6:1.5, D:0.3, Mg:26, fb:2.2, Na:820, K:250},
+  {id:'faina', cat:'arg', name:'Fainá (porción)', per:80, unit:'u', ico:'pizza', kcal:190, p:6.5, c:20, f:9.5, Fe:1.6, B12:0, Zn:1, Ca:15, O3:0.2, ED:0, O6:2.5, D:0, Mg:50, fb:3.5, Na:300, K:250},
+  {id:'emp_carne', cat:'arg', name:'Empanada de carne al horno', per:90, unit:'u', ico:'empanada', kcal:240, p:10, c:23, f:12, Fe:1.8, B12:0.6, Zn:2, Ca:25, O3:0.1, ED:0, O6:2, D:0.1, Mg:18, fb:1.5, Na:400, K:180},
+  {id:'emp_carne_frita', cat:'arg', name:'Empanada de carne frita', per:95, unit:'u', ico:'empanada', kcal:300, p:10, c:23, f:19, Fe:1.8, B12:0.6, Zn:2, Ca:25, O3:0.3, ED:0, O6:6, D:0.1, Mg:18, fb:1.5, Na:420, K:180},
+  {id:'emp_pollo', cat:'arg', name:'Empanada de pollo', per:90, unit:'u', ico:'empanada', kcal:220, p:11, c:23, f:9, Fe:1.2, B12:0.2, Zn:1, Ca:25, O3:0.1, ED:0, O6:2.2, D:0, Mg:18, fb:1.5, Na:380, K:170},
+  {id:'emp_jyq', cat:'arg', name:'Empanada de jamón y queso', per:80, unit:'u', ico:'empanada', kcal:240, p:10, c:22, f:12, Fe:1.2, B12:0.4, Zn:1.2, Ca:150, O3:0.1, ED:0, O6:1.6, D:0.2, Mg:15, fb:1, Na:550, K:120},
+  {id:'emp_humita', cat:'arg', name:'Empanada de humita', per:85, unit:'u', ico:'empanada', kcal:220, p:6, c:28, f:9, Fe:1, B12:0.2, Zn:0.8, Ca:80, O3:0.1, ED:0, O6:1.6, D:0, Mg:22, fb:2, Na:330, K:170},
+  {id:'emp_caprese', cat:'arg', name:'Empanada caprese', per:80, unit:'u', ico:'empanada', kcal:230, p:8, c:23, f:12, Fe:1.1, B12:0.3, Zn:0.9, Ca:160, O3:0.1, ED:0, O6:1.5, D:0, Mg:16, fb:1.4, Na:420, K:150},
+  {id:'emp_verdura', cat:'arg', name:'Empanada de verdura', per:85, unit:'u', ico:'empanada', kcal:210, p:7, c:23, f:10, Fe:1.8, B12:0.2, Zn:0.9, Ca:130, O3:0.15, ED:0, O6:1.8, D:0, Mg:25, fb:2, Na:380, K:220},
+  {id:'emp_cyq', cat:'arg', name:'Empanada de cebolla y queso', per:85, unit:'u', ico:'empanada', kcal:240, p:8, c:25, f:12, Fe:1, B12:0.3, Zn:0.9, Ca:150, O3:0.1, ED:0, O6:1.6, D:0, Mg:16, fb:1.5, Na:430, K:140},
+  {id:'mila_napo', cat:'arg', name:'Milanesa napolitana (porción)', per:220, unit:'u', ico:'meat', kcal:520, p:38, c:30, f:27, Fe:4, B12:2.5, Zn:6, Ca:280, O3:0.3, ED:0, O6:4, D:0.4, Mg:45, fb:2, Na:950, K:550},
+  {id:'mila_pollo', cat:'arg', name:'Milanesa de pollo al horno', per:150, unit:'u', ico:'meat', kcal:330, p:34, c:20, f:12, Fe:1.6, B12:0.4, Zn:1.4, Ca:40, O3:0.2, ED:0, O6:3, D:0.1, Mg:40, fb:1, Na:500, K:380},
+  {id:'sand_mila', cat:'arg', name:'Sándwich de milanesa completo', per:280, unit:'u', ico:'sandwich', kcal:650, p:35, c:60, f:28, Fe:4.5, B12:1.8, Zn:4.5, Ca:120, O3:0.3, ED:0, O6:5, D:0.5, Mg:50, fb:3.5, Na:1200, K:550},
+  {id:'choripan', cat:'arg', name:'Choripán', per:200, unit:'u', ico:'sandwich', kcal:560, p:22, c:45, f:32, Fe:3, B12:1.2, Zn:3.5, Ca:70, O3:0.3, ED:0, O6:4, D:0.4, Mg:35, fb:2, Na:1300, K:350},
+  {id:'asado_tira', cat:'arg', name:'Asado de tira (cocido)', per:100, unit:'g', ico:'meat', kcal:295, p:22, c:0, f:23, Fe:2.3, B12:2.6, Zn:5.8, Ca:10, O3:0.1, ED:0, O6:0.6, D:0.1, Mg:18, fb:0, Na:60, K:290},
+  {id:'vacio', cat:'arg', name:'Vacío asado', per:100, unit:'g', ico:'meat', kcal:260, p:26, c:0, f:17, Fe:2.3, B12:2.4, Zn:5, Ca:12, O3:0.1, ED:0, O6:0.5, D:0.1, Mg:22, fb:0, Na:60, K:320},
+  {id:'chorizo', cat:'arg', name:'Chorizo parrillero', per:100, unit:'g', ico:'animal', kcal:455, p:24, c:1.9, f:38, Fe:1.6, B12:2, Zn:3.4, Ca:8, O3:0.3, ED:0, O6:3.5, D:0.5, Mg:18, fb:0, Na:1235, K:398},
+  {id:'morcilla', cat:'arg', name:'Morcilla', per:100, unit:'g', ico:'animal', kcal:379, p:14.6, c:1.3, f:34.5, Fe:6.4, B12:1, Zn:1.3, Ca:6, O3:0.2, ED:0, O6:3, D:0, Mg:14, fb:0, Na:680, K:38},
+  {id:'provoleta', cat:'arg', name:'Provoleta (porción)', per:100, unit:'u', ico:'lact', kcal:351, p:25.6, c:2.1, f:26.6, Fe:0.5, B12:1.5, Zn:3.2, Ca:756, O3:0.2, ED:0, O6:0.6, D:0.5, Mg:28, fb:0, Na:876, K:138},
+  {id:'hamburguesa', cat:'arg', name:'Hamburguesa completa', per:250, unit:'u', ico:'sandwich', kcal:600, p:30, c:45, f:32, Fe:4, B12:2.2, Zn:5, Ca:180, O3:0.3, ED:0, O6:4, D:0.4, Mg:40, fb:2.5, Na:1100, K:450},
+  {id:'pancho', cat:'arg', name:'Pancho', per:120, unit:'u', ico:'sandwich', kcal:300, p:10, c:28, f:16, Fe:1.6, B12:0.5, Zn:1.4, Ca:60, O3:0.2, ED:0, O6:2.2, D:0.3, Mg:18, fb:1.2, Na:800, K:180},
+  {id:'tostado', cat:'arg', name:'Tostado de jamón y queso', per:130, unit:'u', ico:'sandwich', kcal:340, p:17, c:30, f:16, Fe:2, B12:0.7, Zn:2, Ca:300, O3:0.1, ED:0, O6:1.2, D:0.4, Mg:25, fb:1.5, Na:1000, K:200},
+  {id:'tarta_jyq', cat:'arg', name:'Tarta de jamón y queso (porción)', per:150, unit:'u', ico:'pizza', kcal:400, p:16, c:30, f:24, Fe:1.8, B12:0.8, Zn:1.8, Ca:250, O3:0.2, ED:0, O6:2.5, D:0.5, Mg:22, fb:1.2, Na:800, K:200},
+  {id:'tarta_verdura', cat:'arg', name:'Tarta de verdura (porción)', per:150, unit:'u', ico:'pizza', kcal:330, p:12, c:28, f:19, Fe:2.5, B12:0.5, Zn:1.3, Ca:220, O3:0.3, ED:0, O6:3, D:0.4, Mg:40, fb:2.5, Na:600, K:350},
+  {id:'tortilla_papa', cat:'arg', name:'Tortilla de papa (porción)', per:150, unit:'u', ico:'flan', kcal:260, p:9, c:20, f:16, Fe:1.4, B12:0.5, Zn:1, Ca:40, O3:0.2, ED:0, O6:4, D:1, Mg:30, fb:1.8, Na:350, K:450},
+  {id:'guiso_lentejas', cat:'arg', name:'Guiso de lentejas (plato)', per:350, unit:'u', ico:'pot', kcal:420, p:22, c:50, f:14, Fe:7, B12:0.8, Zn:3.5, Ca:70, O3:0.2, ED:0, O6:2, D:0.2, Mg:90, fb:14, Na:800, K:1000},
+  {id:'locro', cat:'arg', name:'Locro (plato)', per:350, unit:'u', ico:'pot', kcal:480, p:22, c:45, f:23, Fe:4, B12:1.2, Zn:4, Ca:60, O3:0.2, ED:0, O6:2.5, D:0.2, Mg:70, fb:8, Na:900, K:900},
+  {id:'fideos_tuco', cat:'arg', name:'Fideos con tuco (plato)', per:300, unit:'u', ico:'pasta', kcal:420, p:14, c:74, f:8, Fe:3, B12:0, Zn:1.5, Ca:60, O3:0.1, ED:0, O6:2, D:0, Mg:55, fb:5, Na:550, K:500},
+  {id:'ravioles', cat:'arg', name:'Ravioles de ricota con salsa (plato)', per:300, unit:'u', ico:'pasta', kcal:520, p:22, c:65, f:18, Fe:3, B12:0.6, Zn:2, Ca:300, O3:0.2, ED:0, O6:2, D:0.3, Mg:45, fb:4, Na:750, K:450},
+  {id:'arroz_pollo', cat:'arg', name:'Arroz con pollo (plato)', per:350, unit:'u', ico:'pot', kcal:480, p:32, c:55, f:13, Fe:2.2, B12:0.4, Zn:2.5, Ca:50, O3:0.2, ED:0, O6:3, D:0.2, Mg:55, fb:2.5, Na:700, K:520},
+  {id:'pastel_papa', cat:'arg', name:'Pastel de papa (porción)', per:300, unit:'u', ico:'pot', kcal:450, p:25, c:35, f:23, Fe:3.5, B12:2, Zn:5, Ca:120, O3:0.2, ED:0, O6:1.5, D:0.4, Mg:55, fb:3.5, Na:650, K:900},
+  {id:'ensalada_mixta', cat:'arg', name:'Ensalada mixta con aceite', per:210, unit:'u', ico:'veg', kcal:130, p:2, c:8, f:10.4, Fe:1, B12:0, Zn:0.4, Ca:40, O3:0.15, ED:0, O6:1, D:0, Mg:22, fb:3, Na:20, K:450},
+  {id:'medialuna', cat:'arg', name:'Medialuna de manteca', per:45, unit:'u', ico:'croissant', kcal:190, p:3.5, c:22, f:10, Fe:1, B12:0.1, Zn:0.3, Ca:20, O3:0.1, ED:0, O6:0.6, D:0.1, Mg:8, fb:0.8, Na:200, K:50},
+  {id:'medialuna_grasa', cat:'arg', name:'Medialuna de grasa', per:40, unit:'u', ico:'croissant', kcal:170, p:3.2, c:20, f:9, Fe:0.9, B12:0, Zn:0.3, Ca:12, O3:0.1, ED:0, O6:0.8, D:0, Mg:7, fb:0.8, Na:220, K:45},
+  {id:'factura', cat:'arg', name:'Factura (vigilante, bola de fraile)', per:60, unit:'u', ico:'croissant', kcal:250, p:4, c:32, f:12, Fe:1.1, B12:0.1, Zn:0.4, Ca:25, O3:0.1, ED:0, O6:1, D:0, Mg:10, fb:1, Na:180, K:70},
+  {id:'alfajor_choco', cat:'arg', name:'Alfajor de chocolate', per:50, unit:'u', ico:'cookie', kcal:220, p:3, c:30, f:10, Fe:1.2, B12:0, Zn:0.5, Ca:30, O3:0.05, ED:0, O6:0.8, D:0, Mg:20, fb:1.2, Na:100, K:100},
+  {id:'alfajor_maicena', cat:'arg', name:'Alfajor de maicena', per:40, unit:'u', ico:'cookie', kcal:170, p:2, c:24, f:7.5, Fe:0.5, B12:0, Zn:0.3, Ca:40, O3:0, ED:0, O6:0.4, D:0, Mg:8, fb:0.4, Na:90, K:70},
+  {id:'chipa', cat:'arg', name:'Chipá', per:25, unit:'u', ico:'croissant', kcal:85, p:2.5, c:9, f:4.5, Fe:0.3, B12:0.1, Zn:0.3, Ca:60, O3:0, ED:0, O6:0.3, D:0, Mg:4, fb:0.1, Na:120, K:20},
+  {id:'bizcochitos', cat:'arg', name:'Bizcochitos de grasa', per:100, unit:'g', ico:'cookie', kcal:470, p:9, c:60, f:22, Fe:3, B12:0, Zn:0.8, Ca:25, O3:0.1, ED:0, O6:2, D:0, Mg:20, fb:2.5, Na:900, K:110},
+  {id:'flan_ddl', cat:'arg', name:'Flan con dulce de leche (porción)', per:150, unit:'u', ico:'flan', kcal:300, p:7, c:48, f:9, Fe:0.5, B12:0.6, Zn:0.8, Ca:160, O3:0, ED:0, O6:0.4, D:0.5, Mg:18, fb:0, Na:140, K:250},
+  {id:'helado', cat:'arg', name:'Helado de crema', per:100, unit:'g', ico:'icecream', kcal:207, p:3.5, c:24, f:11, Fe:0.1, B12:0.4, Zn:0.7, Ca:128, O3:0.1, ED:0, O6:0.4, D:0.2, Mg:14, fb:0.7, Na:80, K:200},
+  {id:'mate', cat:'arg', name:'Mate (yerba, sin azúcar)', per:100, unit:'g', ico:'mate', kcal:2, p:0, c:0, f:0, Fe:0, B12:0, Zn:0, Ca:0, O3:0, ED:0, O6:0, D:0, Mg:5, fb:0, Na:1, K:40},
+  {id:'salsa_pizza', cat:'top', name:'Salsa de tomate para pizza', per:100, unit:'g', ico:'otros', kcal:50, p:1.5, c:8, f:1.5, Fe:0.8, B12:0, Zn:0.2, Ca:20, O3:0, ED:0, O6:0.6, D:0, Mg:15, fb:1.8, Na:450, K:350},
+  {id:'longaniza', cat:'top', name:'Longaniza / calabresa', per:100, unit:'g', ico:'animal', kcal:330, p:16, c:2, f:29, Fe:1.2, B12:1, Zn:2.5, Ca:15, O3:0.2, ED:0, O6:3, D:0.8, Mg:15, fb:0, Na:1300, K:280},
+  {id:'salame', cat:'top', name:'Salame', per:100, unit:'g', ico:'animal', kcal:380, p:22, c:1.5, f:32, Fe:1.5, B12:1.2, Zn:3.2, Ca:12, O3:0.2, ED:0, O6:3, D:0.5, Mg:20, fb:0, Na:1800, K:380},
+  {id:'panceta', cat:'top', name:'Panceta', per:100, unit:'g', ico:'animal', kcal:458, p:13, c:0.7, f:45, Fe:0.5, B12:0.5, Zn:1.2, Ca:6, O3:0.3, ED:0, O6:4.5, D:0.5, Mg:12, fb:0, Na:800, K:230},
+  {id:'anchoas', cat:'top', name:'Anchoas', per:100, unit:'g', ico:'animal', kcal:210, p:29, c:0, f:10, Fe:4.6, B12:0.9, Zn:2.4, Ca:230, O3:0.1, ED:2100, O6:0.4, D:1.7, Mg:69, fb:0, Na:3668, K:544},
+  {id:'provolone', cat:'top', name:'Provolone', per:100, unit:'g', ico:'lact', kcal:351, p:25.6, c:2.1, f:26.6, Fe:0.5, B12:1.5, Zn:3.2, Ca:756, O3:0.2, ED:0, O6:0.6, D:0.5, Mg:28, fb:0, Na:876, K:138},
+  {id:'oregano', cat:'top', name:'Orégano seco', per:100, unit:'g', ico:'veg', kcal:265, p:9, c:69, f:4.3, Fe:36.8, B12:0, Zn:2.7, Ca:1597, O3:0.6, ED:0, O6:0.6, D:0, Mg:270, fb:42.5, Na:25, K:1260},
+  {id:'chimichurri', cat:'top', name:'Chimichurri', per:100, unit:'g', ico:'grasa', kcal:400, p:1, c:5, f:42, Fe:2, B12:0, Zn:0.3, Ca:60, O3:0.5, ED:0, O6:20, D:0, Mg:20, fb:2, Na:600, K:150},
+  {id:'salsa_golf', cat:'top', name:'Salsa golf', per:100, unit:'g', ico:'grasa', kcal:400, p:1, c:10, f:40, Fe:0.2, B12:0.1, Zn:0.1, Ca:10, O3:0.4, ED:0, O6:20, D:0, Mg:5, fb:0.3, Na:800, K:100},
+  {id:'huevo_frito', cat:'top', name:'Huevo frito', per:50, unit:'u', ico:'lact', kcal:90, p:6.3, c:0.4, f:7, Fe:0.9, B12:0.45, Zn:0.6, Ca:28, O3:0.05, ED:35, O6:1.2, D:1.1, Mg:6, fb:0, Na:95, K:70},
   // ===== AMPLIACIÓN DE LA BASE (USDA FoodData Central, valores por 100g salvo unit='u') =====
   {id:'amaranto', cat:'cereal', name:'Amaranto cocido', per:100, unit:'g', kcal:102, p:3.8, c:18.7, f:1.6, Fe:2.1, B12:0, Zn:0.9, Ca:47, O3:0.01, ED:0, O6:0.7, D:0, Mg:65, fb:2.1, Na:6, K:135},
   {id:'trigo_sarr', cat:'cereal', name:'Trigo sarraceno cocido', per:100, unit:'g', kcal:92, p:3.4, c:19.9, f:0.6, Fe:0.8, B12:0, Zn:0.6, Ca:7, O3:0.01, ED:0, O6:0.17, D:0, Mg:51, fb:2.7, Na:4, K:88},
@@ -3214,7 +3315,7 @@ function renderAgua(){
       <div class="agua-cifras">
         <div class="agua-pct">${pctTxt}%<span>completado</span></div>
         <div class="agua-goal">meta ${meta.toLocaleString('es-AR')} ml
-          <button id="aguaMeta" aria-label="Cambiar la meta">✎</button>
+          <button id="aguaMeta" aria-label="Cambiar la meta">${ico('pencil')}</button>
         </div>
         <div class="agua-ml">${ml.toLocaleString('es-AR')}<span>ml</span></div>
         <div class="agua-last">${vasos.length ? `último: ${vasos[vasos.length-1]} ml · ${vasos.length} vaso${vasos.length===1?'':'s'}` : 'todavía sin registrar'}</div>
@@ -3242,11 +3343,11 @@ function renderAgua(){
   document.getElementById('aguaSemana').innerHTML = `
     <div class="wk-stats">
       <div class="wk-stat">
-        <div class="wk-stat-ico">🔥</div>
+        <div class="wk-stat-ico">${ico('flame')}</div>
         <div><div class="wk-stat-val">${rachaAgua()}</div><div class="wk-stat-lbl">días seguidos</div></div>
       </div>
       <div class="wk-stat">
-        <div class="wk-stat-ico">📊</div>
+        <div class="wk-stat-ico">${ico('chart')}</div>
         <div><div class="wk-stat-val">${(prom/1000).toFixed(1)}L</div><div class="wk-stat-lbl">promedio/día</div></div>
       </div>
     </div>
@@ -3279,12 +3380,39 @@ function rachaAgua(){
 
 /* ==================== AYUNO ==================== */
 const PLANES_AYUNO = {'16:8':16, '18:6':18, '20:4':20, 'OMAD':23};
+/* Horas objetivo: las del plan, o las del horario propio ("de 20:00 a 12:00"). */
+function horasPlan(){
+  if(state.fast.plan === 'custom') return state.fast.customH > 0 ? state.fast.customH : 16;
+  return PLANES_AYUNO[state.fast.plan] || 16;
+}
+function nombrePlan(){ return state.fast.plan === 'custom' ? `${fmtH(horasPlan())}` : state.fast.plan; }
+function fmtH(h){ const hh = Math.floor(h), mm = Math.round((h - hh) * 60); return mm ? `${hh}h ${mm}m` : `${hh}h`; }
+function hhmm(d){ return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`; }
+/* "20:30" -> la última vez que fueron las 20:30 (hoy o ayer), nunca en el futuro. */
+function ultimaVez(hm){
+  const [h, m] = hm.split(':').map(Number);
+  const d = new Date(); d.setHours(h, m, 0, 0);
+  if(d > new Date()) d.setDate(d.getDate() - 1);
+  return d;
+}
+/* Horas entre dos "HH:MM", cruzando la medianoche si hace falta. */
+function horasEntre(a, b){
+  const [h1, m1] = a.split(':').map(Number), [h2, m2] = b.split(':').map(Number);
+  let d = (h2 * 60 + m2) - (h1 * 60 + m1);
+  if(d <= 0) d += 1440;
+  return d / 60;
+}
+function sumarHoras(hm, h){
+  const [hh, mm] = hm.split(':').map(Number);
+  const t = ((hh * 60 + mm + Math.round(h * 60)) % 1440 + 1440) % 1440;
+  return `${String(Math.floor(t / 60)).padStart(2,'0')}:${String(t % 60).padStart(2,'0')}`;
+}
 
 /* Estado del ayuno en curso. null si no hay ninguno activo. */
 function fastRestante(){
   const f = state.fast;
   if(!f || !f.startISO) return null;
-  const horas = PLANES_AYUNO[f.plan] || 16;
+  const horas = horasPlan();
   const inicio = new Date(f.startISO);
   const fin = new Date(inicio.getTime() + horas * 3600e3);
   const restaMs = fin - Date.now();
@@ -3309,10 +3437,47 @@ function fastRestante(){
   };
 }
 
-function fastIniciar(){
-  state.fast.startISO = new Date().toISOString();
+function fastIniciar(desde){
+  const inicio = desde || new Date();
+  state.fast.startISO = inicio.toISOString();
   saveState(); renderAyuno(); renderSegTags(); startFastTicker();
-  toast('Ayuno iniciado');
+  toast(desde ? `Ayuno contando desde las ${hhmm(inicio)}` : 'Ayuno iniciado');
+}
+/* Cambia el horario propio. Si no hay ayuno corriendo, también mueve el
+   "desde" que se usa para arrancar. */
+function fastSetVentana(desde, hasta){
+  state.fast.from = desde;
+  state.fast.to = hasta;
+  state.fast.plan = 'custom';
+  state.fast.customH = +horasEntre(desde, hasta).toFixed(2);
+  saveState(); renderAyuno(); renderSegTags();
+}
+/* Con el ayuno en marcha: corregir a qué hora empezó o a qué hora termina. */
+function fastEditarInicio(hm){
+  const d = ultimaVez(hm);
+  state.fast.startISO = d.toISOString();
+  saveState(); renderAyuno(); renderSegTags(); startFastTicker();
+  toast(`Empezó a las ${hm}`);
+}
+function fastEditarFin(hm){
+  const ini = new Date(state.fast.startISO);
+  fastSetVentana(hhmm(ini), hm);
+  startFastTicker();
+  toast(`Termina a las ${hm} · ${fmtH(horasPlan())}`);
+}
+/* Cargar un ayuno ya hecho, con fecha y hora de inicio y fin. */
+function fastRegistrarPasado(iniStr, finStr){
+  const ini = new Date(iniStr), fin = new Date(finStr);
+  if(isNaN(ini) || isNaN(fin)){ toast('Completá las dos fechas'); return false; }
+  const h = (fin - ini) / 3600e3;
+  if(h <= 0){ toast('El fin tiene que ser después del inicio'); return false; }
+  if(h > 72){ toast('Máximo 72 horas'); return false; }
+  if(fin > new Date()){ toast('El fin no puede ser en el futuro'); return false; }
+  state.fastLog.push({start: ini.toISOString(), end: fin.toISOString(), h: +h.toFixed(2)});
+  state.fastLog.sort((a,b) => a.end < b.end ? -1 : 1);
+  saveState(); renderAyuno(); renderSegTags();
+  toast(`Registrado: ${fmtH(h)}`);
+  return true;
 }
 function fastTerminar(){
   const f = fastRestante();
@@ -3354,12 +3519,18 @@ function startFastTicker(){
 }
 function stopFastTicker(){ if(fastTimer){ clearInterval(fastTimer); fastTimer = null; } }
 
+let fastPastOpen = false;
+function dtLocal(d){ return `${claveFecha(d)}T${hhmm(d)}`; }
 function renderAyuno(){
   const f = fastRestante();
   const L = 2 * Math.PI * 92;
-  const plan = state.fast.plan;
-  const horas = PLANES_AYUNO[plan];
+  const plan = nombrePlan();
+  const horas = horasPlan();
   const color = !f ? 'rgba(var(--brand-rgb),.35)' : (f.cumplido ? 'var(--good)' : 'var(--brand)');
+  // Horario sugerido: el guardado, o "desde ahora" redondeado a 15 min.
+  const ahora = new Date(); ahora.setMinutes(Math.floor(ahora.getMinutes() / 15) * 15);
+  const desdeHm = state.fast.from || hhmm(ahora);
+  const hastaHm = state.fast.plan === 'custom' && state.fast.to ? state.fast.to : sumarHoras(desdeHm, horas);
   const pct = f ? f.pct : 0;
 
   document.getElementById('ayunoCard').innerHTML = `
@@ -3375,11 +3546,11 @@ function renderAyuno(){
           ${f ? `
             <div class="ring-lbl">${f.cumplido ? 'Llevás' : 'Restante'} (${plan})</div>
             <div class="ring-time" id="fastReloj">${f.reloj}</div>
-            <div class="ring-sub">${f.cumplido ? `objetivo de ${horas}h cumplido` : `de ${horas}h`}</div>
+            <div class="ring-sub">${f.cumplido ? `objetivo de ${fmtH(horas)} cumplido` : `de ${fmtH(horas)}`}</div>
           ` : `
             <div class="ring-lbl">Sin ayuno activo</div>
             <div class="ring-time" style="font-size:22px">${plan}</div>
-            <div class="ring-sub">${horas}h de ayuno</div>
+            <div class="ring-sub">${fmtH(horas)} de ayuno</div>
           `}
         </div>
       </div>
@@ -3387,8 +3558,8 @@ function renderAyuno(){
 
     ${f ? `
       <div class="fast-times">
-        <div><div class="fast-time-lbl">Empezó</div><div class="fast-time-val">${fmtHora(f.inicio)}</div></div>
-        <div><div class="fast-time-lbl">Termina</div><div class="fast-time-val">${fmtHora(f.fin)}</div></div>
+        <label><div class="fast-time-lbl">Empezó</div><input type="time" class="time-in" id="fastIniEdit" value="${hhmm(f.inicio)}"></label>
+        <label><div class="fast-time-lbl">Termina</div><input type="time" class="time-in" id="fastFinEdit" value="${hhmm(f.fin)}"></label>
         <button class="btn ghost" id="fastCancel" style="flex:0 0 auto;padding:8px 12px" aria-label="Descartar">×</button>
       </div>
       <button class="btn primary" style="width:100%" id="fastEnd">Terminar ayuno</button>
@@ -3396,22 +3567,61 @@ function renderAyuno(){
       <div class="field" style="margin-bottom:10px">
         <label class="field-label">Plan</label>
         <select class="filter-select" id="fastPlan" style="margin-bottom:0">
-          ${Object.keys(PLANES_AYUNO).map(k => `<option value="${k}" ${k===plan?'selected':''}>${k} · ${PLANES_AYUNO[k]}h de ayuno</option>`).join('')}
+          ${Object.keys(PLANES_AYUNO).map(k => `<option value="${k}" ${k===state.fast.plan?'selected':''}>${k} · ${PLANES_AYUNO[k]}h de ayuno</option>`).join('')}
+          <option value="custom" ${state.fast.plan==='custom'?'selected':''}>Mi horario · ${state.fast.plan==='custom' ? fmtH(horas) : 'desde / hasta'}</option>
         </select>
       </div>
-      <button class="btn primary" style="width:100%" id="fastStart">Empezar ayuno</button>
+      <div class="fast-times">
+        <label><div class="fast-time-lbl">Desde</div><input type="time" class="time-in" id="fastDesde" value="${desdeHm}"></label>
+        <label><div class="fast-time-lbl">Hasta</div><input type="time" class="time-in" id="fastHasta" value="${hastaHm}"></label>
+        <div class="fast-dur">${fmtH(horas)}</div>
+      </div>
+      <div class="fast-btns">
+        <button class="btn primary" id="fastStart">Empezar ahora</button>
+        <button class="btn" id="fastStartFrom">Empecé a las ${desdeHm}</button>
+      </div>
     `}
-    <div class="hint" style="margin:10px 0 0">${f ? 'El reloj corre solo. Terminar lo guarda en el historial; la × lo descarta.' : 'Elegí el plan y arrancá cuando termines de comer.'}</div>
+    <div class="hint" style="margin:10px 0 0">${f ? 'Tocá las horas para corregir cuándo empezó o hasta cuándo va. Terminar lo guarda; la × lo descarta.' : 'Poné tu horario (por ejemplo de 20:00 a 12:00). Si ya venías ayunando, usá "Empecé a las…".'}</div>
+    <button class="link-btn" id="fastPastToggle" style="margin-top:10px">${fastPastOpen ? 'Cerrar' : '+ Registrar un ayuno ya hecho'}</button>
+    ${fastPastOpen ? `
+      <div class="fast-past">
+        <label><div class="fast-time-lbl">Inicio</div><input type="datetime-local" class="time-in" id="fastPastIni" value="${dtLocal(new Date(Date.now() - 864e5 + 0))}"></label>
+        <label><div class="fast-time-lbl">Fin</div><input type="datetime-local" class="time-in" id="fastPastFin" value="${dtLocal(new Date())}"></label>
+        <button class="btn primary" id="fastPastSave">Guardar ayuno</button>
+      </div>` : ''}
   `;
 
   const bStart = document.getElementById('fastStart');
-  if(bStart) bStart.onclick = fastIniciar;
+  if(bStart) bStart.onclick = () => fastIniciar();
+  const bFrom = document.getElementById('fastStartFrom');
+  if(bFrom) bFrom.onclick = () => fastIniciar(ultimaVez(desdeHm));
   const bEnd = document.getElementById('fastEnd');
   if(bEnd) bEnd.onclick = fastTerminar;
   const bCancel = document.getElementById('fastCancel');
   if(bCancel) bCancel.onclick = fastCancelar;
   const selPlan = document.getElementById('fastPlan');
-  if(selPlan) selPlan.onchange = () => fastCambiarPlan(selPlan.value);
+  if(selPlan) selPlan.onchange = () => {
+    if(selPlan.value === 'custom') fastSetVentana(desdeHm, hastaHm);
+    else { state.fast.to = null; fastCambiarPlan(selPlan.value); }
+  };
+  const inDesde = document.getElementById('fastDesde'), inHasta = document.getElementById('fastHasta');
+  if(inDesde) inDesde.onchange = () => {
+    if(!inDesde.value) return;
+    // Con un plan fijo, mover el "desde" arrastra el "hasta"; con horario propio se respeta.
+    if(state.fast.plan === 'custom') fastSetVentana(inDesde.value, inHasta.value);
+    else { state.fast.from = inDesde.value; saveState(); renderAyuno(); }
+  };
+  if(inHasta) inHasta.onchange = () => { if(inHasta.value) fastSetVentana(inDesde.value, inHasta.value); };
+  const eIni = document.getElementById('fastIniEdit'), eFin = document.getElementById('fastFinEdit');
+  if(eIni) eIni.onchange = () => { if(eIni.value) fastEditarInicio(eIni.value); };
+  if(eFin) eFin.onchange = () => { if(eFin.value) fastEditarFin(eFin.value); };
+  document.getElementById('fastPastToggle').onclick = () => { fastPastOpen = !fastPastOpen; renderAyuno(); };
+  const bPast = document.getElementById('fastPastSave');
+  if(bPast) bPast.onclick = () => {
+    if(fastRegistrarPasado(document.getElementById('fastPastIni').value, document.getElementById('fastPastFin').value)){
+      fastPastOpen = false; renderAyuno();
+    }
+  };
 
   // Reporte: las horas se cuentan en el día en que terminó el ayuno.
   const dias = ultimos7();
@@ -3428,11 +3638,11 @@ function renderAyuno(){
   document.getElementById('ayunoSemana').innerHTML = `
     <div class="wk-stats">
       <div class="wk-stat">
-        <div class="wk-stat-ico">🔥</div>
+        <div class="wk-stat-ico">${ico('flame')}</div>
         <div><div class="wk-stat-val">${rachaAyuno()}</div><div class="wk-stat-lbl">días seguidos</div></div>
       </div>
       <div class="wk-stat">
-        <div class="wk-stat-ico">📊</div>
+        <div class="wk-stat-ico">${ico('chart')}</div>
         <div><div class="wk-stat-val">${prom.toFixed(1)}h</div><div class="wk-stat-lbl">promedio</div></div>
       </div>
     </div>
@@ -3448,7 +3658,7 @@ function renderAyuno(){
         </div>`;
       }).join('')}
     </div>
-    <div class="hint" style="margin:10px 0 0">${conAyuno === 0 ? 'Todavía sin ayunos registrados.' : `${conAyuno} de los últimos 7 días con ayuno registrado. La barra se pone verde cuando llega a las ${horas}h.`}</div>
+    <div class="hint" style="margin:10px 0 0">${conAyuno === 0 ? 'Todavía sin ayunos registrados.' : `${conAyuno} de los últimos 7 días con ayuno registrado. La barra se pone verde cuando llega a ${fmtH(horas)}.`}</div>
   `;
 }
 
@@ -3458,7 +3668,7 @@ function rachaAyuno(){
     const dk = claveFecha(new Date(r.end));
     porDia[dk] = Math.max(porDia[dk] || 0, r.h);
   });
-  const meta = PLANES_AYUNO[state.fast.plan] || 16;
+  const meta = horasPlan();
   let n = 0;
   for(let i = 0; i < 400; i++){
     const d = new Date(); d.setDate(d.getDate() - i);
@@ -3620,7 +3830,7 @@ function renderResumen(){
       if(m.ul){
         if(val >= m.ul){
           cls = 'over';
-          warn = `<span style="color:var(--fat);font-size:8.5px;letter-spacing:.12em;margin-left:6px">⚠ UL ${m.ul}${m.unit}</span>`;
+          warn = `<span style="color:var(--fat);font-size:8.5px;letter-spacing:.12em;margin-left:6px">${ico('warn','xs')} UL ${m.ul}${m.unit}</span>`;
         } else if(val >= m.ul * 0.8){
           cls = 'warn';
           warn = `<span style="color:var(--warn);font-size:8.5px;letter-spacing:.12em;margin-left:6px">cerca UL ${m.ul}${m.unit}</span>`;
@@ -3719,7 +3929,7 @@ function renderResumen(){
       if(!m) return '';
       return `
         <div class="today-meal">
-          <div class="today-meal-thumb" ${thumbStyle(m)}>${thumbEmoji(m)}</div>
+          ${mealThumb(m, 'today-meal-thumb')}
           <div class="today-meal-info">
             <div class="today-meal-name">${m.name}${m.qtyLabel ? ` <span class="qty">· ${m.qtyLabel}</span>` : ''}</div>
             <div class="today-meal-macros">${m.kcal} kcal · P ${m.p}g · C ${m.c}g · G ${m.f}g</div>
@@ -3906,13 +4116,13 @@ function renderRecipeCards(list, filtered){
     <div class="meal ${selected.includes(m.id) ? 'selected' : ''} ${state.expanded.has(m.id) ? 'expanded' : ''}" data-meal="${m.id}">
       <div class="meal-head" data-expand="${m.id}">
         <div class="meal-sel-mark"></div>
-        <div class="meal-thumb" ${thumbStyle(m)}>${thumbEmoji(m)}</div>
+        ${mealThumb(m, 'meal-thumb')}
         <div class="meal-head-info">
           <div class="meal-name">${m.name}${etiqueta ? ` <span style="font-size:8px;color:var(--brand);letter-spacing:.15em;font-weight:600;margin-left:4px">[${etiqueta}]</span>` : ''}</div>
           <div class="meal-head-meta">
             <span class="meal-stat"><span class="val">${m.kcal}</span><span class="lbl">kcal</span></span>
             <span class="meal-stat"><span class="lbl">Prot</span><span class="val">${m.p}g</span></span>
-            <button class="star ${isFav(m.id) ? 'on' : ''}" data-fav="${m.id}" style="width:26px;height:22px;font-size:16px" aria-label="Favorito">${isFav(m.id) ? '★' : '☆'}</button>
+            ${starBtn(m.id).replace('class="star', 'class="star sm')}
             ${esComidaKeto(m) ? `<span class="k-badge" title="Apta keto: ${m.c}g de carbo por porción">K</span>` : ''}
           </div>
         </div>
@@ -4039,9 +4249,67 @@ const ING_CATS = [
   {k:'grasa',    label:'Grasas'},
   {k:'animal',   label:'Carne/Pescado'},
   {k:'bebida',   label:'Bebidas'},
-  {k:'otros',    label:'Dulces y condimentos'}
+  {k:'otros',    label:'Dulces y condimentos'},
+  {k:'arg',      label:'Comidas típicas'},
+  {k:'top',      label:'Toppings'}
 ];
-const CAT_EMOJI = {cereal:'🌾', legumbre:'🫘', lact:'🥛', veg:'🥦', fruta:'🍎', fs:'🥜', grasa:'🫒', animal:'🍗', bebida:'🥤', otros:'🍯'};
+
+/* ==================== ÍCONOS ====================
+   Dibujados a mano en SVG (trazo de 24x24, color = currentColor), así se
+   ven iguales en todos los teléfonos y respetan el tema claro/oscuro. */
+const ICONS = {
+  cereal:  '<path d="M12 21V9"/><path d="M12 9c-1.8-.8-3-2.6-3-5 1.8.3 3 1.8 3 3.5 0-1.7 1.2-3.2 3-3.5 0 2.4-1.2 4.2-3 5z"/><path d="M12 14c-2-.4-3.6-1.8-4-4 2 .1 3.6 1.4 4 3.2M12 14c2-.4 3.6-1.8 4-4-2 .1-3.6 1.4-4 3.2"/><path d="M12 19c-2-.4-3.6-1.8-4-4 2 .1 3.6 1.4 4 3.2M12 19c2-.4 3.6-1.8 4-4-2 .1-3.6 1.4-4 3.2"/>',
+  legumbre:'<path d="M9.5 3.5c3.8-1.2 9 1.6 9.5 7 .5 5.6-3.6 10-8.2 10-3.2 0-5.3-2.3-4.6-5 .6-2.4 3.3-2.6 3.6-5.2.3-2.3-2.3-3.5-.3-6.8z"/><path d="M13.5 9.5c1 1.2 1.2 2.8.5 4.3"/>',
+  lact:    '<path d="M8.5 2.5h7M9 2.5v3L6.5 9v10.5a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2V9L15 5.5v-3"/><path d="M6.5 13.5c2-1 3.5 1 5.5 0s3.5-1 5.5 0"/>',
+  veg:     '<path d="M8 21h8M12 21v-6"/><circle cx="8" cy="9" r="3.5"/><circle cx="16" cy="9" r="3.5"/><circle cx="12" cy="6" r="3.5"/><path d="M8 12.5c1 1.6 2.5 2.5 4 2.5s3-.9 4-2.5"/>',
+  fruta:   '<path d="M12 7.5c-2-1.6-6.3-1.4-7.6 1.7C3 12.6 4.4 17.6 7.2 20c1.5 1.3 3.1.9 4.8.2 1.7.7 3.3 1.1 4.8-.2 2.8-2.4 4.2-7.4 2.8-10.8-1.3-3.1-5.6-3.3-7.6-1.7z"/><path d="M12 7.5c0-2 .8-3.8 2.8-5"/><path d="M12 6c-1.6-.2-3-1.4-3.4-3 1.6 0 3 1 3.4 3z"/>',
+  fs:      '<path d="M4.5 10.5h15c0 5.5-3.4 10.5-7.5 10.5S4.5 16 4.5 10.5z"/><path d="M3.5 10.5C4 7 7.6 5 12 5s8 2 8.5 5.5z"/><path d="M12 5V2.5"/>',
+  grasa:   '<path d="M10 2.5h4V6l2.2 3.2c.5.7.8 1.6.8 2.5v7.8a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2v-7.8c0-.9.3-1.8.8-2.5L10 6z"/><path d="M12 12c1.4 1.7 2 2.8 2 3.7a2 2 0 0 1-4 0c0-.9.6-2 2-3.7z"/>',
+  animal:  '<path d="M14.5 3a6 6 0 0 1 6.5 6.4c-.3 4.4-4.6 6.2-8 5.6l-3.4 3.4a2.3 2.3 0 1 1-3.6 2.4 2.3 2.3 0 1 1 2.4-3.6L11.8 14c-.6-3.6.4-10.6 2.7-11z"/>',
+  bebida:  '<path d="M6 8.5h12l-1.4 11.7a2 2 0 0 1-2 1.8H9.4a2 2 0 0 1-2-1.8z"/><path d="M5 8.5h14"/><path d="M12.5 8.5 14.5 2h3"/><path d="M7 13.5h10"/>',
+  otros:   '<rect x="5.5" y="8" width="13" height="13.5" rx="3"/><path d="M7.5 3h9v5h-9z"/><path d="M9 14h6"/>',
+  receta:  '<path d="M3 11.5h18a9 8.5 0 0 1-18 0z"/><path d="M8 4.5c-.8 1 .8 2 0 3.5M12 3.5c-.8 1 .8 2 0 3.5M16 4.5c-.8 1 .8 2 0 3.5"/>',
+  arg:     '<path d="M3 11.5h18a9 8.5 0 0 1-18 0z"/><path d="M8 4.5c-.8 1 .8 2 0 3.5M12 3.5c-.8 1 .8 2 0 3.5M16 4.5c-.8 1 .8 2 0 3.5"/>',
+  sandwich:'<path d="M3 10c0-3.3 4-6 9-6s9 2.7 9 6z"/><path d="M3 13.5c1.5-1.2 3-1.2 4.5 0s3 1.2 4.5 0 3-1.2 4.5 0 3 1.2 4.5 0"/><path d="M3 17h18v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+  croissant:'<path d="M3.5 15.5c1-5.5 4.6-9 8.5-9s7.5 3.5 8.5 9c-2 .8-3.6.5-4.8-.6L12 17.5l-3.7-2.6c-1.2 1.1-2.8 1.4-4.8.6z"/><path d="M9.5 7.2 12 17.5l2.5-10.3"/>',
+  cookie:  '<rect x="3" y="8" width="18" height="9" rx="4.5"/><path d="M3.5 12.5h17"/><path d="M8 6.5c0-1 1.8-1.8 4-1.8s4 .8 4 1.8"/>',
+  pot:     '<path d="M4 10h16v7a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3z"/><path d="M2 10h20M9 6.5c-.6.8.6 1.6 0 2.5M12 5.5c-.6.8.6 1.6 0 2.5M15 6.5c-.6.8.6 1.6 0 2.5"/>',
+  pasta:   '<path d="M3 13h18a9 7 0 0 1-18 0z"/><path d="M7 13c0-3 2-3 2-6M11 13c0-3 2-3 2-6M15 13c0-3-1.5-3-1.5-6"/><path d="M17.5 3 13 10"/>',
+  mate:    '<path d="M7 9c-1.5 2-2 4-1.5 6.5A6.5 6.5 0 0 0 18.5 15.5c.5-2.5 0-4.5-1.5-6.5z"/><path d="M6.5 9h11"/><path d="M14 9 17 2.5"/><path d="M9.5 21h5"/>',
+  icecream:'<path d="M8 11h8l-4 10.5z"/><path d="M7 11a5 5 0 0 1 10 0"/><path d="M12 6V4"/>',
+  flan:    '<path d="M6.5 9.5h11l2 9h-15z"/><path d="M6.5 9.5c0-2 2.5-3.5 5.5-3.5s5.5 1.5 5.5 3.5"/><path d="M3 18.5h18"/>',
+  meat:    '<path d="M5 13c-2-5 2-9 7.5-9S21 7 20 12c-.8 4.2-5 8-10 7.5-2.7-.3-4.2-2.6-5-6.5z"/><circle cx="14" cy="10.5" r="2.5"/>',
+  top:     '<path d="M4 20 20 4"/><circle cx="7" cy="7" r="2.5"/><circle cx="15.5" cy="16" r="2"/><circle cx="17" cy="9" r="1.3"/><circle cx="9" cy="15" r="1.3"/>',
+  pizza:   '<path d="M12 21.5 3.2 6.3C8.6 3 15.4 3 20.8 6.3z"/><path d="M5 9.4c4.6-2.4 9.4-2.4 14 0"/><circle cx="10" cy="11.5" r="1.2"/><circle cx="14.2" cy="12.5" r="1.2"/><circle cx="12" cy="16.5" r="1.1"/>',
+  empanada:'<path d="M2.5 16a9.5 9.5 0 0 1 19 0z"/><path d="M3.5 16c.7-1 1.4-1 2 0s1.3 1 2 0 1.3-1 2 0 1.3 1 2 0 1.3-1 2 0 1.3 1 2 0 1.3-1 2 0 1.3 1 2 0"/>',
+  star:    '<path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17l-5.4 3 1.1-6.1-4.5-4.3 6.1-.8z"/>',
+  search:  '<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
+  clock:   '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  plate:   '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/>',
+  flame:   '<path d="M12 22c4 0 7-2.8 7-7 0-4.6-4.2-6.6-4.6-12C11.6 5 10.2 8 10.4 10.4 9 9.6 8.4 8.4 8.3 7 6 9 5 11.8 5 15c0 4.2 3 7 7 7z"/>',
+  chart:   '<path d="M3 21h18"/><rect x="5" y="11" width="3" height="7" rx="1"/><rect x="10.5" y="5" width="3" height="13" rx="1"/><rect x="16" y="14" width="3" height="4" rx="1"/>',
+  pencil:  '<path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="M13.5 6.5l4 4"/>',
+  warn:    '<path d="M12 3 2 20.5h20z"/><path d="M12 9.5v5M12 17.5v.01"/>',
+  pie:     '<path d="M12 3a9 9 0 1 0 9 9h-9z"/><path d="M15 2.6A9 9 0 0 1 21.4 9H15z"/>',
+  spark:   '<path d="M12 3l1.9 5.6L19.5 10.5l-5.6 1.9L12 18l-1.9-5.6L4.5 10.5l5.6-1.9z"/><path d="M19 17v4M17 19h4"/>',
+  swap:    '<path d="M4 8h15l-3.5-3.5M20 16H5l3.5 3.5"/>',
+  book:    '<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5M8.5 7.5h6M8.5 11h4"/>'
+};
+function ico(name, cls){
+  return `<svg class="ico ${cls || ''}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name] || ICONS.plate}</svg>`;
+}
+/* Color de cada categoría: el ícono va teñido sobre un fondo suave. */
+const CAT_COLOR = {cereal:'#d97706', legumbre:'#b45309', lact:'#0ea5e9', veg:'#16a34a', fruta:'#e11d48', fs:'#a16207', grasa:'#65a30d', animal:'#dc2626', bebida:'#0891b2', otros:'#9333ea', arg:'#2563eb', top:'#ea580c', receta:'#6366f1'};
+function ingIconName(i){ return i.ico || i.cat; }
+function thumbHtml(name, color, extra){
+  return `<div class="row-thumb ${extra || ''}" style="color:${color};background:color-mix(in srgb, ${color} 13%, transparent)">${ico(name)}</div>`;
+}
+function ingThumb(i, extra){ return thumbHtml(ingIconName(i), CAT_COLOR[i.cat] || 'var(--brand)', extra); }
+function starBtn(key){
+  const on = isFav(key);
+  return `<button class="star ${on ? 'on' : ''}" data-fav="${key}" aria-label="${on ? 'Quitar de favoritos' : 'Guardar en favoritos'}">${ico('star')}</button>`;
+}
+
 
 /* Devuelve clase proteica de un ingrediente, o null si no aporta proteína relevante */
 function ingredientClass(ing){
@@ -4331,7 +4599,7 @@ function showCalDetail(dk){
     <div style="font-size:9px;letter-spacing:.2em;color:var(--text-3);text-transform:uppercase;margin-bottom:6px">Comidas</div>
     ${meals.map((m, idx) => `
       <div class="today-meal">
-        <div class="today-meal-thumb" ${thumbStyle(m)}>${thumbEmoji(m)}</div>
+        ${mealThumb(m, 'today-meal-thumb')}
         <div class="today-meal-info">
           <div class="today-meal-name">${m.name}${m.qtyLabel ? ` <span class="qty">· ${m.qtyLabel}</span>` : ''}</div>
           <div class="today-meal-macros">${m.kcal} kcal · P ${m.p}g · C ${m.c}g · G ${m.f}g</div>
@@ -4649,12 +4917,11 @@ function toggleTema(){
 /* ==================== UTILIDADES DE LISTA ==================== */
 /* Búsqueda sin tildes ni mayúsculas: "limon" encuentra "Limón". */
 function norm(t){ return (t || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(); }
-function thumbEmoji(m){
-  if(m.isIng) return CAT_EMOJI[INGR_BY_ID[m.ingId].cat] || '🍽';
-  return state.mealPhotos[m.id] ? '' : '🍲';
-}
-function thumbStyle(m){
-  return (!m.isIng && state.mealPhotos[m.id]) ? `style="background-image:url('${state.mealPhotos[m.id]}')"` : '';
+/* Miniatura de una comida: la foto si tiene, si no el ícono de su tipo. */
+function mealThumb(m, cls){
+  if(m.isIng) return ingThumb(INGR_BY_ID[m.ingId], cls);
+  if(state.mealPhotos[m.id]) return `<div class="row-thumb ${cls || ''}" style="background-image:url('${state.mealPhotos[m.id]}')"></div>`;
+  return thumbHtml('receta', CAT_COLOR.receta, cls);
 }
 function isOpen(id){ return document.getElementById(id).classList.contains('open'); }
 
@@ -4665,7 +4932,7 @@ function isFav(key){ return state.favs.includes(key); }
 function toggleFav(key){
   const i = state.favs.indexOf(key);
   if(i >= 0){ state.favs.splice(i, 1); toast('Quitado de favoritos'); }
-  else { state.favs.unshift(key); toast('★ Guardado en favoritos'); }
+  else { state.favs.unshift(key); toast('Guardado en favoritos'); }
   saveState();
   refreshViews();
   if(document.getElementById('qtySheet').classList.contains('show')) renderQtySheet();
@@ -4739,7 +5006,7 @@ function renderQuickFavs(){
   const favs = state.favs.filter(favKeyValida).slice(0, 12);
   if(favs.length === 0){ el.innerHTML = ''; return; }
   el.innerHTML = `
-    <div class="qfav-lbl">★ Favoritos · un toque para sumar</div>
+    <div class="qfav-lbl">${ico('star')} Favoritos · un toque para sumar</div>
     <div class="qfav-row">
       ${favs.map(k => {
         const ing = k.startsWith('ing:') ? INGR_BY_ID[k.slice(4)] : null;
@@ -4818,7 +5085,7 @@ function etiquetaDia(dk){
 }
 
 const LOG_TABS = [
-  {k:'favs',   l:'★ Favoritos'},
+  {k:'favs',   l:'Favoritos'},
   {k:'recent', l:'Recientes'},
   {k:'rec',    l:'Recetas'},
   {k:'ing',    l:'Ingredientes'},
@@ -4879,7 +5146,7 @@ function renderLog(){
     const ings = INGREDIENTS.filter(i => norm(i.name).includes(q))
       .sort((a,b) => norm(a.name).indexOf(q) - norm(b.name).indexOf(q));
     if(!recs.length && !ings.length){
-      html = `<div class="empty"><div class="big">🔍</div>Nada con "<b>${escapeHtml(state.logSearch)}</b>".<br>Probá con otra palabra o creá una receta.</div>`;
+      html = `<div class="empty"><div class="big">${ico('search')}</div>Nada con "<b>${escapeHtml(state.logSearch)}</b>".<br>Probá con otra palabra o creá una receta.</div>`;
     } else {
       if(recs.length) html += `<div class="sec-lbl">Recetas<span>${recs.length}</span></div>` + recs.map(m => rowMeal(m, sel)).join('');
       if(ings.length) html += `<div class="sec-lbl">Ingredientes<span>${ings.length}</span></div>` + ings.slice(0, 80).map(i => rowIng(i, sel)).join('');
@@ -4890,25 +5157,25 @@ function renderLog(){
       html = favs.map(k => rowKey(k, sel)).join('');
     } else {
       const sug = masUsados(8);
-      html = `<div class="empty"><div class="big">☆</div>Todavía no tenés favoritos.<br>Tocá la <b>estrella</b> de cualquier receta o ingrediente y va a aparecer acá y en el resumen, listo para sumar de un toque.</div>`;
+      html = `<div class="empty"><div class="big">${ico('star')}</div>Todavía no tenés favoritos.<br>Tocá la <b>estrella</b> de cualquier receta o ingrediente y va a aparecer acá y en el resumen, listo para sumar de un toque.</div>`;
       if(sug.length) html += `<div class="sec-lbl">Tus más usados</div>` + sug.map(k => rowKey(k, sel)).join('');
     }
   } else if(state.logTab === 'recent'){
     const rec = recientes(25);
     html = rec.length ? rec.map(k => rowKey(k, sel)).join('')
-      : `<div class="empty"><div class="big">🕘</div>Lo que vayas registrando va a aparecer acá para repetirlo rápido.</div>`;
+      : `<div class="empty"><div class="big">${ico('clock')}</div>Lo que vayas registrando va a aparecer acá para repetirlo rápido.</div>`;
   } else if(state.logTab === 'rec'){
     const meals = allMeals().sort((a,b) => priorityScore(b) - priorityScore(a));
     html = `<button class="btn-add-meal" id="logNewRecipe"><span class="plus">+</span> Crear receta con ingredientes</button>` + meals.map(m => rowMeal(m, sel)).join('');
   } else if(state.logTab === 'ing'){
     html = `<div class="chips scroll-x" style="padding-top:0">${ING_CATS.map(c =>
-      `<button class="chip ${state.logCat === c.k ? 'active' : ''}" data-lcat="${c.k}">${c.k === 'todos' ? 'Todos' : (CAT_EMOJI[c.k] + ' ' + c.label)}</button>`).join('')}</div>`;
+      `<button class="chip ${state.logCat === c.k ? 'active' : ''}" data-lcat="${c.k}">${c.k === 'todos' ? 'Todos' : c.label}</button>`).join('')}</div>`;
     const ings = INGREDIENTS.filter(i => state.logCat === 'todos' || i.cat === state.logCat)
       .sort((a,b) => a.name.localeCompare(b.name, 'es'));
     html += ings.map(i => rowIng(i, sel)).join('');
   } else if(state.logTab === 'day'){
     if(!sel.length){
-      html = `<div class="empty"><div class="big">🍽</div>Todavía no registraste nada este día.</div>`;
+      html = `<div class="empty"><div class="big">${ico('plate')}</div>Todavía no registraste nada este día.</div>`;
     } else {
       // Agrupado: misma entrada repetida se muestra una vez con su cantidad.
       const grupos = [];
@@ -4921,7 +5188,7 @@ function renderLog(){
         if(!m) return '';
         return `
         <div class="row logged">
-          <div class="row-thumb" ${thumbStyle(m)}>${thumbEmoji(m)}</div>
+          ${mealThumb(m)}
           <div class="row-info">
             <div class="row-name">${m.name}${m.qtyLabel ? ` <span class="row-tag">${m.qtyLabel}</span>` : ''}</div>
             <div class="row-meta"><b>${Math.round(m.kcal * g.n)} kcal</b> · P ${fmtNum(m.p * g.n)}g · C ${fmtNum(m.c * g.n)}g · G ${fmtNum(m.f * g.n)}g</div>
@@ -4955,12 +5222,12 @@ function rowMeal(m, sel){
   const abierta = state.logOpen === m.id;
   return `
   <div class="row ${n ? 'logged' : ''}">
-    <div class="row-thumb" ${thumbStyle(m)}>${thumbEmoji(m)}</div>
+    ${mealThumb(m)}
     <div class="row-info" data-ropen="${m.id}">
       <div class="row-name">${m.name}</div>
       <div class="row-meta"><b>${m.kcal} kcal</b> · P ${m.p}g · C ${m.c}g · G ${m.f}g</div>
     </div>
-    <button class="star ${isFav(m.id) ? 'on' : ''}" data-fav="${m.id}" aria-label="Favorito">${isFav(m.id) ? '★' : '☆'}</button>
+    ${starBtn(m.id)}
     ${n ? `<div class="mini-step">
       <button data-mdec="${m.id}" aria-label="Quitar">−</button><span>${n}</span><button class="plus" data-minc="${m.id}" aria-label="Sumar">+</button>
     </div>` : `<button class="add" data-minc="${m.id}" aria-label="Sumar">+</button>`}
@@ -4988,12 +5255,12 @@ function rowIng(i, sel){
   const key = 'ing:' + i.id;
   return `
   <div class="row ${tot ? 'logged' : ''}">
-    <div class="row-thumb">${CAT_EMOJI[i.cat] || '🍽'}</div>
+    ${ingThumb(i)}
     <div class="row-info" data-iqty="${i.id}">
       <div class="row-name">${i.name}${tot ? ` <span class="row-tag">${qtyLabel(i, tot)}</span>` : ''}</div>
       <div class="row-meta">${per}: <b>${i.kcal} kcal</b> · P ${i.p}g · C ${i.c}g · G ${i.f}g</div>
     </div>
-    <button class="star ${isFav(key) ? 'on' : ''}" data-fav="${key}" aria-label="Favorito">${isFav(key) ? '★' : '☆'}</button>
+    ${starBtn(key)}
     <button class="add" data-iqty="${i.id}" aria-label="Sumar">+</button>
   </div>`;
 }
@@ -5040,7 +5307,7 @@ function renderQtySheet(){
   const dia = editandoOtroDia() ? fmtDiaCorto(targetDateKey()) : 'hoy';
   document.getElementById('qtyBody').innerHTML = `
     <div class="qty-head">
-      <div class="row-thumb">${CAT_EMOJI[ing.cat] || '🍽'}</div>
+      ${ingThumb(ing)}
       <div style="flex:1;min-width:0">
         <div class="qty-name">${ing.name}</div>
         <div class="qty-sub">${ing.unit === 'u' ? `por unidad de ~${ing.per}g` : 'cantidad en gramos'}</div>
@@ -5060,7 +5327,7 @@ function renderQtySheet(){
       <div><b>${fmtNum(n.f)}g</b><span>grasa</span><em>${pct(n.f, t.fat)}</em></div>
     </div>
     <div class="qty-actions">
-      <button class="btn" id="qtyFav">${isFav(key) ? '★ Favorito' : '☆ Favorito'}</button>
+      <button class="btn fav-btn ${isFav(key) ? 'on' : ''}" id="qtyFav">${ico('star')} Favorito</button>
       <button class="btn primary" id="qtyAdd">Agregar a ${dia}</button>
     </div>`;
   const input = document.getElementById('qtyInput');
@@ -5143,7 +5410,7 @@ function renderLib(){
     cats.style.display = '';
     cats.innerHTML = ING_CATS.map(c => {
       const n = c.k === 'todos' ? INGREDIENTS.length : INGREDIENTS.filter(i => i.cat === c.k).length;
-      return `<button class="chip ${L.cat === c.k ? 'active' : ''}" data-libcat="${c.k}">${c.k === 'todos' ? 'Todos' : CAT_EMOJI[c.k] + ' ' + c.label}<span class="n">${n}</span></button>`;
+      return `<button class="chip ${L.cat === c.k ? 'active' : ''}" data-libcat="${c.k}">${c.k === 'todos' ? 'Todos' : c.label}<span class="n">${n}</span></button>`;
     }).join('');
     cats.querySelectorAll('[data-libcat]').forEach(b => b.onclick = () => { L.cat = b.dataset.libcat; renderLib(); });
 
@@ -5165,7 +5432,7 @@ function renderLib(){
       const dec = v === null ? 0 : (v >= 100 ? 0 : (v >= 10 ? 1 : 2));
       return `
       <div class="row" data-iid="${i.id}">
-        <div class="row-thumb">${CAT_EMOJI[i.cat] || '🍽'}</div>
+        ${ingThumb(i)}
         <div class="row-info" data-libopen="${i.id}">
           <div class="row-name">${i.name}</div>
           <div class="row-meta">${Math.round(por100(i,'kcal'))} kcal · P ${fmtNum(por100(i,'p'))}g · C ${fmtNum(por100(i,'c'))}g · G ${fmtNum(por100(i,'f'))}g</div>
@@ -5175,7 +5442,7 @@ function renderLib(){
           <div class="bar"><i style="width:${v / max * 100}%"></i></div>
           ${vd !== null ? `<span class="vd">${vd}% VD</span>` : ''}
         </div>` : ''}
-        <button class="star ${isFav(key) ? 'on' : ''}" data-fav="${key}" aria-label="Favorito">${isFav(key) ? '★' : '☆'}</button>
+        ${starBtn(key)}
       </div>
       ${abierto ? `<div class="row-detail">
         ${renderIngDetail(i)}
@@ -5183,7 +5450,7 @@ function renderLib(){
           <button class="btn primary" data-iqty="${i.id}">+ Agregar al día</button>
         </div>
       </div>` : ''}`;
-    }).join('') : `<div class="empty"><div class="big">🔍</div>Sin coincidencias.</div>`;
+    }).join('') : `<div class="empty"><div class="big">${ico('search')}</div>Sin coincidencias.</div>`;
   } else {
     cats.style.display = 'none';
     const RS = [{k:'quality', l:'Calidad nutricional'}, ...LIB_SORTS.filter(o => o.k !== 'name')];
