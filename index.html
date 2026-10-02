@@ -1392,7 +1392,7 @@ body{font-size:14px;letter-spacing:-.003em;background:var(--bg);color:var(--text
 .hero-stat-lbl{font-size:11.5px;color:var(--text-3);font-weight:500}
 .hero-stat-val{font-family:'Plus Jakarta Sans',sans-serif;font-size:21px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
 .hero-stat-val small{font-size:12px;color:var(--text-3);font-weight:600;margin-left:3px}
-.hero-badge{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;padding:5px 10px;border-radius:20px;background:rgba(var(--brand-rgb),.1);color:var(--brand);width:max-content;max-width:100%}
+.hero-badge{white-space:normal;line-height:1.3;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;padding:5px 10px;border-radius:20px;background:rgba(var(--brand-rgb),.1);color:var(--brand);width:max-content;max-width:100%}
 .hero-badge.good{background:rgba(var(--good-rgb),.14);color:var(--good)}
 .hero-badge.over{background:rgba(var(--bad-rgb),.14);color:var(--bad)}
 .kpi-rings{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
@@ -1698,6 +1698,17 @@ body.screen-open{overflow:hidden}
 .wk-prev .ico{width:15px;height:15px;color:var(--brand)}
 .wk-prev b{font-size:11px;color:var(--text);font-variant-numeric:tabular-nums}
 .wk-prev small{font-size:9.5px}
+
+/* Plan del día compacto */
+.plan-card{padding:12px 14px}
+.plan-top{width:100%;text-align:left}
+.plan-ico{width:40px;height:40px;border-radius:13px;box-shadow:none}
+.plan-ico .ico{width:20px;height:20px}
+.plan-tit{font-size:15px;margin:0}
+.plan-lbl{margin-top:2px}
+.plan-chev{color:var(--text-3);font-size:13px;padding:4px}
+.why-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:14px;margin:4px 0 4px}
+.plan-why{border-top:1px solid var(--line);margin-top:12px;padding-top:8px}
 </style>
 </head>
 <body>
@@ -1730,11 +1741,11 @@ body.screen-open{overflow:hidden}
       <h1 class="page-subtitle">Tu día</h1>
     </div>
 
-    <!-- Lo que hacés hoy: define los objetivos del día -->
-    <div class="card plan-card" id="planCard"></div>
-
     <!-- El día de un vistazo -->
     <div class="hero" id="heroCard"></div>
+
+    <!-- Lo que hacés hoy, resumido; se despliega para ver el detalle -->
+    <div class="card plan-card" id="planCard"></div>
 
     <!-- Recomendaciones según lo que falta y el momento -->
     <div class="card" id="recoCard"></div>
@@ -4136,7 +4147,7 @@ function renderHero(totals, targets){
   const resta = obj - kcal;
   const scoreColor = score >= 80 ? 'var(--good)' : (score >= 50 ? 'var(--brand)' : 'var(--warn)');
   const badge = kcal === 0
-    ? {cls:'', txt:'Empezá registrando tu primera comida'}
+    ? {cls:'', txt:'Registrá tu primera comida'}
     : pasado ? {cls:'over', txt:`Te pasaste ${kcal - obj} kcal`}
     : resta <= obj * 0.05 ? {cls:'good', txt:'Energía del día cubierta'}
     : {cls:'', txt:`Te quedan ${resta} kcal`};
@@ -5736,25 +5747,30 @@ function renderPlanCard(){
   }
   consejos.push(`Repartí la proteína en ${cd.n} comidas de ~${protComida} g: más de ${Math.round(state.profile.weight * 0.4)} g por comida maximiza la síntesis muscular (Schoenfeld 2018).`);
 
+  const abierto = !!state.accOpen.planwhy;
+  const resumen = [
+    `${fmtKcal(t.kcal)} kcal`,
+    plan.type !== 'rest' ? `${signo(dif)} por entreno` : 'día liviano',
+    f ? `ayuno hasta ${fmtHora(f.fin)}` : null
+  ].filter(Boolean).join(' · ');
   el.innerHTML = `
-    <div class="plan-top">
+    <button class="plan-top" id="planWhy" aria-expanded="${abierto}">
       <div class="plan-ico">${ico(tt.ico)}</div>
       <div class="plan-info">
-        <div class="plan-lbl">Plan de hoy${plan.custom ? ' · cambiado' : ''}</div>
-        <div class="plan-tit">${tt.l}${plan.min ? ` · ${plan.min} min` : ''}${plan.time ? ` · ${plan.time}` : ''}</div>
+        <div class="plan-tit">${tt.l.replace(/ \(.*\)/, '')}${plan.min ? ` · ${plan.min} min` : ''}${plan.time ? ` · ${plan.time}` : ''}</div>
+        <div class="plan-lbl">${resumen}</div>
       </div>
-      <button class="link-btn" id="planEdit">Cambiar</button>
-    </div>
+      <span class="plan-chev">${abierto ? '▴' : '▾'}</span>
+    </button>
+    ${abierto ? `
     <div class="plan-chips">
       <span class="pchip">${ico(d.work.ico)}${d.work.l}</span>
-      ${plan.type !== 'rest' ? `<span class="pchip hi">${ico('flame')}${signo(dif)} kcal vs descanso</span>` : ''}
       ${!t.carbIsLimit ? `<span class="pchip">${ico('cereal')}Carbos ${d.choKg} g/kg</span>` : `<span class="pchip">${ico('cereal')}Keto ≤50 g</span>`}
       <span class="pchip">${ico('drop')}Agua ${(metaAgua(dk)/1000).toFixed(1)} L</span>
-      ${f ? `<span class="pchip">${ico('clock')}Ayuno ${nombrePlan()} · hasta ${fmtHora(f.fin)}</span>` : (cd.ventana ? `<span class="pchip">${ico('clock')}Ventana de ${fmtH(cd.ventana)}</span>` : '')}
+      ${f ? `<span class="pchip">${ico('clock')}Ayuno ${nombrePlan()}</span>` : (cd.ventana ? `<span class="pchip">${ico('clock')}Ventana de ${fmtH(cd.ventana)}</span>` : '')}
     </div>
-    <button class="plan-why-btn" id="planWhy">${ico('bulb')}Por qué estos números<span class="chev">${state.accOpen.planwhy ? '▴' : '▾'}</span></button>
-    ${state.accOpen.planwhy ? `
     <div class="plan-why">
+      <div class="why-title">Tus necesidades de hoy</div>
       <div class="why-row"><span>Metabolismo basal</span><b>${fmtKcal(d.bmr)}</b></div>
       <div class="why-row"><span>${d.work.l} (día a día)</span><b>${signo(d.neat)}</b></div>
       <div class="why-row"><span>${tt.l}${plan.min ? ` ${plan.min}′` : ''}</span><b>${signo(d.ex)}</b></div>
@@ -5766,10 +5782,11 @@ function renderPlanCard(){
       <div class="why-row"><span>Carbos · ${t.carbIsLimit ? 'techo keto' : d.choKg + ' g/kg por ' + (plan.type === 'rest' ? 'descanso' : 'la sesión')}</span><b>${t.carb} g</b></div>
       <div class="why-row"><span>Grasa · el resto (${Math.round(t.fat * 9 / t.kcal * 100)}% de las kcal)</span><b>${t.fat} g</b></div>
       <div class="why-tips">${consejos.map(c => `<p>${c}</p>`).join('')}</div>
-    </div>` : `<div class="plan-tip">${consejos[0]}</div>`}
+      <button class="btn" id="planEdit" style="width:100%;margin-top:12px">Cambiar lo que hago hoy</button>
+    </div>` : ''}
   `;
-  document.getElementById('planEdit').onclick = () => openDaySheet(dk);
-  document.getElementById('planWhy').onclick = () => { state.accOpen.planwhy = !state.accOpen.planwhy; saveState(); renderPlanCard(); };
+  if(abierto) document.getElementById('planEdit').onclick = () => openDaySheet(dk);
+  document.getElementById('planWhy').onclick = () => { state.accOpen.planwhy = !abierto; saveState(); renderPlanCard(); };
 }
 
 /* Hoja para cambiar lo que se entrena un día puntual (o fijarlo en la rutina). */
@@ -5998,7 +6015,7 @@ function recoHtml(dk, cant){
   const r = recomendaciones(dk, cant);
   if(r.lleno) return `<div class="empty" style="padding:14px">${ico('star')}<br>Ya cubriste lo del día. Si tenés hambre, verduras o fruta.</div>`;
   const falta = `Te faltan <b>${fmtKcal(Math.max(r.rem.kcal,0))} kcal</b> · P ${Math.max(Math.round(r.rem.p),0)} g · C ${Math.max(Math.round(r.rem.c),0)} g · G ${Math.max(Math.round(r.rem.f),0)} g`;
-  return `<div class="reco-head"><div class="reco-ctx">${CTX_TITULO[r.ctx.k]}</div><div class="reco-falta">${falta}</div></div>` + r.items.map(rowReco).join('');
+  return `<div class="reco-head">${r.ctx.k !== 'normal' ? `<div class="reco-ctx">${CTX_TITULO[r.ctx.k]}</div>` : ''}<div class="reco-falta">${falta}</div></div>` + r.items.map(rowReco).join('');
 }
 function renderRecoCard(){
   const el = document.getElementById('recoCard');
