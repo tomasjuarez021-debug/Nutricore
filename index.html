@@ -148,7 +148,7 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
   -webkit-backdrop-filter:blur(24px);
   border-top:1px solid var(--linea);
   padding:8px 6px calc(8px + env(safe-area-inset-bottom));
-  display:grid;grid-template-columns:repeat(4,1fr);gap:2px;
+  display:grid;grid-template-columns:repeat(5,1fr);gap:2px;
 }
 .tab{
   padding:7px 1px;
@@ -1439,7 +1439,7 @@ body{font-size:14px;letter-spacing:-.003em;background:var(--bg);color:var(--text
   display:grid;place-items:center;transition:transform .2s;
 }
 .fab:active{transform:scale(.92)}
-body.screen-open .fab{opacity:0;pointer-events:none}
+body.screen-open .fab,body.en-lab .fab{opacity:0;pointer-events:none}
 body.screen-open{overflow:hidden}
 
 /* ---- Ventanas a pantalla completa ---- */
@@ -1716,6 +1716,46 @@ body.screen-open{overflow:hidden}
 .plan-edit{display:inline-flex;align-items:center;gap:5px;flex-shrink:0;padding:9px 12px;border-radius:12px;background:var(--grad);color:#fff;font-weight:700;font-size:13px;box-shadow:0 6px 14px rgba(var(--brand-rgb),.3)}
 .plan-edit .ico{width:15px;height:15px;stroke-width:2.2}
 .plan-edit:active{transform:scale(.95)}
+
+/* ---- Lab ---- */
+.lab-modes{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.lab-mode{text-align:left;padding:12px;border-radius:16px;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow)}
+.lab-mode b{display:block;font-size:14px;font-family:'Plus Jakarta Sans',sans-serif}
+.lab-mode span{font-size:11.5px;color:var(--text-3)}
+.lab-mode.on{background:var(--grad);border-color:transparent;color:#fff}
+.lab-mode.on span{color:rgba(255,255,255,.8)}
+.lab-target{font-size:13px;color:var(--text-2);background:rgba(var(--brand-rgb),.08);border-radius:14px;padding:10px 12px;margin-bottom:12px;line-height:1.5}
+.lab-target span{font-size:12px;color:var(--brand);font-weight:600}
+.lab-target .lab-desc{color:var(--text-3);font-weight:500}
+.lab-pins{margin-bottom:6px}
+.lab-sug{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.lab-sug .chip{padding:6px 11px;font-size:12.5px}
+.lab-head{display:flex;justify-content:space-between;align-items:center;margin:14px 2px 10px;font-size:13px;font-weight:700;color:var(--text-3)}
+.lab-head .link-btn{display:inline-flex;align-items:center;gap:5px}
+.lab-head .ico{width:15px;height:15px}
+.lab-card{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:14px;margin-bottom:12px;box-shadow:var(--shadow)}
+.lab-top{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px}
+.lab-name{flex:1;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:16px;letter-spacing:-.02em;line-height:1.25}
+.lab-match{flex-shrink:0;text-align:center;font-weight:800;font-size:16px;color:var(--brand);background:rgba(var(--brand-rgb),.1);border-radius:12px;padding:5px 9px;line-height:1}
+.lab-match small{display:block;font-size:9.5px;font-weight:600;margin-top:2px;opacity:.8}
+.lab-match.good{color:var(--good);background:rgba(var(--good-rgb),.12)}
+.lab-items{display:grid;gap:6px;margin-bottom:12px}
+.lab-item{display:flex;align-items:center;gap:10px;font-size:13.5px}
+.lab-item .row-thumb{width:34px;height:34px;border-radius:10px}
+.lab-item .row-thumb .ico{width:18px;height:18px}
+.lab-item span{flex:1;min-width:0}
+.lab-item b{font-variant-numeric:tabular-nums}
+.lab-macros{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}
+.lab-macros span{display:block;font-size:11px;color:var(--text-3)}
+.lab-macros b{display:block;font-size:14px;font-variant-numeric:tabular-nums;margin-bottom:4px}
+.lab-macros b small{font-size:10.5px;color:var(--text-3);font-weight:500}
+.lab-macros .bar{height:5px}
+.lab-micros{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-bottom:12px}
+.lab-micros span{font-size:11.5px;font-weight:600;padding:3px 8px;border-radius:10px;background:rgba(var(--good-rgb),.12);color:var(--good)}
+.lab-micros em{font-style:normal;font-size:11px;color:var(--text-3)}
+.lab-actions{display:grid;grid-template-columns:1fr 1fr 1.4fr;gap:8px}
+.lab-actions .btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:10px 6px;font-size:13px}
+.lab-actions .ico{width:15px;height:15px}
 </style>
 </head>
 <body>
@@ -1754,8 +1794,6 @@ body.screen-open{overflow:hidden}
     <!-- Lo que hacés hoy, resumido; se despliega para ver el detalle -->
     <div class="card plan-card" id="planCard"></div>
 
-    <!-- Recomendaciones según lo que falta y el momento -->
-    <div class="card" id="recoCard"></div>
 
     <!-- Lo que comiste hoy: lo único que se mira todos los días -->
     <div class="card">
@@ -1807,6 +1845,15 @@ body.screen-open{overflow:hidden}
         <div id="ratiosList"></div>
       </div>
     </div>
+  </section>
+
+  <!-- PAGE: LAB -->
+  <section class="page" id="page-lab">
+    <div class="page-head">
+      <div class="page-title">Generador de platos</div>
+      <h1 class="page-subtitle">Lab</h1>
+    </div>
+    <div id="labBody"></div>
   </section>
 
   <!-- PAGE: CLUB -->
@@ -1892,6 +1939,10 @@ body.screen-open{overflow:hidden}
     <button class="tab active" data-tab="overall">
       <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3zM13 21h8V11h-8zM3 21h8v-6H3zM13 3v6h8V3z"/></svg>
       Overall
+    </button>
+    <button class="tab" data-tab="lab">
+      <svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6L4.5 18.5A2 2 0 0 0 6.2 21.5h11.6a2 2 0 0 0 1.7-3L14 9V3"/><path d="M7 15h10"/></svg>
+      Lab
     </button>
     <button class="tab" data-tab="club">
       <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.3 2.9-5.6 6.5-5.6s6.5 2.3 6.5 5.6"/><circle cx="17.5" cy="9.5" r="2.4"/><path d="M17 15c2.6.2 4.5 2 4.5 4.4"/></svg>
@@ -2858,6 +2909,7 @@ let state = {
   logSearch: '',
   logCat: 'todos',
   logOpen: null,      // receta desplegada en el registro
+  lab: {modo:'comida', pins:[], seed:1, busca:''},
   lib: {tab:'ing', cat:'todos', sort:'p', recSort:'quality', search:'', open:null},
   currentTab: 'resumen',
   sortBy: 'quality', // 'quality' | 'protein'
@@ -2888,6 +2940,7 @@ function loadState(){
       if(parsed.mealPhotos) state.mealPhotos = parsed.mealPhotos;
       if(Array.isArray(parsed.favs)) state.favs = parsed.favs;
       if(parsed.dayPlan) state.dayPlan = parsed.dayPlan;
+      if(parsed.lab) state.lab = {...state.lab, ...parsed.lab, busca:''};
       // Perfiles viejos: 'vegan' booleano y 'activity' como factor único.
       if(!parsed.profile.diet) state.profile.diet = parsed.profile.vegan ? 'vegan' : 'ovo';
       if(!parsed.profile.work) state.profile.work = 'desk';
@@ -2929,6 +2982,7 @@ function saveState(){
       mealPhotos: state.mealPhotos,
       favs: state.favs,
       dayPlan: state.dayPlan,
+      lab: {modo:state.lab.modo, pins:state.lab.pins, seed:state.lab.seed},
       lastQty: state.lastQty
     }));
   }catch(e){
@@ -3881,7 +3935,7 @@ function fmtHora(d){
 }
 
 /* ==================== TABS ==================== */
-const TABS = ['overall','club','water','fast'];
+const TABS = ['overall','lab','club','water','fast'];
 
 function switchTab(tab){
   // Versiones viejas guardaban 'resumen', 'comidas' o 'calendario'.
@@ -3892,6 +3946,9 @@ function switchTab(tab){
   document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.id === 'page-'+tab));
   if(tab === 'overall') renderResumen();
   if(tab === 'water')   renderAgua();
+  if(tab === 'lab')     { labCache = null; renderLab(); }
+  // En el Lab cada plato tiene su propio botón de sumar: el flotante estorba.
+  document.body.classList.toggle('en-lab', tab === 'lab');
   if(tab === 'fast')    renderAyuno();
   // El reloj del ayuno solo corre mientras se está mirando esa pestaña.
   if(tab === 'fast') startFastTicker(); else stopFastTicker();
@@ -3931,7 +3988,6 @@ function renderResumen(){
 
   renderPlanCard();
   renderHero(totals, targets);
-  renderRecoCard();
   renderAccSummaries(totals, targets);
 
   // Pie charts: macro distribution + completion
@@ -6032,6 +6088,251 @@ function renderRecoCard(){
   document.getElementById('recoMas').onclick = () => { state.logTab = 'para'; openLogScreen(null); };
 }
 
+/* ==================== LAB ====================
+   Generador de platos: arma combinaciones de ingredientes (proteína + carbo
+   + verdura + grasa) y calcula los gramos de cada uno para acercarse al
+   objetivo de la comida elegida. Puntúa por cercanía a los macros y suma
+   puntos por los micros que hoy venís bajo. */
+const LAB_MODOS = {
+  proxima: {l:'Próxima comida', d:'Según lo que te falta hoy'},
+  comida:  {l:'Una comida',     d:'Tu día dividido en comidas'},
+  post:    {l:'Post-entreno',   d:'Proteína y carbos, poca grasa'},
+  snack:   {l:'Snack',          d:'Algo chico, ~300 kcal'}
+};
+const ALMIDON = new Set(['papa','papa_horno','boniato','mandioca','maiz','calabaza']);
+function nombreCorto(i){
+  return i.name.replace(/\s*\(.*\)/, '').replace(/\s+(cocid[oa]s?|crud[oa]s?|hervid[oa]|al natural lata)$/i, '').trim();
+}
+function ratio(i, k){ return i.kcal > 0 ? (i[k] * (k === 'f' ? 9 : 4)) / i.kcal : 0; }
+/* Cada ingrediente cumple un rol en el plato y tiene un rango de cantidad realista. */
+function rolDe(i){
+  if(['animal','legumbre','lact'].includes(i.cat) && ratio(i,'p') >= 0.3) return 'prot';
+  if(i.cat === 'veg' && !ALMIDON.has(i.id) && i.kcal < 60) return 'veg';
+  if(i.id === 'palta' || i.id === 'oliva' || (i.cat === 'fs' && ratio(i,'f') > 0.5)) return 'fat';
+  if(i.cat === 'fruta' && i.id !== 'palta') return 'fruta';
+  if((i.cat === 'cereal' && ratio(i,'f') < 0.25) || ALMIDON.has(i.id) || (i.cat === 'legumbre' && ratio(i,'c') >= 0.5)) return 'carb';
+  return null;
+}
+/* Qué ingrediente va en qué hueco de cada tipo de plato, para que las
+   combinaciones tengan sentido (nada de sardinas con arándanos). */
+const LAB_FUERA = new Set(['higado','milanesa','jamon_coc','jamon_cru','morcilla','chorizo','asado_tira','clara','milk','milk_desc','milk_alm','milk_soja','milk_avena','gal_arroz','copos_maiz','pochoclo','muesli','granola','gal_avena','pan_rall','fideos_arroz','coco_rall','almendra_pst','mani_pst','sal']);
+function slotOk(i, slot){
+  if(LAB_FUERA.has(i.id)) return false;
+  const r = rolDe(i);
+  switch(slot){
+    case 'protPlato': return (r === 'prot' && (i.cat === 'animal' || i.cat === 'legumbre')) || i.id === 'egg' || i.id === 'huevo_duro';
+    case 'protSnack': return (r === 'prot' && i.cat === 'lact' && i.id !== 'egg') || ['whey','soja_pro','arv_pro','huevo_duro'].includes(i.id);
+    case 'carbPlato': return r === 'carb' && (i.kcal <= 200 || ALMIDON.has(i.id));
+    case 'carbPost':  return r === 'carb' && (i.kcal <= 200 || /^Pan /.test(i.name));
+    case 'veg': return r === 'veg';
+    case 'fat': return r === 'fat';
+    case 'fruta': return r === 'fruta' && i.id !== 'limon';
+  }
+  return false;
+}
+const SLOT_ROL = {protPlato:'prot', protSnack:'prot', carbPlato:'carb', carbPost:'carb', veg:'veg', fat:'fat', fruta:'fruta'};
+function rangoDe(i, rol){
+  if(i.unit === 'u'){
+    if(i.id === 'egg' || i.id === 'huevo_duro') return [2, 4, 1];
+    return [1, 2, 1];
+  }
+  if(rol === 'prot') return i.cat === 'lact' ? [100, 350, 10] : [80, 250, 10];
+  if(rol === 'carb') return i.kcal > 200 ? [30, 120, 10] : [60, 350, 10];
+  if(rol === 'veg') return [80, 250, 10];
+  if(rol === 'fruta') return [80, 250, 10];
+  if(rol === 'fat') return i.id === 'oliva' ? [5, 15, 1] : (i.id === 'palta' ? [40, 120, 10] : [5, 25, 5]);
+  return [50, 200, 10];
+}
+function coef(i, k){ return i.unit === 'u' ? (i[k] || 0) : (i[k] || 0) / i.per; }
+
+function labObjetivo(modo){
+  const t = computeTargets(state.profile, todayKey());
+  const tot = aggregateMeals(state.selectedByDate[todayKey()] || []);
+  const n = comidasDelDia().n;
+  if(modo === 'snack') return {kcal:300, p:20, c:t.carbIsLimit ? 5 : 30, f:t.carbIsLimit ? 22 : 10};
+  if(modo === 'post') return {kcal:Math.round(t.kcal / n), p:Math.round(Math.max(state.profile.weight * 0.4, 30)), c:t.carbIsLimit ? 10 : Math.round(state.profile.weight * 1), f:15};
+  if(modo === 'proxima'){
+    const rem = {kcal:t.kcal - tot.kcal, p:t.protein - tot.p, c:t.carb - tot.c, f:t.fat - tot.f};
+    if(rem.kcal < 250) return null;
+    const partes = Math.max(1, Math.round(rem.kcal / 750));
+    return {kcal:Math.round(rem.kcal / partes), p:Math.max(Math.round(rem.p / partes), 15), c:Math.max(Math.round(rem.c / partes), t.carbIsLimit ? 0 : 20), f:Math.max(Math.round(rem.f / partes), 8)};
+  }
+  return {kcal:Math.round(t.kcal / n), p:Math.round(t.protein / n), c:Math.round(t.carb / n), f:Math.round(t.fat / n)};
+}
+
+/* Ajusta las cantidades: cada rol corrige su macro principal, unas vueltas. */
+function resolver(items, T){
+  items.forEach(x => { const [mn, mx] = rangoDe(x.i, x.rol); x.q = x.rol === 'veg' ? 150 : (mn + mx) / 2; });
+  const suma = (k, salvo) => items.reduce((a, x) => a + (x === salvo ? 0 : coef(x.i, k) * x.q), 0);
+  const macroDe = {prot:'p', carb:'c', fruta:'c', fat:'f'};
+  for(let vuelta = 0; vuelta < 5; vuelta++){
+    items.forEach(x => {
+      const k = macroDe[x.rol]; if(!k || x.fijo) return;
+      const c = coef(x.i, k); if(c <= 0) return;
+      const [mn, mx, paso] = rangoDe(x.i, x.rol);
+      let q = (T[k] - suma(k, x)) / c;
+      q = Math.min(Math.max(q, mn), mx);
+      x.q = Math.round(q / paso) * paso;
+    });
+  }
+  const n = computeMealNutrition({items:items.map(x => ({id:x.i.id, qty:x.q}))});
+  const err = Math.abs(n.kcal - T.kcal) / T.kcal
+    + 1.2 * Math.abs(n.p - T.p) / Math.max(T.p, 10)
+    + 0.8 * Math.abs(n.c - T.c) / Math.max(T.c, 20)
+    + 0.6 * Math.abs(n.f - T.f) / Math.max(T.f, 10);
+  return {n, err};
+}
+
+function rnd(seed){ return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+function labGenerar(modo, seed, cuantas){
+  const T = labObjetivo(modo);
+  if(!T) return {T:null, platos:[]};
+  const t = computeTargets(state.profile, todayKey());
+  const diet = dietaDe(state.profile);
+  const keto = !!t.carbIsLimit;
+  const pool = {};
+  Object.keys(SLOT_ROL).forEach(sl => {
+    pool[sl] = INGREDIENTS.filter(i => !NO_RECO.has(i.id) && ingApto(i, diet) && slotOk(i, sl) && !(keto && (SLOT_ROL[sl] === 'carb' || SLOT_ROL[sl] === 'fruta')));
+  });
+  const plantilla = keto ? (modo === 'snack' ? ['protSnack','fat'] : ['protPlato','veg','veg','fat'])
+    : modo === 'snack' ? ['protSnack','fruta']
+    : modo === 'post' ? ['protPlato','carbPost','fruta']
+    : ['protPlato','carbPlato','veg','fat'];
+  // Ingredientes fijados: ocupan el lugar de su rol.
+  const fijos = (state.lab.pins || []).map(id => INGR_BY_ID[id]).filter(Boolean).map(i => ({i, rol:rolDe(i) || 'veg'}));
+  const tot = aggregateMeals(state.selectedByDate[todayKey()] || []);
+  const bajos = ['Fe','Ca','Mg','fb','K','Zn','B12','D'].filter(k => t[k] > 0 && (tot[k] || 0) / t[k] < 0.7);
+
+  const R = rnd(seed);
+  const pick = arr => arr[Math.floor(R() * arr.length)];
+  const cand = [];
+  for(let n = 0; n < 260; n++){
+    const items = [], usados = new Set();
+    plantilla.forEach(sl => {
+      const rol = SLOT_ROL[sl];
+      const f = fijos.find(x => x.rol === rol && !usados.has(x.i.id));
+      let i = f ? f.i : null;
+      for(let k = 0; !i && k < 8; k++){ const c = pick(pool[sl]); if(c && !usados.has(c.id)) i = c; }
+      if(i){ usados.add(i.id); items.push({i, rol}); }
+    });
+    fijos.forEach(f => { if(!usados.has(f.i.id)){ usados.add(f.i.id); items.push({i:f.i, rol:f.rol}); } });
+    if(items.length < 2) continue;
+    const {n: nut, err} = resolver(items, T);
+    const micro = bajos.reduce((a, k) => a + Math.min((nut[k] || 0) / (t[k] / 3), 1), 0);
+    cand.push({items:items.map(x => ({id:x.i.id, qty:x.q, rol:x.rol})), nut, err, score: err - micro * 0.08});
+  }
+  cand.sort((a, b) => a.score - b.score);
+  const platos = [], vistos = new Set();
+  for(const c of cand){
+    const clave = c.items.filter(x => x.rol === 'prot' || x.rol === 'carb').map(x => x.id).join('+');
+    const protFija = fijos.some(f => f.rol === 'prot');
+    const eje = c.items.find(x => x.rol === (protFija ? 'carb' : 'prot')) || c.items.find(x => x.rol !== 'prot') || {};
+    if(vistos.has(clave) || vistos.has('e:' + eje.id)) continue;
+    vistos.add(clave); vistos.add('e:' + eje.id);
+    platos.push(c);
+    if(platos.length >= cuantas) break;
+  }
+  return {T, platos, bajos};
+}
+
+function nombrePlato(c, modo){
+  const ii = c.items.map(x => INGR_BY_ID[x.id]);
+  const nombres = ii.filter((_, k) => c.items[k].rol !== 'fat').map(nombreCorto).map(n => n.charAt(0).toLowerCase() + n.slice(1));
+  const tipo = modo === 'snack' ? 'Snack' : (modo === 'post' ? 'Post-entreno' : 'Bowl');
+  const lista = nombres.length > 1 ? nombres.slice(0, -1).join(', ') + ' y ' + nombres[nombres.length - 1] : nombres[0];
+  return `${tipo} de ${lista}`;
+}
+
+let labCache = null;
+function renderLab(){
+  const el = document.getElementById('labBody');
+  const L = state.lab;
+  if(!labCache || labCache.modo !== L.modo || labCache.seed !== L.seed || labCache.pins !== L.pins.join(',')){
+    labCache = {modo:L.modo, seed:L.seed, pins:L.pins.join(','), ...labGenerar(L.modo, L.seed, 3)};
+  }
+  const {T, platos, bajos} = labCache;
+  const q = norm(L.busca || '');
+  const sugeridos = q ? INGREDIENTS.filter(i => rolDe(i) && !NO_RECO.has(i.id) && ingApto(i, dietaDe(state.profile)) && norm(i.name).includes(q) && !L.pins.includes(i.id)).slice(0, 6) : [];
+  const t = computeTargets(state.profile, todayKey());
+  const barra = (v, obj) => `<div class="bar"><i class="${v > obj * 1.15 ? 'over' : (v >= obj * 0.9 ? 'good' : '')}" style="width:${Math.min(v / Math.max(obj, 1) * 100, 100)}%"></i></div>`;
+
+  el.innerHTML = `
+    <div class="chips scroll-x" style="padding-top:0">
+      ${Object.keys(LAB_MODOS).map(k => `<button class="chip ${L.modo === k ? 'active' : ''}" data-lmodo="${k}">${LAB_MODOS[k].l}</button>`).join('')}
+    </div>
+    ${T ? `<div class="lab-target"><span class="lab-desc">${LAB_MODOS[L.modo].d}</span><br>Objetivo <b>${T.kcal} kcal</b> · P ${T.p} g · C ${T.c} g · G ${T.f} g${bajos && bajos.length ? `<br><span>Priorizando ${bajos.slice(0,3).map(k => MICRO_NOMBRE[k] ? MICRO_NOMBRE[k].replace(/^(el|la) /, '') : k).join(', ')}, que hoy venís bajo</span>` : ''}</div>` : ''}
+    <div class="lab-pins">
+      <div class="search-wrap" style="margin:0">
+        ${ico('search')}
+        <input type="search" class="search" id="labBusca" placeholder="Quiero usar… (pollo, arroz, tofu)" value="${escapeHtml(L.busca || '')}" autocomplete="off">
+      </div>
+      ${sugeridos.length ? `<div class="lab-sug">${sugeridos.map(i => `<button class="chip" data-lpin="${i.id}">+ ${i.name}</button>`).join('')}</div>` : ''}
+      ${L.pins.length ? `<div class="lab-sug">${L.pins.map(id => `<button class="chip active" data-lunpin="${id}">${INGR_BY_ID[id].name} ×</button>`).join('')}</div>` : ''}
+    </div>
+    <div class="lab-head"><span>${platos.length ? 'Combinaciones para vos' : ''}</span><button class="link-btn" id="labShuffle">${ico('swap')} Otras ideas</button></div>
+    ${!T ? `<div class="empty">${ico('star')}<br>Ya cubriste lo que te faltaba hoy. Probá con "Una comida" o "Snack".</div>` :
+      !platos.length ? `<div class="empty">No encontré combinaciones con esos ingredientes. Probá sacar alguno.</div>` :
+      platos.map((c, k) => {
+        const m = Math.max(0, Math.round(100 - c.err * 45));
+        const micros = ['Fe','Ca','Mg','fb','K','Zn','B12','D'].map(x => ({x, pct: t[x] ? Math.round((c.nut[x] || 0) / t[x] * 100) : 0}))
+          .sort((a, b) => b.pct - a.pct).slice(0, 3);
+        return `
+        <div class="lab-card">
+          <div class="lab-top">
+            <div class="lab-name">${nombrePlato(c, L.modo)}</div>
+            <div class="lab-match ${m >= 85 ? 'good' : ''}">${m}%<small>match</small></div>
+          </div>
+          <div class="lab-items">
+            ${c.items.map(x => { const i = INGR_BY_ID[x.id]; return `<div class="lab-item">${ingThumb(i)}<span>${nombreCorto(i)}</span><b>${qtyLabel(i, x.qty)}</b></div>`; }).join('')}
+          </div>
+          <div class="lab-macros">
+            <div><span>kcal</span><b>${c.nut.kcal}<small>/${T.kcal}</small></b>${barra(c.nut.kcal, T.kcal)}</div>
+            <div><span>Prot</span><b>${Math.round(c.nut.p)}<small>/${T.p}g</small></b>${barra(c.nut.p, T.p)}</div>
+            <div><span>Carbo</span><b>${Math.round(c.nut.c)}<small>/${T.c}g</small></b>${barra(c.nut.c, T.c)}</div>
+            <div><span>Grasa</span><b>${Math.round(c.nut.f)}<small>/${T.f}g</small></b>${barra(c.nut.f, T.f)}</div>
+          </div>
+          <div class="lab-micros">${micros.map(z => `<span>${(MICRO_NOMBRE[z.x] || z.x).replace(/^(el|la) /, '')} ${z.pct}%</span>`).join('')}<em>del día</em></div>
+          <div class="lab-actions">
+            <button class="btn" data-lotra="${k}">${ico('swap')}Otra</button>
+            <button class="btn" data-lsave="${k}">${ico('star')}Guardar</button>
+            <button class="btn primary" data-ladd="${k}">+ Sumar</button>
+          </div>
+        </div>`;
+      }).join('')}
+  `;
+  el.querySelectorAll('[data-lmodo]').forEach(b => b.onclick = () => { L.modo = b.dataset.lmodo; saveState(); renderLab(); });
+  const busca = document.getElementById('labBusca');
+  busca.oninput = () => { L.busca = busca.value; renderLab(); const n = document.getElementById('labBusca'); n.focus(); n.setSelectionRange(n.value.length, n.value.length); };
+  el.querySelectorAll('[data-lpin]').forEach(b => b.onclick = () => { L.pins.push(b.dataset.lpin); L.busca = ''; saveState(); renderLab(); });
+  el.querySelectorAll('[data-lunpin]').forEach(b => b.onclick = () => { L.pins = L.pins.filter(x => x !== b.dataset.lunpin); saveState(); renderLab(); });
+  document.getElementById('labShuffle').onclick = () => { L.seed++; renderLab(); };
+  el.querySelectorAll('[data-lotra]').forEach(b => b.onclick = () => {
+    // Reemplaza solo esa tarjeta por la mejor que todavía no se mostró.
+    const k = +b.dataset.lotra;
+    const ya = new Set(labCache.platos.map(c => c.items.map(x => x.id).join('+')));
+    for(let s = 1; s < 20; s++){
+      const otra = labGenerar(L.modo, L.seed * 97 + s * 13 + k, 3).platos.find(c => !ya.has(c.items.map(x => x.id).join('+')));
+      if(otra){ labCache.platos[k] = otra; break; }
+    }
+    renderLab();
+  });
+  el.querySelectorAll('[data-ladd]').forEach(b => b.onclick = () => {
+    const c = labCache.platos[+b.dataset.ladd], tk = todayKey();
+    if(!state.selectedByDate[tk]) state.selectedByDate[tk] = [];
+    c.items.forEach(x => { state.selectedByDate[tk].push(ingEntryId(x.id, x.qty)); state.lastQty[x.id] = x.qty; });
+    saveState(); labCache = null; renderLab(); renderSegTags();
+    toast('Plato sumado a hoy');
+  });
+  el.querySelectorAll('[data-lsave]').forEach(b => b.onclick = () => {
+    const c = labCache.platos[+b.dataset.lsave];
+    const meal = {id:'u' + Date.now().toString(36), name:nombrePlato(c, L.modo), items:c.items.map(x => ({id:x.id, qty:x.qty})), prep:'Generada en el Lab.', tags:[], custom:true};
+    state.customMeals.unshift(meal);
+    if(!state.favs.includes(meal.id)) state.favs.unshift(meal.id);
+    saveState();
+    toast('Guardada en recetas y favoritos');
+  });
+}
 /* ==================== TOAST ==================== */
 let toastTimer;
 function toast(msg){
