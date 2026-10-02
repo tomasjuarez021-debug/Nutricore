@@ -1392,7 +1392,7 @@ body{font-size:14px;letter-spacing:-.003em;background:var(--bg);color:var(--text
 .hero-stat-lbl{font-size:11.5px;color:var(--text-3);font-weight:500}
 .hero-stat-val{font-family:'Plus Jakarta Sans',sans-serif;font-size:21px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
 .hero-stat-val small{font-size:12px;color:var(--text-3);font-weight:600;margin-left:3px}
-.hero-badge{white-space:normal;line-height:1.3;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;padding:5px 10px;border-radius:20px;background:rgba(var(--brand-rgb),.1);color:var(--brand);width:max-content;max-width:100%}
+.hero-badge{white-space:normal;line-height:1.3;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;padding:5px 10px;border-radius:20px;background:rgba(var(--brand-rgb),.1);color:var(--brand);width:auto;max-width:100%}
 .hero-badge.good{background:rgba(var(--good-rgb),.14);color:var(--good)}
 .hero-badge.over{background:rgba(var(--bad-rgb),.14);color:var(--bad)}
 .kpi-rings{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
@@ -1709,6 +1709,13 @@ body.screen-open{overflow:hidden}
 .plan-chev{color:var(--text-3);font-size:13px;padding:4px}
 .why-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:14px;margin:4px 0 4px}
 .plan-why{border-top:1px solid var(--line);margin-top:12px;padding-top:8px}
+
+.plan-top{display:flex;align-items:center;gap:12px}
+.plan-info{text-align:left;flex:1;min-width:0}
+.plan-more{color:var(--brand);font-weight:600;white-space:nowrap}
+.plan-edit{display:inline-flex;align-items:center;gap:5px;flex-shrink:0;padding:9px 12px;border-radius:12px;background:var(--grad);color:#fff;font-weight:700;font-size:13px;box-shadow:0 6px 14px rgba(var(--brand-rgb),.3)}
+.plan-edit .ico{width:15px;height:15px;stroke-width:2.2}
+.plan-edit:active{transform:scale(.95)}
 </style>
 </head>
 <body>
@@ -5754,14 +5761,14 @@ function renderPlanCard(){
     f ? `ayuno hasta ${fmtHora(f.fin)}` : null
   ].filter(Boolean).join(' · ');
   el.innerHTML = `
-    <button class="plan-top" id="planWhy" aria-expanded="${abierto}">
-      <div class="plan-ico">${ico(tt.ico)}</div>
-      <div class="plan-info">
+    <div class="plan-top">
+      <button class="plan-ico" id="planEditIco" aria-label="Cambiar actividad">${ico(tt.ico)}</button>
+      <button class="plan-info" id="planWhy" aria-expanded="${abierto}">
         <div class="plan-tit">${tt.l.replace(/ \(.*\)/, '')}${plan.min ? ` · ${plan.min} min` : ''}${plan.time ? ` · ${plan.time}` : ''}</div>
-        <div class="plan-lbl">${resumen}</div>
-      </div>
-      <span class="plan-chev">${abierto ? '▴' : '▾'}</span>
-    </button>
+        <div class="plan-lbl">${resumen} <span class="plan-more">${abierto ? 'ocultar detalle ▴' : 'ver detalle ▾'}</span></div>
+      </button>
+      <button class="plan-edit" id="planEditTop">${ico('pencil')}Cambiar</button>
+    </div>
     ${abierto ? `
     <div class="plan-chips">
       <span class="pchip">${ico(d.work.ico)}${d.work.l}</span>
@@ -5782,10 +5789,10 @@ function renderPlanCard(){
       <div class="why-row"><span>Carbos · ${t.carbIsLimit ? 'techo keto' : d.choKg + ' g/kg por ' + (plan.type === 'rest' ? 'descanso' : 'la sesión')}</span><b>${t.carb} g</b></div>
       <div class="why-row"><span>Grasa · el resto (${Math.round(t.fat * 9 / t.kcal * 100)}% de las kcal)</span><b>${t.fat} g</b></div>
       <div class="why-tips">${consejos.map(c => `<p>${c}</p>`).join('')}</div>
-      <button class="btn" id="planEdit" style="width:100%;margin-top:12px">Cambiar lo que hago hoy</button>
     </div>` : ''}
   `;
-  if(abierto) document.getElementById('planEdit').onclick = () => openDaySheet(dk);
+  document.getElementById('planEditTop').onclick = () => openDaySheet(dk);
+  document.getElementById('planEditIco').onclick = () => openDaySheet(dk);
   document.getElementById('planWhy').onclick = () => { state.accOpen.planwhy = !abierto; saveState(); renderPlanCard(); };
 }
 
