@@ -1800,6 +1800,15 @@ body.screen-open{overflow:hidden}
 .lab-foot .btn{flex:1 1 0;min-width:0;padding:13px 8px;white-space:nowrap}
 .lab-foot #labSave{flex:0 0 50px}
 .lab-foot #labNext{flex:1.3 1 0}
+
+.lp-total{padding:20px 16px}
+.lp-kcal{margin-bottom:14px}
+.lp-macros{text-align:center}
+.lp-m b{font-size:22px}
+.lp-m.p b{color:var(--brand-2)} .lp-m.c b{color:var(--carb)} .lp-m.f b{color:var(--fat)}
+.lp-m span{margin:0}
+.lp-empty{text-align:center;font-size:14px;color:var(--text-3);margin:6px 0 14px}
+.lp-head{margin:0 2px 4px}
 </style>
 </head>
 <body>
@@ -2037,7 +2046,6 @@ body.screen-open{overflow:hidden}
     </div>
     <div class="screen-body" id="labBody"></div>
     <div class="screen-foot lab-foot">
-      <button class="btn" id="labSave" aria-label="Guardar receta"></button>
       <button class="btn primary" id="labNext"></button>
       <button class="btn" id="labAdd">+ Sumar</button>
     </div>
@@ -6295,7 +6303,7 @@ function nombrePlato(c, modo){
 
 /* Ventana del Lab: un plato de prueba. Sumás alimentos, movés los gramos y
    ves al instante cuánto da. Nada se registra hasta tocar "Sumar a hoy". */
-const LAB_ATAJOS = ['pollo_p','egg','tofu','atun','carne_m','lent','rice_br','pasta','papa','boniato','quinoa','palta','oliva','yog_grg','banana','brocoli'];
+const LAB_ATAJOS = ['pollo_p','egg','tofu','rice_br','papa','palta'];
 function labPlate(){ if(!Array.isArray(state.lab.plate)) state.lab.plate = []; return state.lab.plate; }
 function openLab(){ abrirPantalla('labScreen'); renderLab(); }
 function closeLab(){ cerrarPantalla('labScreen'); }
@@ -6312,33 +6320,27 @@ function renderLab(){
   const opciones = (q
     ? INGREDIENTS.filter(i => ingApto(i, diet) && norm(i.name).includes(q))
     : LAB_ATAJOS.map(id => INGR_BY_ID[id]).filter(i => i && ingApto(i, diet))
-  ).filter(i => !enPlato.has(i.id)).slice(0, q ? 8 : 12);
+  ).filter(i => !enPlato.has(i.id)).slice(0, 6);
   const pctDia = (v, obj) => obj > 0 ? Math.round(v / obj * 100) : 0;
-  const macro = (lbl, v, obj, cls) => `
-    <div class="lp-m ${cls}">
-      <b>${fmtNum(v)}<small>g</small></b><span>${lbl}</span>
-      <div class="bar"><i style="width:${Math.min(pctDia(v, obj), 100)}%"></i></div>
-      <em>${pctDia(v, obj)}% del día</em>
-    </div>`;
+  const macro = (lbl, v, cls) => `<div class="lp-m ${cls}"><b>${Math.round(v)}<small>g</small></b><span>${lbl}</span></div>`;
 
   el.innerHTML = `
     <div class="lp-total">
       <div class="lp-kcal">${fmtKcal(n.kcal)}<small>kcal</small></div>
-      <div class="lp-sub">${plate.length ? `${pctDia(n.kcal, t.kcal)}% de lo que necesitás hoy` : 'Armá un plato de prueba y mirá cuánto suma'}</div>
       <div class="lp-macros">
-        ${macro('Proteína', n.p, t.protein, 'p')}
-        ${macro('Carbos', n.c, t.carb, 'c')}
-        ${macro('Grasa', n.f, t.fat, 'f')}
+        ${macro('Proteína', n.p, 'p')}
+        ${macro('Carbos', n.c, 'c')}
+        ${macro('Grasa', n.f, 'f')}
       </div>
     </div>
 
     ${plate.length ? `
-    <div class="lp-head"><span>Tu plato</span><button class="link-btn" id="labVaciar">Vaciar</button></div>
+    <div class="lp-head"><span></span><button class="link-btn" id="labVaciar">Vaciar</button></div>
     <div class="lp-list">
-      ${plate.map((x, k) => { const i = INGR_BY_ID[x.id]; const nn = computeMealNutrition({items:[x]}); return `
+      ${plate.map((x, k) => { const i = INGR_BY_ID[x.id]; return `
         <div class="lp-row">
           ${ingThumb(i)}
-          <div class="lp-info"><div>${nombreCorto(i)}</div><span>${nn.kcal} kcal · P ${fmtNum(nn.p)} · C ${fmtNum(nn.c)} · G ${fmtNum(nn.f)}</span></div>
+          <div class="lp-info"><div>${nombreCorto(i)}</div></div>
           <div class="mini-step">
             <button data-lmenos="${k}" aria-label="Menos">−</button>
             <span class="lp-q">${qtyLabel(i, x.qty)}</span>
@@ -6347,19 +6349,18 @@ function renderLab(){
         </div>`; }).join('')}
     </div>` : ''}
 
-    <div class="lp-head"><span>${plate.length ? 'Agregar más' : 'Empezá agregando algo'}</span></div>
+    ${plate.length ? '' : '<div class="lp-empty">Agregá alimentos y mirá cuánto suman</div>'}
     <div class="search-wrap">
       ${ico('search')}
       <input type="search" class="search" id="labBusca" placeholder="Buscar alimento…" value="${escapeHtml(L.busca || '')}" autocomplete="off">
     </div>
-    <div class="lab-sug">${opciones.map(i => `<button class="chip" data-ladd="${i.id}">+ ${nombreCorto(i)}</button>`).join('') || '<span class="hint">Sin resultados</span>'}</div>
+    <div class="lab-sug">${opciones.map(i => `<button class="chip" data-ladd="${i.id}">+ ${nombreCorto(i)}</button>`).join('')}</div>
   `;
 
-  const saveB = document.getElementById('labSave'), nextB = document.getElementById('labNext'), addB = document.getElementById('labAdd');
-  saveB.innerHTML = ico('star');
+  const nextB = document.getElementById('labNext'), addB = document.getElementById('labAdd');
   nextB.innerHTML = `${ico('swap')} Sorprendeme`;
   addB.textContent = '+ Sumar a hoy';
-  [saveB, addB].forEach(b => b.disabled = !plate.length);
+  addB.disabled = !plate.length;
 
   el.querySelectorAll('[data-ladd]').forEach(b => b.onclick = () => {
     const i = INGR_BY_ID[b.dataset.ladd];
@@ -6475,7 +6476,6 @@ function init(){
   document.getElementById('labClose').onclick = closeLab;
   document.getElementById('labNext').onclick = labOtra;
   document.getElementById('labAdd').onclick = labSumar;
-  document.getElementById('labSave').onclick = labGuardar;
   document.getElementById('libClose').onclick = closeLibrary;
   document.getElementById('libSearch').oninput = (e) => { state.lib.search = e.target.value.trim(); renderLib(); };
   document.getElementById('libSort').onchange = (e) => {
