@@ -1990,6 +1990,28 @@ body.screen-open{overflow:hidden}
 .lx-sug{box-shadow:0 8px 20px -16px rgba(var(--brand-rgb),.5)}
 
 .lt-liq.cero::before{display:none}
+
+/* ---- Lab: calidad de la proteína ---- */
+.lq{display:flex;align-items:center;gap:12px;margin-top:16px;padding:12px;border-radius:16px;background:rgba(var(--ink-rgb),.035);border:1px solid var(--line)}
+.lq-badge{width:38px;height:38px;border-radius:12px;flex-shrink:0;display:grid;place-items:center;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:18px;background:rgba(var(--ink-rgb),.08);color:var(--text-2)}
+.lq.S .lq-badge,.lq.A .lq-badge{background:rgba(var(--good-rgb),.15);color:var(--good)}
+.lq.B .lq-badge{background:rgba(var(--warn-rgb),.18);color:var(--warn)}
+.lq.C .lq-badge{background:rgba(var(--bad-rgb),.14);color:var(--bad)}
+.lq.B{border-color:rgba(var(--warn-rgb),.45);background:rgba(var(--warn-rgb),.06)}
+.lq.C{border-color:rgba(var(--bad-rgb),.4);background:rgba(var(--bad-rgb),.05)}
+.lq-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.lq-info b{font-size:14px}
+.lq-info span{font-size:12.5px;color:var(--text-2);line-height:1.35}
+.lq-info em{font-style:normal;font-weight:700;color:var(--text)}
+.lq-info .lq-nota{font-size:11.5px;color:var(--text-3)}
+.lq-fix{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:10px}
+.lq-fix > span{font-size:12px;font-weight:600;color:var(--text-3);margin-right:2px}
+.lq-chip{font-size:12.5px;font-weight:600;padding:6px 11px;border-radius:999px;border:1px dashed rgba(var(--brand-rgb),.5);color:var(--brand);background:rgba(var(--brand-rgb),.06)}
+.lq-chip:active{transform:scale(.95)}
+.lq-mini{display:inline-grid;place-items:center;min-width:18px;height:18px;padding:0 4px;border-radius:6px;font-size:10.5px;font-weight:800;margin-left:6px;vertical-align:1px;background:rgba(var(--ink-rgb),.07);color:var(--text-3)}
+.lq-mini.S,.lq-mini.A{background:rgba(var(--good-rgb),.15);color:var(--good)}
+.lq-mini.B{background:rgba(var(--warn-rgb),.18);color:var(--warn)}
+.lq-mini.C{background:rgba(var(--bad-rgb),.14);color:var(--bad)}
 :root[data-theme="dark"] .lt-tube{background:linear-gradient(90deg, rgba(255,255,255,.07) 0 18%, transparent 18% 100%), rgba(255,255,255,.02);border-color:rgba(255,255,255,.18)}
 :root[data-theme="dark"] .lt-tube::before{background:rgba(255,255,255,.2)}
 
@@ -6586,6 +6608,30 @@ function labSugerencias(plate, T, cant){
   return res;
 }
 
+/* Con qué completar una proteína incompleta: alimentos comunes ricos en el
+   aminoácido que falta, en porciones reales. Se queda con la porción más
+   chica que deja el plato en clase A o mejor, y ordena por kcal agregadas. */
+function labComplementos(plate, pq, diet){
+  const aa = pq.limitingAA, enPlato = new Set(plate.map(x => x.id));
+  const out = [];
+  Object.keys(AA_DATA).forEach(id => {
+    const i = INGR_BY_ID[id];
+    if(!i || enPlato.has(id) || NO_RECO.has(id) || LAB_FUERA.has(id) || !ingApto(i, diet)) return;
+    if(!(AA_DATA[id].aa[aa] >= AA_REF[aa] * 1.2) || (i.p || 0) < 3) return;
+    const porciones = i.unit === 'u' ? [1, 2] : (i.kcal > 250 ? [20, 40] : [60, 100, 150, 200]);
+    for(const qty of porciones){
+      const q2 = computeProteinQuality({items:[...plate, {id, qty}]});
+      if(q2 && (q2.classLetter === 'A' || q2.classLetter === 'S')){
+        // Los polvos proteicos quedan últimos: primero comida de verdad.
+        const polvo = ['whey','soja_pro','arv_pro'].includes(id);
+        out.push({id, qty, kcal: computeMealNutrition({items:[{id, qty}]}).kcal + (polvo ? 400 : 0)});
+        break;
+      }
+    }
+  });
+  return out.sort((a, b) => a.kcal - b.kcal).slice(0, 3);
+}
+
 const labNivelPrevio = {};
 function renderLab(){
   const el = document.getElementById('labBody');
@@ -6648,6 +6694,33 @@ function renderLab(){
   };
   const pE = T.kcal > 0 ? n.kcal / T.kcal : 0;
 
+  /* Calidad de la proteína del plato: perfil de aminoácidos combinado
+     (patrón FAO 2013) y DIAAS. Si es incompleta, dice qué aminoácido falta
+     y ofrece con qué completarla, respetando la dieta. */
+  const pq = n.p >= 5 ? computeProteinQuality({items:plate}) : null;
+  const PQ_TXT = {S:'Excelente', A:'Completa', B:'Casi completa', C:'Incompleta'};
+  let calidad = '';
+  if(n.p >= 5 && !pq){
+    calidad = `<div class="lq"><div class="lq-badge">?</div><div class="lq-info"><b>Calidad de la proteína</b><span>Sin datos de aminoácidos para estos ingredientes</span></div></div>`;
+  } else if(pq){
+    const cobertura = pq.totalProt / Math.max(n.p, 0.1);
+    const incompleta = pq.classLetter === 'B' || pq.classLetter === 'C';
+    const opciones = incompleta ? labComplementos(plate, pq, diet) : [];
+    calidad = `
+      <div class="lq ${pq.classLetter}">
+        <div class="lq-badge">${pq.classLetter}</div>
+        <div class="lq-info">
+          <b>Proteína ${PQ_TXT[pq.classLetter].toLowerCase()}</b>
+          <span>${incompleta
+            ? `Le falta <em>${AA_NAMES[pq.limitingAA].toLowerCase()}</em> (${Math.round(pq.limitingScore * 100)}% de lo necesario)`
+            : 'Tiene todos los aminoácidos esenciales'} · DIAAS ${pq.diaas}</span>
+          ${cobertura < 0.7 ? `<span class="lq-nota">Calculada sobre el ${Math.round(cobertura * 100)}% de la proteína del plato</span>` : ''}
+        </div>
+      </div>
+      ${opciones.length ? `<div class="lq-fix"><span>Completala con</span>${opciones.map(x =>
+        `<button class="lq-chip" data-ladd="${x.id}" data-lq="${x.qty}">+ ${nombreCorto(INGR_BY_ID[x.id])} ${qtyLabel(INGR_BY_ID[x.id], x.qty)}</button>`).join('')}</div>` : ''}`;
+  }
+
 
   el.innerHTML = `
     <section class="lx-hero">
@@ -6662,6 +6735,7 @@ function renderLab(){
         ${tubo('Grasa', n.f, T.f, 'f', 'g')}
       </div>
       <div class="lx-legend"><i></i>meta de una comida</div>
+      ${calidad}
     </section>
 
     ${plate.length ? `
@@ -6671,6 +6745,7 @@ function renderLab(){
         <div class="lx-row ${abierto ? 'open' : ''}">
           <button class="lx-name" data-lopen="${k}">
             <i class="lx-dot" style="background:${CAT_COLOR[i.cat] || 'var(--brand)'}"></i>${nombreCorto(i)}
+            ${ingredientClass(i) ? `<span class="lq-mini ${ingredientClass(i)}" title="Calidad de su proteína">${ingredientClass(i)}</span>` : ''}
           </button>
           <div class="lx-step">
             <button data-lmenos="${k}" aria-label="Menos">−</button>
