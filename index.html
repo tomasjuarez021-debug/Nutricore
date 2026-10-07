@@ -25,7 +25,7 @@
 <title>Picoteo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ============ PALETA ============
    Todo color sale de estos tokens. El tema claro es el de base; el oscuro
@@ -1773,6 +1773,271 @@ body.screen-open{overflow:hidden}
 .lab-foot #labNext{flex:1;font-size:15px}
 .lab-foot .ico{width:18px;height:18px}
 .lab-foot .btn:disabled{opacity:.4}
+
+/* ---- Lab: plato de prueba ---- */
+.lp-total{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:18px 16px 16px;margin-bottom:14px;box-shadow:var(--shadow);text-align:center}
+.lp-kcal{font-family:'Plus Jakarta Sans',sans-serif;font-size:44px;font-weight:800;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+.lp-kcal small{font-size:15px;color:var(--text-3);font-weight:700;margin-left:4px}
+.lp-sub{font-size:13px;color:var(--text-3);margin:6px 0 14px}
+.lp-macros{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:left}
+.lp-m b{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-variant-numeric:tabular-nums}
+.lp-m b small{font-size:12px;color:var(--text-3);margin-left:1px}
+.lp-m span{display:block;font-size:12px;color:var(--text-3);font-weight:600;margin-bottom:5px}
+.lp-m em{display:block;font-style:normal;font-size:11px;color:var(--text-3);margin-top:4px}
+.lp-m.p .bar > i{background:var(--brand-2)}
+.lp-m.c .bar > i{background:var(--carb)}
+.lp-m.f .bar > i{background:var(--fat)}
+.lp-head{display:flex;justify-content:space-between;align-items:center;margin:4px 2px 8px;font-size:13px;font-weight:700;color:var(--text-3)}
+.lp-list{display:grid;gap:8px;margin-bottom:14px}
+.lp-row{display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:8px 8px 8px 8px}
+.lp-row .row-thumb{width:38px;height:38px;border-radius:12px}
+.lp-row .row-thumb .ico{width:20px;height:20px}
+.lp-info{flex:1;min-width:0;font-size:14px;font-weight:600}
+.lp-info div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lp-info span{display:block;font-size:11.5px;color:var(--text-3);font-weight:500;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lp-q{min-width:52px!important;font-size:13px!important}
+
+.lab-foot .btn{flex:1 1 0;min-width:0;padding:13px 8px;white-space:nowrap}
+.lab-foot #labSave{flex:0 0 50px}
+.lab-foot #labNext{flex:1.3 1 0}
+
+.lp-total{padding:20px 16px}
+.lp-kcal{margin-bottom:14px}
+.lp-macros{text-align:center}
+.lp-m b{font-size:22px}
+.lp-m.p b{color:var(--brand-2)} .lp-m.c b{color:var(--carb)} .lp-m.f b{color:var(--fat)}
+.lp-m span{margin:0}
+.lp-empty{text-align:center;font-size:14px;color:var(--text-3);margin:6px 0 14px}
+.lp-head{margin:0 2px 4px}
+
+.lp-total{padding:16px 10px 12px}
+.lp-rings{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;text-align:center}
+.lp-ring .kpi-ring-svg{width:64px;height:64px}
+.lp-ring-lbl{font-size:12px;font-weight:700;margin-top:6px}
+.lp-ring-val{font-size:12px;color:var(--text-2);font-variant-numeric:tabular-nums}
+.lp-ring-val small{color:var(--text-4);font-size:10.5px}
+.lp-goal{text-align:center;font-size:11.5px;color:var(--text-3);margin-top:10px}
+.lp-row{flex-wrap:wrap;padding:6px 6px 6px 14px}
+.lp-name{flex:1;min-width:0;text-align:left;font-size:15px;font-weight:600;padding:8px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lp-name .chev{color:var(--text-4);font-size:11px;margin-left:4px}
+.lp-det{flex-basis:100%;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;padding:4px 2px 6px;font-size:12.5px;color:var(--text-3);border-top:1px solid var(--line);margin-top:4px}
+.lp-det b{color:var(--text);font-variant-numeric:tabular-nums}
+.lp-det .link-btn{margin-left:auto;color:var(--bad);font-size:12.5px}
+.lp-add{margin-top:14px}
+.lp-add-tit{font-size:13px;font-weight:700;color:var(--text-3);margin:0 2px 8px}
+.chip.sug small{font-weight:600;color:var(--text-3);margin-left:3px}
+.lp-head{margin:-4px 2px 0;justify-content:flex-end}
+
+
+/* ---- Lab: limpio, números mono ---- */
+.lab-title{display:flex;flex-direction:column;align-items:center;line-height:1.15}
+.lab-title span{font-family:'Inter',sans-serif;font-size:11.5px;font-weight:500;color:var(--text-3);letter-spacing:0}
+#labScreen .lp-total{box-shadow:none;padding:18px 8px 12px}
+#labScreen .lp-ring svg circle:last-child{stroke:var(--c)!important}
+#labScreen .lp-ring .kpi-ring-svg{width:60px;height:60px}
+#labScreen .lp-ring .kpi-ring-pct,#labScreen .lp-ring-val,#labScreen .lp-q,#labScreen .lp-det b,#labScreen .chip small{font-family:'JetBrains Mono',ui-monospace,monospace;font-weight:500;letter-spacing:-.02em}
+#labScreen .lp-ring .kpi-ring-pct{font-size:12.5px}
+#labScreen .lp-ring.ok .kpi-ring-pct{color:var(--c)}
+#labScreen .lp-ring-lbl{font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em}
+#labScreen .lp-goal{font-size:11.5px}
+#labScreen .lp-row{box-shadow:none}
+#labScreen .lp-row.open{border-color:rgba(var(--brand-rgb),.4)}
+#labScreen .lp-name{font-weight:500}
+#labScreen .mini-step button.plus{background:transparent;color:var(--brand)}
+#labScreen .chip{border-radius:12px;font-weight:500}
+#labScreen .chip small{color:var(--brand)}
+#labScreen .lp-add-tit{font-weight:600}
+
+/* ---- Lab: barras por macro ---- */
+#labScreen .lp-total{padding:14px 16px 6px;text-align:left}
+#labScreen .lp-goal{text-align:left;margin:0 0 10px;font-size:12px;font-weight:600;color:var(--text-3)}
+.lp-bar{margin-bottom:12px}
+.lp-bar-top{display:flex;align-items:baseline;gap:8px;margin-bottom:6px}
+.lp-bar-top span{font-size:13px;font-weight:600;flex:1}
+.lp-bar-top b{font-family:'JetBrains Mono',ui-monospace,monospace;font-weight:500;font-size:13px;font-variant-numeric:tabular-nums}
+.lp-bar-top b small{color:var(--text-3);font-size:11.5px}
+.lp-bar-top em{font-style:normal;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;min-width:40px;text-align:right;color:var(--text-3)}
+.lp-bar.ok .lp-bar-top em{color:var(--good);font-weight:700}
+.lp-bar.over .lp-bar-top em{color:var(--bad);font-weight:700}
+.lp-track{height:8px;border-radius:8px;background:rgba(var(--ink-rgb),.07);overflow:hidden}
+.lp-track i{display:block;height:100%;border-radius:8px;background:var(--c);transition:width .35s cubic-bezier(.2,.8,.2,1)}
+
+/* =========== LAB · diseño =========== */
+#labScreen .screen-body{padding-top:4px}
+.lx-hero{
+  position:relative;overflow:hidden;
+  border-radius:28px;padding:20px 20px 18px;margin-bottom:22px;
+  background:
+    radial-gradient(120% 90% at 100% 0%, rgba(var(--brand-rgb),.16), transparent 60%),
+    radial-gradient(90% 80% at 0% 100%, rgba(6,182,212,.10), transparent 60%),
+    var(--panel);
+  border:1px solid var(--line);
+  box-shadow:0 1px 0 rgba(255,255,255,.6) inset, 0 18px 40px -18px rgba(var(--brand-rgb),.35);
+}
+.lx-eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--brand)}
+.lx-eyebrow span{color:var(--text-3);font-weight:600;letter-spacing:.04em;text-transform:none}
+.lx-kcal{display:flex;align-items:baseline;gap:6px;margin-top:10px}
+.lx-kcal b{font-family:'Plus Jakarta Sans',sans-serif;font-size:56px;font-weight:800;letter-spacing:-.045em;line-height:.95;font-variant-numeric:tabular-nums}
+.lx-kcal span{font-size:15px;font-weight:700;color:var(--text-3)}
+.lx-kcal em{margin-left:auto;font-style:normal;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;padding:5px 10px;border-radius:999px;background:rgba(var(--brand-rgb),.1);color:var(--brand);align-self:center}
+.lx-hero.ok .lx-kcal em{background:rgba(var(--good-rgb),.14);color:var(--good)}
+.lx-hero.over .lx-kcal em{background:rgba(var(--bad-rgb),.14);color:var(--bad)}
+.lx-of{font-size:13px;color:var(--text-3);margin:4px 0 16px}
+.lx-energy{height:6px;border-radius:6px;background:rgba(var(--ink-rgb),.07);overflow:hidden}
+.lx-energy i{display:block;height:100%;border-radius:6px;background:var(--grad);transition:width .45s cubic-bezier(.2,.8,.2,1)}
+.lx-hero.ok .lx-energy i{background:var(--good)}
+.lx-hero.over .lx-energy i{background:var(--bad)}
+.lx-split{display:flex;gap:4px;height:10px;margin:2px 0 20px}
+.lx-split i{border-radius:10px;transition:flex .45s cubic-bezier(.2,.8,.2,1);min-width:0}
+.lx-split i.p{background:var(--brand-2)} .lx-split i.c{background:var(--carb)} .lx-split i.f{background:var(--fat)}
+.lx-split i.vacio{flex:1;background:repeating-linear-gradient(90deg, rgba(var(--ink-rgb),.08) 0 6px, transparent 6px 10px)}
+.lx-macros{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.lx-m-lbl{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--text-3)}
+.lx-m-lbl::before{content:'';width:8px;height:8px;border-radius:3px;background:var(--mc)}
+.lx-m.p{--mc:var(--brand-2)} .lx-m.c{--mc:var(--carb)} .lx-m.f{--mc:var(--fat)}
+.lx-m-val{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;letter-spacing:-.03em;margin:4px 0 8px;font-variant-numeric:tabular-nums}
+.lx-m-val small{font-size:12px;font-weight:600;color:var(--text-3);letter-spacing:0;margin-left:2px}
+.lx-track{height:4px;border-radius:4px;background:rgba(var(--ink-rgb),.07);overflow:hidden}
+.lx-track i{display:block;height:100%;border-radius:4px;background:var(--mc);transition:width .45s cubic-bezier(.2,.8,.2,1)}
+.lx-m.over .lx-track i{background:var(--bad)}
+.lx-m-pct{font-size:11.5px;font-weight:700;color:var(--text-3);margin-top:6px;font-variant-numeric:tabular-nums}
+.lx-m.ok .lx-m-pct{color:var(--good)} .lx-m.over .lx-m-pct{color:var(--bad)}
+
+.lx-sec{display:flex;justify-content:space-between;align-items:center;margin:0 4px 10px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3)}
+.lx-link{font-size:12.5px;font-weight:600;color:var(--text-3);letter-spacing:0;text-transform:none}
+.lx-list{background:var(--panel);border:1px solid var(--line);border-radius:22px;overflow:hidden;margin-bottom:24px}
+.lx-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:8px 8px 8px 16px}
+.lx-row + .lx-row{border-top:1px solid var(--line)}
+.lx-row.open{background:rgba(var(--brand-rgb),.04)}
+.lx-name{flex:1;min-width:0;display:flex;align-items:center;gap:10px;text-align:left;font-size:15px;font-weight:600;padding:8px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lx-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.lx-step{display:flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:2px}
+.lx-step button{width:32px;height:32px;border-radius:50%;font-size:18px;color:var(--text-2);display:grid;place-items:center}
+.lx-step button:active{background:rgba(var(--brand-rgb),.12);color:var(--brand)}
+.lx-step span{min-width:58px;text-align:center;font-size:13.5px;font-weight:700;font-variant-numeric:tabular-nums}
+.lx-det{flex-basis:100%;display:grid;grid-template-columns:repeat(4,1fr) auto;gap:8px;align-items:center;padding:4px 0 8px}
+.lx-det div{display:flex;flex-direction:column}
+.lx-det b{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-variant-numeric:tabular-nums}
+.lx-det span{font-size:11px;color:var(--text-3)}
+.lx-quitar{font-size:12.5px;font-weight:700;color:var(--bad);padding:6px 10px;border-radius:999px;background:rgba(var(--bad-rgb),.08)}
+
+.lx-empty{text-align:center;padding:26px 16px 30px;color:var(--text-3)}
+.lx-empty .ico{width:40px;height:40px;margin:0 auto 10px;color:var(--brand);stroke-width:1.4}
+.lx-empty p{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:17px;color:var(--text);margin-bottom:2px}
+.lx-empty span{font-size:13px}
+
+.lx-sugs{display:flex;gap:10px;overflow-x:auto;padding:2px 2px 6px;margin:0 -16px 12px;padding-left:16px;padding-right:16px;scrollbar-width:none}
+.lx-sugs::-webkit-scrollbar{display:none}
+.lx-sug{flex:0 0 116px;text-align:left;padding:12px;border-radius:18px;background:var(--panel);border:1px solid var(--line);display:flex;flex-direction:column;gap:2px;transition:transform .15s, border-color .15s}
+.lx-sug:active{transform:scale(.96);border-color:var(--brand)}
+.lx-sug .row-thumb{width:36px;height:36px;border-radius:12px;margin-bottom:8px}
+.lx-sug .row-thumb .ico{width:19px;height:19px}
+.lx-sug b{font-size:13.5px;font-weight:700;line-height:1.2;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.4em}
+.lx-sug span{font-size:12px;font-weight:600;color:var(--brand)}
+.lx-search .search{border-radius:999px}
+:root[data-theme="dark"] .lx-hero{box-shadow:0 18px 40px -18px rgba(0,0,0,.6)}
+
+/* =========== LAB · playground de laboratorio =========== */
+#labScreen{
+  background:
+    radial-gradient(circle at 1px 1px, rgba(var(--brand-rgb),.18) 1px, transparent 1.5px) 0 0/18px 18px,
+    linear-gradient(180deg, #f1efff 0%, #eef8fb 100%);
+}
+:root[data-theme="dark"] #labScreen{
+  background:
+    radial-gradient(circle at 1px 1px, rgba(255,255,255,.07) 1px, transparent 1.5px) 0 0/18px 18px,
+    linear-gradient(180deg, #11122a 0%, #0b1620 100%);
+}
+#labScreen .screen-foot{background:rgba(var(--panel-rgb),.85)}
+.lx-hero{background:var(--panel);padding:18px 16px 14px;box-shadow:0 14px 34px -16px rgba(var(--brand-rgb),.35)}
+.lx-eyebrow{display:flex;align-items:center;gap:6px}
+.lx-eyebrow .ico{width:15px;height:15px}
+.lx-kcal{margin:8px 0 14px}
+.lx-kcal b{font-size:46px}
+.lx-rack{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;justify-items:center;position:relative;z-index:1}
+.lt{display:flex;flex-direction:column;align-items:center;--lc:var(--brand)}
+.lt.p{--lc:var(--brand-2)} .lt.c{--lc:var(--carb)} .lt.f{--lc:var(--fat)}
+.lt.over{--lc:var(--bad)}
+.lt-tube{
+  position:relative;width:46px;height:128px;
+  border:2.5px solid rgba(var(--ink-rgb),.16);border-top:none;
+  border-radius:0 0 23px 23px;overflow:hidden;
+  background:linear-gradient(90deg, rgba(255,255,255,.55) 0 18%, transparent 18% 100%), rgba(var(--ink-rgb),.03);
+}
+.lt-tube::before{content:'';position:absolute;top:0;left:-6px;right:-6px;height:5px;border-radius:4px;background:rgba(var(--ink-rgb),.16);z-index:3}
+.lt-goal{position:absolute;left:0;right:0;border-top:2px dashed rgba(var(--ink-rgb),.35);z-index:2}
+.lt-liq{
+  position:absolute;left:0;right:0;bottom:0;
+  background:linear-gradient(180deg, color-mix(in srgb, var(--lc) 70%, white) 0%, var(--lc) 60%);
+  transition:height .7s cubic-bezier(.2,.9,.25,1.2);
+}
+.lt-liq::before{content:'';position:absolute;left:-10%;right:-10%;top:-5px;height:10px;border-radius:50%;background:color-mix(in srgb, var(--lc) 55%, white)}
+.lt-liq i{position:absolute;bottom:10%;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.55);animation:burbuja 2.8s ease-in infinite}
+.lt-liq i:nth-child(1){left:22%;animation-delay:0s}
+.lt-liq i:nth-child(2){left:55%;width:4px;height:4px;animation-delay:1s}
+.lt-liq i:nth-child(3){left:38%;width:5px;height:5px;animation-delay:1.9s}
+@keyframes burbuja{0%{transform:translateY(0);opacity:0}15%{opacity:1}100%{transform:translateY(-70px);opacity:0}}
+@media (prefers-reduced-motion: reduce){.lt-liq i{animation:none;opacity:.5}}
+.lt-pct{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:14px;margin-top:10px;font-variant-numeric:tabular-nums;color:var(--text-2)}
+.lt.ok .lt-pct{color:var(--good)} .lt.over .lt-pct{color:var(--bad)}
+.lt-lbl{font-size:11.5px;font-weight:700;color:var(--text-3);margin-top:1px}
+.lt-val{font-size:12px;font-weight:600;font-variant-numeric:tabular-nums}
+.lt-val small{color:var(--text-4);font-weight:500}
+.lx-gradilla{height:14px;margin:-108px -4px 94px;border-radius:7px;background:linear-gradient(180deg, rgba(var(--ink-rgb),.06), rgba(var(--ink-rgb),.12));position:relative;z-index:0}
+.lx-legend{display:flex;align-items:center;justify-content:center;gap:8px;font-size:11.5px;color:var(--text-3);margin-top:6px}
+.lx-legend i{width:18px;border-top:2px dashed rgba(var(--ink-rgb),.35)}
+.lx-list{box-shadow:0 10px 26px -18px rgba(var(--brand-rgb),.4)}
+.lx-sug{box-shadow:0 8px 20px -16px rgba(var(--brand-rgb),.5)}
+
+.lt-liq.cero::before{display:none}
+:root[data-theme="dark"] .lt-tube{background:linear-gradient(90deg, rgba(255,255,255,.07) 0 18%, transparent 18% 100%), rgba(255,255,255,.02);border-color:rgba(255,255,255,.18)}
+:root[data-theme="dark"] .lt-tube::before{background:rgba(255,255,255,.2)}
+
+/* ---- Tubos de ensayo v2 ---- */
+.lx-rack{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;justify-items:center;padding:0 6px}
+.rack-back{position:absolute;left:0;right:0;top:96px;height:14px;border-radius:8px;
+  background:linear-gradient(180deg, color-mix(in srgb, var(--brand) 18%, var(--panel)) 0%, color-mix(in srgb, var(--brand) 30%, var(--panel)) 100%);
+  box-shadow:inset 0 -2px 0 rgba(var(--ink-rgb),.08)}
+.rack-base{position:absolute;left:-2px;right:-2px;top:166px;height:12px;border-radius:6px;
+  background:linear-gradient(180deg, color-mix(in srgb, var(--brand) 26%, var(--panel)), color-mix(in srgb, var(--brand) 40%, var(--panel)));
+  box-shadow:0 8px 14px -8px rgba(var(--brand-rgb),.6)}
+.lt{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;--lc:var(--brand)}
+.lt.p{--lc:var(--brand-2)} .lt.c{--lc:var(--carb)} .lt.f{--lc:var(--fat)} .lt.over{--lc:var(--bad)}
+.lt-svg{width:60px;height:176px;overflow:visible;display:block}
+.lt-glass{fill:rgba(255,255,255,.55);}
+.lt-edge{fill:none;stroke:rgba(var(--ink-rgb),.22);stroke-width:1.6}
+.lt-lip{fill:rgba(255,255,255,.9);stroke:rgba(var(--ink-rgb),.22);stroke-width:1.4}
+.lt-shine{stroke:rgba(255,255,255,.85);stroke-width:2.6;stroke-linecap:round;fill:none}
+.lt-shadow{fill:rgba(var(--ink-rgb),.12)}
+.lt-tick{stroke:rgba(var(--ink-rgb),.28);stroke-width:1.2;stroke-linecap:round}
+.lt-meta{stroke:rgba(var(--ink-rgb),.55);stroke-width:1.6;stroke-dasharray:3 3}
+.lt.ok .lt-meta{stroke:var(--good)} .lt.over .lt-meta{stroke:var(--bad)}
+.lt-s1{stop-color:color-mix(in srgb, var(--lc) 55%, white)}
+.lt-s2{stop-color:var(--lc)}
+.lt-liq{transition:transform .8s cubic-bezier(.2,.9,.25,1.15)}
+.lt-wave{animation:lt-ola 3.2s linear infinite}
+@keyframes lt-ola{from{transform:translateX(0)}to{transform:translateX(40px)}}
+.lt-men{fill:color-mix(in srgb, var(--lc) 35%, white);opacity:.9}
+.lt-b{fill:rgba(255,255,255,.75);animation:lt-sube 3s ease-in infinite}
+.lt-b.b2{animation-delay:1.1s} .lt-b.b3{animation-delay:2s}
+@keyframes lt-sube{0%{transform:translateY(0);opacity:0}15%{opacity:1}85%{opacity:.8}100%{transform:translateY(-120px);opacity:0}}
+@media (prefers-reduced-motion: reduce){.lt-wave,.lt-b{animation:none}}
+:root[data-theme="dark"] .lt-glass{fill:rgba(255,255,255,.05)}
+:root[data-theme="dark"] .lt-edge,:root[data-theme="dark"] .lt-lip{stroke:rgba(255,255,255,.28)}
+:root[data-theme="dark"] .lt-lip{fill:rgba(255,255,255,.12)}
+:root[data-theme="dark"] .lt-shine{stroke:rgba(255,255,255,.22)}
+:root[data-theme="dark"] .lt-shadow{fill:rgba(0,0,0,.5)}
+.lt-pct{margin-top:12px}
+.lx-legend{margin-top:10px}
+
+/* ---- Líquidos más densos ---- */
+.lt-s1{stop-color:color-mix(in srgb, var(--lc) 90%, white)}
+.lt-s2{stop-color:color-mix(in srgb, var(--lc) 62%, black)}
+.lt-wave.back{fill:color-mix(in srgb, var(--lc) 75%, black);opacity:.55;animation:lt-ola 2.4s linear infinite reverse}
+.lt-wave{animation:lt-ola 2.8s linear infinite}
+.lt-men{display:none}
+.lt-liq{transition:transform 1s cubic-bezier(.25,1.3,.4,1)}
+.lt-b{fill:rgba(255,255,255,.55)}
 </style>
 </head>
 <body>
@@ -2005,12 +2270,11 @@ body.screen-open{overflow:hidden}
       <button class="icon-btn" id="labClose" aria-label="Volver">
         <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
-      <div class="screen-title">Lab</div>
+      <div class="screen-title lab-title">Lab<span>mezclá y probá</span></div>
       <div style="width:38px"></div>
     </div>
     <div class="screen-body" id="labBody"></div>
     <div class="screen-foot lab-foot">
-      <button class="btn" id="labSave" aria-label="Guardar receta"></button>
       <button class="btn primary" id="labNext"></button>
       <button class="btn" id="labAdd">+ Sumar</button>
     </div>
@@ -2933,7 +3197,7 @@ let state = {
   logSearch: '',
   logCat: 'todos',
   logOpen: null,      // receta desplegada en el registro
-  lab: {modo:'comida', pins:[], seed:1, busca:'', idx:0},
+  lab: {modo:'comida', pins:[], seed:1, busca:'', plate:[]},
   lib: {tab:'ing', cat:'todos', sort:'p', recSort:'quality', search:'', open:null},
   currentTab: 'resumen',
   sortBy: 'quality', // 'quality' | 'protein'
@@ -3006,7 +3270,7 @@ function saveState(){
       mealPhotos: state.mealPhotos,
       favs: state.favs,
       dayPlan: state.dayPlan,
-      lab: {modo:state.lab.modo, pins:state.lab.pins, seed:state.lab.seed},
+      lab: {modo:state.lab.modo, pins:state.lab.pins, seed:state.lab.seed, plate:state.lab.plate},
       lastQty: state.lastQty
     }));
   }catch(e){
@@ -4567,6 +4831,7 @@ const ICONS = {
   home:    '<path d="M3 11 12 3.5 21 11"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5h4v5"/>',
   drop:    '<path d="M12 3c3.5 4.2 6 7.3 6 10.3A6 6 0 0 1 6 13.3C6 10.3 8.5 7.2 12 3z"/>',
   bulb:    '<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z"/>',
+  flask:   '<path d="M9 3h6M10 3v6L4.5 18.5A2 2 0 0 0 6.2 21.5h11.6a2 2 0 0 0 1.7-3L14 9V3"/><path d="M7.5 15h9"/>',
   book:    '<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5M8.5 7.5h6M8.5 11h4"/>'
 };
 function ico(name, cls){
@@ -6266,120 +6531,225 @@ function nombrePlato(c, modo){
   return `${tipo} de ${lista}`;
 }
 
-/* Ventana del Lab: un plato por vez, grande. "Otra idea" pasa al siguiente,
-   tocar un ingrediente lo cambia por otro del mismo tipo y recalcula. */
-const LAB_ATAJOS = ['pollo_p','egg','tofu','atun','carne_m','lent','rice_br','pasta','papa','boniato','quinoa','palta'];
-let labCache = null;
-function labRegenerar(){
-  const L = state.lab;
-  labCache = {...labGenerar(L.modo, L.seed, 12)};
-  L.idx = 0;
-}
-function openLab(){
-  if(!labCache) labRegenerar();
-  abrirPantalla('labScreen');
-  renderLab();
-}
+/* Ventana del Lab: un plato de prueba. Sumás alimentos, movés los gramos y
+   ves al instante cuánto da. Nada se registra hasta tocar "Sumar a hoy". */
+const LAB_ATAJOS = ['pollo_p','egg','tofu','rice_br','papa','palta'];
+function labPlate(){ if(!Array.isArray(state.lab.plate)) state.lab.plate = []; return state.lab.plate; }
+function openLab(){ abrirPantalla('labScreen'); renderLab(); }
 function closeLab(){ cerrarPantalla('labScreen'); }
-function labPlato(){ return labCache && labCache.platos.length ? labCache.platos[state.lab.idx % labCache.platos.length] : null; }
+function labPaso(i){ return i.unit === 'u' ? 0.5 : 10; }
 
-function labCambiarIngrediente(k){
-  const c = labPlato(); if(!c) return;
-  const x = c.items[k]; if(!x.slot) return;
-  const usados = new Set(c.items.map(y => y.id));
-  const opciones = labCache.pool[x.slot].filter(i => !usados.has(i.id));
-  if(!opciones.length) return;
-  const nuevo = opciones[Math.floor(Math.random() * opciones.length)];
-  const items = c.items.map((y, n) => ({i: INGR_BY_ID[n === k ? nuevo.id : y.id], rol: n === k ? (rolDe(nuevo) || y.rol) : y.rol, slot: y.slot}));
-  const {n: nut, err} = resolver(items, labCache.T);
-  labCache.platos[state.lab.idx % labCache.platos.length] = {items: items.map(y => ({id:y.i.id, qty:y.q, rol:y.rol, slot:y.slot})), nut, err};
-  renderLab();
+/* Sugerencias para completar el plato: para cada candidato calcula la
+   porción que mejor tapa lo que falta y se queda con los que más acercan
+   el plato al objetivo de la comida. */
+function labSugerencias(plate, T, cant){
+  const diet = dietaDe(state.profile);
+  const t = computeTargets(state.profile, todayKey());
+  const keto = !!t.carbIsLimit;
+  const enPlato = new Set(plate.map(x => x.id));
+  const n0 = computeMealNutrition({items:plate});
+  const err = n => Math.abs(n.kcal - T.kcal) / T.kcal + 1.2 * Math.abs(n.p - T.p) / Math.max(T.p, 10)
+    + 0.8 * Math.abs(n.c - T.c) / Math.max(T.c, 20) + 0.6 * Math.abs(n.f - T.f) / Math.max(T.f, 10);
+  const e0 = err(n0);
+  const macroDe = {prot:'p', carb:'c', fruta:'c', fat:'f'};
+  const out = [];
+  ['protPlato','carbPlato','veg','fat','fruta'].forEach(sl => {
+    INGREDIENTS.forEach(i => {
+      if(enPlato.has(i.id) || NO_RECO.has(i.id) || !ingApto(i, diet) || !slotOk(i, sl)) return;
+      const rol = SLOT_ROL[sl];
+      if(keto && (rol === 'carb' || rol === 'fruta')) return;
+      const [mn, mx, paso] = rangoDe(i, rol);
+      let q = rol === 'veg' ? 150 : mn;
+      const k = macroDe[rol];
+      if(k){
+        const falta = T[k] - n0[k];
+        const c = coef(i, k);
+        if(falta <= 0 || c <= 0) return;
+        q = Math.min(Math.max(falta / c, mn), mx);
+      }
+      q = Math.round(q / paso) * paso;
+      const n1 = computeMealNutrition({items:[...plate, {id:i.id, qty:q}]});
+      const gana = e0 - err(n1);
+      if(rol === 'veg' && n0.kcal > 0) out.push({i, q, gana: gana + 0.05}); // siempre suma una verdura
+      else if(gana > 0) out.push({i, q, gana});
+    });
+  });
+  out.sort((a, b) => b.gana - a.gana);
+  // Variedad: no más de 2 de la misma categoría.
+  const porCat = {}, res = [];
+  for(const o of out){
+    porCat[o.i.cat] = (porCat[o.i.cat] || 0) + 1;
+    if(porCat[o.i.cat] > 2) continue;
+    res.push(o);
+    if(res.length >= cant) break;
+  }
+  return res;
 }
 
+const labNivelPrevio = {};
 function renderLab(){
   const el = document.getElementById('labBody');
-  const L = state.lab;
-  const T = labCache.T, c = labPlato();
+  const L = state.lab, plate = labPlate();
   const diet = dietaDe(state.profile);
-  const atajos = LAB_ATAJOS.map(id => INGR_BY_ID[id]).filter(i => i && ingApto(i, diet));
+  const T = labObjetivo('comida');
+  const n = computeMealNutrition({items:plate});
   const q = norm(L.busca || '');
-  const encontrados = q ? INGREDIENTS.filter(i => rolDe(i) && !NO_RECO.has(i.id) && ingApto(i, diet) && norm(i.name).includes(q) && !L.pins.includes(i.id)).slice(0, 6) : [];
-  const t = computeTargets(state.profile, todayKey());
-  const barra = (v, obj) => `<div class="bar"><i class="${v > obj * 1.15 ? 'over' : (v >= obj * 0.9 ? 'good' : '')}" style="width:${Math.min(v / Math.max(obj, 1) * 100, 100)}%"></i></div>`;
-  const modos = {comida:'Comida', proxima:'Lo que me falta', post:'Post-entreno', snack:'Snack'};
+  const enPlato = new Set(plate.map(x => x.id));
+  const encontrados = q ? INGREDIENTS.filter(i => ingApto(i, diet) && norm(i.name).includes(q) && !enPlato.has(i.id)).slice(0, 8) : [];
+  const sugeridas = q ? [] : labSugerencias(plate, T, 8);
+
+  // Tubo de ensayo en SVG. El interior representa 125% del objetivo, así
+  // la meta (100%) queda como una línea por debajo de la boca.
+  const TOPE = 1.25, Y_TOP = 14, Y_BOT = 166, ALTO = Y_BOT - Y_TOP;
+  const nivelY = p => Y_BOT - Math.min(p / TOPE, 1) * ALTO;
+  const tubo = (lbl, v, obj, cls, unidad) => {
+    const p = obj > 0 ? v / obj : 0;
+    const est = p > 1.15 ? 'over' : (p >= 0.9 ? 'ok' : '');
+    const y = nivelY(p), yMeta = nivelY(1);
+    const id = 'lt' + cls;
+    const ticks = [0.25, 0.5, 0.75].map(t => `<line x1="40" x2="45" y1="${nivelY(t)}" y2="${nivelY(t)}" class="lt-tick"/>`).join('');
+    return `<div class="lt ${cls} ${est}" data-k="${cls}">
+      <svg class="lt-svg" viewBox="0 0 60 176" aria-hidden="true">
+        <defs>
+          <clipPath id="${id}c"><path d="M14 10 V150 A16 16 0 0 0 46 150 V10 Z"/></clipPath>
+          <linearGradient id="${id}g" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" class="lt-s1"/><stop offset="1" class="lt-s2"/>
+          </linearGradient>
+          <linearGradient id="${id}s" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#000" stop-opacity=".28"/><stop offset=".3" stop-color="#000" stop-opacity="0"/>
+            <stop offset=".75" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/>
+          </linearGradient>
+          <linearGradient id="${id}h" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#fff" stop-opacity=".0"/><stop offset=".25" stop-color="#fff" stop-opacity=".35"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <ellipse cx="30" cy="172" rx="20" ry="3.5" class="lt-shadow"/>
+        <path d="M12 8 V150 A18 18 0 0 0 48 150 V8 Z" class="lt-glass"/>
+        <g clip-path="url(#${id}c)">
+          ${p > 0 ? `
+          <g class="lt-liq" data-y="${y}" style="transform:translateY(${labNivelPrevio[cls] ?? Y_BOT}px)">
+            <path class="lt-wave back" d="M-40 3 Q-30 -3 -20 3 T0 3 T20 3 T40 3 T60 3 T80 3 T100 3 V200 H-40 Z"/>
+            <path class="lt-wave" d="M-40 5 Q-30 -1 -20 5 T0 5 T20 5 T40 5 T60 5 T80 5 T100 5 V200 H-40 Z" fill="url(#${id}g)"/>
+            <rect x="14" y="7" width="32" height="200" fill="url(#${id}s)"/>
+            ${p > 0.1 ? '<circle class="lt-b b1" cx="22" cy="140" r="2.2"/><circle class="lt-b b2" cx="34" cy="150" r="1.6"/><circle class="lt-b b3" cx="28" cy="146" r="1.2"/>' : ''}
+          </g>` : ''}
+          <rect x="14" y="0" width="32" height="176" fill="url(#${id}h)"/>
+        </g>
+        ${ticks}
+        <line x1="14" x2="46" y1="${yMeta}" y2="${yMeta}" class="lt-meta"/>
+        <path d="M17.5 18 V146" class="lt-shine"/>
+        <path d="M12 8 V150 A18 18 0 0 0 48 150 V8" class="lt-edge"/>
+        <rect x="8" y="4" width="44" height="6" rx="3" class="lt-lip"/>
+      </svg>
+      <div class="lt-pct">${Math.round(p * 100)}%</div>
+      <div class="lt-lbl">${lbl}</div>
+      <div class="lt-val">${Math.round(v)}<small>/${obj}${unidad}</small></div>
+    </div>`;
+  };
+  const pE = T.kcal > 0 ? n.kcal / T.kcal : 0;
+
 
   el.innerHTML = `
-    <div class="lab-intro">Probá combinaciones. Tocá un ingrediente para cambiarlo y la app recalcula los gramos.</div>
-    <div class="chips scroll-x" style="padding-top:0">
-      ${Object.keys(modos).map(k => `<button class="chip ${L.modo === k ? 'active' : ''}" data-lmodo="${k}">${modos[k]}</button>`).join('')}
-    </div>
-    ${!T ? `<div class="empty">${ico('star')}<br>Ya cubriste lo que te faltaba hoy.<br>Probá con "Comida" o "Snack".</div>` :
-      !c ? `<div class="empty">No salió ninguna combinación con eso. Sacá algún ingrediente fijado.</div>` : (() => {
-      const m = Math.max(0, Math.round(100 - c.err * 45));
-      const micros = ['Fe','Ca','Mg','fb','K','Zn','B12','D'].map(x => ({x, pct: t[x] ? Math.round((c.nut[x] || 0) / t[x] * 100) : 0}))
-        .sort((a, b) => b.pct - a.pct).slice(0, 3);
-      return `
-      <div class="lab-card big">
-        <div class="lab-top">
-          <div class="lab-name">${nombrePlato(c, L.modo)}</div>
-          <div class="lab-match ${m >= 85 ? 'good' : ''}">${m}%<small>match</small></div>
-        </div>
-        <div class="lab-items">
-          ${c.items.map((x, k) => { const i = INGR_BY_ID[x.id]; return `
-            <button class="lab-item" data-lswap="${k}" ${x.slot ? '' : 'disabled'}>
-              ${ingThumb(i)}<span>${nombreCorto(i)}</span><b>${qtyLabel(i, x.qty)}</b>
-              ${x.slot ? `<i class="swap">${ico('swap')}</i>` : ''}
-            </button>`; }).join('')}
-        </div>
-        <div class="lab-macros">
-          <div><span>kcal</span><b>${c.nut.kcal}<small>/${T.kcal}</small></b>${barra(c.nut.kcal, T.kcal)}</div>
-          <div><span>Prot</span><b>${Math.round(c.nut.p)}<small>/${T.p}g</small></b>${barra(c.nut.p, T.p)}</div>
-          <div><span>Carbo</span><b>${Math.round(c.nut.c)}<small>/${T.c}g</small></b>${barra(c.nut.c, T.c)}</div>
-          <div><span>Grasa</span><b>${Math.round(c.nut.f)}<small>/${T.f}g</small></b>${barra(c.nut.f, T.f)}</div>
-        </div>
-        <div class="lab-micros">${micros.map(z => `<span>${(MICRO_NOMBRE[z.x] || z.x).replace(/^(el|la) /, '')} ${z.pct}%</span>`).join('')}<em>del día</em></div>
-      </div>`; })()}
-    <div class="lab-sec">Quiero usar</div>
-    <div class="lab-sug">
-      ${L.pins.map(id => `<button class="chip active" data-lunpin="${id}">${nombreCorto(INGR_BY_ID[id])} ×</button>`).join('')}
-      ${atajos.filter(i => !L.pins.includes(i.id)).map(i => `<button class="chip" data-lpin="${i.id}">${nombreCorto(i)}</button>`).join('')}
-    </div>
-    <div class="search-wrap" style="margin-top:8px">
-      ${ico('search')}
-      <input type="search" class="search" id="labBusca" placeholder="Buscar otro ingrediente…" value="${escapeHtml(L.busca || '')}" autocomplete="off">
-    </div>
-    ${encontrados.length ? `<div class="lab-sug">${encontrados.map(i => `<button class="chip" data-lpin="${i.id}">+ ${i.name}</button>`).join('')}</div>` : ''}
-  `;
-  // pie
-  const saveB = document.getElementById('labSave'), nextB = document.getElementById('labNext'), addB = document.getElementById('labAdd');
-  saveB.innerHTML = ico('star'); nextB.innerHTML = `${ico('swap')} Otra idea`;
-  [saveB, addB].forEach(b => b.disabled = !c);
+    <section class="lx-hero">
+      <div class="lx-eyebrow">${ico('flask')} Experimento <span>· objetivo por comida</span></div>
+      <div class="lx-kcal"><b>${fmtKcal(n.kcal)}</b><span>kcal</span></div>
+      <div class="lx-rack">
+        <div class="rack-back"></div>
+        <div class="rack-base"></div>
+        ${tubo('Energía', n.kcal, T.kcal, 'e', '')}
+        ${tubo('Proteína', n.p, T.p, 'p', 'g')}
+        ${tubo('Carbos', n.c, T.c, 'c', 'g')}
+        ${tubo('Grasa', n.f, T.f, 'f', 'g')}
+      </div>
+      <div class="lx-legend"><i></i>meta de una comida</div>
+    </section>
 
-  el.querySelectorAll('[data-lmodo]').forEach(b => b.onclick = () => { L.modo = b.dataset.lmodo; saveState(); labRegenerar(); renderLab(); });
-  el.querySelectorAll('[data-lswap]').forEach(b => b.onclick = () => labCambiarIngrediente(+b.dataset.lswap));
-  el.querySelectorAll('[data-lpin]').forEach(b => b.onclick = () => { L.pins.push(b.dataset.lpin); L.busca = ''; saveState(); labRegenerar(); renderLab(); });
-  el.querySelectorAll('[data-lunpin]').forEach(b => b.onclick = () => { L.pins = L.pins.filter(x => x !== b.dataset.lunpin); saveState(); labRegenerar(); renderLab(); });
+    ${plate.length ? `
+    <div class="lx-sec"><span>En el tubo</span><button class="lx-link" id="labVaciar">Vaciar</button></div>
+    <div class="lx-list">
+      ${plate.map((x, k) => { const i = INGR_BY_ID[x.id]; const abierto = L.open === k; const nn = abierto ? computeMealNutrition({items:[x]}) : null; return `
+        <div class="lx-row ${abierto ? 'open' : ''}">
+          <button class="lx-name" data-lopen="${k}">
+            <i class="lx-dot" style="background:${CAT_COLOR[i.cat] || 'var(--brand)'}"></i>${nombreCorto(i)}
+          </button>
+          <div class="lx-step">
+            <button data-lmenos="${k}" aria-label="Menos">−</button>
+            <span>${qtyLabel(i, x.qty)}</span>
+            <button data-lmas="${k}" aria-label="Más">+</button>
+          </div>
+          ${abierto ? `<div class="lx-det">
+            <div><b>${nn.kcal}</b><span>kcal</span></div><div><b>${fmtNum(nn.p)}</b><span>prot</span></div>
+            <div><b>${fmtNum(nn.c)}</b><span>carbo</span></div><div><b>${fmtNum(nn.f)}</b><span>grasa</span></div>
+            <button class="lx-quitar" data-lquitar="${k}">Quitar</button>
+          </div>` : ''}
+        </div>`; }).join('')}
+    </div>` : `<div class="lx-empty">${ico('receta')}<p>Tu plato está vacío</p><span>Echá ingredientes y mirá cómo suben los tubos</span></div>`}
+
+    <div class="lx-sec"><span>${q ? 'Resultados' : (plate.length ? 'Para completar' : 'Para empezar')}</span></div>
+    <div class="lx-sugs">
+      ${q ? encontrados.map(i => `<button class="lx-sug" data-ladd="${i.id}" data-lq="${defaultQty(i)}">${ingThumb(i)}<b>${nombreCorto(i)}</b><span>${qtyLabel(i, defaultQty(i))}</span></button>`).join('')
+          : sugeridas.map(o => `<button class="lx-sug" data-ladd="${o.i.id}" data-lq="${o.q}">${ingThumb(o.i)}<b>${nombreCorto(o.i)}</b><span>${qtyLabel(o.i, o.q)}</span></button>`).join('')}
+    </div>
+    <div class="search-wrap lx-search">
+      ${ico('search')}
+      <input type="search" class="search" id="labBusca" placeholder="Buscar otro alimento" value="${escapeHtml(L.busca || '')}" autocomplete="off">
+    </div>
+  `;
+
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    el.querySelectorAll('.lt-liq').forEach(g => {
+      g.style.transform = `translateY(${g.dataset.y}px)`;
+      labNivelPrevio[g.closest('.lt').dataset.k] = +g.dataset.y;
+    });
+  }));
+  el.querySelectorAll('.lt').forEach(t => { if(!t.querySelector('.lt-liq')) labNivelPrevio[t.dataset.k] = 166; });
+
+  const nextB = document.getElementById('labNext'), addB = document.getElementById('labAdd');
+  nextB.innerHTML = `${ico('swap')} Sorprendeme`;
+  addB.textContent = '+ Sumar a hoy';
+  addB.disabled = !plate.length;
+
+  el.querySelectorAll('[data-ladd]').forEach(b => b.onclick = () => {
+    plate.push({id:b.dataset.ladd, qty:+b.dataset.lq});
+    L.busca = ''; L.open = null; saveState(); renderLab();
+  });
+  const cambiar = (k, d) => {
+    const x = plate[k], i = INGR_BY_ID[x.id];
+    x.qty = Math.round((x.qty + d * labPaso(i)) * 10) / 10;
+    if(x.qty <= 0){ plate.splice(k, 1); L.open = null; }
+    saveState(); renderLab();
+  };
+  el.querySelectorAll('[data-lmas]').forEach(b => b.onclick = () => cambiar(+b.dataset.lmas, +1));
+  el.querySelectorAll('[data-lmenos]').forEach(b => b.onclick = () => cambiar(+b.dataset.lmenos, -1));
+  el.querySelectorAll('[data-lopen]').forEach(b => b.onclick = () => { const k = +b.dataset.lopen; L.open = L.open === k ? null : k; renderLab(); });
+  el.querySelectorAll('[data-lquitar]').forEach(b => b.onclick = () => { plate.splice(+b.dataset.lquitar, 1); L.open = null; saveState(); renderLab(); });
+  const v = document.getElementById('labVaciar');
+  if(v) v.onclick = () => { L.plate = []; L.open = null; saveState(); renderLab(); };
   const busca = document.getElementById('labBusca');
-  busca.oninput = () => { L.busca = busca.value; renderLab(); const n = document.getElementById('labBusca'); n.focus(); n.setSelectionRange(n.value.length, n.value.length); };
+  busca.oninput = () => { L.busca = busca.value; renderLab(); const nb = document.getElementById('labBusca'); nb.focus(); nb.setSelectionRange(nb.value.length, nb.value.length); };
 }
+/* Sorprendeme: arma un plato completo para una comida de tu día. */
 function labOtra(){
   const L = state.lab;
-  L.idx++;
-  if(!labCache.platos.length || L.idx >= labCache.platos.length){ L.seed++; labRegenerar(); }
+  L.seed = (L.seed || 1) + 1;
+  const r = labGenerar('comida', L.seed, 1);
+  if(r.platos[0]){ L.plate = r.platos[0].items.map(x => ({id:x.id, qty:x.qty})); saveState(); }
   renderLab();
   document.getElementById('labBody').scrollTop = 0;
 }
 function labSumar(){
-  const c = labPlato(); if(!c) return;
+  const plate = labPlate(); if(!plate.length) return;
   const tk = todayKey();
   if(!state.selectedByDate[tk]) state.selectedByDate[tk] = [];
-  c.items.forEach(x => { state.selectedByDate[tk].push(ingEntryId(x.id, x.qty)); state.lastQty[x.id] = x.qty; });
+  plate.forEach(x => { state.selectedByDate[tk].push(ingEntryId(x.id, x.qty)); state.lastQty[x.id] = x.qty; });
   saveState(); refreshViews(); renderSegTags();
   toast('Plato sumado a hoy');
 }
 function labGuardar(){
-  const c = labPlato(); if(!c) return;
-  const meal = {id:'u' + Date.now().toString(36), name:nombrePlato(c, state.lab.modo), items:c.items.map(x => ({id:x.id, qty:x.qty})), prep:'Creada en el Lab.', tags:[], custom:true};
+  const plate = labPlate(); if(!plate.length) return;
+  const nombre = prompt('Nombre de la receta:', 'Plato del Lab');
+  if(!nombre) return;
+  const meal = {id:'u' + Date.now().toString(36), name:nombre.trim(), items:plate.map(x => ({id:x.id, qty:x.qty})), prep:'Creada en el Lab.', tags:[], custom:true};
   state.customMeals.unshift(meal);
   state.favs.unshift(meal.id);
   saveState();
@@ -6454,7 +6824,6 @@ function init(){
   document.getElementById('labClose').onclick = closeLab;
   document.getElementById('labNext').onclick = labOtra;
   document.getElementById('labAdd').onclick = labSumar;
-  document.getElementById('labSave').onclick = labGuardar;
   document.getElementById('libClose').onclick = closeLibrary;
   document.getElementById('libSearch').oninput = (e) => { state.lib.search = e.target.value.trim(); renderLib(); };
   document.getElementById('libSort').onchange = (e) => {
