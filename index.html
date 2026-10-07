@@ -1992,6 +1992,43 @@ body.screen-open{overflow:hidden}
 .lt-liq.cero::before{display:none}
 :root[data-theme="dark"] .lt-tube{background:linear-gradient(90deg, rgba(255,255,255,.07) 0 18%, transparent 18% 100%), rgba(255,255,255,.02);border-color:rgba(255,255,255,.18)}
 :root[data-theme="dark"] .lt-tube::before{background:rgba(255,255,255,.2)}
+
+/* ---- Tubos de ensayo v2 ---- */
+.lx-rack{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;justify-items:center;padding:0 6px}
+.rack-back{position:absolute;left:0;right:0;top:96px;height:14px;border-radius:8px;
+  background:linear-gradient(180deg, color-mix(in srgb, var(--brand) 18%, var(--panel)) 0%, color-mix(in srgb, var(--brand) 30%, var(--panel)) 100%);
+  box-shadow:inset 0 -2px 0 rgba(var(--ink-rgb),.08)}
+.rack-base{position:absolute;left:-2px;right:-2px;top:166px;height:12px;border-radius:6px;
+  background:linear-gradient(180deg, color-mix(in srgb, var(--brand) 26%, var(--panel)), color-mix(in srgb, var(--brand) 40%, var(--panel)));
+  box-shadow:0 8px 14px -8px rgba(var(--brand-rgb),.6)}
+.lt{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;--lc:var(--brand)}
+.lt.p{--lc:var(--brand-2)} .lt.c{--lc:var(--carb)} .lt.f{--lc:var(--fat)} .lt.over{--lc:var(--bad)}
+.lt-svg{width:60px;height:176px;overflow:visible;display:block}
+.lt-glass{fill:rgba(255,255,255,.55);}
+.lt-edge{fill:none;stroke:rgba(var(--ink-rgb),.22);stroke-width:1.6}
+.lt-lip{fill:rgba(255,255,255,.9);stroke:rgba(var(--ink-rgb),.22);stroke-width:1.4}
+.lt-shine{stroke:rgba(255,255,255,.85);stroke-width:2.6;stroke-linecap:round;fill:none}
+.lt-shadow{fill:rgba(var(--ink-rgb),.12)}
+.lt-tick{stroke:rgba(var(--ink-rgb),.28);stroke-width:1.2;stroke-linecap:round}
+.lt-meta{stroke:rgba(var(--ink-rgb),.55);stroke-width:1.6;stroke-dasharray:3 3}
+.lt.ok .lt-meta{stroke:var(--good)} .lt.over .lt-meta{stroke:var(--bad)}
+.lt-s1{stop-color:color-mix(in srgb, var(--lc) 55%, white)}
+.lt-s2{stop-color:var(--lc)}
+.lt-liq{transition:transform .8s cubic-bezier(.2,.9,.25,1.15)}
+.lt-wave{animation:lt-ola 3.2s linear infinite}
+@keyframes lt-ola{from{transform:translateX(0)}to{transform:translateX(40px)}}
+.lt-men{fill:color-mix(in srgb, var(--lc) 35%, white);opacity:.9}
+.lt-b{fill:rgba(255,255,255,.75);animation:lt-sube 3s ease-in infinite}
+.lt-b.b2{animation-delay:1.1s} .lt-b.b3{animation-delay:2s}
+@keyframes lt-sube{0%{transform:translateY(0);opacity:0}15%{opacity:1}85%{opacity:.8}100%{transform:translateY(-120px);opacity:0}}
+@media (prefers-reduced-motion: reduce){.lt-wave,.lt-b{animation:none}}
+:root[data-theme="dark"] .lt-glass{fill:rgba(255,255,255,.05)}
+:root[data-theme="dark"] .lt-edge,:root[data-theme="dark"] .lt-lip{stroke:rgba(255,255,255,.28)}
+:root[data-theme="dark"] .lt-lip{fill:rgba(255,255,255,.12)}
+:root[data-theme="dark"] .lt-shine{stroke:rgba(255,255,255,.22)}
+:root[data-theme="dark"] .lt-shadow{fill:rgba(0,0,0,.5)}
+.lt-pct{margin-top:12px}
+.lx-legend{margin-top:10px}
 </style>
 </head>
 <body>
@@ -6551,17 +6588,44 @@ function renderLab(){
   const encontrados = q ? INGREDIENTS.filter(i => ingApto(i, diet) && norm(i.name).includes(q) && !enPlato.has(i.id)).slice(0, 8) : [];
   const sugeridas = q ? [] : labSugerencias(plate, T, 8);
 
-  // Tubo de ensayo: el líquido sube según el % del objetivo de una comida.
-  // El tubo representa 125% para que la línea de meta quede visible.
-  const TOPE = 1.25;
+  // Tubo de ensayo en SVG. El interior representa 125% del objetivo, así
+  // la meta (100%) queda como una línea por debajo de la boca.
+  const TOPE = 1.25, Y_TOP = 14, Y_BOT = 166, ALTO = Y_BOT - Y_TOP;
+  const nivelY = p => Y_BOT - Math.min(p / TOPE, 1) * ALTO;
   const tubo = (lbl, v, obj, cls, unidad) => {
     const p = obj > 0 ? v / obj : 0;
     const est = p > 1.15 ? 'over' : (p >= 0.9 ? 'ok' : '');
+    const y = nivelY(p), yMeta = nivelY(1);
+    const id = 'lt' + cls;
+    const ticks = [0.25, 0.5, 0.75].map(t => `<line x1="40" x2="45" y1="${nivelY(t)}" y2="${nivelY(t)}" class="lt-tick"/>`).join('');
     return `<div class="lt ${cls} ${est}">
-      <div class="lt-tube">
-        <div class="lt-goal" style="bottom:${100 / TOPE}%"></div>
-        <div class="lt-liq ${p <= 0 ? 'cero' : ''}" style="height:${Math.min(p / TOPE, 1) * 100}%">${p > 0.08 ? '<i></i><i></i><i></i>' : ''}</div>
-      </div>
+      <svg class="lt-svg" viewBox="0 0 60 176" aria-hidden="true">
+        <defs>
+          <clipPath id="${id}c"><path d="M14 10 V150 A16 16 0 0 0 46 150 V10 Z"/></clipPath>
+          <linearGradient id="${id}g" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" class="lt-s1"/><stop offset="1" class="lt-s2"/>
+          </linearGradient>
+          <linearGradient id="${id}h" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#fff" stop-opacity=".0"/><stop offset=".25" stop-color="#fff" stop-opacity=".35"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <ellipse cx="30" cy="172" rx="20" ry="3.5" class="lt-shadow"/>
+        <path d="M12 8 V150 A18 18 0 0 0 48 150 V8 Z" class="lt-glass"/>
+        <g clip-path="url(#${id}c)">
+          ${p > 0 ? `
+          <g class="lt-liq" style="transform:translateY(${y}px)">
+            <path class="lt-wave" d="M-40 4 Q-30 -1 -20 4 T0 4 T20 4 T40 4 T60 4 T80 4 T100 4 V200 H-40 Z" fill="url(#${id}g)"/>
+            <ellipse cx="30" cy="4" rx="16" ry="2.2" class="lt-men"/>
+            ${p > 0.1 ? '<circle class="lt-b b1" cx="22" cy="140" r="2.2"/><circle class="lt-b b2" cx="34" cy="150" r="1.6"/><circle class="lt-b b3" cx="28" cy="146" r="1.2"/>' : ''}
+          </g>` : ''}
+          <rect x="14" y="0" width="32" height="176" fill="url(#${id}h)"/>
+        </g>
+        ${ticks}
+        <line x1="14" x2="46" y1="${yMeta}" y2="${yMeta}" class="lt-meta"/>
+        <path d="M17.5 18 V146" class="lt-shine"/>
+        <path d="M12 8 V150 A18 18 0 0 0 48 150 V8" class="lt-edge"/>
+        <rect x="8" y="4" width="44" height="6" rx="3" class="lt-lip"/>
+      </svg>
       <div class="lt-pct">${Math.round(p * 100)}%</div>
       <div class="lt-lbl">${lbl}</div>
       <div class="lt-val">${Math.round(v)}<small>/${obj}${unidad}</small></div>
@@ -6574,13 +6638,14 @@ function renderLab(){
       <div class="lx-eyebrow">${ico('flask')} Experimento <span>· objetivo por comida</span></div>
       <div class="lx-kcal"><b>${fmtKcal(n.kcal)}</b><span>kcal</span></div>
       <div class="lx-rack">
+        <div class="rack-back"></div>
+        <div class="rack-base"></div>
         ${tubo('Energía', n.kcal, T.kcal, 'e', '')}
         ${tubo('Proteína', n.p, T.p, 'p', 'g')}
         ${tubo('Carbos', n.c, T.c, 'c', 'g')}
         ${tubo('Grasa', n.f, T.f, 'f', 'g')}
       </div>
-      <div class="lx-gradilla"></div>
-      <div class="lx-legend"><i></i>la línea punteada es tu meta</div>
+      <div class="lx-legend"><i></i>meta de una comida</div>
     </section>
 
     ${plate.length ? `
