@@ -2029,6 +2029,15 @@ body.screen-open{overflow:hidden}
 :root[data-theme="dark"] .lt-shadow{fill:rgba(0,0,0,.5)}
 .lt-pct{margin-top:12px}
 .lx-legend{margin-top:10px}
+
+/* ---- Líquidos más densos ---- */
+.lt-s1{stop-color:color-mix(in srgb, var(--lc) 90%, white)}
+.lt-s2{stop-color:color-mix(in srgb, var(--lc) 62%, black)}
+.lt-wave.back{fill:color-mix(in srgb, var(--lc) 75%, black);opacity:.55;animation:lt-ola 2.4s linear infinite reverse}
+.lt-wave{animation:lt-ola 2.8s linear infinite}
+.lt-men{display:none}
+.lt-liq{transition:transform 1s cubic-bezier(.25,1.3,.4,1)}
+.lt-b{fill:rgba(255,255,255,.55)}
 </style>
 </head>
 <body>
@@ -6577,6 +6586,7 @@ function labSugerencias(plate, T, cant){
   return res;
 }
 
+const labNivelPrevio = {};
 function renderLab(){
   const el = document.getElementById('labBody');
   const L = state.lab, plate = labPlate();
@@ -6598,12 +6608,16 @@ function renderLab(){
     const y = nivelY(p), yMeta = nivelY(1);
     const id = 'lt' + cls;
     const ticks = [0.25, 0.5, 0.75].map(t => `<line x1="40" x2="45" y1="${nivelY(t)}" y2="${nivelY(t)}" class="lt-tick"/>`).join('');
-    return `<div class="lt ${cls} ${est}">
+    return `<div class="lt ${cls} ${est}" data-k="${cls}">
       <svg class="lt-svg" viewBox="0 0 60 176" aria-hidden="true">
         <defs>
           <clipPath id="${id}c"><path d="M14 10 V150 A16 16 0 0 0 46 150 V10 Z"/></clipPath>
           <linearGradient id="${id}g" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0" class="lt-s1"/><stop offset="1" class="lt-s2"/>
+          </linearGradient>
+          <linearGradient id="${id}s" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#000" stop-opacity=".28"/><stop offset=".3" stop-color="#000" stop-opacity="0"/>
+            <stop offset=".75" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/>
           </linearGradient>
           <linearGradient id="${id}h" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0" stop-color="#fff" stop-opacity=".0"/><stop offset=".25" stop-color="#fff" stop-opacity=".35"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/>
@@ -6613,9 +6627,10 @@ function renderLab(){
         <path d="M12 8 V150 A18 18 0 0 0 48 150 V8 Z" class="lt-glass"/>
         <g clip-path="url(#${id}c)">
           ${p > 0 ? `
-          <g class="lt-liq" style="transform:translateY(${y}px)">
-            <path class="lt-wave" d="M-40 4 Q-30 -1 -20 4 T0 4 T20 4 T40 4 T60 4 T80 4 T100 4 V200 H-40 Z" fill="url(#${id}g)"/>
-            <ellipse cx="30" cy="4" rx="16" ry="2.2" class="lt-men"/>
+          <g class="lt-liq" data-y="${y}" style="transform:translateY(${labNivelPrevio[cls] ?? Y_BOT}px)">
+            <path class="lt-wave back" d="M-40 3 Q-30 -3 -20 3 T0 3 T20 3 T40 3 T60 3 T80 3 T100 3 V200 H-40 Z"/>
+            <path class="lt-wave" d="M-40 5 Q-30 -1 -20 5 T0 5 T20 5 T40 5 T60 5 T80 5 T100 5 V200 H-40 Z" fill="url(#${id}g)"/>
+            <rect x="14" y="7" width="32" height="200" fill="url(#${id}s)"/>
             ${p > 0.1 ? '<circle class="lt-b b1" cx="22" cy="140" r="2.2"/><circle class="lt-b b2" cx="34" cy="150" r="1.6"/><circle class="lt-b b3" cx="28" cy="146" r="1.2"/>' : ''}
           </g>` : ''}
           <rect x="14" y="0" width="32" height="176" fill="url(#${id}h)"/>
@@ -6632,6 +6647,7 @@ function renderLab(){
     </div>`;
   };
   const pE = T.kcal > 0 ? n.kcal / T.kcal : 0;
+
 
   el.innerHTML = `
     <section class="lx-hero">
@@ -6679,6 +6695,14 @@ function renderLab(){
       <input type="search" class="search" id="labBusca" placeholder="Buscar otro alimento" value="${escapeHtml(L.busca || '')}" autocomplete="off">
     </div>
   `;
+
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    el.querySelectorAll('.lt-liq').forEach(g => {
+      g.style.transform = `translateY(${g.dataset.y}px)`;
+      labNivelPrevio[g.closest('.lt').dataset.k] = +g.dataset.y;
+    });
+  }));
+  el.querySelectorAll('.lt').forEach(t => { if(!t.querySelector('.lt-liq')) labNivelPrevio[t.dataset.k] = 166; });
 
   const nextB = document.getElementById('labNext'), addB = document.getElementById('labAdd');
   nextB.innerHTML = `${ico('swap')} Sorprendeme`;
