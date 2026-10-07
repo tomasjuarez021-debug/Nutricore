@@ -1828,63 +1828,25 @@ body.screen-open{overflow:hidden}
 .chip.sug small{font-weight:600;color:var(--text-3);margin-left:3px}
 .lp-head{margin:-4px 2px 0;justify-content:flex-end}
 
-/* =========== LAB: estética de laboratorio (siempre oscura) =========== */
-#labScreen{
-  --lab-bg:#07080f; --lab-panel:rgba(255,255,255,.035); --lab-line:rgba(255,255,255,.09);
-  --lab-text:#e9ecff; --lab-dim:#7d84a8; --lab-acc:#8b7bff;
-  background:
-    radial-gradient(600px 300px at 50% -60px, rgba(124,92,255,.35), transparent 70%),
-    radial-gradient(400px 260px at 100% 100%, rgba(34,211,238,.12), transparent 70%),
-    linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px) 0 0/24px 24px,
-    linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px) 0 0/24px 24px,
-    var(--lab-bg);
-  color:var(--lab-text);
-}
-#labScreen .icon-btn{background:var(--lab-panel);border-color:var(--lab-line)}
-#labScreen .icon-btn svg{stroke:var(--lab-text)}
-.lab-title{font-family:'JetBrains Mono',monospace;letter-spacing:.3em;font-size:15px;font-weight:700;display:flex;flex-direction:column;align-items:center;line-height:1.2}
-.lab-title span{font-size:10px;letter-spacing:.12em;color:var(--lab-dim);font-weight:400;text-transform:uppercase;margin-top:2px}
-#labScreen .lp-total{background:var(--lab-panel);border:1px solid var(--lab-line);box-shadow:inset 0 1px 0 rgba(255,255,255,.06), 0 20px 40px rgba(0,0,0,.35);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:24px;padding:20px 8px 14px}
-#labScreen .lp-ring .kpi-ring-svg{width:66px;height:66px}
-#labScreen .lp-ring circle:first-child{stroke:rgba(255,255,255,.07)!important}
-#labScreen .lp-ring circle:last-child{stroke:var(--c)!important;filter:drop-shadow(0 0 6px var(--c))}
-#labScreen .lp-ring .kpi-ring-pct{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--lab-text)}
+
+/* ---- Lab: limpio, números mono ---- */
+.lab-title{display:flex;flex-direction:column;align-items:center;line-height:1.15}
+.lab-title span{font-family:'Inter',sans-serif;font-size:11.5px;font-weight:500;color:var(--text-3);letter-spacing:0}
+#labScreen .lp-total{box-shadow:none;padding:18px 8px 12px}
+#labScreen .lp-ring svg circle:last-child{stroke:var(--c)!important}
+#labScreen .lp-ring .kpi-ring-svg{width:60px;height:60px}
+#labScreen .lp-ring .kpi-ring-pct,#labScreen .lp-ring-val,#labScreen .lp-q,#labScreen .lp-det b,#labScreen .chip small{font-family:'JetBrains Mono',ui-monospace,monospace;font-weight:500;letter-spacing:-.02em}
+#labScreen .lp-ring .kpi-ring-pct{font-size:12.5px}
 #labScreen .lp-ring.ok .kpi-ring-pct{color:var(--c)}
-#labScreen .lp-ring-lbl{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--lab-dim);font-weight:500;margin-top:8px}
-#labScreen .lp-ring-val{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--lab-text)}
-#labScreen .lp-ring-val small{color:var(--lab-dim)}
-#labScreen .lp-goal{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.06em;color:var(--lab-dim);display:flex;align-items:center;justify-content:center;gap:7px;margin-top:14px}
-#labScreen .lp-goal i{width:6px;height:6px;border-radius:50%;background:#a3e635;box-shadow:0 0 8px #a3e635}
-#labScreen .lp-list{gap:6px;margin-top:14px}
-#labScreen .lp-row{background:transparent;border:1px solid var(--lab-line);border-radius:14px;padding:4px 4px 4px 14px}
-#labScreen .lp-row.open{border-color:rgba(139,123,255,.5);background:rgba(139,123,255,.06)}
-#labScreen .lp-name{color:var(--lab-text);font-weight:500;font-size:14.5px}
-#labScreen .lp-name .chev{color:var(--lab-dim)}
-#labScreen .mini-step{background:rgba(255,255,255,.05)}
-#labScreen .mini-step button{color:var(--lab-text);font-weight:400}
-#labScreen .mini-step button.plus{background:transparent;color:var(--lab-acc)}
-#labScreen .lp-q{font-family:'JetBrains Mono',monospace;font-weight:500!important;color:var(--lab-text)}
-#labScreen .lp-det{border-color:var(--lab-line);color:var(--lab-dim);font-family:'JetBrains Mono',monospace;font-size:11.5px}
-#labScreen .lp-det b{color:var(--lab-text)}
-#labScreen .lp-det .link-btn{color:#ff5d73}
-#labScreen .lp-head .link-btn{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--lab-dim);letter-spacing:.04em}
-#labScreen .lp-empty{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--lab-dim);margin:18px 0}
-#labScreen .lp-add-tit{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--lab-dim);font-weight:400;letter-spacing:.03em}
-#labScreen .chip{background:transparent;border:1px solid var(--lab-line);color:var(--lab-text);font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;border-radius:10px;padding:7px 10px}
-#labScreen .chip:active{border-color:var(--lab-acc);background:rgba(139,123,255,.12)}
-#labScreen .chip.sug{border-style:dashed;border-color:rgba(139,123,255,.45)}
-#labScreen .chip small{color:#22d3ee;font-weight:500}
-#labScreen .search{background:var(--lab-panel);border-color:var(--lab-line);color:var(--lab-text);font-family:'JetBrains Mono',monospace;font-size:13px}
-#labScreen .search::placeholder{color:var(--lab-dim)}
-#labScreen .search:focus{border-color:var(--lab-acc);box-shadow:0 0 0 3px rgba(139,123,255,.2)}
-#labScreen .search-wrap svg{stroke:var(--lab-dim)}
-#labScreen .screen-foot{background:rgba(7,8,15,.75);border-top:1px solid var(--lab-line)}
-#labScreen .lab-foot .btn{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.02em;border-radius:12px}
-#labScreen #labNext{background:linear-gradient(135deg,#7c5cff,#22d3ee);color:#05060c;border:none;box-shadow:0 0 24px rgba(124,92,255,.45)}
-#labScreen #labNext .ico{stroke:#05060c}
-#labScreen #labAdd{background:transparent;border:1px solid rgba(163,230,53,.55);color:#a3e635}
-#labScreen #labAdd:disabled{border-color:var(--lab-line);color:var(--lab-dim);opacity:.6}
-#labScreen .lp-ring svg{overflow:visible}
+#labScreen .lp-ring-lbl{font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em}
+#labScreen .lp-goal{font-size:11.5px}
+#labScreen .lp-row{box-shadow:none}
+#labScreen .lp-row.open{border-color:rgba(var(--brand-rgb),.4)}
+#labScreen .lp-name{font-weight:500}
+#labScreen .mini-step button.plus{background:transparent;color:var(--brand)}
+#labScreen .chip{border-radius:12px;font-weight:500}
+#labScreen .chip small{color:var(--brand)}
+#labScreen .lp-add-tit{font-weight:600}
 </style>
 </head>
 <body>
@@ -2117,7 +2079,7 @@ body.screen-open{overflow:hidden}
       <button class="icon-btn" id="labClose" aria-label="Volver">
         <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
-      <div class="screen-title lab-title">LAB<span>simulador de platos</span></div>
+      <div class="screen-title lab-title">Lab<span>probá un plato</span></div>
       <div style="width:38px"></div>
     </div>
     <div class="screen-body" id="labBody"></div>
@@ -6445,7 +6407,7 @@ function renderLab(){
 
   const circulo = (lbl, v, obj, color, unidad) => {
     const p = obj > 0 ? v / obj : 0;
-    const col = p > 1.15 ? '#ff5d73' : color;
+    const col = p > 1.15 ? 'var(--bad)' : color;
     return `<div class="lp-ring ${p >= 0.9 && p <= 1.15 ? 'ok' : ''}" style="--c:${col}">
       <div class="kpi-ring-svg">${anillo(64, 7, p, col)}<div class="kpi-ring-pct">${Math.round(p * 100)}%</div></div>
       <div class="lp-ring-lbl">${lbl}</div>
@@ -6456,12 +6418,12 @@ function renderLab(){
   el.innerHTML = `
     <div class="lp-total">
       <div class="lp-rings">
-        ${circulo('kcal', n.kcal, T.kcal, '#8b7bff', '')}
-        ${circulo('prot', n.p, T.p, '#22d3ee', 'g')}
-        ${circulo('carb', n.c, T.c, '#a3e635', 'g')}
-        ${circulo('grasa', n.f, T.f, '#fb923c', 'g')}
+        ${circulo('Kcal', n.kcal, T.kcal, 'var(--brand)', '')}
+        ${circulo('Prot', n.p, T.p, 'var(--brand-2)', 'g')}
+        ${circulo('Carbo', n.c, T.c, 'var(--carb)', 'g')}
+        ${circulo('Grasa', n.f, T.f, 'var(--fat)', 'g')}
       </div>
-      <div class="lp-goal"><i></i>objetivo · 1 comida de tu día</div>
+      <div class="lp-goal">Objetivo: 1 comida de tu día</div>
     </div>
 
     ${plate.length ? `
@@ -6480,13 +6442,13 @@ function renderLab(){
           </div>` : ''}
         </div>`; }).join('')}
     </div>
-    <div class="lp-head"><span></span><button class="link-btn" id="labVaciar">Vaciar plato</button></div>` : '<div class="lp-empty">plato vacío — agregá alimentos y mirá cómo se llenan los anillos</div>'}
+    <div class="lp-head"><span></span><button class="link-btn" id="labVaciar">Vaciar plato</button></div>` : '<div class="lp-empty">Agregá alimentos y mirá cómo se llenan los anillos</div>'}
 
     <div class="lp-add">
-      <div class="lp-add-tit">${q ? '// resultados' : (plate.length ? '// sugerido para llegar al objetivo' : '// elegí un punto de partida')}</div>
+      <div class="lp-add-tit">${q ? 'Resultados' : (plate.length ? 'Sugerido para completar' : 'Para empezar')}</div>
       <div class="lab-sug">
         ${q ? encontrados.map(i => `<button class="chip" data-ladd="${i.id}" data-lq="${defaultQty(i)}">+ ${nombreCorto(i)}</button>`).join('')
-            : sugeridas.map(o => `<button class="chip sug" data-ladd="${o.i.id}" data-lq="${o.q}">+ ${nombreCorto(o.i).toLowerCase()} <small>${qtyLabel(o.i, o.q)}</small></button>`).join('')}
+            : sugeridas.map(o => `<button class="chip sug" data-ladd="${o.i.id}" data-lq="${o.q}">+ ${nombreCorto(o.i)} <small>${qtyLabel(o.i, o.q)}</small></button>`).join('')}
       </div>
       <div class="search-wrap" style="margin-top:10px">
         ${ico('search')}
