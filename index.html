@@ -1847,6 +1847,20 @@ body.screen-open{overflow:hidden}
 #labScreen .chip{border-radius:12px;font-weight:500}
 #labScreen .chip small{color:var(--brand)}
 #labScreen .lp-add-tit{font-weight:600}
+
+/* ---- Lab: barras por macro ---- */
+#labScreen .lp-total{padding:14px 16px 6px;text-align:left}
+#labScreen .lp-goal{text-align:left;margin:0 0 10px;font-size:12px;font-weight:600;color:var(--text-3)}
+.lp-bar{margin-bottom:12px}
+.lp-bar-top{display:flex;align-items:baseline;gap:8px;margin-bottom:6px}
+.lp-bar-top span{font-size:13px;font-weight:600;flex:1}
+.lp-bar-top b{font-family:'JetBrains Mono',ui-monospace,monospace;font-weight:500;font-size:13px;font-variant-numeric:tabular-nums}
+.lp-bar-top b small{color:var(--text-3);font-size:11.5px}
+.lp-bar-top em{font-style:normal;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;min-width:40px;text-align:right;color:var(--text-3)}
+.lp-bar.ok .lp-bar-top em{color:var(--good);font-weight:700}
+.lp-bar.over .lp-bar-top em{color:var(--bad);font-weight:700}
+.lp-track{height:8px;border-radius:8px;background:rgba(var(--ink-rgb),.07);overflow:hidden}
+.lp-track i{display:block;height:100%;border-radius:8px;background:var(--c);transition:width .35s cubic-bezier(.2,.8,.2,1)}
 </style>
 </head>
 <body>
@@ -6405,25 +6419,23 @@ function renderLab(){
   const encontrados = q ? INGREDIENTS.filter(i => ingApto(i, diet) && norm(i.name).includes(q) && !enPlato.has(i.id)).slice(0, 8) : [];
   const sugeridas = q ? [] : labSugerencias(plate, T, 8);
 
-  const circulo = (lbl, v, obj, color, unidad) => {
+  // Barra por macro: cuánto del objetivo de una comida cubre el plato.
+  const barra = (lbl, v, obj, color, unidad) => {
     const p = obj > 0 ? v / obj : 0;
-    const col = p > 1.15 ? 'var(--bad)' : color;
-    return `<div class="lp-ring ${p >= 0.9 && p <= 1.15 ? 'ok' : ''}" style="--c:${col}">
-      <div class="kpi-ring-svg">${anillo(64, 7, p, col)}<div class="kpi-ring-pct">${Math.round(p * 100)}%</div></div>
-      <div class="lp-ring-lbl">${lbl}</div>
-      <div class="lp-ring-val">${Math.round(v)}<small>/${obj}${unidad}</small></div>
+    const estado = p > 1.15 ? 'over' : (p >= 0.9 ? 'ok' : '');
+    return `<div class="lp-bar ${estado}" style="--c:${p > 1.15 ? 'var(--bad)' : color}">
+      <div class="lp-bar-top"><span>${lbl}</span><b>${Math.round(v)}<small> / ${obj}${unidad}</small></b><em>${Math.round(p * 100)}%</em></div>
+      <div class="lp-track"><i style="width:${Math.min(p * 100, 100)}%"></i></div>
     </div>`;
   };
 
   el.innerHTML = `
     <div class="lp-total">
-      <div class="lp-rings">
-        ${circulo('Kcal', n.kcal, T.kcal, 'var(--brand)', '')}
-        ${circulo('Prot', n.p, T.p, 'var(--brand-2)', 'g')}
-        ${circulo('Carbo', n.c, T.c, 'var(--carb)', 'g')}
-        ${circulo('Grasa', n.f, T.f, 'var(--fat)', 'g')}
-      </div>
-      <div class="lp-goal">Objetivo: 1 comida de tu día</div>
+      <div class="lp-goal">Objetivo por comida</div>
+      ${barra('Energía', n.kcal, T.kcal, 'var(--brand)', ' kcal')}
+      ${barra('Proteína', n.p, T.p, 'var(--brand-2)', ' g')}
+      ${barra('Carbos', n.c, T.c, 'var(--carb)', ' g')}
+      ${barra('Grasa', n.f, T.f, 'var(--fat)', ' g')}
     </div>
 
     ${plate.length ? `
@@ -6442,7 +6454,7 @@ function renderLab(){
           </div>` : ''}
         </div>`; }).join('')}
     </div>
-    <div class="lp-head"><span></span><button class="link-btn" id="labVaciar">Vaciar plato</button></div>` : '<div class="lp-empty">Agregá alimentos y mirá cómo se llenan los anillos</div>'}
+    <div class="lp-head"><span></span><button class="link-btn" id="labVaciar">Vaciar plato</button></div>` : '<div class="lp-empty">Agregá alimentos y mirá cómo se llenan las barras</div>'}
 
     <div class="lp-add">
       <div class="lp-add-tit">${q ? 'Resultados' : (plate.length ? 'Sugerido para completar' : 'Para empezar')}</div>
