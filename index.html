@@ -2012,6 +2012,19 @@ body.screen-open{overflow:hidden}
 .lq-mini.S,.lq-mini.A{background:rgba(var(--good-rgb),.15);color:var(--good)}
 .lq-mini.B{background:rgba(var(--warn-rgb),.18);color:var(--warn)}
 .lq-mini.C{background:rgba(var(--bad-rgb),.14);color:var(--bad)}
+
+/* Versión sutil: una línea bajo los tubos */
+.lq2{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line);font-size:12.5px;color:var(--text-2)}
+.lq2-dot{width:7px;height:7px;border-radius:50%;background:var(--text-4);flex-shrink:0}
+.lq2.S .lq2-dot,.lq2.A .lq2-dot{background:var(--good)}
+.lq2.B .lq2-dot{background:var(--warn)}
+.lq2.C .lq2-dot{background:color-mix(in srgb, var(--bad) 75%, var(--warn))}
+.lq2-link{font-size:12.5px;font-weight:600;color:var(--brand);padding:2px 0}
+.lq2-opts{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:10px}
+.lq2-opts button{font-size:12px;font-weight:500;padding:5px 10px;border-radius:999px;background:rgba(var(--ink-rgb),.045);color:var(--text-2)}
+.lq2-opts small{color:var(--text-3);margin-left:2px}
+/* letras de los ingredientes, más tenues */
+.lq-mini{background:transparent!important;border:1px solid var(--line);font-weight:700;opacity:.8}
 :root[data-theme="dark"] .lt-tube{background:linear-gradient(90deg, rgba(255,255,255,.07) 0 18%, transparent 18% 100%), rgba(255,255,255,.02);border-color:rgba(255,255,255,.18)}
 :root[data-theme="dark"] .lt-tube::before{background:rgba(255,255,255,.2)}
 
@@ -6701,24 +6714,19 @@ function renderLab(){
   const PQ_TXT = {S:'Excelente', A:'Completa', B:'Casi completa', C:'Incompleta'};
   let calidad = '';
   if(n.p >= 5 && !pq){
-    calidad = `<div class="lq"><div class="lq-badge">?</div><div class="lq-info"><b>Calidad de la proteína</b><span>Sin datos de aminoácidos para estos ingredientes</span></div></div>`;
+    calidad = `<div class="lq2"><i class="lq2-dot"></i><span>Proteína: sin datos de aminoácidos</span></div>`;
   } else if(pq){
-    const cobertura = pq.totalProt / Math.max(n.p, 0.1);
     const incompleta = pq.classLetter === 'B' || pq.classLetter === 'C';
     const opciones = incompleta ? labComplementos(plate, pq, diet) : [];
+    const abierto = incompleta && L.pqOpen;
     calidad = `
-      <div class="lq ${pq.classLetter}">
-        <div class="lq-badge">${pq.classLetter}</div>
-        <div class="lq-info">
-          <b>Proteína ${PQ_TXT[pq.classLetter].toLowerCase()}</b>
-          <span>${incompleta
-            ? `Le falta <em>${AA_NAMES[pq.limitingAA].toLowerCase()}</em> (${Math.round(pq.limitingScore * 100)}% de lo necesario)`
-            : 'Tiene todos los aminoácidos esenciales'} · DIAAS ${pq.diaas}</span>
-          ${cobertura < 0.7 ? `<span class="lq-nota">Calculada sobre el ${Math.round(cobertura * 100)}% de la proteína del plato</span>` : ''}
-        </div>
+      <div class="lq2 ${pq.classLetter}">
+        <i class="lq2-dot"></i>
+        <span>Proteína ${PQ_TXT[pq.classLetter].toLowerCase()}${incompleta ? ` · le falta ${AA_NAMES[pq.limitingAA].toLowerCase()}` : ''}</span>
+        ${incompleta && opciones.length ? `<button class="lq2-link" id="labPqToggle">${abierto ? 'cerrar' : 'completar ›'}</button>` : ''}
       </div>
-      ${opciones.length ? `<div class="lq-fix"><span>Completala con</span>${opciones.map(x =>
-        `<button class="lq-chip" data-ladd="${x.id}" data-lq="${x.qty}">+ ${nombreCorto(INGR_BY_ID[x.id])} ${qtyLabel(INGR_BY_ID[x.id], x.qty)}</button>`).join('')}</div>` : ''}`;
+      ${abierto ? `<div class="lq2-opts">${opciones.map(x =>
+        `<button data-ladd="${x.id}" data-lq="${x.qty}">+ ${nombreCorto(INGR_BY_ID[x.id])} <small>${qtyLabel(INGR_BY_ID[x.id], x.qty)}</small></button>`).join('')}</div>` : ''}`;
   }
 
 
@@ -6797,6 +6805,8 @@ function renderLab(){
   el.querySelectorAll('[data-lmas]').forEach(b => b.onclick = () => cambiar(+b.dataset.lmas, +1));
   el.querySelectorAll('[data-lmenos]').forEach(b => b.onclick = () => cambiar(+b.dataset.lmenos, -1));
   el.querySelectorAll('[data-lopen]').forEach(b => b.onclick = () => { const k = +b.dataset.lopen; L.open = L.open === k ? null : k; renderLab(); });
+  const pqT = document.getElementById('labPqToggle');
+  if(pqT) pqT.onclick = () => { L.pqOpen = !L.pqOpen; renderLab(); };
   el.querySelectorAll('[data-lquitar]').forEach(b => b.onclick = () => { plate.splice(+b.dataset.lquitar, 1); L.open = null; saveState(); renderLab(); });
   const v = document.getElementById('labVaciar');
   if(v) v.onclick = () => { L.plate = []; L.open = null; saveState(); renderLab(); };
