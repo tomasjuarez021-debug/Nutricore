@@ -1809,6 +1809,24 @@ body.screen-open{overflow:hidden}
 .lp-m span{margin:0}
 .lp-empty{text-align:center;font-size:14px;color:var(--text-3);margin:6px 0 14px}
 .lp-head{margin:0 2px 4px}
+
+.lp-total{padding:16px 10px 12px}
+.lp-rings{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;text-align:center}
+.lp-ring .kpi-ring-svg{width:64px;height:64px}
+.lp-ring-lbl{font-size:12px;font-weight:700;margin-top:6px}
+.lp-ring-val{font-size:12px;color:var(--text-2);font-variant-numeric:tabular-nums}
+.lp-ring-val small{color:var(--text-4);font-size:10.5px}
+.lp-goal{text-align:center;font-size:11.5px;color:var(--text-3);margin-top:10px}
+.lp-row{flex-wrap:wrap;padding:6px 6px 6px 14px}
+.lp-name{flex:1;min-width:0;text-align:left;font-size:15px;font-weight:600;padding:8px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lp-name .chev{color:var(--text-4);font-size:11px;margin-left:4px}
+.lp-det{flex-basis:100%;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;padding:4px 2px 6px;font-size:12.5px;color:var(--text-3);border-top:1px solid var(--line);margin-top:4px}
+.lp-det b{color:var(--text);font-variant-numeric:tabular-nums}
+.lp-det .link-btn{margin-left:auto;color:var(--bad);font-size:12.5px}
+.lp-add{margin-top:14px}
+.lp-add-tit{font-size:13px;font-weight:700;color:var(--text-3);margin:0 2px 8px}
+.chip.sug small{font-weight:600;color:var(--text-3);margin-left:3px}
+.lp-head{margin:-4px 2px 0;justify-content:flex-end}
 </style>
 </head>
 <body>
@@ -6309,52 +6327,114 @@ function openLab(){ abrirPantalla('labScreen'); renderLab(); }
 function closeLab(){ cerrarPantalla('labScreen'); }
 function labPaso(i){ return i.unit === 'u' ? 0.5 : 10; }
 
+/* Sugerencias para completar el plato: para cada candidato calcula la
+   porción que mejor tapa lo que falta y se queda con los que más acercan
+   el plato al objetivo de la comida. */
+function labSugerencias(plate, T, cant){
+  const diet = dietaDe(state.profile);
+  const t = computeTargets(state.profile, todayKey());
+  const keto = !!t.carbIsLimit;
+  const enPlato = new Set(plate.map(x => x.id));
+  const n0 = computeMealNutrition({items:plate});
+  const err = n => Math.abs(n.kcal - T.kcal) / T.kcal + 1.2 * Math.abs(n.p - T.p) / Math.max(T.p, 10)
+    + 0.8 * Math.abs(n.c - T.c) / Math.max(T.c, 20) + 0.6 * Math.abs(n.f - T.f) / Math.max(T.f, 10);
+  const e0 = err(n0);
+  const macroDe = {prot:'p', carb:'c', fruta:'c', fat:'f'};
+  const out = [];
+  ['protPlato','carbPlato','veg','fat','fruta'].forEach(sl => {
+    INGREDIENTS.forEach(i => {
+      if(enPlato.has(i.id) || NO_RECO.has(i.id) || !ingApto(i, diet) || !slotOk(i, sl)) return;
+      const rol = SLOT_ROL[sl];
+      if(keto && (rol === 'carb' || rol === 'fruta')) return;
+      const [mn, mx, paso] = rangoDe(i, rol);
+      let q = rol === 'veg' ? 150 : mn;
+      const k = macroDe[rol];
+      if(k){
+        const falta = T[k] - n0[k];
+        const c = coef(i, k);
+        if(falta <= 0 || c <= 0) return;
+        q = Math.min(Math.max(falta / c, mn), mx);
+      }
+      q = Math.round(q / paso) * paso;
+      const n1 = computeMealNutrition({items:[...plate, {id:i.id, qty:q}]});
+      const gana = e0 - err(n1);
+      if(rol === 'veg' && n0.kcal > 0) out.push({i, q, gana: gana + 0.05}); // siempre suma una verdura
+      else if(gana > 0) out.push({i, q, gana});
+    });
+  });
+  out.sort((a, b) => b.gana - a.gana);
+  // Variedad: no más de 2 de la misma categoría.
+  const porCat = {}, res = [];
+  for(const o of out){
+    porCat[o.i.cat] = (porCat[o.i.cat] || 0) + 1;
+    if(porCat[o.i.cat] > 2) continue;
+    res.push(o);
+    if(res.length >= cant) break;
+  }
+  return res;
+}
+
 function renderLab(){
   const el = document.getElementById('labBody');
   const L = state.lab, plate = labPlate();
   const diet = dietaDe(state.profile);
-  const t = computeTargets(state.profile, todayKey());
+  const T = labObjetivo('comida');
   const n = computeMealNutrition({items:plate});
   const q = norm(L.busca || '');
   const enPlato = new Set(plate.map(x => x.id));
-  const opciones = (q
-    ? INGREDIENTS.filter(i => ingApto(i, diet) && norm(i.name).includes(q))
-    : LAB_ATAJOS.map(id => INGR_BY_ID[id]).filter(i => i && ingApto(i, diet))
-  ).filter(i => !enPlato.has(i.id)).slice(0, 6);
-  const pctDia = (v, obj) => obj > 0 ? Math.round(v / obj * 100) : 0;
-  const macro = (lbl, v, cls) => `<div class="lp-m ${cls}"><b>${Math.round(v)}<small>g</small></b><span>${lbl}</span></div>`;
+  const encontrados = q ? INGREDIENTS.filter(i => ingApto(i, diet) && norm(i.name).includes(q) && !enPlato.has(i.id)).slice(0, 8) : [];
+  const sugeridas = q ? [] : labSugerencias(plate, T, 8);
+
+  const circulo = (lbl, v, obj, color, unidad) => {
+    const p = obj > 0 ? v / obj : 0;
+    const col = p > 1.15 ? 'var(--bad)' : (p >= 0.9 ? 'var(--good)' : color);
+    return `<div class="lp-ring">
+      <div class="kpi-ring-svg">${anillo(64, 7, p, col)}<div class="kpi-ring-pct">${Math.round(p * 100)}%</div></div>
+      <div class="lp-ring-lbl">${lbl}</div>
+      <div class="lp-ring-val">${Math.round(v)}<small>/${obj}${unidad}</small></div>
+    </div>`;
+  };
 
   el.innerHTML = `
     <div class="lp-total">
-      <div class="lp-kcal">${fmtKcal(n.kcal)}<small>kcal</small></div>
-      <div class="lp-macros">
-        ${macro('Proteína', n.p, 'p')}
-        ${macro('Carbos', n.c, 'c')}
-        ${macro('Grasa', n.f, 'f')}
+      <div class="lp-rings">
+        ${circulo('Energía', n.kcal, T.kcal, 'var(--brand)', '')}
+        ${circulo('Proteína', n.p, T.p, 'var(--brand-2)', 'g')}
+        ${circulo('Carbos', n.c, T.c, 'var(--carb)', 'g')}
+        ${circulo('Grasa', n.f, T.f, 'var(--fat)', 'g')}
       </div>
+      <div class="lp-goal">Objetivo: una comida de tu día</div>
     </div>
 
     ${plate.length ? `
-    <div class="lp-head"><span></span><button class="link-btn" id="labVaciar">Vaciar</button></div>
     <div class="lp-list">
-      ${plate.map((x, k) => { const i = INGR_BY_ID[x.id]; return `
-        <div class="lp-row">
-          ${ingThumb(i)}
-          <div class="lp-info"><div>${nombreCorto(i)}</div></div>
+      ${plate.map((x, k) => { const i = INGR_BY_ID[x.id]; const abierto = L.open === k; const nn = abierto ? computeMealNutrition({items:[x]}) : null; return `
+        <div class="lp-row ${abierto ? 'open' : ''}">
+          <button class="lp-name" data-lopen="${k}">${nombreCorto(i)} <span class="chev">${abierto ? '▴' : '▾'}</span></button>
           <div class="mini-step">
             <button data-lmenos="${k}" aria-label="Menos">−</button>
             <span class="lp-q">${qtyLabel(i, x.qty)}</span>
             <button class="plus" data-lmas="${k}" aria-label="Más">+</button>
           </div>
+          ${abierto ? `<div class="lp-det">
+            <span><b>${nn.kcal}</b> kcal</span><span><b>${fmtNum(nn.p)}</b> g prot</span><span><b>${fmtNum(nn.c)}</b> g carbo</span><span><b>${fmtNum(nn.f)}</b> g grasa</span>
+            <button class="link-btn" data-lquitar="${k}">Quitar</button>
+          </div>` : ''}
         </div>`; }).join('')}
-    </div>` : ''}
-
-    ${plate.length ? '' : '<div class="lp-empty">Agregá alimentos y mirá cuánto suman</div>'}
-    <div class="search-wrap">
-      ${ico('search')}
-      <input type="search" class="search" id="labBusca" placeholder="Buscar alimento…" value="${escapeHtml(L.busca || '')}" autocomplete="off">
     </div>
-    <div class="lab-sug">${opciones.map(i => `<button class="chip" data-ladd="${i.id}">+ ${nombreCorto(i)}</button>`).join('')}</div>
+    <div class="lp-head"><span></span><button class="link-btn" id="labVaciar">Vaciar plato</button></div>` : '<div class="lp-empty">Agregá alimentos y mirá cómo se llenan los círculos</div>'}
+
+    <div class="lp-add">
+      <div class="lp-add-tit">${q ? 'Resultados' : (plate.length ? 'Para llegar al objetivo' : 'Para empezar')}</div>
+      <div class="lab-sug">
+        ${q ? encontrados.map(i => `<button class="chip" data-ladd="${i.id}" data-lq="${defaultQty(i)}">+ ${nombreCorto(i)}</button>`).join('')
+            : sugeridas.map(o => `<button class="chip sug" data-ladd="${o.i.id}" data-lq="${o.q}">+ ${nombreCorto(o.i)} <small>${qtyLabel(o.i, o.q)}</small></button>`).join('')}
+      </div>
+      <div class="search-wrap" style="margin-top:10px">
+        ${ico('search')}
+        <input type="search" class="search" id="labBusca" placeholder="Buscar otro alimento…" value="${escapeHtml(L.busca || '')}" autocomplete="off">
+      </div>
+    </div>
   `;
 
   const nextB = document.getElementById('labNext'), addB = document.getElementById('labAdd');
@@ -6363,20 +6443,21 @@ function renderLab(){
   addB.disabled = !plate.length;
 
   el.querySelectorAll('[data-ladd]').forEach(b => b.onclick = () => {
-    const i = INGR_BY_ID[b.dataset.ladd];
-    plate.push({id:i.id, qty:defaultQty(i)});
-    L.busca = ''; saveState(); renderLab();
+    plate.push({id:b.dataset.ladd, qty:+b.dataset.lq});
+    L.busca = ''; L.open = null; saveState(); renderLab();
   });
   const cambiar = (k, d) => {
     const x = plate[k], i = INGR_BY_ID[x.id];
     x.qty = Math.round((x.qty + d * labPaso(i)) * 10) / 10;
-    if(x.qty <= 0) plate.splice(k, 1);
+    if(x.qty <= 0){ plate.splice(k, 1); L.open = null; }
     saveState(); renderLab();
   };
   el.querySelectorAll('[data-lmas]').forEach(b => b.onclick = () => cambiar(+b.dataset.lmas, +1));
   el.querySelectorAll('[data-lmenos]').forEach(b => b.onclick = () => cambiar(+b.dataset.lmenos, -1));
+  el.querySelectorAll('[data-lopen]').forEach(b => b.onclick = () => { const k = +b.dataset.lopen; L.open = L.open === k ? null : k; renderLab(); });
+  el.querySelectorAll('[data-lquitar]').forEach(b => b.onclick = () => { plate.splice(+b.dataset.lquitar, 1); L.open = null; saveState(); renderLab(); });
   const v = document.getElementById('labVaciar');
-  if(v) v.onclick = () => { L.plate = []; saveState(); renderLab(); };
+  if(v) v.onclick = () => { L.plate = []; L.open = null; saveState(); renderLab(); };
   const busca = document.getElementById('labBusca');
   busca.oninput = () => { L.busca = busca.value; renderLab(); const nb = document.getElementById('labBusca'); nb.focus(); nb.setSelectionRange(nb.value.length, nb.value.length); };
 }
