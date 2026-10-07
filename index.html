@@ -1936,6 +1936,62 @@ body.screen-open{overflow:hidden}
 .lx-sug span{font-size:12px;font-weight:600;color:var(--brand)}
 .lx-search .search{border-radius:999px}
 :root[data-theme="dark"] .lx-hero{box-shadow:0 18px 40px -18px rgba(0,0,0,.6)}
+
+/* =========== LAB · playground de laboratorio =========== */
+#labScreen{
+  background:
+    radial-gradient(circle at 1px 1px, rgba(var(--brand-rgb),.18) 1px, transparent 1.5px) 0 0/18px 18px,
+    linear-gradient(180deg, #f1efff 0%, #eef8fb 100%);
+}
+:root[data-theme="dark"] #labScreen{
+  background:
+    radial-gradient(circle at 1px 1px, rgba(255,255,255,.07) 1px, transparent 1.5px) 0 0/18px 18px,
+    linear-gradient(180deg, #11122a 0%, #0b1620 100%);
+}
+#labScreen .screen-foot{background:rgba(var(--panel-rgb),.85)}
+.lx-hero{background:var(--panel);padding:18px 16px 14px;box-shadow:0 14px 34px -16px rgba(var(--brand-rgb),.35)}
+.lx-eyebrow{display:flex;align-items:center;gap:6px}
+.lx-eyebrow .ico{width:15px;height:15px}
+.lx-kcal{margin:8px 0 14px}
+.lx-kcal b{font-size:46px}
+.lx-rack{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;justify-items:center;position:relative;z-index:1}
+.lt{display:flex;flex-direction:column;align-items:center;--lc:var(--brand)}
+.lt.p{--lc:var(--brand-2)} .lt.c{--lc:var(--carb)} .lt.f{--lc:var(--fat)}
+.lt.over{--lc:var(--bad)}
+.lt-tube{
+  position:relative;width:46px;height:128px;
+  border:2.5px solid rgba(var(--ink-rgb),.16);border-top:none;
+  border-radius:0 0 23px 23px;overflow:hidden;
+  background:linear-gradient(90deg, rgba(255,255,255,.55) 0 18%, transparent 18% 100%), rgba(var(--ink-rgb),.03);
+}
+.lt-tube::before{content:'';position:absolute;top:0;left:-6px;right:-6px;height:5px;border-radius:4px;background:rgba(var(--ink-rgb),.16);z-index:3}
+.lt-goal{position:absolute;left:0;right:0;border-top:2px dashed rgba(var(--ink-rgb),.35);z-index:2}
+.lt-liq{
+  position:absolute;left:0;right:0;bottom:0;
+  background:linear-gradient(180deg, color-mix(in srgb, var(--lc) 70%, white) 0%, var(--lc) 60%);
+  transition:height .7s cubic-bezier(.2,.9,.25,1.2);
+}
+.lt-liq::before{content:'';position:absolute;left:-10%;right:-10%;top:-5px;height:10px;border-radius:50%;background:color-mix(in srgb, var(--lc) 55%, white)}
+.lt-liq i{position:absolute;bottom:10%;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.55);animation:burbuja 2.8s ease-in infinite}
+.lt-liq i:nth-child(1){left:22%;animation-delay:0s}
+.lt-liq i:nth-child(2){left:55%;width:4px;height:4px;animation-delay:1s}
+.lt-liq i:nth-child(3){left:38%;width:5px;height:5px;animation-delay:1.9s}
+@keyframes burbuja{0%{transform:translateY(0);opacity:0}15%{opacity:1}100%{transform:translateY(-70px);opacity:0}}
+@media (prefers-reduced-motion: reduce){.lt-liq i{animation:none;opacity:.5}}
+.lt-pct{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:14px;margin-top:10px;font-variant-numeric:tabular-nums;color:var(--text-2)}
+.lt.ok .lt-pct{color:var(--good)} .lt.over .lt-pct{color:var(--bad)}
+.lt-lbl{font-size:11.5px;font-weight:700;color:var(--text-3);margin-top:1px}
+.lt-val{font-size:12px;font-weight:600;font-variant-numeric:tabular-nums}
+.lt-val small{color:var(--text-4);font-weight:500}
+.lx-gradilla{height:14px;margin:-108px -4px 94px;border-radius:7px;background:linear-gradient(180deg, rgba(var(--ink-rgb),.06), rgba(var(--ink-rgb),.12));position:relative;z-index:0}
+.lx-legend{display:flex;align-items:center;justify-content:center;gap:8px;font-size:11.5px;color:var(--text-3);margin-top:6px}
+.lx-legend i{width:18px;border-top:2px dashed rgba(var(--ink-rgb),.35)}
+.lx-list{box-shadow:0 10px 26px -18px rgba(var(--brand-rgb),.4)}
+.lx-sug{box-shadow:0 8px 20px -16px rgba(var(--brand-rgb),.5)}
+
+.lt-liq.cero::before{display:none}
+:root[data-theme="dark"] .lt-tube{background:linear-gradient(90deg, rgba(255,255,255,.07) 0 18%, transparent 18% 100%), rgba(255,255,255,.02);border-color:rgba(255,255,255,.18)}
+:root[data-theme="dark"] .lt-tube::before{background:rgba(255,255,255,.2)}
 </style>
 </head>
 <body>
@@ -2168,7 +2224,7 @@ body.screen-open{overflow:hidden}
       <button class="icon-btn" id="labClose" aria-label="Volver">
         <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
-      <div class="screen-title lab-title">Lab<span>probá un plato</span></div>
+      <div class="screen-title lab-title">Lab<span>mezclá y probá</span></div>
       <div style="width:38px"></div>
     </div>
     <div class="screen-body" id="labBody"></div>
@@ -4729,6 +4785,7 @@ const ICONS = {
   home:    '<path d="M3 11 12 3.5 21 11"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5h4v5"/>',
   drop:    '<path d="M12 3c3.5 4.2 6 7.3 6 10.3A6 6 0 0 1 6 13.3C6 10.3 8.5 7.2 12 3z"/>',
   bulb:    '<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z"/>',
+  flask:   '<path d="M9 3h6M10 3v6L4.5 18.5A2 2 0 0 0 6.2 21.5h11.6a2 2 0 0 0 1.7-3L14 9V3"/><path d="M7.5 15h9"/>',
   book:    '<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5M8.5 7.5h6M8.5 11h4"/>'
 };
 function ico(name, cls){
@@ -6494,42 +6551,40 @@ function renderLab(){
   const encontrados = q ? INGREDIENTS.filter(i => ingApto(i, diet) && norm(i.name).includes(q) && !enPlato.has(i.id)).slice(0, 8) : [];
   const sugeridas = q ? [] : labSugerencias(plate, T, 8);
 
-  // Macro: valor contra el objetivo de una comida, con barra fina.
-  const macro = (lbl, v, obj, cls) => {
+  // Tubo de ensayo: el líquido sube según el % del objetivo de una comida.
+  // El tubo representa 125% para que la línea de meta quede visible.
+  const TOPE = 1.25;
+  const tubo = (lbl, v, obj, cls, unidad) => {
     const p = obj > 0 ? v / obj : 0;
     const est = p > 1.15 ? 'over' : (p >= 0.9 ? 'ok' : '');
-    return `<div class="lx-m ${cls} ${est}">
-      <div class="lx-m-lbl">${lbl}</div>
-      <div class="lx-m-val">${Math.round(v)}<small>/${obj} g</small></div>
-      <div class="lx-track"><i style="width:${Math.min(p * 100, 100)}%"></i></div>
-      <div class="lx-m-pct">${Math.round(p * 100)}%</div>
+    return `<div class="lt ${cls} ${est}">
+      <div class="lt-tube">
+        <div class="lt-goal" style="bottom:${100 / TOPE}%"></div>
+        <div class="lt-liq ${p <= 0 ? 'cero' : ''}" style="height:${Math.min(p / TOPE, 1) * 100}%">${p > 0.08 ? '<i></i><i></i><i></i>' : ''}</div>
+      </div>
+      <div class="lt-pct">${Math.round(p * 100)}%</div>
+      <div class="lt-lbl">${lbl}</div>
+      <div class="lt-val">${Math.round(v)}<small>/${obj}${unidad}</small></div>
     </div>`;
   };
-  // Composición del plato: qué parte de las kcal viene de cada macro.
-  const kP = n.p * 4, kC = n.c * 4, kF = n.f * 9, kT = kP + kC + kF;
   const pE = T.kcal > 0 ? n.kcal / T.kcal : 0;
-  const estE = pE > 1.15 ? 'over' : (pE >= 0.9 ? 'ok' : '');
 
   el.innerHTML = `
-    <section class="lx-hero ${estE}">
-      <div class="lx-eyebrow">Tu plato <span>· objetivo por comida</span></div>
-      <div class="lx-kcal">
-        <b>${fmtKcal(n.kcal)}</b><span>kcal</span>
-        <em>${Math.round(pE * 100)}%</em>
+    <section class="lx-hero">
+      <div class="lx-eyebrow">${ico('flask')} Experimento <span>· objetivo por comida</span></div>
+      <div class="lx-kcal"><b>${fmtKcal(n.kcal)}</b><span>kcal</span></div>
+      <div class="lx-rack">
+        ${tubo('Energía', n.kcal, T.kcal, 'e', '')}
+        ${tubo('Proteína', n.p, T.p, 'p', 'g')}
+        ${tubo('Carbos', n.c, T.c, 'c', 'g')}
+        ${tubo('Grasa', n.f, T.f, 'f', 'g')}
       </div>
-      <div class="lx-of">de ${fmtKcal(T.kcal)} kcal</div>
-      <div class="lx-split" aria-label="De dónde vienen las calorías">
-        ${kT > 0 ? `<i class="p" style="flex:${kP}"></i><i class="c" style="flex:${kC}"></i><i class="f" style="flex:${kF}"></i>` : '<i class="vacio"></i>'}
-      </div>
-      <div class="lx-macros">
-        ${macro('Proteína', n.p, T.p, 'p')}
-        ${macro('Carbos', n.c, T.c, 'c')}
-        ${macro('Grasa', n.f, T.f, 'f')}
-      </div>
+      <div class="lx-gradilla"></div>
+      <div class="lx-legend"><i></i>la línea punteada es tu meta</div>
     </section>
 
     ${plate.length ? `
-    <div class="lx-sec"><span>Ingredientes</span><button class="lx-link" id="labVaciar">Vaciar</button></div>
+    <div class="lx-sec"><span>En el tubo</span><button class="lx-link" id="labVaciar">Vaciar</button></div>
     <div class="lx-list">
       ${plate.map((x, k) => { const i = INGR_BY_ID[x.id]; const abierto = L.open === k; const nn = abierto ? computeMealNutrition({items:[x]}) : null; return `
         <div class="lx-row ${abierto ? 'open' : ''}">
@@ -6547,7 +6602,7 @@ function renderLab(){
             <button class="lx-quitar" data-lquitar="${k}">Quitar</button>
           </div>` : ''}
         </div>`; }).join('')}
-    </div>` : `<div class="lx-empty">${ico('receta')}<p>Tu plato está vacío</p><span>Sumá alimentos abajo y mirá cómo se llena</span></div>`}
+    </div>` : `<div class="lx-empty">${ico('receta')}<p>Tu plato está vacío</p><span>Echá ingredientes y mirá cómo suben los tubos</span></div>`}
 
     <div class="lx-sec"><span>${q ? 'Resultados' : (plate.length ? 'Para completar' : 'Para empezar')}</span></div>
     <div class="lx-sugs">
