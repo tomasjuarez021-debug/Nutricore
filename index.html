@@ -1861,6 +1861,81 @@ body.screen-open{overflow:hidden}
 .lp-bar.over .lp-bar-top em{color:var(--bad);font-weight:700}
 .lp-track{height:8px;border-radius:8px;background:rgba(var(--ink-rgb),.07);overflow:hidden}
 .lp-track i{display:block;height:100%;border-radius:8px;background:var(--c);transition:width .35s cubic-bezier(.2,.8,.2,1)}
+
+/* =========== LAB · diseño =========== */
+#labScreen .screen-body{padding-top:4px}
+.lx-hero{
+  position:relative;overflow:hidden;
+  border-radius:28px;padding:20px 20px 18px;margin-bottom:22px;
+  background:
+    radial-gradient(120% 90% at 100% 0%, rgba(var(--brand-rgb),.16), transparent 60%),
+    radial-gradient(90% 80% at 0% 100%, rgba(6,182,212,.10), transparent 60%),
+    var(--panel);
+  border:1px solid var(--line);
+  box-shadow:0 1px 0 rgba(255,255,255,.6) inset, 0 18px 40px -18px rgba(var(--brand-rgb),.35);
+}
+.lx-eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--brand)}
+.lx-eyebrow span{color:var(--text-3);font-weight:600;letter-spacing:.04em;text-transform:none}
+.lx-kcal{display:flex;align-items:baseline;gap:6px;margin-top:10px}
+.lx-kcal b{font-family:'Plus Jakarta Sans',sans-serif;font-size:56px;font-weight:800;letter-spacing:-.045em;line-height:.95;font-variant-numeric:tabular-nums}
+.lx-kcal span{font-size:15px;font-weight:700;color:var(--text-3)}
+.lx-kcal em{margin-left:auto;font-style:normal;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;padding:5px 10px;border-radius:999px;background:rgba(var(--brand-rgb),.1);color:var(--brand);align-self:center}
+.lx-hero.ok .lx-kcal em{background:rgba(var(--good-rgb),.14);color:var(--good)}
+.lx-hero.over .lx-kcal em{background:rgba(var(--bad-rgb),.14);color:var(--bad)}
+.lx-of{font-size:13px;color:var(--text-3);margin:4px 0 16px}
+.lx-energy{height:6px;border-radius:6px;background:rgba(var(--ink-rgb),.07);overflow:hidden}
+.lx-energy i{display:block;height:100%;border-radius:6px;background:var(--grad);transition:width .45s cubic-bezier(.2,.8,.2,1)}
+.lx-hero.ok .lx-energy i{background:var(--good)}
+.lx-hero.over .lx-energy i{background:var(--bad)}
+.lx-split{display:flex;gap:4px;height:10px;margin:2px 0 20px}
+.lx-split i{border-radius:10px;transition:flex .45s cubic-bezier(.2,.8,.2,1);min-width:0}
+.lx-split i.p{background:var(--brand-2)} .lx-split i.c{background:var(--carb)} .lx-split i.f{background:var(--fat)}
+.lx-split i.vacio{flex:1;background:repeating-linear-gradient(90deg, rgba(var(--ink-rgb),.08) 0 6px, transparent 6px 10px)}
+.lx-macros{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.lx-m-lbl{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--text-3)}
+.lx-m-lbl::before{content:'';width:8px;height:8px;border-radius:3px;background:var(--mc)}
+.lx-m.p{--mc:var(--brand-2)} .lx-m.c{--mc:var(--carb)} .lx-m.f{--mc:var(--fat)}
+.lx-m-val{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;letter-spacing:-.03em;margin:4px 0 8px;font-variant-numeric:tabular-nums}
+.lx-m-val small{font-size:12px;font-weight:600;color:var(--text-3);letter-spacing:0;margin-left:2px}
+.lx-track{height:4px;border-radius:4px;background:rgba(var(--ink-rgb),.07);overflow:hidden}
+.lx-track i{display:block;height:100%;border-radius:4px;background:var(--mc);transition:width .45s cubic-bezier(.2,.8,.2,1)}
+.lx-m.over .lx-track i{background:var(--bad)}
+.lx-m-pct{font-size:11.5px;font-weight:700;color:var(--text-3);margin-top:6px;font-variant-numeric:tabular-nums}
+.lx-m.ok .lx-m-pct{color:var(--good)} .lx-m.over .lx-m-pct{color:var(--bad)}
+
+.lx-sec{display:flex;justify-content:space-between;align-items:center;margin:0 4px 10px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3)}
+.lx-link{font-size:12.5px;font-weight:600;color:var(--text-3);letter-spacing:0;text-transform:none}
+.lx-list{background:var(--panel);border:1px solid var(--line);border-radius:22px;overflow:hidden;margin-bottom:24px}
+.lx-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:8px 8px 8px 16px}
+.lx-row + .lx-row{border-top:1px solid var(--line)}
+.lx-row.open{background:rgba(var(--brand-rgb),.04)}
+.lx-name{flex:1;min-width:0;display:flex;align-items:center;gap:10px;text-align:left;font-size:15px;font-weight:600;padding:8px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lx-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.lx-step{display:flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:2px}
+.lx-step button{width:32px;height:32px;border-radius:50%;font-size:18px;color:var(--text-2);display:grid;place-items:center}
+.lx-step button:active{background:rgba(var(--brand-rgb),.12);color:var(--brand)}
+.lx-step span{min-width:58px;text-align:center;font-size:13.5px;font-weight:700;font-variant-numeric:tabular-nums}
+.lx-det{flex-basis:100%;display:grid;grid-template-columns:repeat(4,1fr) auto;gap:8px;align-items:center;padding:4px 0 8px}
+.lx-det div{display:flex;flex-direction:column}
+.lx-det b{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-variant-numeric:tabular-nums}
+.lx-det span{font-size:11px;color:var(--text-3)}
+.lx-quitar{font-size:12.5px;font-weight:700;color:var(--bad);padding:6px 10px;border-radius:999px;background:rgba(var(--bad-rgb),.08)}
+
+.lx-empty{text-align:center;padding:26px 16px 30px;color:var(--text-3)}
+.lx-empty .ico{width:40px;height:40px;margin:0 auto 10px;color:var(--brand);stroke-width:1.4}
+.lx-empty p{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:17px;color:var(--text);margin-bottom:2px}
+.lx-empty span{font-size:13px}
+
+.lx-sugs{display:flex;gap:10px;overflow-x:auto;padding:2px 2px 6px;margin:0 -16px 12px;padding-left:16px;padding-right:16px;scrollbar-width:none}
+.lx-sugs::-webkit-scrollbar{display:none}
+.lx-sug{flex:0 0 116px;text-align:left;padding:12px;border-radius:18px;background:var(--panel);border:1px solid var(--line);display:flex;flex-direction:column;gap:2px;transition:transform .15s, border-color .15s}
+.lx-sug:active{transform:scale(.96);border-color:var(--brand)}
+.lx-sug .row-thumb{width:36px;height:36px;border-radius:12px;margin-bottom:8px}
+.lx-sug .row-thumb .ico{width:19px;height:19px}
+.lx-sug b{font-size:13.5px;font-weight:700;line-height:1.2;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.4em}
+.lx-sug span{font-size:12px;font-weight:600;color:var(--brand)}
+.lx-search .search{border-radius:999px}
+:root[data-theme="dark"] .lx-hero{box-shadow:0 18px 40px -18px rgba(0,0,0,.6)}
 </style>
 </head>
 <body>
@@ -6419,53 +6494,69 @@ function renderLab(){
   const encontrados = q ? INGREDIENTS.filter(i => ingApto(i, diet) && norm(i.name).includes(q) && !enPlato.has(i.id)).slice(0, 8) : [];
   const sugeridas = q ? [] : labSugerencias(plate, T, 8);
 
-  // Barra por macro: cuánto del objetivo de una comida cubre el plato.
-  const barra = (lbl, v, obj, color, unidad) => {
+  // Macro: valor contra el objetivo de una comida, con barra fina.
+  const macro = (lbl, v, obj, cls) => {
     const p = obj > 0 ? v / obj : 0;
-    const estado = p > 1.15 ? 'over' : (p >= 0.9 ? 'ok' : '');
-    return `<div class="lp-bar ${estado}" style="--c:${p > 1.15 ? 'var(--bad)' : color}">
-      <div class="lp-bar-top"><span>${lbl}</span><b>${Math.round(v)}<small> / ${obj}${unidad}</small></b><em>${Math.round(p * 100)}%</em></div>
-      <div class="lp-track"><i style="width:${Math.min(p * 100, 100)}%"></i></div>
+    const est = p > 1.15 ? 'over' : (p >= 0.9 ? 'ok' : '');
+    return `<div class="lx-m ${cls} ${est}">
+      <div class="lx-m-lbl">${lbl}</div>
+      <div class="lx-m-val">${Math.round(v)}<small>/${obj} g</small></div>
+      <div class="lx-track"><i style="width:${Math.min(p * 100, 100)}%"></i></div>
+      <div class="lx-m-pct">${Math.round(p * 100)}%</div>
     </div>`;
   };
+  // Composición del plato: qué parte de las kcal viene de cada macro.
+  const kP = n.p * 4, kC = n.c * 4, kF = n.f * 9, kT = kP + kC + kF;
+  const pE = T.kcal > 0 ? n.kcal / T.kcal : 0;
+  const estE = pE > 1.15 ? 'over' : (pE >= 0.9 ? 'ok' : '');
 
   el.innerHTML = `
-    <div class="lp-total">
-      <div class="lp-goal">Objetivo por comida</div>
-      ${barra('Energía', n.kcal, T.kcal, 'var(--brand)', ' kcal')}
-      ${barra('Proteína', n.p, T.p, 'var(--brand-2)', ' g')}
-      ${barra('Carbos', n.c, T.c, 'var(--carb)', ' g')}
-      ${barra('Grasa', n.f, T.f, 'var(--fat)', ' g')}
-    </div>
+    <section class="lx-hero ${estE}">
+      <div class="lx-eyebrow">Tu plato <span>· objetivo por comida</span></div>
+      <div class="lx-kcal">
+        <b>${fmtKcal(n.kcal)}</b><span>kcal</span>
+        <em>${Math.round(pE * 100)}%</em>
+      </div>
+      <div class="lx-of">de ${fmtKcal(T.kcal)} kcal</div>
+      <div class="lx-split" aria-label="De dónde vienen las calorías">
+        ${kT > 0 ? `<i class="p" style="flex:${kP}"></i><i class="c" style="flex:${kC}"></i><i class="f" style="flex:${kF}"></i>` : '<i class="vacio"></i>'}
+      </div>
+      <div class="lx-macros">
+        ${macro('Proteína', n.p, T.p, 'p')}
+        ${macro('Carbos', n.c, T.c, 'c')}
+        ${macro('Grasa', n.f, T.f, 'f')}
+      </div>
+    </section>
 
     ${plate.length ? `
-    <div class="lp-list">
+    <div class="lx-sec"><span>Ingredientes</span><button class="lx-link" id="labVaciar">Vaciar</button></div>
+    <div class="lx-list">
       ${plate.map((x, k) => { const i = INGR_BY_ID[x.id]; const abierto = L.open === k; const nn = abierto ? computeMealNutrition({items:[x]}) : null; return `
-        <div class="lp-row ${abierto ? 'open' : ''}">
-          <button class="lp-name" data-lopen="${k}">${nombreCorto(i)} <span class="chev">${abierto ? '▴' : '▾'}</span></button>
-          <div class="mini-step">
+        <div class="lx-row ${abierto ? 'open' : ''}">
+          <button class="lx-name" data-lopen="${k}">
+            <i class="lx-dot" style="background:${CAT_COLOR[i.cat] || 'var(--brand)'}"></i>${nombreCorto(i)}
+          </button>
+          <div class="lx-step">
             <button data-lmenos="${k}" aria-label="Menos">−</button>
-            <span class="lp-q">${qtyLabel(i, x.qty)}</span>
-            <button class="plus" data-lmas="${k}" aria-label="Más">+</button>
+            <span>${qtyLabel(i, x.qty)}</span>
+            <button data-lmas="${k}" aria-label="Más">+</button>
           </div>
-          ${abierto ? `<div class="lp-det">
-            <span><b>${nn.kcal}</b> kcal</span><span><b>${fmtNum(nn.p)}</b> g prot</span><span><b>${fmtNum(nn.c)}</b> g carbo</span><span><b>${fmtNum(nn.f)}</b> g grasa</span>
-            <button class="link-btn" data-lquitar="${k}">Quitar</button>
+          ${abierto ? `<div class="lx-det">
+            <div><b>${nn.kcal}</b><span>kcal</span></div><div><b>${fmtNum(nn.p)}</b><span>prot</span></div>
+            <div><b>${fmtNum(nn.c)}</b><span>carbo</span></div><div><b>${fmtNum(nn.f)}</b><span>grasa</span></div>
+            <button class="lx-quitar" data-lquitar="${k}">Quitar</button>
           </div>` : ''}
         </div>`; }).join('')}
-    </div>
-    <div class="lp-head"><span></span><button class="link-btn" id="labVaciar">Vaciar plato</button></div>` : '<div class="lp-empty">Agregá alimentos y mirá cómo se llenan las barras</div>'}
+    </div>` : `<div class="lx-empty">${ico('receta')}<p>Tu plato está vacío</p><span>Sumá alimentos abajo y mirá cómo se llena</span></div>`}
 
-    <div class="lp-add">
-      <div class="lp-add-tit">${q ? 'Resultados' : (plate.length ? 'Sugerido para completar' : 'Para empezar')}</div>
-      <div class="lab-sug">
-        ${q ? encontrados.map(i => `<button class="chip" data-ladd="${i.id}" data-lq="${defaultQty(i)}">+ ${nombreCorto(i)}</button>`).join('')
-            : sugeridas.map(o => `<button class="chip sug" data-ladd="${o.i.id}" data-lq="${o.q}">+ ${nombreCorto(o.i)} <small>${qtyLabel(o.i, o.q)}</small></button>`).join('')}
-      </div>
-      <div class="search-wrap" style="margin-top:10px">
-        ${ico('search')}
-        <input type="search" class="search" id="labBusca" placeholder="Buscar otro alimento…" value="${escapeHtml(L.busca || '')}" autocomplete="off">
-      </div>
+    <div class="lx-sec"><span>${q ? 'Resultados' : (plate.length ? 'Para completar' : 'Para empezar')}</span></div>
+    <div class="lx-sugs">
+      ${q ? encontrados.map(i => `<button class="lx-sug" data-ladd="${i.id}" data-lq="${defaultQty(i)}">${ingThumb(i)}<b>${nombreCorto(i)}</b><span>${qtyLabel(i, defaultQty(i))}</span></button>`).join('')
+          : sugeridas.map(o => `<button class="lx-sug" data-ladd="${o.i.id}" data-lq="${o.q}">${ingThumb(o.i)}<b>${nombreCorto(o.i)}</b><span>${qtyLabel(o.i, o.q)}</span></button>`).join('')}
+    </div>
+    <div class="search-wrap lx-search">
+      ${ico('search')}
+      <input type="search" class="search" id="labBusca" placeholder="Buscar otro alimento" value="${escapeHtml(L.busca || '')}" autocomplete="off">
     </div>
   `;
 
