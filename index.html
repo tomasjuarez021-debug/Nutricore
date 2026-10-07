@@ -1773,6 +1773,33 @@ body.screen-open{overflow:hidden}
 .lab-foot #labNext{flex:1;font-size:15px}
 .lab-foot .ico{width:18px;height:18px}
 .lab-foot .btn:disabled{opacity:.4}
+
+/* ---- Lab: plato de prueba ---- */
+.lp-total{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:18px 16px 16px;margin-bottom:14px;box-shadow:var(--shadow);text-align:center}
+.lp-kcal{font-family:'Plus Jakarta Sans',sans-serif;font-size:44px;font-weight:800;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+.lp-kcal small{font-size:15px;color:var(--text-3);font-weight:700;margin-left:4px}
+.lp-sub{font-size:13px;color:var(--text-3);margin:6px 0 14px}
+.lp-macros{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:left}
+.lp-m b{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-variant-numeric:tabular-nums}
+.lp-m b small{font-size:12px;color:var(--text-3);margin-left:1px}
+.lp-m span{display:block;font-size:12px;color:var(--text-3);font-weight:600;margin-bottom:5px}
+.lp-m em{display:block;font-style:normal;font-size:11px;color:var(--text-3);margin-top:4px}
+.lp-m.p .bar > i{background:var(--brand-2)}
+.lp-m.c .bar > i{background:var(--carb)}
+.lp-m.f .bar > i{background:var(--fat)}
+.lp-head{display:flex;justify-content:space-between;align-items:center;margin:4px 2px 8px;font-size:13px;font-weight:700;color:var(--text-3)}
+.lp-list{display:grid;gap:8px;margin-bottom:14px}
+.lp-row{display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:8px 8px 8px 8px}
+.lp-row .row-thumb{width:38px;height:38px;border-radius:12px}
+.lp-row .row-thumb .ico{width:20px;height:20px}
+.lp-info{flex:1;min-width:0;font-size:14px;font-weight:600}
+.lp-info div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lp-info span{display:block;font-size:11.5px;color:var(--text-3);font-weight:500;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lp-q{min-width:52px!important;font-size:13px!important}
+
+.lab-foot .btn{flex:1 1 0;min-width:0;padding:13px 8px;white-space:nowrap}
+.lab-foot #labSave{flex:0 0 50px}
+.lab-foot #labNext{flex:1.3 1 0}
 </style>
 </head>
 <body>
@@ -2933,7 +2960,7 @@ let state = {
   logSearch: '',
   logCat: 'todos',
   logOpen: null,      // receta desplegada en el registro
-  lab: {modo:'comida', pins:[], seed:1, busca:'', idx:0},
+  lab: {modo:'comida', pins:[], seed:1, busca:'', plate:[]},
   lib: {tab:'ing', cat:'todos', sort:'p', recSort:'quality', search:'', open:null},
   currentTab: 'resumen',
   sortBy: 'quality', // 'quality' | 'protein'
@@ -3006,7 +3033,7 @@ function saveState(){
       mealPhotos: state.mealPhotos,
       favs: state.favs,
       dayPlan: state.dayPlan,
-      lab: {modo:state.lab.modo, pins:state.lab.pins, seed:state.lab.seed},
+      lab: {modo:state.lab.modo, pins:state.lab.pins, seed:state.lab.seed, plate:state.lab.plate},
       lastQty: state.lastQty
     }));
   }catch(e){
@@ -6266,120 +6293,114 @@ function nombrePlato(c, modo){
   return `${tipo} de ${lista}`;
 }
 
-/* Ventana del Lab: un plato por vez, grande. "Otra idea" pasa al siguiente,
-   tocar un ingrediente lo cambia por otro del mismo tipo y recalcula. */
-const LAB_ATAJOS = ['pollo_p','egg','tofu','atun','carne_m','lent','rice_br','pasta','papa','boniato','quinoa','palta'];
-let labCache = null;
-function labRegenerar(){
-  const L = state.lab;
-  labCache = {...labGenerar(L.modo, L.seed, 12)};
-  L.idx = 0;
-}
-function openLab(){
-  if(!labCache) labRegenerar();
-  abrirPantalla('labScreen');
-  renderLab();
-}
+/* Ventana del Lab: un plato de prueba. Sumás alimentos, movés los gramos y
+   ves al instante cuánto da. Nada se registra hasta tocar "Sumar a hoy". */
+const LAB_ATAJOS = ['pollo_p','egg','tofu','atun','carne_m','lent','rice_br','pasta','papa','boniato','quinoa','palta','oliva','yog_grg','banana','brocoli'];
+function labPlate(){ if(!Array.isArray(state.lab.plate)) state.lab.plate = []; return state.lab.plate; }
+function openLab(){ abrirPantalla('labScreen'); renderLab(); }
 function closeLab(){ cerrarPantalla('labScreen'); }
-function labPlato(){ return labCache && labCache.platos.length ? labCache.platos[state.lab.idx % labCache.platos.length] : null; }
-
-function labCambiarIngrediente(k){
-  const c = labPlato(); if(!c) return;
-  const x = c.items[k]; if(!x.slot) return;
-  const usados = new Set(c.items.map(y => y.id));
-  const opciones = labCache.pool[x.slot].filter(i => !usados.has(i.id));
-  if(!opciones.length) return;
-  const nuevo = opciones[Math.floor(Math.random() * opciones.length)];
-  const items = c.items.map((y, n) => ({i: INGR_BY_ID[n === k ? nuevo.id : y.id], rol: n === k ? (rolDe(nuevo) || y.rol) : y.rol, slot: y.slot}));
-  const {n: nut, err} = resolver(items, labCache.T);
-  labCache.platos[state.lab.idx % labCache.platos.length] = {items: items.map(y => ({id:y.i.id, qty:y.q, rol:y.rol, slot:y.slot})), nut, err};
-  renderLab();
-}
+function labPaso(i){ return i.unit === 'u' ? 0.5 : 10; }
 
 function renderLab(){
   const el = document.getElementById('labBody');
-  const L = state.lab;
-  const T = labCache.T, c = labPlato();
+  const L = state.lab, plate = labPlate();
   const diet = dietaDe(state.profile);
-  const atajos = LAB_ATAJOS.map(id => INGR_BY_ID[id]).filter(i => i && ingApto(i, diet));
-  const q = norm(L.busca || '');
-  const encontrados = q ? INGREDIENTS.filter(i => rolDe(i) && !NO_RECO.has(i.id) && ingApto(i, diet) && norm(i.name).includes(q) && !L.pins.includes(i.id)).slice(0, 6) : [];
   const t = computeTargets(state.profile, todayKey());
-  const barra = (v, obj) => `<div class="bar"><i class="${v > obj * 1.15 ? 'over' : (v >= obj * 0.9 ? 'good' : '')}" style="width:${Math.min(v / Math.max(obj, 1) * 100, 100)}%"></i></div>`;
-  const modos = {comida:'Comida', proxima:'Lo que me falta', post:'Post-entreno', snack:'Snack'};
+  const n = computeMealNutrition({items:plate});
+  const q = norm(L.busca || '');
+  const enPlato = new Set(plate.map(x => x.id));
+  const opciones = (q
+    ? INGREDIENTS.filter(i => ingApto(i, diet) && norm(i.name).includes(q))
+    : LAB_ATAJOS.map(id => INGR_BY_ID[id]).filter(i => i && ingApto(i, diet))
+  ).filter(i => !enPlato.has(i.id)).slice(0, q ? 8 : 12);
+  const pctDia = (v, obj) => obj > 0 ? Math.round(v / obj * 100) : 0;
+  const macro = (lbl, v, obj, cls) => `
+    <div class="lp-m ${cls}">
+      <b>${fmtNum(v)}<small>g</small></b><span>${lbl}</span>
+      <div class="bar"><i style="width:${Math.min(pctDia(v, obj), 100)}%"></i></div>
+      <em>${pctDia(v, obj)}% del día</em>
+    </div>`;
 
   el.innerHTML = `
-    <div class="lab-intro">Probá combinaciones. Tocá un ingrediente para cambiarlo y la app recalcula los gramos.</div>
-    <div class="chips scroll-x" style="padding-top:0">
-      ${Object.keys(modos).map(k => `<button class="chip ${L.modo === k ? 'active' : ''}" data-lmodo="${k}">${modos[k]}</button>`).join('')}
+    <div class="lp-total">
+      <div class="lp-kcal">${fmtKcal(n.kcal)}<small>kcal</small></div>
+      <div class="lp-sub">${plate.length ? `${pctDia(n.kcal, t.kcal)}% de lo que necesitás hoy` : 'Armá un plato de prueba y mirá cuánto suma'}</div>
+      <div class="lp-macros">
+        ${macro('Proteína', n.p, t.protein, 'p')}
+        ${macro('Carbos', n.c, t.carb, 'c')}
+        ${macro('Grasa', n.f, t.fat, 'f')}
+      </div>
     </div>
-    ${!T ? `<div class="empty">${ico('star')}<br>Ya cubriste lo que te faltaba hoy.<br>Probá con "Comida" o "Snack".</div>` :
-      !c ? `<div class="empty">No salió ninguna combinación con eso. Sacá algún ingrediente fijado.</div>` : (() => {
-      const m = Math.max(0, Math.round(100 - c.err * 45));
-      const micros = ['Fe','Ca','Mg','fb','K','Zn','B12','D'].map(x => ({x, pct: t[x] ? Math.round((c.nut[x] || 0) / t[x] * 100) : 0}))
-        .sort((a, b) => b.pct - a.pct).slice(0, 3);
-      return `
-      <div class="lab-card big">
-        <div class="lab-top">
-          <div class="lab-name">${nombrePlato(c, L.modo)}</div>
-          <div class="lab-match ${m >= 85 ? 'good' : ''}">${m}%<small>match</small></div>
-        </div>
-        <div class="lab-items">
-          ${c.items.map((x, k) => { const i = INGR_BY_ID[x.id]; return `
-            <button class="lab-item" data-lswap="${k}" ${x.slot ? '' : 'disabled'}>
-              ${ingThumb(i)}<span>${nombreCorto(i)}</span><b>${qtyLabel(i, x.qty)}</b>
-              ${x.slot ? `<i class="swap">${ico('swap')}</i>` : ''}
-            </button>`; }).join('')}
-        </div>
-        <div class="lab-macros">
-          <div><span>kcal</span><b>${c.nut.kcal}<small>/${T.kcal}</small></b>${barra(c.nut.kcal, T.kcal)}</div>
-          <div><span>Prot</span><b>${Math.round(c.nut.p)}<small>/${T.p}g</small></b>${barra(c.nut.p, T.p)}</div>
-          <div><span>Carbo</span><b>${Math.round(c.nut.c)}<small>/${T.c}g</small></b>${barra(c.nut.c, T.c)}</div>
-          <div><span>Grasa</span><b>${Math.round(c.nut.f)}<small>/${T.f}g</small></b>${barra(c.nut.f, T.f)}</div>
-        </div>
-        <div class="lab-micros">${micros.map(z => `<span>${(MICRO_NOMBRE[z.x] || z.x).replace(/^(el|la) /, '')} ${z.pct}%</span>`).join('')}<em>del día</em></div>
-      </div>`; })()}
-    <div class="lab-sec">Quiero usar</div>
-    <div class="lab-sug">
-      ${L.pins.map(id => `<button class="chip active" data-lunpin="${id}">${nombreCorto(INGR_BY_ID[id])} ×</button>`).join('')}
-      ${atajos.filter(i => !L.pins.includes(i.id)).map(i => `<button class="chip" data-lpin="${i.id}">${nombreCorto(i)}</button>`).join('')}
-    </div>
-    <div class="search-wrap" style="margin-top:8px">
-      ${ico('search')}
-      <input type="search" class="search" id="labBusca" placeholder="Buscar otro ingrediente…" value="${escapeHtml(L.busca || '')}" autocomplete="off">
-    </div>
-    ${encontrados.length ? `<div class="lab-sug">${encontrados.map(i => `<button class="chip" data-lpin="${i.id}">+ ${i.name}</button>`).join('')}</div>` : ''}
-  `;
-  // pie
-  const saveB = document.getElementById('labSave'), nextB = document.getElementById('labNext'), addB = document.getElementById('labAdd');
-  saveB.innerHTML = ico('star'); nextB.innerHTML = `${ico('swap')} Otra idea`;
-  [saveB, addB].forEach(b => b.disabled = !c);
 
-  el.querySelectorAll('[data-lmodo]').forEach(b => b.onclick = () => { L.modo = b.dataset.lmodo; saveState(); labRegenerar(); renderLab(); });
-  el.querySelectorAll('[data-lswap]').forEach(b => b.onclick = () => labCambiarIngrediente(+b.dataset.lswap));
-  el.querySelectorAll('[data-lpin]').forEach(b => b.onclick = () => { L.pins.push(b.dataset.lpin); L.busca = ''; saveState(); labRegenerar(); renderLab(); });
-  el.querySelectorAll('[data-lunpin]').forEach(b => b.onclick = () => { L.pins = L.pins.filter(x => x !== b.dataset.lunpin); saveState(); labRegenerar(); renderLab(); });
+    ${plate.length ? `
+    <div class="lp-head"><span>Tu plato</span><button class="link-btn" id="labVaciar">Vaciar</button></div>
+    <div class="lp-list">
+      ${plate.map((x, k) => { const i = INGR_BY_ID[x.id]; const nn = computeMealNutrition({items:[x]}); return `
+        <div class="lp-row">
+          ${ingThumb(i)}
+          <div class="lp-info"><div>${nombreCorto(i)}</div><span>${nn.kcal} kcal · P ${fmtNum(nn.p)} · C ${fmtNum(nn.c)} · G ${fmtNum(nn.f)}</span></div>
+          <div class="mini-step">
+            <button data-lmenos="${k}" aria-label="Menos">−</button>
+            <span class="lp-q">${qtyLabel(i, x.qty)}</span>
+            <button class="plus" data-lmas="${k}" aria-label="Más">+</button>
+          </div>
+        </div>`; }).join('')}
+    </div>` : ''}
+
+    <div class="lp-head"><span>${plate.length ? 'Agregar más' : 'Empezá agregando algo'}</span></div>
+    <div class="search-wrap">
+      ${ico('search')}
+      <input type="search" class="search" id="labBusca" placeholder="Buscar alimento…" value="${escapeHtml(L.busca || '')}" autocomplete="off">
+    </div>
+    <div class="lab-sug">${opciones.map(i => `<button class="chip" data-ladd="${i.id}">+ ${nombreCorto(i)}</button>`).join('') || '<span class="hint">Sin resultados</span>'}</div>
+  `;
+
+  const saveB = document.getElementById('labSave'), nextB = document.getElementById('labNext'), addB = document.getElementById('labAdd');
+  saveB.innerHTML = ico('star');
+  nextB.innerHTML = `${ico('swap')} Sorprendeme`;
+  addB.textContent = '+ Sumar a hoy';
+  [saveB, addB].forEach(b => b.disabled = !plate.length);
+
+  el.querySelectorAll('[data-ladd]').forEach(b => b.onclick = () => {
+    const i = INGR_BY_ID[b.dataset.ladd];
+    plate.push({id:i.id, qty:defaultQty(i)});
+    L.busca = ''; saveState(); renderLab();
+  });
+  const cambiar = (k, d) => {
+    const x = plate[k], i = INGR_BY_ID[x.id];
+    x.qty = Math.round((x.qty + d * labPaso(i)) * 10) / 10;
+    if(x.qty <= 0) plate.splice(k, 1);
+    saveState(); renderLab();
+  };
+  el.querySelectorAll('[data-lmas]').forEach(b => b.onclick = () => cambiar(+b.dataset.lmas, +1));
+  el.querySelectorAll('[data-lmenos]').forEach(b => b.onclick = () => cambiar(+b.dataset.lmenos, -1));
+  const v = document.getElementById('labVaciar');
+  if(v) v.onclick = () => { L.plate = []; saveState(); renderLab(); };
   const busca = document.getElementById('labBusca');
-  busca.oninput = () => { L.busca = busca.value; renderLab(); const n = document.getElementById('labBusca'); n.focus(); n.setSelectionRange(n.value.length, n.value.length); };
+  busca.oninput = () => { L.busca = busca.value; renderLab(); const nb = document.getElementById('labBusca'); nb.focus(); nb.setSelectionRange(nb.value.length, nb.value.length); };
 }
+/* Sorprendeme: arma un plato completo para una comida de tu día. */
 function labOtra(){
   const L = state.lab;
-  L.idx++;
-  if(!labCache.platos.length || L.idx >= labCache.platos.length){ L.seed++; labRegenerar(); }
+  L.seed = (L.seed || 1) + 1;
+  const r = labGenerar('comida', L.seed, 1);
+  if(r.platos[0]){ L.plate = r.platos[0].items.map(x => ({id:x.id, qty:x.qty})); saveState(); }
   renderLab();
   document.getElementById('labBody').scrollTop = 0;
 }
 function labSumar(){
-  const c = labPlato(); if(!c) return;
+  const plate = labPlate(); if(!plate.length) return;
   const tk = todayKey();
   if(!state.selectedByDate[tk]) state.selectedByDate[tk] = [];
-  c.items.forEach(x => { state.selectedByDate[tk].push(ingEntryId(x.id, x.qty)); state.lastQty[x.id] = x.qty; });
+  plate.forEach(x => { state.selectedByDate[tk].push(ingEntryId(x.id, x.qty)); state.lastQty[x.id] = x.qty; });
   saveState(); refreshViews(); renderSegTags();
   toast('Plato sumado a hoy');
 }
 function labGuardar(){
-  const c = labPlato(); if(!c) return;
-  const meal = {id:'u' + Date.now().toString(36), name:nombrePlato(c, state.lab.modo), items:c.items.map(x => ({id:x.id, qty:x.qty})), prep:'Creada en el Lab.', tags:[], custom:true};
+  const plate = labPlate(); if(!plate.length) return;
+  const nombre = prompt('Nombre de la receta:', 'Plato del Lab');
+  if(!nombre) return;
+  const meal = {id:'u' + Date.now().toString(36), name:nombre.trim(), items:plate.map(x => ({id:x.id, qty:x.qty})), prep:'Creada en el Lab.', tags:[], custom:true};
   state.customMeals.unshift(meal);
   state.favs.unshift(meal.id);
   saveState();
