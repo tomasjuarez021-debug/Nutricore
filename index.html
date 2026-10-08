@@ -2934,9 +2934,9 @@ const INGREDIENTS = [
   {id:'porotos_a',cat:'legumbre',name:'Porotos alubia cocidos',per:100,unit:'g',kcal:127, p:8.7,  c:22.8, f:0.5, Fe:2.9, B12:0,   Zn:1.0,  Ca:35,  O3:0.10, ED:0, O6:0.13, D:0,   Mg:42,  fb:6.4,  Na:6,   K:405},
   {id:'tvp',     cat:'legumbre',name:'Soja texturizada hidratada',per:100,unit:'g',kcal:122,p:13.0,c:7.0,f:0.5, Fe:2.5, B12:0,   Zn:1.2,  Ca:60,  O3:0.20, ED:0, O6:1.8, D:0,   Mg:50,  fb:4.5,  Na:8,   K:300},
   {id:'lev_nut', cat:'legumbre',name:'Levadura nutricional', per:100, unit:'g', kcal:325, p:50.0, c:36.0, f:6.0, Fe:11.0,B12:38.0,Zn:8.0,  Ca:30,  O3:0, ED:0, O6:1.5,    D:0,   Mg:200, fb:21.0, Na:30,  K:1900},
-  {id:'whey',    cat:'lact',   name:'Whey protein (scoop 30g)',per:30,unit:'u', kcal:120, p:24.0, c:3.0,  f:1.5, Fe:0.3, B12:0.8, Zn:1.0,  Ca:140, O3:0, ED:0, O6:0.5,    D:1.5, Mg:30,  fb:0,    Na:60,  K:170},
-  {id:'soja_pro',cat:'legumbre',name:'Proteína soja aislada (scoop 30g)',per:30,unit:'u',kcal:108,p:25.0,c:1.0,f:0.5,Fe:4.0,B12:0,Zn:1.5,Ca:50,  O3:0, ED:0, O6:1.0,    D:0,   Mg:40,  fb:1.0,  Na:300, K:200},
-  {id:'arv_pro', cat:'legumbre',name:'Proteína arveja aislada (scoop 30g)',per:30,unit:'u',kcal:108,p:24.0,c:1.5,f:1.5,Fe:5.0,B12:0,Zn:1.0,Ca:100, O3:0.05, ED:0, O6:0.05, D:0,   Mg:30,  fb:0.5,  Na:380, K:50},
+  {id:'whey',    cat:'supl',   name:'Whey protein (scoop 30g)',per:30,unit:'u', kcal:120, p:24.0, c:3.0,  f:1.5, Fe:0.3, B12:0.8, Zn:1.0,  Ca:140, O3:0, ED:0, O6:0.5,    D:1.5, Mg:30,  fb:0,    Na:60,  K:170},
+  {id:'soja_pro',cat:'supl',name:'Proteína soja aislada (scoop 30g)',per:30,unit:'u',kcal:108,p:25.0,c:1.0,f:0.5,Fe:4.0,B12:0,Zn:1.5,Ca:50,  O3:0, ED:0, O6:1.0,    D:0,   Mg:40,  fb:1.0,  Na:300, K:200},
+  {id:'arv_pro', cat:'supl',name:'Proteína arveja aislada (scoop 30g)',per:30,unit:'u',kcal:108,p:24.0,c:1.5,f:1.5,Fe:5.0,B12:0,Zn:1.0,Ca:100, O3:0.05, ED:0, O6:0.05, D:0,   Mg:30,  fb:0.5,  Na:380, K:50},
   {id:'clara',   cat:'lact',   name:'Clara de huevo',       per:100, unit:'g', kcal:52,  p:10.9, c:0.7,  f:0.2, Fe:0.1, B12:0.09,Zn:0.0,  Ca:7,   O3:0, ED:0, O6:0.05,    D:0,   Mg:11,  fb:0,    Na:166, K:163},
   {id:'lupino',  cat:'legumbre',name:'Lupinos cocidos',      per:100, unit:'g', kcal:119, p:15.6, c:9.9,  f:2.9, Fe:1.2, B12:0,   Zn:1.4,  Ca:51,  O3:0.20, ED:0, O6:0.9, D:0,   Mg:54,  fb:2.8,  Na:228, K:245},
 
@@ -3135,7 +3135,23 @@ const INGREDIENTS = [
   {id:'gaseosa_zero', cat:'bebida', name:'Gaseosa zero', per:100, unit:'g', kcal:1, p:0, c:0, f:0, Fe:0, B12:0, Zn:0, Ca:2, O3:0, ED:0, O6:0, D:0, Mg:0, fb:0, Na:10, K:4},
   {id:'isotonica', cat:'bebida', name:'Bebida isotónica', per:100, unit:'g', kcal:26, p:0, c:6.4, f:0, Fe:0, B12:0, Zn:0, Ca:0, O3:0, ED:0, O6:0, D:0, Mg:0, fb:0, Na:41, K:12},
   {id:'cerveza', cat:'bebida', name:'Cerveza', per:100, unit:'g', kcal:43, p:0.5, c:3.6, f:0, Fe:0, B12:0.02, Zn:0, Ca:4, O3:0, ED:0, O6:0, D:0, Mg:6, fb:0, Na:4, K:27},
-  {id:'vino', cat:'bebida', name:'Vino tinto', per:100, unit:'g', kcal:85, p:0.1, c:2.6, f:0, Fe:0.5, B12:0, Zn:0.1, Ca:8, O3:0, ED:0, O6:0, D:0, Mg:12, fb:0, Na:4, K:127}
+  {id:'vino', cat:'bebida', name:'Vino tinto', per:100, unit:'g', kcal:85, p:0.1, c:2.6, f:0, Fe:0.5, B12:0, Zn:0.1, Ca:8, O3:0, ED:0, O6:0, D:0, Mg:12, fb:0, Na:4, K:127},
+  // SUPLEMENTOS (por unidad: scoop, cápsula o comprimido)
+  {id:'creatina', cat:'supl', name:'Creatina monohidrato (5 g)', per:5, unit:'u', kcal:0, p:0, c:0, f:0, Fe:0, B12:0, Zn:0, Ca:0, O3:0, ED:0, O6:0, D:0, Mg:0, fb:0, Na:0, K:0},
+  {id:'prot_veg', cat:'supl', name:'Proteína vegana blend (scoop 30g)', per:30, unit:'u', kcal:115, p:22, c:3, f:2, Fe:5, B12:0, Zn:1.5, Ca:60, O3:0, ED:0, O6:0.5, D:0, Mg:40, fb:1, Na:280, K:150},
+  {id:'caseina', cat:'supl', name:'Caseína (scoop 30g)', per:30, unit:'u', kcal:110, p:24, c:3, f:0.5, Fe:0.2, B12:0.5, Zn:1, Ca:400, O3:0, ED:0, O6:0, D:0, Mg:20, fb:0, Na:60, K:100},
+  {id:'colageno', cat:'supl', name:'Colágeno hidrolizado (10 g)', per:10, unit:'u', kcal:36, p:9, c:0, f:0, Fe:0, B12:0, Zn:0, Ca:5, O3:0, ED:0, O6:0, D:0, Mg:2, fb:0, Na:30, K:5},
+  {id:'multivit', cat:'supl', name:'Multivitamínico (1 comp.)', per:1, unit:'u', kcal:0, p:0, c:0, f:0, Fe:8, B12:2.4, Zn:8, Ca:150, O3:0, ED:0, O6:0, D:10, Mg:50, fb:0, Na:0, K:0},
+  {id:'vit_d', cat:'supl', name:'Vitamina D3 1000 UI (1 cáps.)', per:1, unit:'u', kcal:0, p:0, c:0, f:0, Fe:0, B12:0, Zn:0, Ca:0, O3:0, ED:0, O6:0, D:25, Mg:0, fb:0, Na:0, K:0},
+  {id:'vit_b12', cat:'supl', name:'Vitamina B12 1000 µg (1 comp.)', per:1, unit:'u', kcal:0, p:0, c:0, f:0, Fe:0, B12:1000, Zn:0, Ca:0, O3:0, ED:0, O6:0, D:0, Mg:0, fb:0, Na:0, K:0},
+  {id:'omega3_pez', cat:'supl', name:'Omega 3 de pescado (1 cáps. 1 g)', per:1, unit:'u', kcal:9, p:0, c:0, f:1, Fe:0, B12:0, Zn:0, Ca:0, O3:0, ED:300, O6:0, D:0, Mg:0, fb:0, Na:0, K:0},
+  {id:'omega3_alga', cat:'supl', name:'Omega 3 de algas (1 cáps.)', per:1, unit:'u', kcal:5, p:0, c:0, f:0.5, Fe:0, B12:0, Zn:0, Ca:0, O3:0, ED:250, O6:0, D:0, Mg:0, fb:0, Na:0, K:0},
+  {id:'magnesio', cat:'supl', name:'Magnesio bisglicinato (200 mg)', per:1, unit:'u', kcal:0, p:0, c:0, f:0, Fe:0, B12:0, Zn:0, Ca:0, O3:0, ED:0, O6:0, D:0, Mg:200, fb:0, Na:0, K:0},
+  {id:'hierro', cat:'supl', name:'Hierro bisglicinato (25 mg)', per:1, unit:'u', kcal:0, p:0, c:0, f:0, Fe:25, B12:0, Zn:0, Ca:0, O3:0, ED:0, O6:0, D:0, Mg:0, fb:0, Na:0, K:0},
+  {id:'zinc', cat:'supl', name:'Zinc (15 mg)', per:1, unit:'u', kcal:0, p:0, c:0, f:0, Fe:0, B12:0, Zn:15, Ca:0, O3:0, ED:0, O6:0, D:0, Mg:0, fb:0, Na:0, K:0},
+  {id:'calcio', cat:'supl', name:'Calcio (500 mg)', per:1, unit:'u', kcal:0, p:0, c:0, f:0, Fe:0, B12:0, Zn:0, Ca:500, O3:0, ED:0, O6:0, D:0, Mg:0, fb:0, Na:0, K:0},
+  {id:'electrolitos', cat:'supl', name:'Electrolitos (1 sobre)', per:5, unit:'u', kcal:10, p:0, c:2.5, f:0, Fe:0, B12:0, Zn:0, Ca:0, O3:0, ED:0, O6:0, D:0, Mg:50, fb:0, Na:500, K:200},
+  {id:'cafeina', cat:'supl', name:'Cafeína (200 mg)', per:1, unit:'u', kcal:0, p:0, c:0, f:0, Fe:0, B12:0, Zn:0, Ca:0, O3:0, ED:0, O6:0, D:0, Mg:0, fb:0, Na:0, K:0},
 ];
 
 const INGR_BY_ID = {};
@@ -3229,6 +3245,9 @@ const AA_DATA = {
   // Levadura nutricional: alto en Lys y completa, DIAAS muy alto
   'lev_nut':  {diaas:107,aa:{Lys:80,Leu:75,SAA:30,Trp:15,Thr:55,Ile:55,Val:60,His:25,AAA:88}},
   // Whey protein: la proteína más completa que existe, DIAAS ~118
+  'caseina':  {diaas:117,aa:{Lys:80,Leu:95,SAA:35,Trp:13,Thr:43,Ile:52,Val:65,His:28,AAA:105}},
+  'colageno': {diaas:0,  aa:{Lys:35,Leu:28,SAA:8, Trp:0, Thr:19,Ile:13,Val:24,His:8, AAA:22}},
+  'prot_veg': {diaas:92, aa:{Lys:62,Leu:80,SAA:24,Trp:11,Thr:37,Ile:45,Val:50,His:25,AAA:85}},
   'whey':     {diaas:118,aa:{Lys:95,Leu:110,SAA:55,Trp:18,Thr:65,Ile:60,Val:55,His:20,AAA:60}},
   // Proteína de soja aislada: DIAAS 90-100 según procesamiento
   'soja_pro': {diaas:95, aa:{Lys:62,Leu:80,SAA:26,Trp:13,Thr:38,Ile:45,Val:47,His:26,AAA:87}},
@@ -5227,7 +5246,8 @@ const ING_CATS = [
   {k:'bebida',   label:'Bebidas'},
   {k:'otros',    label:'Dulces y condimentos'},
   {k:'arg',      label:'Comidas típicas'},
-  {k:'top',      label:'Toppings'}
+  {k:'top',      label:'Toppings'},
+  {k:'supl',     label:'Suplementos'}
 ];
 
 /* ==================== ÍCONOS ====================
@@ -5283,18 +5303,225 @@ const ICONS = {
   drop:    '<path d="M12 3c3.5 4.2 6 7.3 6 10.3A6 6 0 0 1 6 13.3C6 10.3 8.5 7.2 12 3z"/>',
   bulb:    '<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z"/>',
   flask:   '<path d="M9 3h6M10 3v6L4.5 18.5A2 2 0 0 0 6.2 21.5h11.6a2 2 0 0 0 1.7-3L14 9V3"/><path d="M7.5 15h9"/>',
-  book:    '<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5M8.5 7.5h6M8.5 11h4"/>'
+  book:    '<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5M8.5 7.5h6M8.5 11h4"/>',
+  /* Alimentos: un dibujo por tipo de alimento, no por categoría */
+  huevo:     '<path d="M12 3C8.4 3 5.5 8.4 5.5 13a6.5 6.5 0 0 0 13 0C18.5 8.4 15.6 3 12 3z"/>',
+  huevo_duro: '<path d="M12 3C8.4 3 5.5 8.4 5.5 13a6.5 6.5 0 0 0 13 0C18.5 8.4 15.6 3 12 3z"/><circle cx="12" cy="13.5" r="3"/>',
+  huevo_frito: '<path d="M4.8 14c-2.2-3 .3-7.4 3.9-7.2 1.6-2.3 5.7-2.5 7.4 0 3.5.3 5.2 4.3 3.1 7 1.4 3.2-1.6 6.2-4.6 5-1.7 1.9-5.4 1.9-6.9-.2C4.2 19 2.5 16.4 4.8 14z"/><circle cx="12" cy="12.5" r="3"/>',
+  lenteja:   '<ellipse cx="7.5" cy="8.5" rx="3.3" ry="2.4"/><ellipse cx="16" cy="7.5" rx="3.3" ry="2.4"/><ellipse cx="11.5" cy="14" rx="3.3" ry="2.4"/><ellipse cx="18" cy="15.5" rx="2.7" ry="2"/><ellipse cx="6" cy="17.5" rx="2.7" ry="2"/>',
+  poroto:    '<path d="M8.6 4.3c3.2-1.8 7.6-.9 9.7 2.5 2.2 3.6 1.1 9-2.5 11.3-3.2 2-7.6 1.4-9.3-1.6-1.3-2.4.6-4 1.5-5.5 1-1.6-2.3-4.7.6-6.7z"/><path d="M12.6 8.6c.8.8 1.1 1.8.8 2.8"/>',
+  garbanzo:  '<path d="M19.4 10A7.8 7.8 0 1 1 13.8 4.4"/><path d="M13.8 4.4c2.8.7 4.9 2.9 5.6 5.6-2.9-.4-5.1-2.6-5.6-5.6z"/><path d="M8.3 13c.6-1.7 2-2.9 3.8-3.2"/>',
+  arveja:    '<path d="M3.5 16C7 8.5 13.5 4.5 20.5 4c-.6 7.6-6.4 15.5-14.4 15.5-1.6 0-2.6-1.3-2.6-3.5z"/><circle cx="9" cy="14.5" r="1.9"/><circle cx="12.6" cy="11.2" r="1.9"/><circle cx="16.2" cy="8" r="1.9"/>',
+  tofu:      '<path d="M3.5 8.5 12 4.5l8.5 4v8.5L12 21l-8.5-4z"/><path d="M3.5 8.5 12 12.5l8.5-4M12 12.5V21"/>',
+  tempeh:    '<path d="M3.5 8.5 12 4.5l8.5 4v8.5L12 21l-8.5-4z"/><path d="M3.5 8.5 12 12.5l8.5-4M12 12.5V21"/><path d="M7 14.5h.01M8 17h.01M15.5 15h.01M17 13h.01M16 17.5h.01"/>',
+  brote:     '<path d="M12 21v-9"/><path d="M12 12c0-4-3-6.5-7.5-6.5 0 4 3 6.5 7.5 6.5z"/><path d="M12 10c0-3.6 2.6-5.8 6.8-5.8 0 3.6-2.6 5.8-6.8 5.8z"/>',
+  bolitas:   '<circle cx="7.5" cy="15" r="4"/><circle cx="16.5" cy="15" r="4"/><circle cx="12" cy="8" r="4"/>',
+  milanesa:  '<path d="M3.5 12.5c0-4.8 4.2-8 9.5-8 4.6 0 7.5 2.6 7.5 6.6 0 4.6-3.7 8.4-9.2 8.4-4.4 0-7.8-2.7-7.8-7z"/><path d="M9 9.5h.01M13 8h.01M16 11.5h.01M11.5 13h.01M8 14.5h.01M14 15.5h.01"/>',
+  bolsa:     '<path d="M7 7 6 19.8A1.6 1.6 0 0 0 7.6 21.5h8.8a1.6 1.6 0 0 0 1.6-1.7L17 7"/><path d="M7 7c1.6-1.2 2.4-3.5 5-3.5s3.4 2.3 5 3.5"/><path d="M9.5 7c1.6.9 3.4.9 5 0"/><path d="M9.5 14h5"/>',
+  tarro:     '<path d="M6 8.5h12v11a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2z"/><rect x="5" y="4" width="14" height="4.5" rx="1.5"/><path d="M9 13.5h6M9 16.5h4"/>',
+  frasco:    '<path d="M7 8h10v11a2.5 2.5 0 0 1-2.5 2.5h-5A2.5 2.5 0 0 1 7 19z"/><path d="M6.5 4h11v4h-11z"/><path d="M9.5 13.5c1.6-1 3.4-1 5 0"/>',
+  miel:      '<path d="M7 9h10v10.5a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2z"/><path d="M6.5 6h11v3h-11z"/><path d="M12 12.5c1.3 1.5 2 2.5 2 3.3a2 2 0 0 1-4 0c0-.8.7-1.8 2-3.3z"/>',
+  bowl_copos: '<path d="M3 11.5h18a9 8.5 0 0 1-18 0z"/><path d="M6.5 8.5l2.2-1.2M10.8 7l2.4.8M15.5 8.5l1.6-1.9M9.2 4.2l1.3 1.2M14 4.5l-.8 1.4"/>',
+  arroz:     '<path d="M3 11.5h18a9 8.5 0 0 1-18 0z"/><path d="M5.5 11.5c.6-3.6 3.4-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><path d="M9 9v.01M12 8v.01M15 9v.01M10.5 10.6v.01M13.5 10.6v.01"/>',
+  pan_molde: '<path d="M5 10.5C3.6 10 3 9 3 7.9 3 5.6 6.2 4 12 4s9 1.6 9 3.9c0 1.1-.6 2.1-2 2.6V19.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 5 19.5z"/>',
+  baguette:  '<path d="M4.4 19.6c-2-2-1-5.6 3-9.6s7.6-5 9.6-3 1 5.6-3 9.6-7.6 5-9.6 3z"/><path d="M8.6 11.8l2 2M11.6 8.8l2 2M14.4 6.8l1.4 1.4"/>',
+  tortilla:  '<ellipse cx="12" cy="13" rx="9" ry="5.5"/><path d="M7.5 12.2h.01M11 10.8h.01M15 12.6h.01M10 15.2h.01M16.8 10.9h.01"/>',
+  galleta:   '<circle cx="12" cy="12" r="8.5"/><path d="M9 9h.01M14 8.5h.01M15.5 13.2h.01M9.5 14.5h.01M12.2 12h.01"/>',
+  palote:    '<path d="M5.4 16.4 16.4 5.4a2.1 2.1 0 0 1 3 3L8.4 19.4a2.1 2.1 0 0 1-3-3z"/><path d="M3 21l2.4-2.4M18.6 5.4 21 3"/>',
+  pochoclo:  '<path d="M6 9.5h12l-1.6 12H7.6z"/><path d="M6 9.5c-1.6-1.6-.4-4.2 1.8-3.6.4-2.1 3.1-2.6 4.2-1 1-1.6 3.8-1.1 4.2 1 2.2-.6 3.4 2 1.8 3.6"/><path d="M10 9.5l.4 12M14 9.5l-.4 12"/>',
+  leche:     '<path d="M7 8 9 3.5h6L17 8v12a1.5 1.5 0 0 1-1.5 1.5h-7A1.5 1.5 0 0 1 7 20z"/><path d="M7 8h10"/><path d="M10 13h4"/>',
+  yogur:     '<path d="M6.2 8h11.6l-1.2 11.8a2 2 0 0 1-2 1.7H9.4a2 2 0 0 1-2-1.7z"/><rect x="5" y="4.5" width="14" height="3.5" rx="1.2"/><path d="M8.8 13h6.4"/>',
+  queso:     '<path d="M3 15.5 14 5.5l7 4.5v8.5a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 18.5z"/><path d="M3 15.5h18"/><circle cx="8.5" cy="17.8" r=".9"/><circle cx="15.5" cy="12.6" r="1.1"/><circle cx="17" cy="17.6" r=".7"/>',
+  manteca:   '<path d="M3 13.5 8 9h13v5.5L16 19H3z"/><path d="M3 13.5h13v5.5M16 13.5l5-4.5"/>',
+  pollo:     '<path d="M14.5 3a6 6 0 0 1 6.5 6.4c-.3 4.4-4.6 6.2-8 5.6l-3.4 3.4a2.3 2.3 0 1 1-3.6 2.4 2.3 2.3 0 1 1 2.4-3.6L11.8 14c-.6-3.6.4-10.6 2.7-11z"/>',
+  carne:     '<path d="M5 13c-2-5 2-9 7.5-9S21 7 20 12c-.8 4.2-5 8-10 7.5-2.7-.3-4.2-2.6-5-6.5z"/><circle cx="14" cy="10.5" r="2.5"/>',
+  costilla:  '<rect x="3" y="7" width="18" height="10" rx="3.5"/><path d="M8 7v10M12 7v10M16 7v10"/>',
+  pez:       '<path d="M21.5 12c-2 3.2-5 5.5-9 5.5S5.5 15 4 12c1.5-3 4.5-5.5 8.5-5.5s7 2.3 9 5.5z"/><path d="M4 12 1.5 8.5v7z"/><circle cx="16.5" cy="10.8" r=".9"/><path d="M11 9.5c.8 1.6.8 3.4 0 5"/>',
+  lata:      '<ellipse cx="12" cy="7" rx="8" ry="3"/><path d="M4 7v10c0 1.7 3.6 3 8 3s8-1.3 8-3V7"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>',
+  langostino: '<path d="M20 9c0-3.3-2.7-6-6-6H7.5a2.5 2.5 0 0 0 0 5H14a1.5 1.5 0 0 1 0 3h-4a6 6 0 0 0-6 6v.5"/><path d="M4 17.5 2.5 21M4 17.5 7 20.5"/><path d="M11 3v5M15.5 3.5 14 8M18.8 6 16 9.5"/>',
+  jamon:     '<ellipse cx="10" cy="10" rx="7" ry="5.5"/><path d="M8.3 15.2c1.2 2.2 3.6 3.6 6.4 3.6 3.9 0 7-2.5 7-5.5 0-2-1.4-3.8-3.5-4.8"/><path d="M6.5 9.5c1-1.6 3-2.5 5-2.2"/>',
+  salame:    '<circle cx="12" cy="12" r="8.5"/><circle cx="9" cy="9.5" r="1"/><circle cx="14.5" cy="9" r="1"/><circle cx="12" cy="13.5" r="1"/><circle cx="16" cy="14.5" r="1"/><circle cx="8.5" cy="15" r="1"/>',
+  chorizo:   '<path d="M5.5 18.5c-2-2-1.5-4.5.5-6.5l6-6c2-2 4.5-2.5 6.5-.5s1.5 4.5-.5 6.5l-6 6c-2 2-4.5 2.5-6.5.5z"/><path d="M5.5 18.5 3.5 20.5M18.5 5.5l2-2"/><path d="M9.5 12.5l2 2M12.5 9.5l2 2"/>',
+  panceta:   '<path d="M3 6.5c3-2 5 2 9 0s6 2 9 0v4.5c-3 2-5-2-9 0s-6-2-9 0z"/><path d="M3 15c3-2 5 2 9 0s6 2 9 0v4c-3 2-5-2-9 0s-6-2-9 0z"/>',
+  aceite:    '<path d="M10 2.5h4V6l2.2 3.2c.5.7.8 1.6.8 2.5v7.8a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2v-7.8c0-.9.3-1.8.8-2.5L10 6z"/><path d="M12 12c1.4 1.7 2 2.8 2 3.7a2 2 0 0 1-4 0c0-.9.6-2 2-3.7z"/>',
+  salsa:     '<path d="M8.8 7.5h6.4l1.3 3V19.5a2 2 0 0 1-2 2H9.5a2 2 0 0 1-2-2v-9z"/><path d="M10.3 7.5V5h3.4v2.5M12 5V2"/><path d="M7.5 14h9"/>',
+  botella:   '<path d="M10 2.5h4v3.5l2 3V20a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 8 20V9l2-3z"/><path d="M8 13h8v4.5H8z"/>',
+  nuez:      '<path d="M12 3.5c4.4 0 7.5 3.8 7.5 8.5s-3.1 8.5-7.5 8.5S4.5 16.7 4.5 12 7.6 3.5 12 3.5z"/><path d="M12 3.5v17"/><path d="M8.2 7.8c1 1 1 2.6 0 3.6s-1 2.6 0 3.6M15.8 7.8c-1 1-1 2.6 0 3.6s1 2.6 0 3.6"/>',
+  almendra:  '<path d="M12 2.5c3.6 3 6 7 6 11a6 6 0 0 1-12 0c0-4 2.4-8 6-11z"/><path d="M12 7.5c-.9 2.6-.9 6 0 9"/>',
+  mani:      '<path d="M9.2 3.2c2.6-.6 4.7 1.3 4.8 3.9 0 1.1.4 1.9 1.4 2.4 2.7 1.3 3.9 3.8 3.1 6.6-.9 3.2-4.3 5-7.5 4.1-2.6-.7-4-3.1-3.7-5.6.1-1.2-.4-2-1.4-2.7C3.3 10 4 4.3 9.2 3.2z"/><path d="M8.5 7h.01M10.5 15h.01M14 15.5h.01"/>',
+  caju:      '<path d="M8 4c-3 1.5-4.5 5-3.5 8.5 1.2 4.3 5.7 7 10 6.3 2.5-.4 4.2-2.3 4-4.3-.2-1.8-2-2.6-3.8-2.3-2 .3-3.7-.5-4.2-2.5-.4-1.8.6-3.3-.5-5.2C9.6 3.8 8.8 3.6 8 4z"/>',
+  semillas:  '<ellipse cx="7.5" cy="8" rx="2" ry="3" transform="rotate(-25 7.5 8)"/><ellipse cx="15" cy="6.8" rx="2" ry="3" transform="rotate(20 15 6.8)"/><ellipse cx="11.2" cy="13.6" rx="2" ry="3" transform="rotate(-10 11.2 13.6)"/><ellipse cx="17.6" cy="15.2" rx="2" ry="3" transform="rotate(30 17.6 15.2)"/><ellipse cx="6.2" cy="17.6" rx="1.7" ry="2.5" transform="rotate(12 6.2 17.6)"/>',
+  coco:      '<path d="M3.5 10.5h17a8.5 8.5 0 0 1-17 0z"/><path d="M6.5 10.5a5.5 5.5 0 0 1 11 0"/><path d="M9 15.5h.01M12 16.5h.01M15 15.5h.01"/>',
+  hoja:      '<path d="M5 19C4 11 9 4.5 20 4c.5 10.5-5.5 16-13.5 15.5z"/><path d="M5 19c3-4 6.5-7.5 10.5-10"/>',
+  tomate:    '<circle cx="12" cy="13.5" r="7.5"/><path d="M12 6V3.5M8.8 6.6c1.1-1 2.1-1.2 3.2-.5 1.1-.7 2.1-.5 3.2.5"/>',
+  cebolla:   '<path d="M12 3c0 2.5-1 3.5-3 5-2.5 2-4 4-4 7a7 7 0 0 0 14 0c0-3-1.5-5-4-7-2-1.5-3-2.5-3-5z"/><path d="M12 8.5c-1.8 2-2.4 4.5-2.4 7.2 0 2.6.9 4.8 2.4 6.3M12 8.5c1.8 2 2.4 4.5 2.4 7.2 0 2.6-.9 4.8-2.4 6.3"/>',
+  ajo:       '<path d="M12 3v3"/><path d="M12 6c-4 2-7 5-7 8.5 0 3.5 3 6.5 7 6.5s7-3 7-6.5C19 11 16 8 12 6z"/><path d="M12 6c-1.6 3-2.2 7.5-1.2 15M12 6c1.6 3 2.2 7.5 1.2 15"/>',
+  morron:    '<path d="M12 7c-.8-2.5-.3-3.8 1.8-4"/><path d="M8 7.2c-3 0-4 3-3.5 6.4.6 4.3 2.7 7.9 5 7.9.9 0 1.4-.6 2.5-.6s1.6.6 2.5.6c2.3 0 4.4-3.6 5-7.9.5-3.4-.5-6.4-3.5-6.4-1.5 0-2.5 1-4 1s-2.5-1-4-1z"/><path d="M12 8.2v12.7"/>',
+  zanahoria: '<path d="M15.5 8.5c-2-2-4.5-1.5-6 0L3.5 19.5c-.3.6.4 1.3 1 1l11-6c1.5-1.5 2-4 0-6z"/><path d="M15.5 8.5 18 4M15.5 8.5l4-1.5M15.5 8.5 16 3.5"/><path d="M8.5 12.5l1.5 1.5M6.2 16l1.2 1.2"/>',
+  pepino:    '<path d="M5.5 18.5c-2.5-2.5-1.5-6 2-9.5s7.5-5 10-3.5c1.5 1 1.8 3.3.5 5.5-2 3.5-6.5 8.5-10 8.5-1 0-1.8-.4-2.5-1z"/><path d="M17.5 5.5l2-2"/><path d="M9 13.5h.01M12 11h.01M14.5 9h.01"/>',
+  berenjena: '<path d="M16 6.5c3 2 3 6.5-.5 10S7 21 4.5 18.5 4 11 7.5 7.5s6-3 8.5-1z"/><path d="M13.5 5.2c1.2.2 2.5 1 2.5 2 1 .1 2 .6 2.6 1.6"/><path d="M17 4.5 19.5 2"/>',
+  brocoli:   '<path d="M8 21h8M12 21v-6"/><circle cx="8" cy="9" r="3.5"/><circle cx="16" cy="9" r="3.5"/><circle cx="12" cy="6" r="3.5"/><path d="M8 12.5c1 1.6 2.4 2.5 4 2.5s3-.9 4-2.5"/>',
+  repollo:   '<circle cx="12" cy="12" r="8.5"/><path d="M12 3.5c-2.6 3-2.6 14 0 17M12 3.5c2.6 3 2.6 14 0 17M4 10c3 1.5 5 1.5 8 0M20 10c-3 1.5-5 1.5-8 0"/>',
+  papa:      '<path d="M6.5 6.5C9.5 3 17 3.5 19 8c1.8 4-1 9.5-5.5 11.5-4 1.8-9 .3-10-3.5-.8-3.3 1-6.7 3-9.5z"/><path d="M10 9h.01M14.5 8.5h.01M15.5 13.5h.01M9.5 14.5h.01"/>',
+  fritas:    '<path d="M5.5 10.5h13l-1.6 10.5a1.5 1.5 0 0 1-1.5 1.3H8.6a1.5 1.5 0 0 1-1.5-1.3z"/><path d="M8 10.5 7.2 3.8M10.4 10.5 10 3M13.6 10.5l.4-7.5M16 10.5l.9-6.7M12 10.5V5"/>',
+  calabaza:  '<path d="M12 7c-4.5 0-8.5 2.5-8.5 7s4 7 8.5 7 8.5-2.5 8.5-7-4-7-8.5-7z"/><path d="M12 7c-2 2-2.5 5-2.5 7s.5 5 2.5 7M12 7c2 2 2.5 5 2.5 7s-.5 5-2.5 7"/><path d="M12 7c0-2 1-3.2 2.6-3.7"/>',
+  hongo:     '<path d="M3.5 12C3.5 7 7.3 3.5 12 3.5S20.5 7 20.5 12z"/><path d="M9 12v6.5a3 3 0 0 0 6 0V12"/><path d="M8 8.5h.01M12 7h.01M16 8.5h.01"/>',
+  choclo:    '<path d="M12 3c2.4 0 4 3.2 4 8s-1.6 8.8-4 10c-2.4-1.2-4-5.2-4-10s1.6-8 4-8z"/><path d="M8.3 8.5h7.4M8 12.5h8M8.5 16.5h7M12 3v18"/><path d="M8 13c-3-1-4.5 2-4 6.5 2.5 0 5.5-1 8 1.5M16 13c3-1 4.5 2 4 6.5-2.5 0-5.5-1-8 1.5"/>',
+  aceituna:  '<ellipse cx="9" cy="14.5" rx="4" ry="5" transform="rotate(-20 9 14.5)"/><ellipse cx="16" cy="11.5" rx="3.5" ry="4.5" transform="rotate(20 16 11.5)"/><path d="M16.3 7c.5-2 2-3.2 4-3.5"/><circle cx="9.3" cy="13.8" r="1.2"/>',
+  esparrago: '<path d="M7.5 21 10 7M12 21V5.5M16.5 21 14 7"/><path d="M10 7c-.5-1.4 0-2.6 1-3.3.6 1 .4 2.3-.2 3.3M14 7c.5-1.4 0-2.6-1-3.3"/><path d="M12 5.5c-.7-1-.7-2.3 0-3 .7.7.7 2 0 3z"/>',
+  remolacha: '<path d="M12 8c4 0 7 2.5 7 6.5S15.5 21 12 21s-7-2.5-7-6.5S8 8 12 8z"/><path d="M12 21v1.5"/><path d="M12 8c-1-2-3-3.5-5.2-4M12 8c0-2.5.5-4 2-5.5M12 8c1.5-1.5 3.5-2.5 5.5-2.5"/>',
+  banana:    '<path d="M4 15c3.5 3 9 3.5 13 0 2.5-2.2 3.8-5.5 3.5-9.5L19.5 4"/><path d="M4 15c2 .2 4.8-.2 7.5-2 3-2 5-4.5 6-7.5"/><path d="M4 15l-1-1.5"/>',
+  manzana:   '<path d="M12 7.5c-2-1.6-6.3-1.4-7.6 1.7C3 12.6 4.4 17.6 7.2 20c1.5 1.3 3.1.9 4.8.2 1.7.7 3.3 1.1 4.8-.2 2.8-2.4 4.2-7.4 2.8-10.8-1.3-3.1-5.6-3.3-7.6-1.7z"/><path d="M12 7.5c0-2 .8-3.5 2.5-4.5"/><path d="M12 6c-1.5-2-3.5-2.5-5-2 .5 1.8 2.5 2.6 5 2z"/>',
+  pera:      '<path d="M12 6c-1.7 0-2.7 1.4-2.8 3.2-.1 1.6-.6 2.6-1.8 3.8A5.6 5.6 0 0 0 12 21.5a5.6 5.6 0 0 0 4.6-8.5c-1.2-1.2-1.7-2.2-1.8-3.8C14.7 7.4 13.7 6 12 6z"/><path d="M12 6c0-1.5.5-2.5 1.5-3.5"/>',
+  citrico:   '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="6"/><path d="M12 6v12M6 12h12M7.8 7.8l8.4 8.4M16.2 7.8l-8.4 8.4"/>',
+  frutilla:  '<path d="M12 7.5c-3.5-1.5-8 0-7.5 4 .5 4.2 3.8 8.2 7.5 9.5 3.7-1.3 7-5.3 7.5-9.5.5-4-4-5.5-7.5-4z"/><path d="M8.5 5c1.5 1 2.5 1.5 3.5 2.5 1-1 2-1.5 3.5-2.5M12 7.5V3.5"/><path d="M9.5 12h.01M14.5 12h.01M12 15.5h.01M9.8 17h.01M14.2 17h.01"/>',
+  bayas:     '<circle cx="8" cy="15" r="3.6"/><circle cx="16" cy="15" r="3.6"/><circle cx="12" cy="8.5" r="3.6"/><path d="M11 7.5h.01M7 14h.01M15 14h.01"/>',
+  uva:       '<circle cx="9" cy="9" r="2.4"/><circle cx="14.2" cy="9" r="2.4"/><circle cx="6.6" cy="13.4" r="2.4"/><circle cx="11.6" cy="13.4" r="2.4"/><circle cx="16.6" cy="13.4" r="2.4"/><circle cx="9.1" cy="17.8" r="2.4"/><circle cx="14.1" cy="17.8" r="2.4"/><path d="M11.6 6.6c0-1.8 1-3.2 3-4"/>',
+  cereza:    '<circle cx="7.5" cy="16.5" r="3.5"/><circle cx="16.5" cy="17" r="3.5"/><path d="M7.5 13c1-4 3.5-7.5 7-10M16.5 13.5c-.5-4-1-7.5-2-10.5"/><path d="M14.5 3c1.5-.5 3.5 0 5 1.5-1.5 1-3.5 1-5-1.5z"/>',
+  palta:     '<path d="M12 2.5c-3 0-4.5 3-5 6-.4 2.2-2 3.8-2 6.5a7 7 0 0 0 14 0c0-2.7-1.6-4.3-2-6.5-.5-3-2-6-5-6z"/><circle cx="12" cy="15" r="3"/>',
+  anana:     '<path d="M12 9.5c3.5 0 5.8 2.7 5.8 6S15.5 21.5 12 21.5 6.2 19 6.2 15.5s2.3-6 5.8-6z"/><path d="M12 9.5c-.8-2.4-2.6-3.6-4.8-3.8 1.6-.6 3.4-.1 4.8 1.3.1-2 1-3.6 2.5-4.5.2 1.6-.1 3-.8 4 1.3-.9 3-1.2 4.8-.7-2 .5-4 1.9-4.5 3.7"/><path d="M8.6 13.5l6.8 5M15.4 13.5l-6.8 5"/>',
+  sandia:    '<path d="M2.5 9.5h19a9.5 9.5 0 0 1-19 0z"/><path d="M5.5 9.5a6.5 6.5 0 0 0 13 0"/><path d="M9 12.5h.01M12 14h.01M15 12.5h.01"/>',
+  durazno:   '<path d="M12 6.5c-4.5-1.5-8.5 1.5-8.5 6.5S7.3 21.5 12 21.5s8.5-3.5 8.5-8.5-4-8-8.5-6.5z"/><path d="M12 6.5c-1.2 4-1.2 9 0 15"/><path d="M12 6.5c.5-2 2-3.5 4.5-3.5-.5 2-2 3.3-4.5 3.5z"/>',
+  kiwi:      '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3"/><path d="M12 5.8v.01M16.4 7.6v.01M18.2 12v.01M16.4 16.4v.01M12 18.2v.01M7.6 16.4v.01M5.8 12v.01M7.6 7.6v.01"/>',
+  datil:     '<ellipse cx="12" cy="12" rx="5" ry="8.5" transform="rotate(30 12 12)"/><path d="M8.6 7.6c1.2 3 2.8 6 6.5 8.8"/>',
+  cafe:      '<path d="M4 9h13v5.5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z"/><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M8 3.5c-.6.9.6 1.6 0 2.5M12 3.5c-.6.9.6 1.6 0 2.5"/>',
+  vaso:      '<path d="M6 8.5h12l-1.4 11.7a2 2 0 0 1-2 1.8H9.4a2 2 0 0 1-2-1.8z"/><path d="M5 8.5h14"/><path d="M12.5 8.5 14.5 2h3"/><path d="M7 13.5h10"/>',
+  lata_beb:  '<path d="M7 5.5 8 3h8l1 2.5v13L16 21H8l-1-2.5z"/><path d="M7 7h10M7 17h10"/><path d="M10 11.5h4"/>',
+  cerveza:   '<path d="M5 7h10v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/><path d="M15 10h2a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2"/><path d="M5 7c0-2 1.5-3 3-2.5C8.8 3 11 3 12 4.5 13.5 4 15 5 15 7"/><path d="M8.5 11v6M11.5 11v6"/>',
+  vino:      '<path d="M7.5 3h9c.5 4 0 8.2-4.5 9.5C7.5 11.2 7 7 7.5 3z"/><path d="M12 12.5V21M8.5 21h7"/><path d="M7.4 7.2h9.2"/>',
+  deportiva: '<path d="M9 2.5h6V5l1.5 2v12.5a2 2 0 0 1-2 2h-5a2 2 0 0 1-2-2V7L9 5z"/><path d="M7.5 11h9M7.5 15h9"/>',
+  azucar:    '<path d="M3.5 10 8.5 7.5l5 2.5v5.5l-5 2.5-5-2.5z"/><path d="M3.5 10l5 2.5 5-2.5M8.5 12.5V18"/><path d="M13.5 13l3.5-1.7 3.5 1.7v4L17 18.8 13.5 17"/>',
+  salero:    '<path d="M8 8.5c0-3 1.8-5 4-5s4 2 4 5l1 11a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2z"/><path d="M7.6 12.5h8.8"/><path d="M11 6h.01M13 6h.01M12 4.8h.01"/>',
+  chocolate: '<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M5 9h14M5 15h14M12 3v18"/>',
+  hierba:    '<path d="M12 21V9"/><path d="M12 13c-3 0-5-2-5-5 3 0 5 2 5 5zM12 11c3 0 5-2 5-5-3 0-5 2-5 5z"/><path d="M12 17c-2.5 0-4.5-1.5-4.5-4 2.5 0 4.5 1.5 4.5 4zM12 15.5c2.5 0 4.5-1.5 4.5-4-2.5 0-4.5 1.5-4.5 4z"/>',
+  pancho:    '<path d="M3 12.5c0-1.4 1.1-2.5 2.5-2.5h13c1.4 0 2.5 1.1 2.5 2.5v.5c0 3-2.5 5.5-5.5 5.5h-7C5.5 18.5 3 16 3 13z"/><path d="M5 10c-.4-2 .8-3.5 3-3.5h8c2.2 0 3.4 1.5 3 3.5"/><path d="M6.5 13c1.5-1 2.5 1 4 0s2.5 1 4 0 2.5 1 3 0"/>',
+  burger:    '<path d="M4 10c0-3.5 3.6-6 8-6s8 2.5 8 6z"/><path d="M3 13.5c1.5-1 3-1 4.5 0s3 1 4.5 0 3-1 4.5 0 3 1 4.5 0"/><path d="M4 17h16v.5a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3z"/><path d="M9 7h.01M12 6h.01M15 7h.01"/>',
+  tarta:     '<path d="M3 17 18.5 6.5c1.6 2 2.5 4.5 2.5 7V17z"/><path d="M3 17v2.5h18V17"/><path d="M8 14.5h.01M12.5 12h.01M16.5 11h.01"/>',
+  ensalada:  '<path d="M3 12h18a9 8 0 0 1-18 0z"/><path d="M7 12c-1-3 1-5.5 4-5.5M11 12c0-3 2-5.5 5-5.5-.5 2.5-1.5 4.5-3 5.5M15.5 12c.5-1.5 2-2.5 3.5-2.5"/>',
+  wok:       '<path d="M2.5 11h15a7.5 6.5 0 0 1-15 0z"/><path d="M17.5 11 21.5 8.5"/><path d="M6 8.5c1-1.6 2.4-1.8 3.5-.8M10.5 8c1-1.6 2.5-1.8 3.5-.6"/>',
+  capsula:   '<rect x="2.8" y="8.5" width="18.4" height="7" rx="3.5" transform="rotate(-45 12 12)"/><path d="M9.5 9.5 14.5 14.5"/>',
+  blister:   '<rect x="4" y="3.5" width="16" height="17" rx="3"/><circle cx="9" cy="8" r="1.8"/><circle cx="15" cy="8" r="1.8"/><circle cx="9" cy="12" r="1.8"/><circle cx="15" cy="12" r="1.8"/><circle cx="9" cy="16" r="1.8"/><circle cx="15" cy="16" r="1.8"/>',
+  shaker:    '<path d="M7 8.5h10l-1.2 12a1.5 1.5 0 0 1-1.5 1.3H9.7a1.5 1.5 0 0 1-1.5-1.3z"/><path d="M6.5 5.5h11v3h-11z"/><path d="M10 5.5V3h4v2.5"/><path d="M8 13.5h8"/>',
+  rayo:      '<path d="M13 2.5 4.5 14H11l-1 7.5L18.5 10H12z"/>'
 };
 function ico(name, cls){
   return `<svg class="ico ${cls || ''}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name] || ICONS.plate}</svg>`;
 }
 /* Color de cada categoría: el ícono va teñido sobre un fondo suave. */
 const CAT_COLOR = {cereal:'#d97706', legumbre:'#b45309', lact:'#0ea5e9', veg:'#16a34a', fruta:'#e11d48', fs:'#a16207', grasa:'#65a30d', animal:'#dc2626', bebida:'#0891b2', otros:'#9333ea', arg:'#2563eb', top:'#ea580c', receta:'#6366f1'};
-function ingIconName(i){ return i.ico || i.cat; }
+/* Ícono de cada alimento. Lo que no está acá usa el de su categoría. */
+const ICO_ALIMENTO = {};
+'egg clara'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'huevo');
+ICONS.supl = ICONS.capsula;
+'huevo_duro'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'huevo_duro');
+'huevo_frito'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'huevo_frito');
+'lent lent_roj medallon_lent guiso_lentejas'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'lenteja');
+'porotos_n porotos_a porotos_r porotos_soja porotos_mung habas lupino'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'poroto');
+'garb'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'garbanzo');
+'arvejas edamame chaucha'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'arveja');
+'tofu tofu_sed seitan tvp'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'tofu');
+'tempeh'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'tempeh');
+'brotes_soja apio'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'brote');
+'falafel chipa'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'bolitas');
+'mila_soja milanesa mila_pollo mila_napo'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'milanesa');
+'harina_garb harina harina_int pan_rall tapioca polenta'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'bolsa');
+'whey soja_pro arv_pro lev_nut cacao espirulina prot_veg caseina colageno creatina electrolitos'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'tarro');
+'hummus miso tahini mani_pst almendra_pst dulce_leche mermelada crema queso_unt pesto chimichurri salsa_pizza'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'frasco');
+'miel'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'miel');
+'oat granola muesli copos_maiz'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'bowl_copos');
+'rice_br rice_wh rice_bas quinoa cous burgol mijo amaranto trigo_sarr cebada arroz_pollo'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'arroz');
+'pasta pasta_int fideos_arroz noquis fideos_tuco ravioles'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'pasta');
+'pan_int pan_lact pan_lact_int pan_lact_salv pan_lact_sem pan_lact_cer pan_lact_neg pan_lact_avena pan_lact_cer0 pan_arts pan_brioche'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'pan_molde');
+'pan_frances'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'baguette');
+'pan_arb tortilla tortilla_papa faina'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'tortilla');
+'gal_avena gal_arroz bizcochitos'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'galleta');
+'masa_emp masa_pizza masa_tarta masa_hoj'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'palote');
+'pochoclo'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'pochoclo');
+'milk milk_alm milk_desc milk_soja milk_avena kefir'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'leche');
+'yog_grg yog_nat yog_desc yog_beb'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'yogur');
+'queso_cr queso_ps queso_mz queso_pm queso_az queso_cb feta ricota burrata cottage queso_dambo provolone provoleta'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'queso');
+'manteca'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'manteca');
+'pollo_p pollo_m pavita'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'pollo');
+'carne_m picada picada_m bife higado vacio cerdo_lomo'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'carne');
+'asado_tira'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'costilla');
+'salmon merluza caballa tilapia anchoas'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'pez');
+'atun atun_aceite sardina palmito tomate_tr coco_lec'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'lata');
+'langostino'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'langostino');
+'jamon_coc jamon_cru'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'jamon');
+'salame'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'salame');
+'chorizo morcilla longaniza'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'chorizo');
+'pancho choripan'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'pancho');
+'panceta'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'panceta');
+'oliva aceite_gir aceite_canola aceite_coco aceite_lino'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'aceite');
+'mayonesa ketchup mostaza salsa_golf'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'salsa');
+'vin_bal soja_sal'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'botella');
+'nuez nuez_brasil'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'nuez');
+'almendra avellana pistacho'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'almendra');
+'mani'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'mani');
+'caju'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'caju');
+'chia sesamo lino girasol sem_zap canamo'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'semillas');
+'coco_rall'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'coco');
+'espinaca rucula lechuga acelga kale perejil algas'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'hoja');
+'oregano'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'hierba');
+'tomate tomate_ch tomate_seco'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'tomate');
+'cebolla puerro verdeo'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'cebolla');
+'ajo jengibre'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'ajo');
+'morron morron_v'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'morron');
+'zanahoria'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'zanahoria');
+'pepino zucchini'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'pepino');
+'berenjena'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'berenjena');
+'brocoli coliflor'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'brocoli');
+'repollo bruselas alcaucil'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'repollo');
+'papa boniato mandioca papa_horno'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'papa');
+'papas_fritas'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'fritas');
+'calabaza'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'calabaza');
+'hongos champ'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'hongo');
+'maiz emp_humita'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'choclo');
+'aceit_n aceit_v'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'aceituna');
+'esparrago'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'esparrago');
+'remolacha rabanito'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'remolacha');
+'banana'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'banana');
+'manzana'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'manzana');
+'pera'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'pera');
+'limon naranja mandarina pomelo'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'citrico');
+'frutilla'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'frutilla');
+'fr_rojos arandanos frambuesa'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'bayas');
+'uva pasa'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'uva');
+'cereza'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'cereza');
+'palta'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'palta');
+'anana'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'anana');
+'sandia melon'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'sandia');
+'durazno mango ciruela_pasa'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'durazno');
+'kiwi'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'kiwi');
+'datil'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'datil');
+'cafe'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'cafe');
+'jugo_naranja'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'vaso');
+'gaseosa gaseosa_zero'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'lata_beb');
+'cerveza'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'cerveza');
+'vino'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'vino');
+'isotonica'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'deportiva');
+'azucar'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'azucar');
+'sal'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'salero');
+'choco_70'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'chocolate');
+'mate'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'mate');
+'pizza_muzza pizza_napo pizza_fugazzeta pizza_fugazza pizza_jym pizza_calabresa pizza_rucula pizza_cuatroq pizza_anana'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'pizza');
+'emp_carne emp_carne_frita emp_pollo emp_jyq emp_caprese emp_verdura emp_cyq'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'empanada');
+'sand_mila tostado'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'sandwich');
+'hamburguesa'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'burger');
+'tarta_jyq tarta_verdura pastel_papa'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'tarta');
+'locro'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'pot');
+'ensalada_mixta'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'ensalada');
+'medialuna medialuna_grasa factura'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'croissant');
+'alfajor_choco alfajor_maicena'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'cookie');
+'flan_ddl'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'flan');
+'helado'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'icecream');
+'omega3_pez omega3_alga vit_d'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'capsula');
+'multivit vit_b12 magnesio hierro zinc calcio cafeina'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'blister');
+function ingIconName(i){ return ICO_ALIMENTO[i.id] || i.ico || i.cat; }
 function thumbHtml(name, color, extra){
   return `<div class="row-thumb ${extra || ''}" style="color:${color};background:color-mix(in srgb, ${color} 13%, transparent)">${ico(name)}</div>`;
 }
-function ingThumb(i, extra){ return thumbHtml(ingIconName(i), CAT_COLOR[i.cat] || 'var(--brand)', extra); }
+function ingThumb(i, extra){ return thumbHtml(ingIconName(i), 'var(--brand)', extra); }
 function starBtn(key){
   const on = isFav(key);
   return `<button class="star ${on ? 'on' : ''}" data-fav="${key}" aria-label="${on ? 'Quitar de favoritos' : 'Guardar en favoritos'}">${ico('star')}</button>`;
@@ -5952,7 +6179,20 @@ function norm(t){ return (t || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLo
 function mealThumb(m, cls){
   if(m.isIng) return ingThumb(INGR_BY_ID[m.ingId], cls);
   if(state.mealPhotos[m.id]) return `<div class="row-thumb ${cls || ''}" style="background-image:url('${state.mealPhotos[m.id]}')"></div>`;
-  return thumbHtml('receta', CAT_COLOR.receta, cls);
+  return thumbHtml(iconoReceta(m), 'var(--brand)', cls);
+}
+/* Receta: el ícono sale del nombre ("wok", "omelette"...) o del ingrediente
+   que más energía aporta al plato. */
+const ICO_RECETA = [[/omelet|revuelto|huevo/, 'huevo_frito'], [/wok|salteado/, 'wok'], [/ensalada|bowl/, 'ensalada'], [/tofu/, 'tofu'],
+  [/pizza/, 'pizza'], [/empanada/, 'empanada'], [/tarta|quiche/, 'tarta'], [/hamburgues|medall/, 'burger'], [/fideo|pasta|ravio/, 'pasta'],
+  [/guiso|sopa|locro|curry|estofado/, 'pot'], [/tostad|sandw/, 'sandwich'], [/licuado|smoothie|batido/, 'shaker'], [/yogur/, 'yogur']];
+function iconoReceta(m){
+  const n = norm(m.name || '');
+  const hit = ICO_RECETA.find(([re]) => re.test(n));
+  if(hit) return hit[1];
+  const kc = x => x.i.kcal * (x.i.unit === 'u' ? x.it.qty : x.it.qty / 100);
+  const top = (m.items || []).map(it => ({i:INGR_BY_ID[it.id], it})).filter(x => x.i).sort((a, b) => kc(b) - kc(a))[0];
+  return top ? ingIconName(top.i) : 'receta';
 }
 function isOpen(id){ return document.getElementById(id).classList.contains('open'); }
 
@@ -7045,10 +7285,10 @@ function renderDaySheet(){
    Respeta la dieta (omnívoro / vegetariano / vegano) y el modo keto. */
 const CON_CARNE = new Set(['pizza_jym','pizza_calabresa','pizza_rucula','pizza_anana','emp_carne','emp_carne_frita','emp_pollo','emp_jyq',
   'mila_napo','mila_pollo','sand_mila','choripan','asado_tira','vacio','chorizo','morcilla','hamburguesa','pancho','tostado','tarta_jyq',
-  'locro','guiso_lentejas','arroz_pollo','pastel_papa','longaniza','salame','panceta','anchoas','bizcochitos','medialuna_grasa','milanesa']);
+  'locro','guiso_lentejas','arroz_pollo','pastel_papa','longaniza','salame','panceta','anchoas','bizcochitos','medialuna_grasa','milanesa','omega3_pez','colageno']);
 const CON_LACTEO_HUEVO = new Set(['pizza_muzza','pizza_napo','pizza_fugazzeta','pizza_cuatroq','emp_humita','emp_caprese','emp_verdura','emp_cyq',
   'provoleta','tarta_verdura','tortilla_papa','ravioles','medialuna','factura','alfajor_choco','alfajor_maicena','chipa','flan_ddl','helado',
-  'provolone','huevo_frito','salsa_golf','mayonesa','dulce_leche','pesto','gal_avena','pan_brioche','masa_hoj','whey']);
+  'provolone','huevo_frito','salsa_golf','mayonesa','dulce_leche','pesto','gal_avena','pan_brioche','masa_hoj','whey','caseina']);
 function ingApto(i, diet){
   if(diet === 'omni') return true;
   if(i.cat === 'animal' || CON_CARNE.has(i.id)) return false;
@@ -7251,7 +7491,7 @@ function rolDe(i){
    combinaciones tengan sentido (nada de sardinas con arándanos). */
 const LAB_FUERA = new Set(['higado','milanesa','jamon_coc','jamon_cru','morcilla','chorizo','asado_tira','clara','milk','milk_desc','milk_alm','milk_soja','milk_avena','gal_arroz','copos_maiz','pochoclo','muesli','granola','gal_avena','pan_rall','fideos_arroz','coco_rall','almendra_pst','mani_pst','sal']);
 function slotOk(i, slot){
-  if(LAB_FUERA.has(i.id)) return false;
+  if(LAB_FUERA.has(i.id) || i.cat === 'supl') return false;
   const r = rolDe(i);
   switch(slot){
     case 'protPlato': return (r === 'prot' && (i.cat === 'animal' || i.cat === 'legumbre')) || i.id === 'egg' || i.id === 'huevo_duro';
@@ -7669,7 +7909,8 @@ const CH_UNIDAD = [
 /* Frases que hay que reconocer antes de cortar por "con" o "y". */
 const CH_FRASES = {
   'arroz con pollo':'@arroz_pollo', 'fideos con tuco':'@fideos_tuco', 'flan con dulce de leche':'@flan_ddl', 'flan con dulce':'@flan_ddl',
-  'cafe con leche':'cafe , 100 ml de leche', 'jamon y queso':'jyq'
+  'cafe con leche':'cafe , 100 ml de leche', 'jamon y queso':'jyq',
+  'omega 3':'omega', 'omega3':'omega', 'vitamina b12':'@vit_b12', 'b12':'@vit_b12', 'vitamina d3':'@vit_d', 'vitamina d':'@vit_d'
 };
 /* Palabras sueltas → alimento (uno) o varios (se pregunta). */
 const CH_SIN = {
@@ -7687,9 +7928,10 @@ const CH_SIN = {
   'papa':'papa', 'papas':'papa', 'papas fritas':'papas_fritas', 'ensalada':'ensalada_mixta', 'tarta':['tarta_jyq','tarta_verdura'],
   'yogur':'yog_nat', 'yogurt':'yog_nat', 'leche':'milk', 'queso':['queso_cr','queso_mz','queso_dambo','queso_ps'],
   'pan':'pan_frances', 'tostada':'pan_lact', 'tostadas':'pan_lact', 'avena':'oat', 'atun':'atun', 'lentejas':'lent', 'garbanzos':'garb', 'tofu':'tofu',
-  'whey':'whey', 'proteina':'whey', 'manteca de mani':'mani_pst', 'helado':'helado', 'flan':'flan_ddl', 'jyq':'tostado',
+  'whey':'whey', 'proteina':['whey','prot_veg','soja_pro','arv_pro'], 'creatina':'creatina', 'colageno':'colageno', 'multivitaminico':'multivit', 'magnesio':'magnesio', 'omega':['omega3_pez','omega3_alga'], 'electrolitos':'electrolitos', 'manteca de mani':'mani_pst', 'helado':'helado', 'flan':'flan_ddl', 'jyq':'tostado',
   'banana':'banana', 'manzana':'manzana', 'naranja':'naranja', 'mandarina':'mandarina', 'palta':'palta', 'nueces':'nuez', 'almendras':'almendra'
 };
+const VEG_EQUIV = {milk:'milk_soja', milk_desc:'milk_soja', whey:'prot_veg'};
 /* Porción por defecto cuando dicen "una"/"un plato" de algo medido en gramos. */
 function chPorcion(i){
   const fija = {gaseosa:350, gaseosa_zero:350, cerveza:350, vino:150, cafe:150, mate:250, jugo_naranja:250, milk:250, milk_desc:250,
@@ -7717,11 +7959,14 @@ function chBuscar(texto){
         .flatMap(w => w === 'jyq' ? ['jamon','queso'] : [w]).map(chRaiz);
       if(extra.length){
         const raizK = chRaiz(chTokens(k)[0]);
-        const variante = INGREDIENTS.filter(i => {
+        let variante = INGREDIENTS.filter(i => {
           const n = chTokens(i.name).map(chRaiz);
           const tiene = r => n.some(x => x === r || (r.length > 3 && (x.startsWith(r) || r.startsWith(x))));
           return (tiene(raizK) || (Array.isArray(v) && v.includes(i.id))) && extra.every(tiene);
         });
+        // Si hay opciones que van con la dieta, no se ofrecen las otras.
+        if(variante.some(i => ingApto(i, diet))) variante = variante.filter(i => ingApto(i, diet));
+        else if(diet === 'vegan' && variante.some(i => ingApto(i, 'ovo'))) variante = variante.filter(i => ingApto(i, 'ovo'));
         // Sin "frita" en la frase, se asume la versión al horno.
         const sinFrito = extra.some(w => w.startsWith('frit')) ? variante : variante.filter(i => !/frit/i.test(i.name));
         if(sinFrito.length === 1) return {ids:[sinFrito[0].id], seguro:true};
@@ -7736,8 +7981,15 @@ function chBuscar(texto){
           if(afin.length === 1) return {ids:afin, seguro:true};
           if(afin.length > 1) v = afin;
         }
-        return {ids:v.filter(id => INGR_BY_ID[id] && ingApto(INGR_BY_ID[id], diet)).concat(v.filter(id => INGR_BY_ID[id] && !ingApto(INGR_BY_ID[id], diet))), seguro:false};
+        // Opciones: solo las que van con la dieta (si alguna va).
+        let aptas = v.filter(id => INGR_BY_ID[id] && ingApto(INGR_BY_ID[id], diet));
+        // Vegano sin opción vegana (empanadas, pizza): las vegetarianas, nunca las de carne.
+        if(!aptas.length && diet === 'vegan') aptas = v.filter(id => INGR_BY_ID[id] && ingApto(INGR_BY_ID[id], 'ovo'));
+        const ops = aptas.length ? aptas : v.filter(id => INGR_BY_ID[id]);
+        return {ids:ops, seguro:ops.length === 1};
       }
+      // Vegano que dice "leche" o "yogur": la versión vegetal.
+      if(diet === 'vegan' && VEG_EQUIV[v] && !/vaca/.test(t)) v = VEG_EQUIV[v];
       if(INGR_BY_ID[v]) return {ids:[v], seguro:true};
     }
   }
@@ -7752,6 +8004,11 @@ function chBuscar(texto){
     return {id:i.id, sc, hit};
   }).filter(x => x.hit > 0).sort((a, b) => b.sc - a.sc);
   if(!puntajes.length) return {ids:[], seguro:false};
+  // Parecidos: primero lo que va con la dieta.
+  if(puntajes.some(x => ingApto(INGR_BY_ID[x.id], diet))){
+    const ok = puntajes.filter(x => ingApto(INGR_BY_ID[x.id], diet));
+    if(ok[0].sc >= puntajes[0].sc - 0.3) puntajes.splice(0, puntajes.length, ...ok);
+  }
   const top = puntajes[0].sc;
   const empatados = puntajes.filter(x => x.sc >= top - 0.05).map(x => x.id);
   return {ids: empatados.slice(0, 5), seguro: empatados.length === 1 && top >= 0.9};
@@ -7822,7 +8079,9 @@ let chMsgs = [];
 function chSaludo(){
   const h = new Date().getHours();
   const q = h < 11 ? '¿Qué desayunaste?' : h < 15 ? '¿Qué almorzaste?' : h < 19 ? '¿Qué merendaste?' : '¿Qué cenaste?';
-  return `¡Hola! ${q} Contámelo como te salga, por ejemplo: "2 empanadas de carne, media pizza de muzza y una coca".`;
+  const ej = ({omni:'2 empanadas de carne, media pizza de muzza y una coca', ovo:'2 empanadas de humita, media pizza de muzza y una coca',
+    vegan:'un plato de fideos con tuco, una banana y un café'})[dietaDe(state.profile)] || '2 empanadas, media pizza y una coca';
+  return `¡Hola! ${q} Contámelo como te salga, por ejemplo: "${ej}".`;
 }
 function openChat(){
   if(!chMsgs.length) chMsgs.push({de:'bot', texto:chSaludo()});
@@ -7853,7 +8112,12 @@ function chEnviar(textoForzado){
   }, 550);
 }
 function chTotal(items){ return computeMealNutrition({items}); }
-const CH_RAPIDAS = ['2 empanadas de carne y una coca', 'café con leche y 2 medialunas', 'milanesa de pollo con ensalada', 'yogur con avena y una banana'];
+const CH_RAPIDAS = {
+  omni:  ['2 empanadas de carne y una coca', 'café con leche y 2 medialunas', 'milanesa de pollo con ensalada', 'yogur con avena y una banana'],
+  ovo:   ['2 empanadas de humita y una coca', 'café con leche y 2 medialunas', 'milanesa de soja con ensalada', 'yogur con avena y una banana'],
+  vegan: ['fideos con tuco', 'café y 2 tostadas con palta', 'milanesa de soja con ensalada', 'avena con banana y manteca de maní']
+};
+const chRapidas = () => CH_RAPIDAS[dietaDe(state.profile)] || CH_RAPIDAS.omni;
 function renderChat(){
   const el = document.getElementById('chatLog');
   const chip = (cls, v, l) => `<span class="ch-mc ${cls}"><b>${v}</b>${l}</span>`;
@@ -7892,7 +8156,7 @@ function renderChat(){
 
   // Sugerencias rápidas: solo al principio de la charla
   const q = document.getElementById('chatQuick');
-  q.innerHTML = chMsgs.length <= 1 ? CH_RAPIDAS.map(t => `<button data-crapida="${escapeHtml(t)}">${t}</button>`).join('') : '';
+  q.innerHTML = chMsgs.length <= 1 ? chRapidas().map(t => `<button data-crapida="${escapeHtml(t)}">${t}</button>`).join('') : '';
   q.querySelectorAll('[data-crapida]').forEach(b => b.onclick = () => chEnviar(b.dataset.crapida));
   el.scrollTop = el.scrollHeight;
   const par = s => s.split(':').map((v, n) => n < 2 ? +v : v);
