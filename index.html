@@ -2244,6 +2244,61 @@ body.screen-open{overflow:hidden}
 .score-ring{width:100px;height:100px}
 .score-num{font-size:26px}
 .hero-top{margin-bottom:14px}
+
+/* ==================== INICIO SIMPLE ====================
+   Pastillas de atajo, peso, el día en una tarjeta y el diario por momento. */
+.hp-pills{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:-2px -16px 14px;padding:2px 16px}
+.hp-pills::-webkit-scrollbar{display:none}
+.hp-pills button{display:inline-flex;align-items:center;gap:7px;flex-shrink:0;padding:8px 14px 8px 12px;border-radius:999px;border:1px solid var(--line-2);background:var(--panel);font-size:13px;font-weight:600;color:var(--text);transition:transform .15s,border-color .15s}
+.hp-pills button:active{transform:scale(.96);border-color:var(--brand)}
+.hp-pills svg{width:16px;height:16px;fill:none;stroke:var(--brand);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.dia-card{cursor:pointer}
+.dia-card::after,.mo::after{display:none}
+.dia-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.dia-ttl{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;color:var(--text-2)}
+.dia-plan{display:inline-flex;align-items:center;gap:6px;min-width:0;padding:5px 6px 5px 10px;border-radius:999px;background:var(--panel-2);border:1px solid var(--line);font-size:12px;font-weight:600;color:var(--text-2)}
+.dia-plan .ico{width:14px;height:14px;stroke:var(--brand)}
+.dia-plan span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dia-plan b{padding:3px 9px;border-radius:999px;background:var(--grad);color:#fff;font-size:11px;font-weight:700}
+.dia-kcal{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.dia-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:26px;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.dia-num small{font-size:13px;font-weight:600;color:var(--text-3);letter-spacing:0;margin-left:4px}
+.dia-resta{font-size:12px;font-weight:600;color:var(--text-3);white-space:nowrap}
+.dia-resta.over{color:var(--bad)}
+.dia-bar{height:6px;border-radius:6px;background:rgba(var(--ink-rgb),.07);margin:8px 0 12px;overflow:hidden}
+.dia-bar i{display:block;height:100%;border-radius:6px;background:var(--grad);transition:width .6s cubic-bezier(.2,.8,.2,1)}
+.dia-bar i.over{background:var(--bad)}
+.dia-macros{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.dia-m-top{display:flex;justify-content:space-between;align-items:baseline;gap:4px;font-size:11.5px;color:var(--text-3);font-weight:600}
+.dia-m-top b{font-size:12.5px;color:var(--text);font-variant-numeric:tabular-nums}
+.dia-m-top small{font-size:10.5px;color:var(--text-4);font-weight:600}
+.dia-m-bar{height:4px;border-radius:4px;background:rgba(var(--ink-rgb),.07);margin-top:5px;overflow:hidden}
+.dia-m-bar i{display:block;height:100%;border-radius:4px;transition:width .6s cubic-bezier(.2,.8,.2,1)}
+
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin:20px 2px 10px}
+.sec-head h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;letter-spacing:-.02em}
+
+.mo{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:12px 12px 12px 14px;margin-bottom:8px;position:relative}
+.mo-top{display:flex;align-items:center;gap:10px}
+.mo-tag{display:inline-block;padding:4px 10px;border-radius:8px;background:rgba(var(--brand-rgb),.12);color:var(--brand);font-size:12.5px;font-weight:700;flex-shrink:0}
+.mo-tot{flex:1;min-width:0;font-size:12px;color:var(--text-3);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mo-tot b{color:var(--text);font-weight:700}
+.mo-add{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:grid;place-items:center;background:var(--panel-2);border:1px solid var(--line-2);transition:transform .15s}
+.mo-add:active{transform:scale(.9)}
+.mo-add svg{width:15px;height:15px;fill:none;stroke:var(--text-2);stroke-width:2.4;stroke-linecap:round}
+.mo:not(.vacio) .mo-add{background:var(--grad);border-color:transparent}
+.mo:not(.vacio) .mo-add svg{stroke:#fff}
+.mo-row{display:flex;align-items:center;gap:11px;padding-top:11px;margin-top:11px;border-top:1px solid var(--line)}
+.mo-row + .mo-row{margin-top:0}
+.mo-thumb{width:44px;height:44px;border-radius:12px;flex-shrink:0;overflow:hidden}
+.mo-thumb .ico{width:22px;height:22px}
+.mo-info{flex:1;min-width:0}
+.mo-name{font-size:14px;font-weight:600;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mo-name span{color:var(--text-3);font-weight:600}
+.mo-mac{font-size:11.5px;color:var(--text-3);margin-top:2px;font-variant-numeric:tabular-nums}
+.mo-rm{width:28px;height:28px;border-radius:8px;color:var(--text-4);font-size:19px;line-height:1;flex-shrink:0}
+.mo-rm:active{background:rgba(var(--ink-rgb),.07)}
 </style>
 </head>
 <body>
@@ -2279,70 +2334,26 @@ body.screen-open{overflow:hidden}
       <h1 class="page-subtitle">Tu día</h1>
     </div>
 
+    <!-- Atajos, como pastillas -->
+    <div class="hp-pills" id="homePills">
+      <button data-hp="hist"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg>Historial</button>
+      <button data-hp="peso"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M8.5 9.5a5 5 0 0 1 7 0"/><path d="M12 9.5l1.2-1.6"/></svg>Peso</button>
+      <button data-hp="nutri"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9h-9z"/><path d="M15 2.6A9 9 0 0 1 21.4 9H15z"/></svg>Nutrientes</button>
+      <button data-hp="metas"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r=".8"/></svg>Metas</button>
+    </div>
+
     <!-- Peso: lo primero que se ve -->
     <div class="card pw-card" id="pesoCard"></div>
 
-    <!-- El día de un vistazo -->
-    <div class="hero" id="heroCard"></div>
+    <!-- El día en una línea; el detalle está en Nutrientes -->
+    <div class="card dia-card" id="diaCard"></div>
 
-    <!-- Lo que hacés hoy, resumido; se despliega para ver el detalle -->
-    <div class="card plan-card" id="planCard"></div>
-
-
-    <!-- Lo que comiste hoy: lo único que se mira todos los días -->
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">Comidas de hoy</div>
-        <button class="link-btn" id="openCal">Calendario ›</button>
-      </div>
-      <div id="todayMeals"></div>
-      <div id="quickFavs"></div>
-      <button class="chat-entry" id="openChat">
-        <span class="chat-entry-ico"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/></svg></span>
-        <span class="chat-entry-txt">Contame qué comiste…</span>
-      </button>
-      <button class="cta" id="goToMeals">
-        <span class="cta-plus">+</span> Registrar comida
-      </button>
+    <!-- Diario: una tarjeta por momento del día -->
+    <div class="sec-head">
+      <h2>Diario de comidas</h2>
+      <button class="link-btn" id="openCal">Ver todo ›</button>
     </div>
-
-    <!-- El detalle queda plegado: está todo, pero no de golpe -->
-    <div class="acc" data-acc="macros">
-      <div class="acc-head" data-acctoggle="macros">
-        <div class="acc-ico"><svg class="ico" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9h-9z"/><path d="M15 2.6A9 9 0 0 1 21.4 9H15z"/></svg></div>
-        <div class="acc-title">Macronutrientes<div class="acc-sum" id="sumMacros"></div></div>
-        <div class="acc-chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg></div>
-      </div>
-      <div class="acc-body">
-        <div class="hint">Cuánta energía, proteína, carbo y grasa llevás contra tu objetivo del día.</div>
-        <div id="macroList"></div>
-        <div class="pie-grid" id="pieGrid" style="margin-top:14px"></div>
-      </div>
-    </div>
-
-    <div class="acc" data-acc="micros">
-      <div class="acc-head" data-acctoggle="micros">
-        <div class="acc-ico"><svg class="ico" viewBox="0 0 24 24"><path d="M12 3l1.9 5.6L19.5 10.5l-5.6 1.9L12 18l-1.9-5.6L4.5 10.5l5.6-1.9z"/><path d="M19 17v4M17 19h4"/></svg></div>
-        <div class="acc-title">Micronutrientes<div class="acc-sum" id="sumMicros"></div></div>
-        <div class="acc-chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg></div>
-      </div>
-      <div class="acc-body">
-        <div class="hint">Hierro, B12, zinc, calcio y compañía. La barra verde es objetivo cumplido; el aviso de UL marca cuándo te estás pasando del límite seguro.</div>
-        <div id="microList"></div>
-      </div>
-    </div>
-
-    <div class="acc" data-acc="ratios">
-      <div class="acc-head" data-acctoggle="ratios">
-        <div class="acc-ico"><svg class="ico" viewBox="0 0 24 24"><path d="M4 8h15l-3.5-3.5M20 16H5l3.5 3.5"/></svg></div>
-        <div class="acc-title">Balance omega<div class="acc-sum" id="sumRatios"></div></div>
-        <div class="acc-chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg></div>
-      </div>
-      <div class="acc-body">
-        <div class="hint">La relación omega 6 : omega 3. Cuanto más baja, mejor: lo ideal es menos de 4 a 1.</div>
-        <div id="ratiosList"></div>
-      </div>
-    </div>
+    <div id="diario"></div>
   </section>
 
   <!-- PAGE: CLUB -->
@@ -2448,6 +2459,62 @@ body.screen-open{overflow:hidden}
     <svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-4.5 4v-4h0A1.5 1.5 0 0 1 4 14.5z"/><path d="M8.5 8.5h7M8.5 11.5h4.5"/></svg>
   </button>
 
+  <!-- VENTANA: NUTRIENTES DEL DÍA -->
+  <div class="screen" id="nutriScreen" aria-hidden="true">
+    <div class="screen-top">
+      <button class="icon-btn" id="nutriClose" aria-label="Volver">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="screen-title">Nutrientes de hoy</div>
+      <div style="width:38px"></div>
+    </div>
+    <div class="screen-body">
+    <!-- El día de un vistazo -->
+    <div class="hero" id="heroCard"></div>
+
+    <!-- Lo que hacés hoy, resumido; se despliega para ver el detalle -->
+    <div class="card plan-card" id="planCard"></div>
+
+    <!-- El detalle queda plegado: está todo, pero no de golpe -->
+    <div class="acc" data-acc="macros">
+      <div class="acc-head" data-acctoggle="macros">
+        <div class="acc-ico"><svg class="ico" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9h-9z"/><path d="M15 2.6A9 9 0 0 1 21.4 9H15z"/></svg></div>
+        <div class="acc-title">Macronutrientes<div class="acc-sum" id="sumMacros"></div></div>
+        <div class="acc-chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg></div>
+      </div>
+      <div class="acc-body">
+        <div class="hint">Cuánta energía, proteína, carbo y grasa llevás contra tu objetivo del día.</div>
+        <div id="macroList"></div>
+        <div class="pie-grid" id="pieGrid" style="margin-top:14px"></div>
+      </div>
+    </div>
+
+    <div class="acc" data-acc="micros">
+      <div class="acc-head" data-acctoggle="micros">
+        <div class="acc-ico"><svg class="ico" viewBox="0 0 24 24"><path d="M12 3l1.9 5.6L19.5 10.5l-5.6 1.9L12 18l-1.9-5.6L4.5 10.5l5.6-1.9z"/><path d="M19 17v4M17 19h4"/></svg></div>
+        <div class="acc-title">Micronutrientes<div class="acc-sum" id="sumMicros"></div></div>
+        <div class="acc-chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg></div>
+      </div>
+      <div class="acc-body">
+        <div class="hint">Hierro, B12, zinc, calcio y compañía. La barra verde es objetivo cumplido; el aviso de UL marca cuándo te estás pasando del límite seguro.</div>
+        <div id="microList"></div>
+      </div>
+    </div>
+
+    <div class="acc" data-acc="ratios">
+      <div class="acc-head" data-acctoggle="ratios">
+        <div class="acc-ico"><svg class="ico" viewBox="0 0 24 24"><path d="M4 8h15l-3.5-3.5M20 16H5l3.5 3.5"/></svg></div>
+        <div class="acc-title">Balance omega<div class="acc-sum" id="sumRatios"></div></div>
+        <div class="acc-chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg></div>
+      </div>
+      <div class="acc-body">
+        <div class="hint">La relación omega 6 : omega 3. Cuanto más baja, mejor: lo ideal es menos de 4 a 1.</div>
+        <div id="ratiosList"></div>
+      </div>
+    </div>
+    </div>
+  </div>
+
   <!-- VENTANA: PESO -->
   <div class="screen" id="pesoScreen" aria-hidden="true">
     <div class="screen-top">
@@ -2476,7 +2543,7 @@ body.screen-open{overflow:hidden}
       <button class="icon-btn" id="logClose" aria-label="Volver">
         <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
-      <div class="screen-title">Registrar comida</div>
+      <div class="screen-title" id="logTitle">Registrar comida</div>
       <button class="icon-btn" id="logLibrary" aria-label="Explorar alimentos" title="Explorar alimentos">
         <svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5M8 7h7M8 11h5"/></svg>
       </button>
@@ -3414,8 +3481,35 @@ function hydrateMeal(meal){
    un solo ingrediente, así el resto de la app (totales, calendario) no
    necesita saber que existe. */
 function ingEntryId(id, qty){ return `i:${id}:${+qty}`; }
+/* Momento del día: cada entrada puede llevar '@d' (desayuno), '@a', '@m',
+   '@c' o '@s'. Las entradas viejas no lo tienen y se muestran como "Otras". */
+const MOMENTOS = [
+  {k:'d', l:'Desayuno'}, {k:'a', l:'Almuerzo'}, {k:'m', l:'Merienda'}, {k:'c', l:'Cena'}, {k:'s', l:'Snacks'}
+];
+const entBase = (e) => typeof e === 'string' ? e.split('@')[0] : e;
+const entMom  = (e) => typeof e === 'string' ? (e.split('@')[1] || '') : '';
+function momentoPorHora(){
+  const d = new Date(), h = d.getHours() + d.getMinutes() / 60;
+  if(h >= 5 && h < 11) return 'd';
+  if(h >= 11 && h < 16) return 'a';
+  if(h >= 16 && h < 19.5) return 'm';
+  if(h >= 19.5) return 'c';
+  return 's';
+}
+function momentoLog(){ return state.logMomento || momentoPorHora(); }
+function conMomento(eid){ return eid.includes('@') ? eid : `${eid}@${momentoLog()}`; }
+/* Índice de la entrada a quitar: la exacta, o la del mismo alimento en el
+   momento abierto, o cualquiera del mismo alimento. */
+function idxEntrada(arr, eid){
+  if(eid.includes('@')) return arr.lastIndexOf(eid);
+  let i = arr.lastIndexOf(`${eid}@${momentoLog()}`);
+  if(i < 0) i = arr.lastIndexOf(eid);
+  if(i < 0) for(let j = arr.length - 1; j >= 0; j--) if(entBase(arr[j]) === eid){ i = j; break; }
+  return i;
+}
 function parseIngEntry(eid){
   if(typeof eid !== 'string' || !eid.startsWith('i:')) return null;
+  eid = entBase(eid);
   const k = eid.lastIndexOf(':');
   const id = eid.slice(2, k), qty = +eid.slice(k + 1);
   if(!INGR_BY_ID[id] || !(qty > 0)) return null;
@@ -3506,7 +3600,7 @@ function loadState(){
       let cleaned = 0;
       Object.keys(state.selectedByDate).forEach(dk => {
         const before = state.selectedByDate[dk].length;
-        state.selectedByDate[dk] = state.selectedByDate[dk].filter(id => validIds.has(id) || parseIngEntry(id));
+        state.selectedByDate[dk] = state.selectedByDate[dk].filter(id => validIds.has(entBase(id)) || parseIngEntry(id));
         cleaned += before - state.selectedByDate[dk].length;
         if(state.selectedByDate[dk].length === 0) delete state.selectedByDate[dk];
       });
@@ -3557,6 +3651,7 @@ document.addEventListener('visibilitychange', () => { if(document.hidden) saveSt
 /* Devuelve una comida por id. Si usa el formato items + qty, la hidrata
    calculando nutrientes desde la base de ingredientes. */
 function getMealById(id){
+  id = entBase(id);
   // Ingrediente suelto: se arma una "receta" de un solo ítem al vuelo.
   const ie = parseIngEntry(id);
   if(ie){
@@ -4713,30 +4808,97 @@ function renderResumen(){
     `).join('');
   }
 
-  const todayEl = document.getElementById('todayMeals');
-  renderQuickFavs();
-  if(selected.length === 0){
-    todayEl.innerHTML = `<div class="empty-state">Todavía sin comidas hoy. Registrá la primera abajo.</div>`;
-  } else {
-    todayEl.innerHTML = selected.map(id => {
-      const m = getMealById(id);
-      if(!m) return '';
-      return `
-        <div class="today-meal">
-          ${mealThumb(m, 'today-meal-thumb')}
-          <div class="today-meal-info">
-            <div class="today-meal-name">${m.name}${m.qtyLabel ? ` <span class="qty">· ${m.qtyLabel}</span>` : ''}</div>
-            <div class="today-meal-macros">${m.kcal} kcal · P ${m.p}g · C ${m.c}g · G ${m.f}g</div>
-          </div>
-          <button class="today-meal-rm" data-rm="${id}" aria-label="Quitar">×</button>
-        </div>
-      `;
-    }).join('');
-    todayEl.querySelectorAll('[data-rm]').forEach(btn => {
-      btn.onclick = () => { toggleMeal(btn.dataset.rm); };
-    });
-  }
+  renderDiaCard(totals, targets);
+  renderDiario();
 }
+
+/* ---- Inicio: el día en una tarjeta chica ---- */
+function renderDiaCard(totals, t){
+  const el = document.getElementById('diaCard');
+  const kcal = Math.round(totals.kcal), obj = Math.round(t.kcal);
+  const pk = obj > 0 ? kcal / obj : 0;
+  const resta = obj - kcal;
+  const tt = t._dia.tt, plan = t._dia.plan;
+  const mac = (l, v, o, color, lim) => {
+    const p = o > 0 ? v / o : 0;
+    const over = kpiEstado(p, lim) === 'over';
+    return `<div class="dia-m">
+      <div class="dia-m-top"><span>${l}</span><b>${Math.round(v)}<small>/${Math.round(o)}g</small></b></div>
+      <div class="dia-m-bar"><i style="width:${Math.min(p * 100, 100)}%;background:${over ? 'var(--bad)' : color}"></i></div>
+    </div>`;
+  };
+  el.innerHTML = `
+    <div class="dia-top">
+      <div class="dia-ttl">Hoy</div>
+      <button class="dia-plan" id="diaPlan">${ico(tt.ico)}<span>${tt.l.replace(/ \(.*\)/, '')}${plan.min ? ` · ${plan.min}′` : ''}</span><b>Cambiar</b></button>
+    </div>
+    <div class="dia-kcal">
+      <div class="dia-num">${kcal.toLocaleString('es-AR')}<small>/ ${obj.toLocaleString('es-AR')} kcal</small></div>
+      <div class="dia-resta ${resta < -obj * 0.05 ? 'over' : ''}">${kcal === 0 ? 'sin registrar' : resta >= 0 ? `quedan ${resta.toLocaleString('es-AR')}` : `+${(-resta).toLocaleString('es-AR')} de más`}</div>
+    </div>
+    <div class="dia-bar"><i class="${pk > 1.05 ? 'over' : ''}" style="width:${Math.min(pk * 100, 100)}%"></i></div>
+    <div class="dia-macros">
+      ${mac('Proteína', totals.p, t.protein, 'var(--brand-2)', false)}
+      ${mac(t.carbIsLimit ? 'Carbos máx' : 'Carbos', totals.c, t.carb, 'var(--carb)', !!t.carbIsLimit)}
+      ${mac('Grasa', totals.f, t.fat, 'var(--fat)', false)}
+    </div>`;
+  el.onclick = (e) => { if(!e.target.closest('#diaPlan')) openNutri(); };
+  document.getElementById('diaPlan').onclick = () => openDaySheet(todayKey());
+}
+
+/* ---- Inicio: diario por momento del día ---- */
+function renderDiario(){
+  const el = document.getElementById('diario');
+  const sel = state.selectedByDate[todayKey()] || [];
+  const grupos = MOMENTOS.map(m => ({...m, ents: sel.filter(e => entMom(e) === m.k)}));
+  const viejas = sel.filter(e => !entMom(e));
+  if(viejas.length) grupos.push({k:'', l:'Otras', ents:viejas, sinAdd:true});
+  el.innerHTML = grupos.map(g => {
+    // La misma entrada repetida va una vez, con ×n.
+    const filas = [];
+    g.ents.forEach(e => { const f = filas.find(x => x.e === e); if(f) f.n++; else filas.push({e, n:1}); });
+    const tot = aggregateMeals(g.ents);
+    return `
+    <div class="mo ${filas.length ? '' : 'vacio'}">
+      <div class="mo-top">
+        <span class="mo-tag">${g.l}</span>
+        ${filas.length ? `<span class="mo-tot"><b>${Math.round(tot.kcal)}</b> kcal · ${Math.round(tot.p)}p ${Math.round(tot.c)}c ${Math.round(tot.f)}g</span>` : '<span class="mo-tot"></span>'}
+        ${g.sinAdd ? '' : `<button class="mo-add" data-moadd="${g.k}" aria-label="Sumar a ${g.l}"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>`}
+      </div>
+      ${filas.map(f => {
+        const m = getMealById(f.e);
+        if(!m) return '';
+        return `
+        <div class="mo-row">
+          ${mealThumb(m, 'mo-thumb')}
+          <div class="mo-info">
+            <div class="mo-name">${m.name}${f.n > 1 ? ` <span>×${f.n}</span>` : ''}</div>
+            <div class="mo-mac">${m.qtyLabel ? `${m.qtyLabel} · ` : ''}${Math.round(m.kcal * f.n)} kcal · ${Math.round(m.p * f.n)}p ${Math.round(m.c * f.n)}c ${Math.round(m.f * f.n)}g</div>
+          </div>
+          <button class="mo-rm" data-morm="${escapeHtml(f.e)}" aria-label="Quitar">×</button>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }).join('');
+  el.querySelectorAll('[data-moadd]').forEach(b => b.onclick = () => openLogMomento(b.dataset.moadd));
+  el.querySelectorAll('[data-morm]').forEach(b => b.onclick = () => {
+    const tk = todayKey(), arr = state.selectedByDate[tk] || [];
+    const i = arr.lastIndexOf(b.dataset.morm);
+    if(i < 0) return;
+    arr.splice(i, 1);
+    if(!arr.length) delete state.selectedByDate[tk];
+    saveState();
+    renderResumen();
+    toast('Quitado');
+  });
+}
+function openLogMomento(k){
+  state.logMomento = k;
+  state.logTab = 'para';
+  openLogScreen(null);
+}
+function openNutri(){ abrirPantalla('nutriScreen'); }
+function closeNutri(){ cerrarPantalla('nutriScreen'); }
 
 /* Estado de cumplimiento de un KPI: 'good' en rango, 'over' pasado, '' en
    camino. En keto el carbo es techo: quedarse abajo es estar bien. */
@@ -4905,9 +5067,9 @@ function renderRecipeCards(list, filtered){
     const editada = esBase && state.customMeals.some(c => c.id === m.id);
     const etiqueta = editada ? 'EDITADA' : '';
     const editable = !!m.items;
-    const selectedCount = selected.filter(x => x === m.id).length;
+    const selectedCount = selected.filter(x => entBase(x) === m.id).length;
     return `
-    <div class="meal ${selected.includes(m.id) ? 'selected' : ''} ${state.expanded.has(m.id) ? 'expanded' : ''}" data-meal="${m.id}">
+    <div class="meal ${selectedCount ? 'selected' : ''} ${state.expanded.has(m.id) ? 'expanded' : ''}" data-meal="${m.id}">
       <div class="meal-head" data-expand="${m.id}">
         <div class="meal-sel-mark"></div>
         ${mealThumb(m, 'meal-thumb')}
@@ -5013,10 +5175,10 @@ function incrementMeal(id, delta){
   if(!state.selectedByDate[tk]) state.selectedByDate[tk] = [];
   const arr = state.selectedByDate[tk];
   if(delta > 0){
-    arr.push(id);
+    arr.push(conMomento(id));
     toast(`+1 ${cuando}`);
   } else {
-    const i = arr.indexOf(id);
+    const i = idxEntrada(arr, id);
     if(i >= 0){ arr.splice(i,1); toast(`−1 ${cuando}`); }
     else { toast('Ya está en 0'); return; }
   }
@@ -5027,7 +5189,7 @@ function incrementMeal(id, delta){
 /* Alias mantenido por compatibilidad — funciona como toggle de 1 unidad */
 function toggleMeal(id){
   const tk = targetDateKey();
-  const count = (state.selectedByDate[tk] || []).filter(x => x === id).length;
+  const count = (state.selectedByDate[tk] || []).filter(x => x === id || entBase(x) === id).length;
   incrementMeal(id, count === 0 ? 1 : -1);
 }
 
@@ -5738,7 +5900,7 @@ function deleteMeal(id){
   if(base && !state.hiddenMeals.includes(id)) state.hiddenMeals.push(id);
   state.customMeals = state.customMeals.filter(m => m.id !== id);
   Object.keys(state.selectedByDate).forEach(dk => {
-    state.selectedByDate[dk] = state.selectedByDate[dk].filter(x => x !== id);
+    state.selectedByDate[dk] = state.selectedByDate[dk].filter(x => entBase(x) !== id);
     if(state.selectedByDate[dk].length === 0) delete state.selectedByDate[dk];
   });
   state.expanded.delete(id);
@@ -5810,7 +5972,7 @@ function addIngEntry(id, qty){
   const ing = INGR_BY_ID[id];
   const tk = targetDateKey();
   if(!state.selectedByDate[tk]) state.selectedByDate[tk] = [];
-  state.selectedByDate[tk].push(ingEntryId(id, qty));
+  state.selectedByDate[tk].push(conMomento(ingEntryId(id, qty)));
   state.lastQty[id] = qty;
   saveState();
   toast(`+ ${ing.name} · ${qtyLabel(ing, qty)}`);
@@ -5818,7 +5980,7 @@ function addIngEntry(id, qty){
 }
 function removeEntry(eid){
   const arr = state.selectedByDate[targetDateKey()] || [];
-  const i = arr.lastIndexOf(eid);
+  const i = idxEntrada(arr, eid);
   if(i < 0) return;
   arr.splice(i, 1);
   if(arr.length === 0) delete state.selectedByDate[targetDateKey()];
@@ -5828,7 +5990,7 @@ function removeEntry(eid){
 /* Clave de favorito de una entrada del día ('i:avena:80' -> 'ing:avena'). */
 function entryKey(eid){
   const ie = parseIngEntry(eid);
-  return ie ? 'ing:' + ie.id : eid;
+  return ie ? 'ing:' + ie.id : entBase(eid);
 }
 /* Recientes: lo último registrado, sin repetir, de los días más nuevos. */
 function recientes(limit){
@@ -5852,6 +6014,7 @@ function masUsados(limit){
 
 function renderQuickFavs(){
   const el = document.getElementById('quickFavs');
+  if(!el) return;
   const favs = state.favs.filter(favKeyValida).slice(0, 12);
   if(favs.length === 0){ el.innerHTML = ''; return; }
   el.innerHTML = `
@@ -6277,7 +6440,7 @@ function abrirPantalla(id){
 function cerrarPantalla(id){
   document.getElementById(id).classList.remove('open', 'top');
   document.getElementById(id).setAttribute('aria-hidden', 'true');
-  if(!isOpen('logScreen') && !isOpen('libScreen') && !isOpen('labScreen') && !isOpen('chatScreen') && !isOpen('pesoScreen')) document.body.classList.remove('screen-open');
+  if(!isOpen('logScreen') && !isOpen('libScreen') && !isOpen('labScreen') && !isOpen('chatScreen') && !isOpen('pesoScreen') && !isOpen('nutriScreen')) document.body.classList.remove('screen-open');
 }
 
 function openLogScreen(dk){
@@ -6288,12 +6451,15 @@ function openLogScreen(dk){
   if(logDesdeCal) cal.classList.remove('show');
   state.logSearch = '';
   document.getElementById('logSearch').value = '';
+  const mo = MOMENTOS.find(x => x.k === state.logMomento);
+  document.getElementById('logTitle').textContent = mo ? `Sumar a ${mo.l.toLowerCase()}` : 'Registrar comida';
   abrirPantalla('logScreen');
   document.getElementById('logBody').scrollTop = 0;
   renderLog();
 }
 function closeLogScreen(){
   cerrarPantalla('logScreen');
+  state.logMomento = null;
   if(logDesdeCal){
     const dk = targetDateKey();
     document.getElementById('calModal').classList.add('show');
@@ -6333,8 +6499,10 @@ const LOG_TABS = [
 
 function renderLog(){
   const dk = targetDateKey();
-  const sel = state.selectedByDate[dk] || [];
-  const totals = aggregateMeals(sel);
+  const selDia = state.selectedByDate[dk] || [];
+  // Los contadores de cada fila miran solo el momento abierto (si hay uno).
+  const sel = (state.logMomento ? selDia.filter(e => entMom(e) === state.logMomento) : selDia).map(entBase);
+  const totals = aggregateMeals(selDia);
   const t = computeTargets(state.profile, dk);
 
   document.getElementById('logDayLabel').innerHTML = etiquetaDia(dk);
@@ -6362,8 +6530,8 @@ function renderLog(){
     </div>`;
 
   document.getElementById('logPlan').onclick = () => openDaySheet(dk);
-  document.getElementById('logFootSum').innerHTML = sel.length
-    ? `<b>${sel.length}</b> registro${sel.length === 1 ? '' : 's'} · ${Math.round(totals.kcal)} kcal`
+  document.getElementById('logFootSum').innerHTML = selDia.length
+    ? `<b>${selDia.length}</b> registro${selDia.length === 1 ? '' : 's'} · ${Math.round(totals.kcal)} kcal`
     : 'Nada registrado todavía';
 
   // Pestañas
@@ -6371,7 +6539,7 @@ function renderLog(){
   const buscando = !!state.logSearch;
   tabs.style.display = buscando ? 'none' : '';
   tabs.innerHTML = LOG_TABS.map(x => {
-    const n = x.k === 'day' ? sel.length : (x.k === 'favs' ? state.favs.filter(favKeyValida).length : 0);
+    const n = x.k === 'day' ? selDia.length : (x.k === 'favs' ? state.favs.filter(favKeyValida).length : 0);
     return `<button class="chip ${state.logTab === x.k ? 'active' : ''}" data-ltab="${x.k}">${x.l}${n ? `<span class="n">${n}</span>` : ''}</button>`;
   }).join('');
   tabs.querySelectorAll('[data-ltab]').forEach(b => b.onclick = () => {
@@ -6417,12 +6585,12 @@ function renderLog(){
       .sort((a,b) => a.name.localeCompare(b.name, 'es'));
     html += ings.map(i => rowIng(i, sel)).join('');
   } else if(state.logTab === 'day'){
-    if(!sel.length){
+    if(!selDia.length){
       html = `<div class="empty"><div class="big">${ico('plate')}</div>Todavía no registraste nada este día.</div>`;
     } else {
       // Agrupado: misma entrada repetida se muestra una vez con su cantidad.
       const grupos = [];
-      sel.forEach(eid => {
+      selDia.forEach(eid => {
         const g = grupos.find(x => x.eid === eid);
         if(g) g.n++; else grupos.push({eid, n:1});
       });
@@ -6526,7 +6694,7 @@ function bindRows(root){
   root.querySelectorAll('[data-dupentry]').forEach(b => b.onclick = () => {
     const eid = b.dataset.dupentry;
     const ie = parseIngEntry(eid);
-    if(ie) addIngEntry(ie.id, ie.qty); else incrementMeal(eid, +1);
+    if(ie && !eid.includes('@')) addIngEntry(ie.id, ie.qty); else incrementMeal(eid, +1);
   });
 }
 
@@ -7450,7 +7618,7 @@ function labSumar(){
   const plate = labPlate(); if(!plate.length) return;
   const tk = todayKey();
   if(!state.selectedByDate[tk]) state.selectedByDate[tk] = [];
-  plate.forEach(x => { state.selectedByDate[tk].push(ingEntryId(x.id, x.qty)); state.lastQty[x.id] = x.qty; });
+  plate.forEach(x => { state.selectedByDate[tk].push(conMomento(ingEntryId(x.id, x.qty))); state.lastQty[x.id] = x.qty; });
   saveState(); refreshViews(); renderSegTags();
   toast('Plato sumado a hoy');
 }
@@ -7725,7 +7893,7 @@ function renderChat(){
   el.querySelectorAll('[data-cconfirmar]').forEach(b => b.onclick = () => {
     const m = chMsgs[+b.dataset.cconfirmar], tk = todayKey();
     if(!state.selectedByDate[tk]) state.selectedByDate[tk] = [];
-    m.items.forEach(x => { state.selectedByDate[tk].push(ingEntryId(x.id, x.qty)); state.lastQty[x.id] = x.qty; });
+    m.items.forEach(x => { state.selectedByDate[tk].push(conMomento(ingEntryId(x.id, x.qty))); state.lastQty[x.id] = x.qty; });
     if(m.agua){ if(!state.waterByDate[tk]) state.waterByDate[tk] = []; state.waterByDate[tk].push(m.agua); }
     m.listo = true;
     saveState(); renderSegTags();
@@ -7792,7 +7960,6 @@ function init(){
   document.getElementById('nmFotoDel').onclick = () => { nmFoto = null; pintarFotoPrev(); };
 
   // Registro, explorador y tema
-  document.getElementById('goToMeals').onclick = () => openLogScreen(null);
   document.getElementById('fabLog').onclick = openChat;
   document.getElementById('logClose').onclick = closeLogScreen;
   document.getElementById('logDone').onclick = closeLogScreen;
@@ -7802,7 +7969,10 @@ function init(){
   document.getElementById('logSearch').oninput = (e) => { state.logSearch = e.target.value.trim(); renderLog(); };
   document.getElementById('openLibrary').onclick = openLibrary;
   document.getElementById('openLab').onclick = openLab;
-  document.getElementById('openChat').onclick = openChat;
+  document.getElementById('nutriClose').onclick = closeNutri;
+  document.querySelectorAll('#homePills [data-hp]').forEach(b => b.onclick = () => {
+    ({hist:openCalModal, peso:openPeso, nutri:openNutri, metas:openProfile})[b.dataset.hp]();
+  });
   document.getElementById('chatClose').onclick = closeChat;
   document.getElementById('pesoClose').onclick = closePeso;
   document.getElementById('pesoAddTop').onclick = () => openPesoSheet('peso');
@@ -7832,6 +8002,7 @@ function init(){
     if(document.getElementById('pesoSheet').classList.contains('show')) closePesoSheet();
     else if(document.getElementById('qtySheet').classList.contains('show')) closeQtySheet();
     else if(isOpen('pesoScreen')) closePeso();
+    else if(isOpen('nutriScreen')) closeNutri();
     else if(isOpen('libScreen')) closeLibrary();
     else if(isOpen('labScreen')) closeLab();
     else if(isOpen('chatScreen')) closeChat();
