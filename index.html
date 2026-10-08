@@ -2408,6 +2408,14 @@ body.screen-open{overflow:hidden}
 .lm-tips{list-style:none;margin-top:12px;display:grid;gap:7px}
 .lm-tips li{font-size:12.5px;line-height:1.45;color:var(--text-2);padding-left:14px;position:relative}
 .lm-tips li::before{content:'';position:absolute;left:2px;top:7px;width:5px;height:5px;border-radius:50%;background:var(--brand)}
+
+/* Botón destacado para crear una comida */
+.nueva-comida{width:100%;display:flex;align-items:center;gap:14px;text-align:left;padding:14px 16px;margin-bottom:12px;border-radius:18px;background:var(--grad);color:#fff;box-shadow:0 12px 26px -12px rgba(var(--brand-rgb),.85);transition:transform .15s}
+.nueva-comida:active{transform:scale(.98)}
+.nc-ico{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.2);display:grid;place-items:center;flex-shrink:0}
+.nc-ico svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:2.6;stroke-linecap:round}
+.nc-txt b{display:block;font-family:var(--font-d);font-size:16px;font-weight:800}
+.nc-txt small{display:block;font-size:12px;opacity:.85;margin-top:1px}
 </style>
 </head>
 <body>
@@ -2672,7 +2680,7 @@ body.screen-open{overflow:hidden}
       <div class="live" id="logLive"></div>
       <div class="search-wrap">
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-        <input type="search" class="search" id="logSearch" placeholder="Buscar receta o ingrediente…" autocomplete="off">
+        <input type="search" class="search" id="logSearch" placeholder="Buscar comida o ingrediente…" autocomplete="off">
       </div>
       <div class="chips scroll-x" id="logTabs"></div>
       <div id="logList"></div>
@@ -2733,7 +2741,7 @@ body.screen-open{overflow:hidden}
     <div class="screen-body">
       <div class="seg2" id="libTabs">
         <button data-lib="ing" class="active">Ingredientes</button>
-        <button data-lib="rec">Cocina</button>
+        <button data-lib="rec">Comidas cargadas</button>
       </div>
       <div class="search-wrap">
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
@@ -2798,9 +2806,9 @@ body.screen-open{overflow:hidden}
   <div class="modal-bg" id="addMealModal">
     <div class="modal">
       <button class="modal-close" id="closeAddMeal">×</button>
-      <div class="modal-title">Nueva receta</div>
+      <div class="modal-title">Nueva comida</div>
       <p style="font-size:11px;color:var(--text-3);margin-bottom:14px;letter-spacing:.05em">
-        Armá tu receta sumando ingredientes con cantidad. Las macros y micros se calculan solas.
+        Armá tu comida sumando ingredientes con cantidad. Las macros y micros se calculan solas.
       </p>
       <div class="field">
         <label class="field-label">Nombre *</label>
@@ -2816,7 +2824,7 @@ body.screen-open{overflow:hidden}
         </div>
       </div>
 
-      <div class="field-label" style="margin-top:14px;color:var(--brand)">Ingredientes de la receta</div>
+      <div class="field-label" style="margin-top:14px;color:var(--brand)">Ingredientes de la comida</div>
       <div id="nmItemsList" style="margin-bottom:8px"></div>
 
       <!-- La base de ingredientes completa, acá donde se usa -->
@@ -2827,7 +2835,7 @@ body.screen-open{overflow:hidden}
           <div class="acc-chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg></div>
         </div>
         <div class="acc-body">
-          <div class="hint">Tocá un ingrediente para ver su detalle, o el + para sumarlo a la receta.</div>
+          <div class="hint">Tocá un ingrediente para ver su detalle, o el + para sumarlo a la comida.</div>
           <input type="text" class="search" id="ingSearch" placeholder="Buscar ingrediente...">
           <select class="filter-select" id="ingCatSelect" aria-label="Filtrar por categoría"></select>
           <select class="filter-select" id="ingSortSelect" aria-label="Ordenar por"></select>
@@ -2842,7 +2850,7 @@ body.screen-open{overflow:hidden}
 
       <div id="nmPreview" style="background:rgba(var(--brand-rgb),.05);border:1px solid rgba(var(--brand-rgb),.15);border-radius:10px;padding:12px;margin-top:14px"></div>
 
-      <button class="btn primary" style="margin-top:14px;width:100%" id="saveNewMeal">Guardar receta</button>
+      <button class="btn primary" style="margin-top:14px;width:100%" id="saveNewMeal">Guardar comida</button>
     </div>
   </div>
 
@@ -3692,7 +3700,7 @@ let state = {
   weightGoal: null,   // kg; null = sin meta
   pesoRango: '1M',
   lastQty: {},        // {ingId: última cantidad usada} — así repetir es un toque
-  logTab: 'para',     // pestaña abierta en la ventana de registro (no persiste)
+  logTab: 'rec',      // pestaña abierta en la ventana de registro (no persiste)
   logSearch: '',
   logCat: 'todos',
   logOpen: null,      // receta desplegada en el registro
@@ -4175,7 +4183,7 @@ function renderMealMicrosSection(m){
   }
   return `
     <div class="detail-section">
-      <div class="detail-title">Micronutrientes (total receta)</div>
+      <div class="detail-title">Micronutrientes (total de la comida)</div>
       <div style="margin-top:4px">
         ${items.map(it => `
           <div class="ing-micro-row">
@@ -5072,7 +5080,7 @@ function renderDiario(){
 }
 function openLogMomento(k){
   state.logMomento = k;
-  state.logTab = 'para';
+  state.logTab = 'rec';
   openLogScreen(null);
 }
 function openNutri(){ abrirPantalla('nutriScreen'); }
@@ -5229,7 +5237,7 @@ function renderRecipeCards(list, filtered){
 
   const addBtnHtml = `
     <button class="btn-add-meal" id="addMealBtn">
-      <span class="plus">+</span> Crear receta con ingredientes
+      <span class="plus">+</span> Crear comida nueva
     </button>
   `;
   if(filtered.length === 0){
@@ -5760,7 +5768,7 @@ function renderIngredientes(){
         </div>
         ${esIngredienteKeto(i) ? `<span class="k-badge" title="Apto keto: ${carbosPor100g(i).toFixed(1)}g de carbo por 100g">K</span>` : ''}
         <div class="ing-val-mini"><span style="font-size:8px;font-weight:500;color:var(--text-3);margin-right:3px">P</span>${i.p}<span style="font-size:8px;font-weight:500;color:var(--text-3);margin-left:1px">g</span></div>
-        <button class="ing-add" data-iadd="${i.id}" title="Sumar a la receta" aria-label="Sumar a la receta">+</button>
+        <button class="ing-add" data-iadd="${i.id}" title="Sumar a la comida" aria-label="Sumar a la comida">+</button>
         <div class="ing-chevron">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg>
         </div>
@@ -5791,7 +5799,7 @@ function nmAddIngrediente(id){
   const ing = INGR_BY_ID[id];
   if(!ing) return;
   const ya = nmItems.find(it => it.id === id);
-  if(ya){ toast('Ya está en la receta'); return; }
+  if(ya){ toast('Ya está en la comida'); return; }
   nmItems.push({id, qty: ing.unit === 'u' ? 1 : 100});
   renderNmItems();
   renderNmPreview();
@@ -6090,8 +6098,8 @@ function openAddMealModal(){
   nmFoto = null;
   document.getElementById('nmName').value = '';
   document.getElementById('nmPrep').value = '';
-  document.querySelector('#addMealModal .modal-title').textContent = 'Nueva receta';
-  document.getElementById('saveNewMeal').textContent = 'Guardar receta';
+  document.querySelector('#addMealModal .modal-title').textContent = 'Nueva comida';
+  document.getElementById('saveNewMeal').textContent = 'Guardar comida';
   renderNmItems();
   renderNmPreview();
   renderIngredientes();
@@ -6103,13 +6111,13 @@ function openAddMealModal(){
 function openEditMealModal(id){
   // Puede ser una receta propia, una base ya editada o una base intacta.
   const meal = state.customMeals.find(m => m.id === id) || MEALS.find(m => m.id === id);
-  if(!meal || !meal.items){ toast('Esta receta no se puede editar'); return; }
+  if(!meal || !meal.items){ toast('Esta comida no se puede editar'); return; }
   nmEditingId = id;
   nmFoto = state.mealPhotos[id] || null;
   nmItems = meal.items.map(it => ({id:it.id, qty:it.qty})); // copia
   document.getElementById('nmName').value = meal.name;
   document.getElementById('nmPrep').value = meal.prep || '';
-  document.querySelector('#addMealModal .modal-title').textContent = 'Editar receta';
+  document.querySelector('#addMealModal .modal-title').textContent = 'Editar comida';
   document.getElementById('saveNewMeal').textContent = 'Guardar cambios';
   renderNmItems();
   renderNmPreview();
@@ -6162,7 +6170,7 @@ function renderNmPreview(){
   // Hidratar para que renderMealMicrosSection reciba los campos directos
   const hydrated = {...n, ing: [], tags: []};
   document.getElementById('nmPreview').innerHTML = `
-    <div style="font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--brand);margin-bottom:8px;font-weight:700">Total receta</div>
+    <div style="font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--brand);margin-bottom:8px;font-weight:700">Total de la comida</div>
     <div class="nm-preview-row">
       <div><div class="nm-preview-val">${n.kcal}</div><div class="nm-preview-lbl">kcal</div></div>
       <div><div class="nm-preview-val">${n.p}g</div><div class="nm-preview-lbl">prot</div></div>
@@ -6278,7 +6286,7 @@ function saveNewMeal(){
   if(nmFoto) state.mealPhotos[meal.id] = nmFoto;
   saveState();
   closeAddMealModal();
-  toast('Receta guardada');
+  toast('Comida guardada');
   refreshViews();
 }
 
@@ -6291,8 +6299,8 @@ function saveNewMeal(){
 function deleteMeal(id){
   const base = isBuiltinId(id);
   const msg = base
-    ? '¿Eliminar esta receta base? Se saca de la lista y de los días donde esté cargada. Podés restaurarla después.'
-    : '¿Eliminar esta receta? No se puede deshacer.';
+    ? '¿Eliminar esta comida? Se saca de la lista y de los días donde esté cargada. Podés restaurarla después.'
+    : '¿Eliminar esta comida? No se puede deshacer.';
   if(!confirm(msg)) return;
 
   if(base && !state.hiddenMeals.includes(id)) state.hiddenMeals.push(id);
@@ -6306,7 +6314,7 @@ function deleteMeal(id){
   state.favs = state.favs.filter(k => k !== id);
   saveState();
   refreshViews();
-  toast(base ? 'Receta base eliminada' : 'Eliminada');
+  toast('Comida eliminada');
 }
 
 
@@ -6901,10 +6909,10 @@ function etiquetaDia(dk){
 }
 
 const LOG_TABS = [
+  {k:'rec',    l:'Comidas cargadas'},
   {k:'para',   l:'Para vos'},
   {k:'favs',   l:'Favoritos'},
   {k:'recent', l:'Recientes'},
-  {k:'rec',    l:'Recetas'},
   {k:'ing',    l:'Ingredientes'},
   {k:'day',    l:'Registrado'}
 ];
@@ -6967,9 +6975,9 @@ function renderLog(){
     const ings = filtrarBusqueda(INGREDIENTS, i => i.name, q)
       .sort((a,b) => norm(a.name).indexOf(q) - norm(b.name).indexOf(q));
     if(!recs.length && !ings.length){
-      html = `<div class="empty"><div class="big">${ico('search')}</div>Nada con "<b>${escapeHtml(state.logSearch)}</b>".<br>Probá con otra palabra o creá una receta.</div>`;
+      html = `<div class="empty"><div class="big">${ico('search')}</div>Nada con "<b>${escapeHtml(state.logSearch)}</b>".<br>Probá con otra palabra o creá una comida nueva.</div>`;
     } else {
-      if(recs.length) html += `<div class="sec-lbl">Recetas<span>${recs.length}</span></div>` + recs.map(m => rowMeal(m, sel)).join('');
+      if(recs.length) html += `<div class="sec-lbl">Comidas cargadas<span>${recs.length}</span></div>` + recs.map(m => rowMeal(m, sel)).join('');
       if(ings.length) html += `<div class="sec-lbl">Ingredientes<span>${ings.length}</span></div>` + ings.slice(0, 80).map(i => rowIng(i, sel)).join('');
     }
   } else if(state.logTab === 'para'){
@@ -6980,7 +6988,7 @@ function renderLog(){
       html = favs.map(k => rowKey(k, sel)).join('');
     } else {
       const sug = masUsados(8);
-      html = `<div class="empty"><div class="big">${ico('star')}</div>Todavía no tenés favoritos.<br>Tocá la <b>estrella</b> de cualquier receta o ingrediente y va a aparecer acá y en el resumen, listo para sumar de un toque.</div>`;
+      html = `<div class="empty"><div class="big">${ico('star')}</div>Todavía no tenés favoritos.<br>Tocá la <b>estrella</b> de cualquier comida o ingrediente y va a aparecer acá y en el resumen, listo para sumar de un toque.</div>`;
       if(sug.length) html += `<div class="sec-lbl">Tus más usados</div>` + sug.map(k => rowKey(k, sel)).join('');
     }
   } else if(state.logTab === 'recent'){
@@ -6989,7 +6997,10 @@ function renderLog(){
       : `<div class="empty"><div class="big">${ico('clock')}</div>Lo que vayas registrando va a aparecer acá para repetirlo rápido.</div>`;
   } else if(state.logTab === 'rec'){
     const meals = allMeals().sort((a,b) => priorityScore(b) - priorityScore(a));
-    html = `<button class="btn-add-meal" id="logNewRecipe"><span class="plus">+</span> Crear receta con ingredientes</button>` + meals.map(m => rowMeal(m, sel)).join('');
+    html = `<button class="nueva-comida" id="logNewRecipe">
+        <span class="nc-ico"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
+        <span class="nc-txt"><b>Crear comida nueva</b><small>Armala con tus ingredientes y queda guardada</small></span>
+      </button>` + meals.map(m => rowMeal(m, sel)).join('');
   } else if(state.logTab === 'ing'){
     html = `<div class="chips scroll-x" style="padding-top:0">${ING_CATS.map(c =>
       `<button class="chip ${state.logCat === c.k ? 'active' : ''}" data-lcat="${c.k}">${c.k === 'todos' ? 'Todos' : c.label}</button>`).join('')}</div>`;
@@ -7048,7 +7059,7 @@ function rowMeal(m, sel){
     ${mealThumb(m, 'lg-thumb')}
     <div class="row-info" data-libmeal="${m.id}">
       <div class="row-name">${m.name}</div>
-      <div class="row-meta">${Math.round(m.kcal)} kcal · receta</div>
+      <div class="row-meta">${Math.round(m.kcal)} kcal · ${m.items ? `${m.items.length} ingredientes` : 'comida'}</div>
     </div>
     ${starBtn(m.id)}
     ${n ? `<div class="mini-step">
@@ -7211,7 +7222,7 @@ function renderLib(){
   const q = norm(L.search);
   const list = document.getElementById('libList');
   const cats = document.getElementById('libCats');
-  document.getElementById('libSearch').placeholder = L.tab === 'ing' ? 'Buscar un alimento…' : 'Buscar una receta…';
+  document.getElementById('libSearch').placeholder = L.tab === 'ing' ? 'Buscar un alimento…' : 'Buscar una comida…';
 
   if(L.tab === 'ing'){
     cats.style.display = '';
@@ -7269,14 +7280,14 @@ function renderLib(){
       .filter(m => !q || norm(m.name + ' ' + (m.ing || []).join(' ')).includes(q))
       .sort((a,b) => (state.mealPhotos[b.id] ? 1 : 0) - (state.mealPhotos[a.id] ? 1 : 0) || a.name.localeCompare(b.name, 'es'));
     list.innerHTML = `<div class="ck-grid">
-      ${q ? '' : `<button class="ck-card ck-nueva" id="ckNueva"><div class="ck-foto"><span>+</span></div><div class="ck-nom">Nueva receta</div></button>`}
+      ${q ? '' : `<button class="ck-card ck-nueva" id="ckNueva"><div class="ck-foto"><span>+</span></div><div class="ck-nom">Nueva comida</div></button>`}
       ${meals.map(m => `
         <button class="ck-card" data-receta="${m.id}">
           ${fotoReceta(m, 'ck-foto')}
           <div class="ck-nom">${m.name}</div>
         </button>`).join('')}
     </div>
-    ${meals.length ? '' : `<div class="empty"><div class="big">${ico('search')}</div>Ninguna receta con "${escapeHtml(L.search)}".</div>`}`;
+    ${meals.length ? '' : `<div class="empty"><div class="big">${ico('search')}</div>Ninguna comida con "${escapeHtml(L.search)}".</div>`}`;
     const nueva = document.getElementById('ckNueva');
     if(nueva) nueva.onclick = openAddMealModal;
     list.querySelectorAll('[data-receta]').forEach(b => b.onclick = () => openReceta(b.dataset.receta));
@@ -7359,7 +7370,7 @@ function renderReceta(){
         </div>
       </div>
       <div class="rc-acciones">
-        ${m.items ? `<button class="btn ghost" data-editmeal="${m.id}">Editar receta</button>` : ''}
+        ${m.items ? `<button class="btn ghost" data-editmeal="${m.id}">Editar comida</button>` : ''}
         <button class="btn ghost rc-del" data-delmeal="${m.id}">Eliminar</button>
       </div>
     </div>`;
@@ -8206,7 +8217,7 @@ function labGuardar(){
   state.customMeals.unshift(meal);
   state.favs.unshift(meal.id);
   saveState();
-  toast('Guardada en tus recetas y favoritos');
+  toast('Guardada en tus comidas cargadas y favoritos');
 }
 
 /* ==================== ASISTENTE: "CONTAME QUÉ COMISTE" ====================
