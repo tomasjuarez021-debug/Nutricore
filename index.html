@@ -2270,16 +2270,28 @@ body.screen-open{overflow:hidden}
 .dia-plan span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .dia-plan b{padding:3px 9px;border-radius:999px;background:var(--grad);color:#fff;font-size:11px;font-weight:700}
 .dia-body{display:flex;align-items:center;gap:16px}
-.dia-ring{width:104px;height:104px;position:relative;flex-shrink:0}
+.dia-ring{flex:0 0 108px;width:108px;height:108px;aspect-ratio:1;position:relative}
 .dia-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
 .dia-ring svg circle{transition:stroke-dashoffset .6s cubic-bezier(.2,.8,.2,1)}
 .dia-ring-c{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
-.dia-ring-c b{font-family:var(--font-d);font-size:24px;font-weight:800;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
-.dia-ring-c span{font-size:11px;color:var(--text-3);font-weight:600;margin-top:2px}
+.dia-ring-c{padding:0 14px}
+.dia-ring-c b{font-family:var(--font-d);font-size:26px;font-weight:800;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums;white-space:nowrap}
+.dia-ring-c b small{font-size:14px;font-weight:700;color:var(--text-3);margin-left:1px}
+.dia-ring-c.over b{color:var(--bad)}
+.dia-ring-c span{font-size:10.5px;color:var(--text-3);font-weight:600;margin-top:3px;white-space:nowrap;font-variant-numeric:tabular-nums}
 .dia-macros{flex:1;min-width:0;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.dia-m{text-align:left}
+.dia-m{text-align:left;min-width:0}
+@media (max-width:380px){
+  .dia-body{gap:12px}
+  .dia-ring{flex-basis:98px;width:98px;height:98px}
+  .dia-ring-c b{font-size:23px}
+  .dia-m-g{font-size:19px}
+  .dia-m-l{font-size:11.5px}
+}
+.dia-m-l,.dia-m-o{white-space:nowrap}
+.dia-macros{grid-template-columns:repeat(3,auto);justify-content:space-between}
 .dia-m-pct{font-size:12px;font-weight:700;font-variant-numeric:tabular-nums}
-.dia-m-g{font-family:var(--font-d);font-size:22px;font-weight:800;letter-spacing:-.03em;line-height:1.1;font-variant-numeric:tabular-nums}
+.dia-m-g{white-space:nowrap;font-family:var(--font-d);font-size:21px;font-weight:800;letter-spacing:-.03em;line-height:1.1;font-variant-numeric:tabular-nums}
 .dia-m-g small{font-size:13px;font-weight:700;color:var(--text-3);margin-left:1px}
 .dia-m-l{font-size:12px;color:var(--text-2);font-weight:600;margin-top:2px}
 .dia-m-o{font-size:10.5px;color:var(--text-4);font-variant-numeric:tabular-nums}
@@ -4863,9 +4875,24 @@ function renderDiaCard(totals, t){
   const pk = obj > 0 ? kcal / obj : 0;
   const resta = obj - kcal;
   const tt = t._dia.tt, plan = t._dia.plan;
-  // Solo la energía lleva gráfico; los macros van en números.
+  // Solo la energía lleva gráfico: se llena con un tramo por macro (energía
+  // de cada uno sobre el objetivo), así se ve de dónde vienen las kcal.
   const r = 40, L = 2 * Math.PI * r;
   const pasado = pk > 1.05;
+  const segs = [['var(--m-p)', totals.p * 4], ['var(--m-c)', totals.c * 4], ['var(--m-f)', totals.f * 9]];
+  const sumaMac = segs.reduce((a, s) => a + s[1], 0);
+  // Pasado del objetivo: el anillo se completa y los tramos guardan la proporción.
+  const escala = obj > 0 ? Math.min(1, pk) / Math.max(sumaMac, 1) : 0;
+  let off = 0;
+  const arcos = segs.map(([color, k]) => {
+    const len = k * escala * L;
+    if(len < 0.5) return '';
+    const vis = Math.max(len - (pk >= 1 ? 2 : 1.6), 0.6);
+    const a = `<circle cx="48" cy="48" r="${r}" fill="none" stroke-width="10" stroke="${color}" stroke-dasharray="${vis.toFixed(2)} ${L}" stroke-dashoffset="${(-off).toFixed(2)}"/>`;
+    off += len;
+    return a;
+  }).join('');
+  const pct = Math.round(pk * 100);
   const mac = (l, v, o, color, lim) => {
     const p = o > 0 ? v / o : 0;
     const over = kpiEstado(p, lim) === 'over';
@@ -4884,12 +4911,10 @@ function renderDiaCard(totals, t){
     <div class="dia-body">
       <div class="dia-ring">
         <svg viewBox="0 0 96 96">
-          <defs><linearGradient id="diaG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--brand)"/><stop offset="1" stop-color="var(--brand-2)"/></linearGradient></defs>
-          <circle cx="48" cy="48" r="${r}" fill="none" stroke-width="9" style="stroke:rgba(var(--ink-rgb),.08)"/>
-          <circle cx="48" cy="48" r="${r}" fill="none" stroke-width="9" stroke-linecap="round" stroke="${pasado ? 'var(--bad)' : 'url(#diaG)'}"
-            stroke-dasharray="${L}" stroke-dashoffset="${L * (1 - Math.min(pk, 1))}"/>
+          <circle cx="48" cy="48" r="${r}" fill="none" stroke-width="10" style="stroke:rgba(var(--ink-rgb),.07)"/>
+          ${arcos}
         </svg>
-        <div class="dia-ring-c"><b>${kcal.toLocaleString('es-AR')}</b><span>kcal</span></div>
+        <div class="dia-ring-c ${pasado ? 'over' : ''}"><b>${pct}<small>%</small></b><span>${kcal.toLocaleString('es-AR')} kcal</span></div>
       </div>
       <div class="dia-macros">
         ${mac('Proteína', totals.p, t.protein, 'var(--m-p)', false)}
@@ -4920,7 +4945,6 @@ function renderDiario(){
     return `
     <div class="mo ${filas.length ? '' : 'vacio'} ${cerrado ? 'cerrado' : ''}">
       <div class="mo-top" ${filas.length ? `data-motog="${g.k || 'x'}"` : ''}>
-        ${filas.length ? `<span class="mo-chev">${ico('chev')}</span>` : ''}
         <span class="mo-tag">${g.l}</span>
         ${filas.length ? `<span class="mo-tot"><b>${Math.round(tot.kcal)}</b> kcal · ${Math.round(tot.p)}p ${Math.round(tot.c)}c ${Math.round(tot.f)}g</span>` : '<span class="mo-tot"></span>'}
         ${g.sinAdd ? '' : `<button class="mo-add" data-moadd="${g.k}" aria-label="Sumar a ${g.l}"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>`}
