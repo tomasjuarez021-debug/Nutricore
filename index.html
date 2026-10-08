@@ -2416,6 +2416,29 @@ body.screen-open{overflow:hidden}
 .nc-ico svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:2.6;stroke-linecap:round}
 .nc-txt b{display:block;font-family:var(--font-d);font-size:16px;font-weight:800}
 .nc-txt small{display:block;font-size:12px;opacity:.85;margin-top:1px}
+
+/* Registro: título con el día solo si es pasado, calendario chico en la esquina */
+.log-tit{display:flex;flex-direction:column;align-items:center;line-height:1.15}
+.log-tit small{font-family:var(--font);font-size:11.5px;font-weight:600;color:var(--brand)}
+.log-tit small:empty{display:none}
+.log-cal{position:relative}
+.log-cal.on{border-color:var(--brand);background:rgba(var(--brand-rgb),.1)}
+.log-cal.on svg{stroke:var(--brand)}
+.pd-list{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pd-dia{text-align:left;padding:11px 13px;border-radius:14px;background:var(--panel-2);border:1px solid var(--line)}
+.pd-dia b{display:block;font-size:14px;font-weight:700}
+.pd-dia span{font-size:11.5px;color:var(--text-3)}
+.pd-dia.on{border-color:var(--brand);background:rgba(var(--brand-rgb),.1)}
+.pd-dia.on b{color:var(--brand)}
+.pd-otra{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;font-size:13px;font-weight:600;color:var(--text-2)}
+.pd-otra input{border:1px solid var(--line);background:var(--panel-2);color:var(--text);border-radius:10px;padding:8px 10px;font:inherit}
+
+/* Inicio: Nutrientes en el lugar de peso y hoy */
+.hp-pills button.on{background:var(--text);color:var(--bg);border-color:var(--text)}
+.hp-pills button.on svg{stroke:var(--bg)}
+.ni-head{display:flex;align-items:center;justify-content:space-between;margin:2px 2px 10px}
+.ni-head h2{font-family:var(--font-d);font-size:18px;font-weight:800;letter-spacing:-.02em}
+#nutriInline{animation:detailIn .25s ease}
 </style>
 </head>
 <body>
@@ -2464,6 +2487,54 @@ body.screen-open{overflow:hidden}
 
     <!-- El día en una línea; el detalle está en Nutrientes -->
     <div class="card dia-card" id="diaCard"></div>
+
+    <!-- Nutrientes: ocupa el lugar de peso y hoy mientras está activo -->
+    <div id="nutriInline" hidden>
+      <div class="ni-head"><h2>Nutrientes de hoy</h2><button class="link-btn" id="nutriVolver">Volver ›</button></div>
+    <!-- El día de un vistazo -->
+    <div class="hero" id="heroCard"></div>
+
+    <!-- Lo que hacés hoy, resumido; se despliega para ver el detalle -->
+    <div class="card plan-card" id="planCard"></div>
+
+    <!-- El detalle queda plegado: está todo, pero no de golpe -->
+    <div class="acc" data-acc="macros">
+      <div class="acc-head" data-acctoggle="macros">
+        <div class="acc-ico"><svg class="ico" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9h-9z"/><path d="M15 2.6A9 9 0 0 1 21.4 9H15z"/></svg></div>
+        <div class="acc-title">Macronutrientes<div class="acc-sum" id="sumMacros"></div></div>
+        <div class="acc-chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg></div>
+      </div>
+      <div class="acc-body">
+        <div class="hint">Cuánta energía, proteína, carbo y grasa llevás contra tu objetivo del día.</div>
+        <div id="macroList"></div>
+        <div class="pie-grid" id="pieGrid" style="margin-top:14px"></div>
+      </div>
+    </div>
+
+    <div class="acc" data-acc="micros">
+      <div class="acc-head" data-acctoggle="micros">
+        <div class="acc-ico"><svg class="ico" viewBox="0 0 24 24"><path d="M12 3l1.9 5.6L19.5 10.5l-5.6 1.9L12 18l-1.9-5.6L4.5 10.5l5.6-1.9z"/><path d="M19 17v4M17 19h4"/></svg></div>
+        <div class="acc-title">Micronutrientes<div class="acc-sum" id="sumMicros"></div></div>
+        <div class="acc-chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg></div>
+      </div>
+      <div class="acc-body">
+        <div class="hint">Hierro, B12, zinc, calcio y compañía. La barra verde es objetivo cumplido; el aviso de UL marca cuándo te estás pasando del límite seguro.</div>
+        <div id="microList"></div>
+      </div>
+    </div>
+
+    <div class="acc" data-acc="ratios">
+      <div class="acc-head" data-acctoggle="ratios">
+        <div class="acc-ico"><svg class="ico" viewBox="0 0 24 24"><path d="M4 8h15l-3.5-3.5M20 16H5l3.5 3.5"/></svg></div>
+        <div class="acc-title">Balance omega<div class="acc-sum" id="sumRatios"></div></div>
+        <div class="acc-chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg></div>
+      </div>
+      <div class="acc-body">
+        <div class="hint">La relación omega 6 : omega 3. Cuanto más baja, mejor: lo ideal es menos de 4 a 1.</div>
+        <div id="ratiosList"></div>
+      </div>
+    </div>
+    </div>
 
     <!-- Diario: una tarjeta por momento del día -->
     <div class="sec-head">
@@ -2576,62 +2647,6 @@ body.screen-open{overflow:hidden}
     <svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-4.5 4v-4h0A1.5 1.5 0 0 1 4 14.5z"/><path d="M8.5 8.5h7M8.5 11.5h4.5"/></svg>
   </button>
 
-  <!-- VENTANA: NUTRIENTES DEL DÍA -->
-  <div class="screen" id="nutriScreen" aria-hidden="true">
-    <div class="screen-top">
-      <button class="icon-btn" id="nutriClose" aria-label="Volver">
-        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
-      <div class="screen-title">Nutrientes de hoy</div>
-      <div style="width:38px"></div>
-    </div>
-    <div class="screen-body">
-    <!-- El día de un vistazo -->
-    <div class="hero" id="heroCard"></div>
-
-    <!-- Lo que hacés hoy, resumido; se despliega para ver el detalle -->
-    <div class="card plan-card" id="planCard"></div>
-
-    <!-- El detalle queda plegado: está todo, pero no de golpe -->
-    <div class="acc" data-acc="macros">
-      <div class="acc-head" data-acctoggle="macros">
-        <div class="acc-ico"><svg class="ico" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9h-9z"/><path d="M15 2.6A9 9 0 0 1 21.4 9H15z"/></svg></div>
-        <div class="acc-title">Macronutrientes<div class="acc-sum" id="sumMacros"></div></div>
-        <div class="acc-chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg></div>
-      </div>
-      <div class="acc-body">
-        <div class="hint">Cuánta energía, proteína, carbo y grasa llevás contra tu objetivo del día.</div>
-        <div id="macroList"></div>
-        <div class="pie-grid" id="pieGrid" style="margin-top:14px"></div>
-      </div>
-    </div>
-
-    <div class="acc" data-acc="micros">
-      <div class="acc-head" data-acctoggle="micros">
-        <div class="acc-ico"><svg class="ico" viewBox="0 0 24 24"><path d="M12 3l1.9 5.6L19.5 10.5l-5.6 1.9L12 18l-1.9-5.6L4.5 10.5l5.6-1.9z"/><path d="M19 17v4M17 19h4"/></svg></div>
-        <div class="acc-title">Micronutrientes<div class="acc-sum" id="sumMicros"></div></div>
-        <div class="acc-chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg></div>
-      </div>
-      <div class="acc-body">
-        <div class="hint">Hierro, B12, zinc, calcio y compañía. La barra verde es objetivo cumplido; el aviso de UL marca cuándo te estás pasando del límite seguro.</div>
-        <div id="microList"></div>
-      </div>
-    </div>
-
-    <div class="acc" data-acc="ratios">
-      <div class="acc-head" data-acctoggle="ratios">
-        <div class="acc-ico"><svg class="ico" viewBox="0 0 24 24"><path d="M4 8h15l-3.5-3.5M20 16H5l3.5 3.5"/></svg></div>
-        <div class="acc-title">Balance omega<div class="acc-sum" id="sumRatios"></div></div>
-        <div class="acc-chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg></div>
-      </div>
-      <div class="acc-body">
-        <div class="hint">La relación omega 6 : omega 3. Cuanto más baja, mejor: lo ideal es menos de 4 a 1.</div>
-        <div id="ratiosList"></div>
-      </div>
-    </div>
-    </div>
-  </div>
-
   <!-- VENTANA: RECETA (ficha completa) -->
   <div class="screen" id="recScreen" aria-hidden="true">
     <div class="screen-body rc-body" id="recBody"></div>
@@ -2666,18 +2681,12 @@ body.screen-open{overflow:hidden}
       <button class="icon-btn" id="logClose" aria-label="Volver">
         <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
-      <div class="screen-title" id="logTitle">Registrar comida</div>
-      <button class="icon-btn" id="logLibrary" aria-label="Explorar alimentos" title="Explorar alimentos">
-        <svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5M8 7h7M8 11h5"/></svg>
+      <div class="screen-title log-tit"><span id="logTitle">Registrar comida</span><small id="logDiaSub"></small></div>
+      <button class="icon-btn sm log-cal" id="logCal" aria-label="Cargar día pasado" title="Cargar día pasado">
+        <svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg>
       </button>
     </div>
-    <div class="day-switch">
-      <button class="icon-btn sm" id="logPrevDay" aria-label="Día anterior"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
-      <div class="day-label" id="logDayLabel"></div>
-      <button class="icon-btn sm" id="logNextDay" aria-label="Día siguiente"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
-    </div>
     <div class="screen-body" id="logBody">
-      <div class="live" id="logLive"></div>
       <div class="search-wrap">
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
         <input type="search" class="search" id="logSearch" placeholder="Buscar comida o ingrediente…" autocomplete="off">
@@ -2763,6 +2772,15 @@ body.screen-open{overflow:hidden}
     <div class="modal">
       <button class="modal-close" id="dayClose">×</button>
       <div id="dayBody"></div>
+    </div>
+  </div>
+
+  <!-- HOJA: CARGAR DÍA PASADO -->
+  <div class="modal-bg apilado" id="pasadoSheet">
+    <div class="modal">
+      <button class="modal-close" id="pasadoClose">×</button>
+      <div class="modal-title">Cargar día pasado</div>
+      <div id="pasadoBody"></div>
     </div>
   </div>
 
@@ -5083,8 +5101,17 @@ function openLogMomento(k){
   state.logTab = 'rec';
   openLogScreen(null);
 }
-function openNutri(){ abrirPantalla('nutriScreen'); }
-function closeNutri(){ cerrarPantalla('nutriScreen'); }
+/* Nutrientes no abre otra ventana: reemplaza peso y hoy en el inicio. */
+function setVistaInicio(v){
+  state.homeVista = v;
+  const nutri = v === 'nutri';
+  document.getElementById('nutriInline').hidden = !nutri;
+  document.getElementById('pesoCard').hidden = nutri;
+  document.getElementById('diaCard').hidden = nutri;
+  document.querySelectorAll('#homePills [data-hp]').forEach(b => b.classList.toggle('on', b.dataset.hp === 'nutri' && nutri));
+}
+function openNutri(){ setVistaInicio(state.homeVista === 'nutri' ? 'dia' : 'nutri'); }
+function closeNutri(){ setVistaInicio('dia'); }
 
 /* Estado de cumplimiento de un KPI: 'good' en rango, 'over' pasado, '' en
    camino. En keto el carbo es techo: quedarse abajo es estar bien. */
@@ -6860,7 +6887,7 @@ function abrirPantalla(id){
 function cerrarPantalla(id){
   document.getElementById(id).classList.remove('open', 'top');
   document.getElementById(id).setAttribute('aria-hidden', 'true');
-  if(!isOpen('logScreen') && !isOpen('libScreen') && !isOpen('labScreen') && !isOpen('chatScreen') && !isOpen('pesoScreen') && !isOpen('nutriScreen') && !isOpen('recScreen')) document.body.classList.remove('screen-open');
+  if(!isOpen('logScreen') && !isOpen('libScreen') && !isOpen('labScreen') && !isOpen('chatScreen') && !isOpen('pesoScreen') && !isOpen('recScreen')) document.body.classList.remove('screen-open');
 }
 
 function openLogScreen(dk){
@@ -6891,6 +6918,34 @@ function closeLogScreen(){
   logDesdeCal = false;
   if(state.currentTab === 'overall') renderResumen();
 }
+/* Elegir otro día para cargar: los últimos 7 a un toque, o cualquier fecha. */
+function openDiaPasado(){
+  const el = document.getElementById('pasadoBody');
+  const actual = targetDateKey();
+  const dias = Array.from({length:8}, (_, k) => claveFecha(new Date(Date.now() - k * 864e5)));
+  el.innerHTML = `
+    <div class="pd-list">
+      ${dias.map((dk, k) => {
+        const n = (state.selectedByDate[dk] || []).length;
+        return `<button class="pd-dia ${dk === actual ? 'on' : ''}" data-pdk="${dk}">
+          <b>${k === 0 ? 'Hoy' : k === 1 ? 'Ayer' : fmtDiaCorto(dk)}</b>
+          <span>${n ? `${n} ${n === 1 ? 'registro' : 'registros'}` : 'sin registros'}</span>
+        </button>`;
+      }).join('')}
+    </div>
+    <label class="pd-otra">Otra fecha <input type="date" id="pdFecha" max="${todayKey()}" value="${actual}"></label>`;
+  const elegir = (dk) => {
+    if(!dk || dk > todayKey()) return;
+    state.editDate = dk === todayKey() ? null : dk;
+    closeDiaPasado();
+    renderLog();
+    if(dk !== todayKey()) toast(`Cargando ${fmtDiaCorto(dk)}`);
+  };
+  el.querySelectorAll('[data-pdk]').forEach(b => b.onclick = () => elegir(b.dataset.pdk));
+  document.getElementById('pdFecha').onchange = (e) => elegir(e.target.value);
+  document.getElementById('pasadoSheet').classList.add('show');
+}
+function closeDiaPasado(){ document.getElementById('pasadoSheet').classList.remove('show'); }
 function moverDia(delta){
   const [y,m,d] = targetDateKey().split('-').map(Number);
   const nd = new Date(y, m-1, d + delta);
@@ -6909,12 +6964,9 @@ function etiquetaDia(dk){
 }
 
 const LOG_TABS = [
-  {k:'rec',    l:'Comidas cargadas'},
-  {k:'para',   l:'Para vos'},
+  {k:'rec',    l:'Comidas'},
   {k:'favs',   l:'Favoritos'},
-  {k:'recent', l:'Recientes'},
-  {k:'ing',    l:'Ingredientes'},
-  {k:'day',    l:'Registrado'}
+  {k:'recent', l:'Recientes'}
 ];
 
 function renderLog(){
@@ -6925,36 +6977,16 @@ function renderLog(){
   const totals = aggregateMeals(selDia);
   const t = computeTargets(state.profile, dk);
 
-  document.getElementById('logDayLabel').innerHTML = etiquetaDia(dk);
-  document.getElementById('logNextDay').disabled = dk >= todayKey();
-
-  // Progreso en vivo
-  const pk = t.kcal > 0 ? totals.kcal / t.kcal : 0;
-  const score = Math.round(completionPercent(t, totals) * 100);
-  const macro = (lbl, v, obj, lim, color) => {
-    const p = obj > 0 ? v / obj : 0;
-    const est = kpiEstado(p, lim);
-    return `<div class="live-m">${lbl} · ${Math.round(p*100)}%<b>${Math.round(v)} / ${Math.round(obj)}g</b><div class="bar"><i class="${est}" style="width:${Math.min(p*100,100)}%;${est === 'over' ? '' : `background:${color}`}"></i></div></div>`;
-  };
-  document.getElementById('logLive').innerHTML = `
-    <button class="live-plan" id="logPlan">${ico(t._dia.tt.ico)}${t._dia.tt.l}${t._dia.plan.min ? ` · ${t._dia.plan.min} min` : ''}<span>cambiar</span></button>
-    <div class="live-top">
-      <div class="live-kcal">${Math.round(totals.kcal).toLocaleString('es-AR')} <small>/ ${t.kcal.toLocaleString('es-AR')} kcal</small></div>
-      <div class="live-pct">Cumplimiento ${score}%</div>
-    </div>
-    <div class="bar"><i class="${kpiEstado(pk, false) === 'over' ? 'over' : ''}" style="width:${Math.min(pk*100,100)}%"></i></div>
-    <div class="live-macros">
-      ${macro('Proteína', totals.p, t.protein, false, 'var(--m-p)')}
-      ${macro(t.carbIsLimit ? 'Carbos máx' : 'Carbos', totals.c, t.carb, !!t.carbIsLimit, 'var(--m-c)')}
-      ${macro('Grasa', totals.f, t.fat, false, 'var(--m-f)')}
-    </div>`;
-
-  document.getElementById('logPlan').onclick = () => openDaySheet(dk);
+  // La fecha solo se nombra cuando se carga un día pasado.
+  const pasado = dk !== todayKey();
+  document.getElementById('logDiaSub').textContent = pasado ? `cargando ${fmtDiaCorto(dk)}` : '';
+  document.getElementById('logCal').classList.toggle('on', pasado);
   document.getElementById('logFootSum').innerHTML = selDia.length
     ? `<b>${selDia.length}</b> registro${selDia.length === 1 ? '' : 's'} · ${Math.round(totals.kcal)} kcal`
     : 'Nada registrado todavía';
 
   // Pestañas
+  if(!LOG_TABS.some(x => x.k === state.logTab)) state.logTab = 'rec';
   const tabs = document.getElementById('logTabs');
   const buscando = !!state.logSearch;
   tabs.style.display = buscando ? 'none' : '';
@@ -7716,7 +7748,7 @@ function renderRecoCard(){
   if(!el) return;
   el.innerHTML = `<div class="card-header"><div class="card-title">Qué comer ahora</div><button class="link-btn" id="recoMas">Ver más ›</button></div>${recoHtml(todayKey(), 4)}`;
   bindRecos(el);
-  document.getElementById('recoMas').onclick = () => { state.logTab = 'para'; openLogScreen(null); };
+  document.getElementById('recoMas').onclick = () => { state.logTab = 'rec'; openLogScreen(null); };
 }
 
 /* ==================== LAB ====================
@@ -8574,13 +8606,13 @@ function init(){
   document.getElementById('fabLog').onclick = openChat;
   document.getElementById('logClose').onclick = closeLogScreen;
   document.getElementById('logDone').onclick = closeLogScreen;
-  document.getElementById('logPrevDay').onclick = () => moverDia(-1);
-  document.getElementById('logNextDay').onclick = () => moverDia(+1);
-  document.getElementById('logLibrary').onclick = openLibrary;
+  document.getElementById('logCal').onclick = openDiaPasado;
+  document.getElementById('pasadoClose').onclick = closeDiaPasado;
+  document.getElementById('pasadoSheet').onclick = (e) => { if(e.target.id === 'pasadoSheet') closeDiaPasado(); };
   document.getElementById('logSearch').oninput = (e) => { state.logSearch = e.target.value.trim(); renderLog(); };
   document.getElementById('openLibrary').onclick = openLibrary;
   document.getElementById('openLab').onclick = openLab;
-  document.getElementById('nutriClose').onclick = closeNutri;
+  document.getElementById('nutriVolver').onclick = closeNutri;
   document.getElementById('recFoto').onchange = (e) => { cambiarFotoReceta(e.target.files[0]); e.target.value = ''; };
   document.querySelectorAll('#homePills [data-hp]').forEach(b => b.onclick = () => {
     ({hist:openCalModal, peso:openPeso, nutri:openNutri, metas:openProfile})[b.dataset.hp]();
@@ -8611,10 +8643,10 @@ function init(){
   // Atrás del sistema / Escape cierra lo que esté arriba
   document.addEventListener('keydown', (e) => {
     if(e.key !== 'Escape') return;
-    if(document.getElementById('pesoSheet').classList.contains('show')) closePesoSheet();
+    if(document.getElementById('pasadoSheet').classList.contains('show')) closeDiaPasado();
+    else if(document.getElementById('pesoSheet').classList.contains('show')) closePesoSheet();
     else if(document.getElementById('qtySheet').classList.contains('show')) closeQtySheet();
     else if(isOpen('pesoScreen')) closePeso();
-    else if(isOpen('nutriScreen')) closeNutri();
     else if(isOpen('recScreen')) closeReceta();
     else if(isOpen('libScreen')) closeLibrary();
     else if(isOpen('labScreen')) closeLab();
