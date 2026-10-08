@@ -2162,6 +2162,88 @@ body.screen-open{overflow:hidden}
 .ch-mc b{font-size:12.5px}
 .ch-head{justify-content:flex-start;padding-left:4px}
 .ch-row .cm-name{white-space:normal;line-height:1.2;font-size:13.5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.fab svg{width:26px;height:26px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* ==================== PESO ====================
+   Va primero en el inicio: es el número que más se mira. */
+.pw-card{cursor:pointer;padding:16px 16px 14px}
+.pw-card::after{display:none}
+.pw-c-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.pw-c-ttl{display:flex;align-items:center;gap:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;color:var(--text-2)}
+.pw-c-ttl svg{width:18px;height:18px;fill:none;stroke:var(--brand);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.pw-add{width:34px;height:34px;border-radius:50%;background:var(--grad);display:grid;place-items:center;box-shadow:0 6px 14px -6px rgba(var(--brand-rgb),.8);transition:transform .15s}
+.pw-add:active{transform:scale(.9)}
+.pw-add svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:2.6;stroke-linecap:round}
+.pw-c-mid{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.pw-c-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:40px;font-weight:800;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+.pw-c-num small{font-size:15px;font-weight:700;color:var(--text-3);letter-spacing:0;margin-left:4px}
+.pw-spark{width:46%;max-width:170px;height:46px;flex-shrink:0;overflow:visible}
+.pw-delta{display:inline-flex;align-items:center;gap:4px;margin-top:8px;font-size:12px;font-weight:700;color:var(--text-3);font-variant-numeric:tabular-nums}
+.pw-delta svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.pw-delta.good{color:var(--good)}
+.pw-delta.bad{color:var(--warn)}
+.pw-delta span{font-weight:500;color:var(--text-3)}
+.pw-tip{display:flex;align-items:center;gap:8px;margin-top:12px;padding:8px 11px;border-radius:12px;background:rgba(var(--brand-rgb),.07);color:var(--text-2);font-size:12px;line-height:1.35}
+.pw-tip svg{width:15px;height:15px;flex-shrink:0;fill:none;stroke:var(--brand);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.pw-meta-bar{height:5px;border-radius:5px;background:rgba(var(--ink-rgb),.07);margin-top:12px;overflow:hidden}
+.pw-meta-bar i{display:block;height:100%;border-radius:5px;background:var(--grad);transition:width .6s cubic-bezier(.2,.8,.2,1)}
+
+/* Ventana de peso */
+.pw-hero{text-align:center;padding:6px 0 14px}
+.pw-hero .pw-lbl{font-size:12px;color:var(--text-3);font-weight:600}
+.pw-big{font-family:'Plus Jakarta Sans',sans-serif;font-size:56px;font-weight:800;letter-spacing:-.05em;line-height:1.05;font-variant-numeric:tabular-nums}
+.pw-big small{font-size:18px;font-weight:700;color:var(--text-3);letter-spacing:0;margin-left:5px}
+.pw-hero .pw-delta{margin-top:4px;padding:4px 10px;border-radius:20px;background:rgba(var(--ink-rgb),.05)}
+.pw-hero .pw-delta.good{background:rgba(var(--good-rgb),.12)}
+.pw-hero .pw-delta.bad{background:rgba(var(--warn-rgb),.12)}
+.pw-rangos{display:flex;gap:4px;padding:4px;border-radius:14px;background:var(--panel-2);border:1px solid var(--line);margin-bottom:12px}
+.pw-rangos button{flex:1;padding:7px 0;border-radius:10px;font-size:12px;font-weight:700;color:var(--text-3)}
+.pw-rangos button.on{background:var(--panel);color:var(--text);box-shadow:0 1px 3px rgba(var(--ink-rgb),.12)}
+.pw-chart{position:relative;padding:14px 10px 8px}
+.pw-chart::after{display:none}
+.pw-chart svg{width:100%;height:auto;display:block;touch-action:pan-y;overflow:visible}
+.pw-chart .eje{font-size:10px;fill:var(--text-4);font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums}
+.pw-tt{position:absolute;top:6px;left:0;transform:translateX(-50%);pointer-events:none;background:var(--text);color:var(--bg);border-radius:10px;padding:5px 9px;font-size:12px;font-weight:700;white-space:nowrap;opacity:0;transition:opacity .15s;font-variant-numeric:tabular-nums}
+.pw-tt small{display:block;font-size:10px;font-weight:500;opacity:.7}
+.pw-tt.show{opacity:1}
+.pw-vacio{padding:34px 10px;text-align:center;color:var(--text-3);font-size:13px;line-height:1.5}
+.pw-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}
+.pw-st{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:12px 13px;text-align:left}
+.pw-st-l{font-size:11px;color:var(--text-3);font-weight:600}
+.pw-st-v{font-family:'Plus Jakarta Sans',sans-serif;font-size:19px;font-weight:800;letter-spacing:-.02em;margin-top:2px;font-variant-numeric:tabular-nums}
+.pw-st-v small{font-size:11px;font-weight:600;color:var(--text-3);margin-left:2px}
+.pw-st-d{font-size:11px;color:var(--text-3);margin-top:2px}
+.pw-st.edit{border-style:dashed}
+.pw-st.edit .pw-st-v{color:var(--brand)}
+.pw-hist-row{display:flex;align-items:center;gap:10px;padding:11px 0;border-top:1px solid var(--line)}
+.pw-hist-row:first-child{border-top:none}
+.pw-hist-f{flex:1;font-size:13px;color:var(--text-2);font-weight:500}
+.pw-hist-kg{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:15px;font-variant-numeric:tabular-nums}
+.pw-hist-d{width:58px;text-align:right;font-size:12px;font-weight:600;color:var(--text-3);font-variant-numeric:tabular-nums}
+.pw-hist-d.good{color:var(--good)}
+.pw-hist-d.bad{color:var(--warn)}
+.pw-hist-rm{width:28px;height:28px;border-radius:8px;color:var(--text-4);font-size:18px;line-height:1}
+.pw-hist-rm:active{background:rgba(var(--ink-rgb),.07)}
+
+/* Hoja para cargar un pesaje o la meta */
+.pw-sheet .modal-title{text-align:center}
+.pw-step{display:flex;align-items:center;justify-content:center;gap:14px;margin:6px 0 4px}
+.pw-step button{width:52px;height:52px;border-radius:50%;background:var(--panel-2);border:1px solid var(--line);font-size:26px;font-weight:500;color:var(--text);display:grid;place-items:center}
+.pw-step button:active{transform:scale(.92)}
+.pw-in-wrap{display:flex;align-items:baseline;justify-content:center}
+.pw-in{width:3.4em;border:none;background:transparent;text-align:center;font-family:'Plus Jakarta Sans',sans-serif;font-size:52px;font-weight:800;letter-spacing:-.04em;color:var(--text);font-variant-numeric:tabular-nums;-moz-appearance:textfield;appearance:textfield}
+.pw-in::-webkit-outer-spin-button,.pw-in::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.pw-in:focus{outline:none}
+.pw-in-wrap small{font-size:16px;font-weight:700;color:var(--text-3);margin-left:4px}
+.pw-fecha{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;font-size:13px;color:var(--text-3)}
+.pw-fecha input{border:1px solid var(--line);background:var(--panel-2);color:var(--text);border-radius:10px;padding:6px 10px;font:inherit;font-size:13px}
+.pw-nota{text-align:center;font-size:12px;color:var(--text-3);margin-top:10px;min-height:16px}
+.pw-borrar{display:block;margin:10px auto 0;color:var(--bad);font-size:13px;font-weight:600}
+
+/* Las macros quedan más chicas: el peso manda */
+.score-ring{width:100px;height:100px}
+.score-num{font-size:26px}
+.hero-top{margin-bottom:14px}
 </style>
 </head>
 <body>
@@ -2196,6 +2278,9 @@ body.screen-open{overflow:hidden}
       <div class="page-title" id="dateStamp"></div>
       <h1 class="page-subtitle">Tu día</h1>
     </div>
+
+    <!-- Peso: lo primero que se ve -->
+    <div class="card pw-card" id="pesoCard"></div>
 
     <!-- El día de un vistazo -->
     <div class="hero" id="heroCard"></div>
@@ -2359,7 +2444,31 @@ body.screen-open{overflow:hidden}
   </nav>
 
   <!-- BOTÓN FLOTANTE: registrar desde cualquier pestaña -->
-  <button class="fab" id="fabLog" aria-label="Registrar comida">+</button>
+  <button class="fab" id="fabLog" aria-label="Contale al asistente qué comiste">
+    <svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-4.5 4v-4h0A1.5 1.5 0 0 1 4 14.5z"/><path d="M8.5 8.5h7M8.5 11.5h4.5"/></svg>
+  </button>
+
+  <!-- VENTANA: PESO -->
+  <div class="screen" id="pesoScreen" aria-hidden="true">
+    <div class="screen-top">
+      <button class="icon-btn" id="pesoClose" aria-label="Volver">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="screen-title">Peso</div>
+      <button class="icon-btn" id="pesoAddTop" aria-label="Registrar peso">
+        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+    </div>
+    <div class="screen-body" id="pesoBody"></div>
+  </div>
+
+  <!-- HOJA: CARGAR PESO / META -->
+  <div class="modal-bg" id="pesoSheet">
+    <div class="modal pw-sheet">
+      <button class="modal-close" id="pesoSheetClose">×</button>
+      <div id="pesoSheetBody"></div>
+    </div>
+  </div>
 
   <!-- VENTANA: REGISTRAR COMIDA -->
   <div class="screen" id="logScreen" aria-hidden="true">
@@ -3342,6 +3451,9 @@ let state = {
   /* Favoritos: id de receta, o 'ing:<id>' para un ingrediente suelto. */
   favs: [],
   dayPlan: {},        // {'2026-10-02': {type, min, time}} — cambios puntuales a la rutina
+  weightLog: {},      // {'2026-10-08': 78.4} — un pesaje por día
+  weightGoal: null,   // kg; null = sin meta
+  pesoRango: '1M',
   lastQty: {},        // {ingId: última cantidad usada} — así repetir es un toque
   logTab: 'para',     // pestaña abierta en la ventana de registro (no persiste)
   logSearch: '',
@@ -3378,6 +3490,9 @@ function loadState(){
       if(parsed.mealPhotos) state.mealPhotos = parsed.mealPhotos;
       if(Array.isArray(parsed.favs)) state.favs = parsed.favs;
       if(parsed.dayPlan) state.dayPlan = parsed.dayPlan;
+      if(parsed.weightLog) state.weightLog = parsed.weightLog;
+      if(typeof parsed.weightGoal === 'number') state.weightGoal = parsed.weightGoal;
+      if(parsed.pesoRango) state.pesoRango = parsed.pesoRango;
       if(parsed.lab) state.lab = {...state.lab, ...parsed.lab, busca:''};
       // Perfiles viejos: 'vegan' booleano y 'activity' como factor único.
       if(!parsed.profile.diet) state.profile.diet = parsed.profile.vegan ? 'vegan' : 'ovo';
@@ -3420,6 +3535,9 @@ function saveState(){
       mealPhotos: state.mealPhotos,
       favs: state.favs,
       dayPlan: state.dayPlan,
+      weightLog: state.weightLog,
+      weightGoal: state.weightGoal,
+      pesoRango: state.pesoRango,
       lab: {modo:state.lab.modo, pins:state.lab.pins, seed:state.lab.seed, plate:state.lab.plate},
       lastQty: state.lastQty
     }));
@@ -4422,6 +4540,7 @@ function renderResumen(){
   const totals = aggregateMeals(selected);
   const targets = computeTargets(state.profile, tk);
 
+  renderPesoCard();
   renderPlanCard();
   renderHero(totals, targets);
   renderAccSummaries(totals, targets);
@@ -5758,6 +5877,396 @@ function refreshViews(){
   if(state.currentTab === 'overall') renderResumen();
 }
 
+/* ==================== PESO ====================
+   Un pesaje por día: {'2026-10-08': 78.4}. El último pesaje pasa a ser el
+   peso del perfil, así los objetivos del día se recalculan solos. */
+const PESO_ICO = '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M8.5 9.5a5 5 0 0 1 7 0"/><path d="M12 9.5l1.2-1.6"/></svg>';
+const PESO_RANGOS = [['1S',7],['1M',31],['3M',92],['6M',183],['1A',366],['Todo',0]];
+const fmtKg = (n, d = 1) => (+n).toLocaleString('es-AR', {minimumFractionDigits:d, maximumFractionDigits:d});
+const fmtDia = (dk) => dkToDate(dk).toLocaleDateString('es-AR', {day:'numeric', month:'short'}).replace('.', '');
+
+function pesoSerie(){
+  return Object.keys(state.weightLog).sort().map(dk => ({dk, kg:+state.weightLog[dk], t:dkToDate(dk).getTime()}));
+}
+function pesoActual(){
+  const s = pesoSerie();
+  return s.length ? s[s.length - 1].kg : (+state.profile.weight || null);
+}
+/* Hacia dónde conviene moverse: la meta manda; si no hay, el objetivo del perfil. */
+function pesoDir(){
+  const s = pesoSerie();
+  const ref = s.length ? s[0].kg : +state.profile.weight;
+  if(state.weightGoal && ref) return Math.abs(state.weightGoal - ref) < 0.2 ? 0 : Math.sign(state.weightGoal - ref);
+  return ({cut:-1, bulk:1})[state.profile.goal] || 0;
+}
+function pesoTono(d){
+  const dir = pesoDir();
+  if(Math.abs(d) < 0.05) return '';
+  if(dir === 0) return Math.abs(d) <= 0.5 ? 'good' : 'bad';
+  return Math.sign(d) === dir ? 'good' : 'bad';
+}
+/* Cambio del último pesaje contra el más cercano a N días antes. */
+function pesoCambio(dias){
+  const s = pesoSerie();
+  if(s.length < 2) return null;
+  const ult = s[s.length - 1], lim = ult.t - dias * 864e5;
+  let ref = s[0];
+  s.forEach(x => { if(x.t <= lim) ref = x; });
+  if(ref === ult) return null;
+  return {d: ult.kg - ref.kg, dias: Math.round((ult.t - ref.t) / 864e5)};
+}
+/* Ritmo en kg por semana: pendiente de la recta de los últimos 28 días. */
+function pesoRitmo(){
+  const s = pesoSerie();
+  if(s.length < 3) return null;
+  const ult = s[s.length - 1].t;
+  const v = s.filter(x => x.t >= ult - 28 * 864e5);
+  if(v.length < 3 || (ult - v[0].t) < 6 * 864e5) return null;
+  const n = v.length, mx = v.reduce((a, x) => a + x.t, 0) / n, my = v.reduce((a, x) => a + x.kg, 0) / n;
+  let num = 0, den = 0;
+  v.forEach(x => { num += (x.t - mx) * (x.kg - my); den += (x.t - mx) ** 2; });
+  return den ? num / den * 7 * 864e5 : null;
+}
+/* Tendencia: promedio de los pesajes de los 7 días previos a cada punto.
+   Suaviza el ruido del agua y la sal, que mueve la balanza día a día. */
+function pesoTendencia(s){
+  return s.map(p => {
+    const v = s.filter(x => x.t <= p.t && x.t > p.t - 7 * 864e5);
+    return {...p, tr: v.reduce((a, x) => a + x.kg, 0) / v.length};
+  });
+}
+function flechaDelta(d){
+  return d < -0.05 ? '<svg viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6"/></svg>'
+       : d > 0.05 ? '<svg viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></svg>'
+       : '<svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg>';
+}
+/* Curva suave entre puntos (catmull-rom a bezier). */
+function curva(pts){
+  if(pts.length < 2) return pts.length ? `M${pts[0][0]},${pts[0][1]}` : '';
+  let d = `M${pts[0][0].toFixed(1)},${pts[0][1].toFixed(1)}`;
+  for(let i = 0; i < pts.length - 1; i++){
+    const p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2;
+    const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+    const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+    d += ` C${c1[0].toFixed(1)},${c1[1].toFixed(1)} ${c2[0].toFixed(1)},${c2[1].toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}`;
+  }
+  return d;
+}
+
+function pesoSpark(){
+  const s = pesoSerie();
+  if(s.length < 2) return '';
+  const ult = s[s.length - 1].t;
+  let v = s.filter(x => x.t >= ult - 31 * 864e5);
+  if(v.length < 2) v = s.slice(-2);
+  const W = 170, H = 46, min = Math.min(...v.map(x => x.kg)), max = Math.max(...v.map(x => x.kg));
+  const rg = Math.max(max - min, 0.6), t0 = v[0].t, dt = Math.max(ult - t0, 1);
+  const pts = v.map(x => [4 + (x.t - t0) / dt * (W - 8), 6 + (1 - (x.kg - min) / rg) * (H - 12)]);
+  const last = pts[pts.length - 1];
+  const c = curva(pts);
+  return `<svg class="pw-spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">
+    <defs><linearGradient id="pwSpG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--brand)" stop-opacity=".22"/><stop offset="1" stop-color="var(--brand)" stop-opacity="0"/></linearGradient></defs>
+    <path d="${c} L${last[0]},${H} L${pts[0][0]},${H} Z" fill="url(#pwSpG)"/>
+    <path d="${c}" fill="none" stroke="var(--brand)" stroke-width="2.2" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+    <circle cx="${last[0]}" cy="${last[1]}" r="3.5" fill="var(--panel)" stroke="var(--brand)" stroke-width="2.2" vector-effect="non-scaling-stroke"/>
+  </svg>`;
+}
+
+function renderPesoCard(){
+  const el = document.getElementById('pesoCard');
+  const s = pesoSerie(), act = pesoActual();
+  const cambio = pesoCambio(7);
+  const hoy = state.weightLog[todayKey()] != null;
+  let delta = '';
+  if(cambio){
+    delta = `<div class="pw-delta ${pesoTono(cambio.d)}">${flechaDelta(cambio.d)}${cambio.d > 0 ? '+' : ''}${fmtKg(cambio.d)} kg <span>en ${cambio.dias} ${cambio.dias === 1 ? 'día' : 'días'}</span></div>`;
+  } else if(!s.length){
+    delta = `<div class="pw-delta"><span>peso del perfil</span></div>`;
+  }
+  let tip, barra = '';
+  const meta = state.weightGoal;
+  if(meta && act){
+    const ini = s.length ? s[0].kg : act;
+    const falta = meta - act;
+    const prog = Math.abs(meta - ini) > 0.05 ? Math.min(Math.max((act - ini) / (meta - ini), 0), 1) : 1;
+    barra = `<div class="pw-meta-bar"><i style="width:${Math.round(prog * 100)}%"></i></div>`;
+    tip = Math.abs(falta) < 0.25
+      ? `Llegaste a tu meta de ${fmtKg(meta)} kg.`
+      : `Meta ${fmtKg(meta)} kg · te ${Math.abs(falta) >= 1.95 ? 'faltan' : 'falta'} ${fmtKg(Math.abs(falta))} kg`;
+  } else if(!hoy){
+    tip = 'Pesate a la misma hora, en ayunas, para comparar bien.';
+  } else {
+    tip = 'Tus objetivos del día se ajustan con tu último peso.';
+  }
+  el.innerHTML = `
+    <div class="pw-c-top">
+      <div class="pw-c-ttl">${PESO_ICO}Peso</div>
+      <button class="pw-add" id="pesoAdd" aria-label="Registrar peso"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+    </div>
+    <div class="pw-c-mid">
+      <div>
+        <div class="pw-c-num">${act ? fmtKg(act) : '–'}<small>kg</small></div>
+        ${delta}
+      </div>
+      ${pesoSpark()}
+    </div>
+    ${barra}
+    <div class="pw-tip"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg>${tip}</div>
+  `;
+  el.onclick = (e) => { if(!e.target.closest('#pesoAdd')) openPeso(); };
+  document.getElementById('pesoAdd').onclick = () => openPesoSheet('peso');
+}
+
+/* ---- Ventana con el histórico ---- */
+let pesoPuntos = [];
+function openPeso(){ renderPeso(); abrirPantalla('pesoScreen'); }
+function closePeso(){ cerrarPantalla('pesoScreen'); }
+
+function pesoGrafico(s){
+  const W = 340, H = 200, L = 34, R = 10, T = 30, B = 22;
+  const meta = state.weightGoal;
+  const datos = pesoTendencia(s);
+  let min = Math.min(...s.map(x => x.kg)), max = Math.max(...s.map(x => x.kg));
+  // La meta entra en la escala solo si está cerca: si no, aplasta la curva.
+  const metaVisible = meta && meta >= min - 3 && meta <= max + 3;
+  if(metaVisible){ min = Math.min(min, meta); max = Math.max(max, meta); }
+  const pad = Math.max((max - min) * 0.15, 0.4);
+  min -= pad; max += pad;
+  const t0 = s[0].t, t1 = s[s.length - 1].t, dt = Math.max(t1 - t0, 1);
+  const X = t => s.length === 1 ? (L + W - R) / 2 : L + (t - t0) / dt * (W - L - R);
+  const Y = kg => T + (1 - (kg - min) / (max - min)) * (H - T - B);
+
+  // Tres marcas en el eje Y, redondeadas a medio kilo
+  const paso = Math.max(Math.ceil((max - min) / 3 * 2) / 2, 0.5);
+  const ticks = [];
+  for(let v = Math.ceil(min / paso) * paso; v <= max; v += paso) ticks.push(v);
+  // Fechas: primera, del medio y última
+  const fechas = s.length === 1 ? [s[0]] : [s[0], s[Math.floor((s.length - 1) / 2)], s[s.length - 1]]
+    .filter((x, i, a) => a.indexOf(x) === i);
+
+  pesoPuntos = datos.map(x => ({x:X(x.t), y:Y(x.kg), kg:x.kg, dk:x.dk}));
+  const tr = datos.map(x => [X(x.t), Y(x.tr)]);
+  const crudo = curva(pesoPuntos.map(p => [p.x, p.y]));
+  const tendencia = curva(tr);
+  const base = H - B;
+  const area = tr.length > 1 ? `${tendencia} L${tr[tr.length - 1][0].toFixed(1)},${base} L${tr[0][0].toFixed(1)},${base} Z` : '';
+  const ultimo = pesoPuntos[pesoPuntos.length - 1];
+  const pocos = s.length <= 40;
+
+  return `<svg viewBox="0 0 ${W} ${H}" id="pesoSvg" role="img" aria-label="Gráfico de peso">
+    <defs>
+      <linearGradient id="pwArea" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="var(--brand)" stop-opacity=".28"/>
+        <stop offset="1" stop-color="var(--brand)" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="pwLinea" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="var(--brand)"/><stop offset="1" stop-color="var(--brand-2)"/>
+      </linearGradient>
+    </defs>
+    ${ticks.map(v => `<line x1="${L}" x2="${W - R}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" stroke="var(--line)" stroke-width="1"/>
+      <text class="eje" x="${L - 6}" y="${(Y(v) + 3.5).toFixed(1)}" text-anchor="end">${fmtKg(v, v % 1 ? 1 : 0)}</text>`).join('')}
+    ${metaVisible ? `<line x1="${L}" x2="${W - R}" y1="${Y(meta).toFixed(1)}" y2="${Y(meta).toFixed(1)}" stroke="var(--good)" stroke-width="1.5" stroke-dasharray="4 4"/>
+      <text class="eje" x="${W - R}" y="${(Y(meta) - 5).toFixed(1)}" text-anchor="end" style="fill:var(--good);font-weight:700">Meta ${fmtKg(meta)}</text>` : ''}
+    ${area ? `<path d="${area}" fill="url(#pwArea)"/>` : ''}
+    ${s.length > 1 ? `<path d="${crudo}" fill="none" stroke="var(--brand)" stroke-opacity=".28" stroke-width="1.5"/>` : ''}
+    ${tr.length > 1 ? `<path d="${tendencia}" fill="none" stroke="url(#pwLinea)" stroke-width="3" stroke-linecap="round"/>` : ''}
+    ${pocos ? pesoPuntos.map(p => `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="2.6" fill="var(--panel)" stroke="var(--brand)" stroke-width="1.6"/>`).join('') : ''}
+    <circle cx="${ultimo.x.toFixed(1)}" cy="${ultimo.y.toFixed(1)}" r="9" fill="var(--brand)" opacity=".15"/>
+    <circle cx="${ultimo.x.toFixed(1)}" cy="${ultimo.y.toFixed(1)}" r="4.5" fill="var(--brand)" stroke="var(--panel)" stroke-width="2"/>
+    ${fechas.map((x, i) => `<text class="eje" x="${X(x.t).toFixed(1)}" y="${H - 5}" text-anchor="${fechas.length === 1 ? 'middle' : (i === 0 ? 'start' : (i === fechas.length - 1 ? 'end' : 'middle'))}">${fmtDia(x.dk)}</text>`).join('')}
+    <g id="pesoCursor" style="display:none">
+      <line y1="${T - 8}" y2="${base}" stroke="var(--text-3)" stroke-width="1" stroke-dasharray="2 3"/>
+      <circle r="5" fill="var(--brand)" stroke="var(--panel)" stroke-width="2"/>
+    </g>
+  </svg>`;
+}
+
+/* Tocar o arrastrar sobre el gráfico muestra el pesaje más cercano. */
+function pesoScrub(){
+  const svg = document.getElementById('pesoSvg');
+  const tt = document.getElementById('pesoTt');
+  if(!svg || !tt || !pesoPuntos.length) return;
+  const cur = document.getElementById('pesoCursor');
+  const mover = (e) => {
+    const r = svg.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width * 340;
+    let p = pesoPuntos[0];
+    pesoPuntos.forEach(q => { if(Math.abs(q.x - x) < Math.abs(p.x - x)) p = q; });
+    cur.style.display = '';
+    cur.querySelector('line').setAttribute('x1', p.x); cur.querySelector('line').setAttribute('x2', p.x);
+    cur.querySelector('circle').setAttribute('cx', p.x); cur.querySelector('circle').setAttribute('cy', p.y);
+    tt.innerHTML = `${fmtKg(p.kg)} kg<small>${fmtDia(p.dk)}</small>`;
+    const caja = svg.parentElement.getBoundingClientRect();
+    const px = r.left - caja.left + p.x / 340 * r.width;
+    tt.style.left = Math.min(Math.max(px, 40), caja.width - 40) + 'px';
+    tt.classList.add('show');
+  };
+  const salir = () => { cur.style.display = 'none'; tt.classList.remove('show'); };
+  svg.onpointerdown = mover;
+  svg.onpointermove = mover;
+  svg.onpointerleave = salir;
+  svg.onpointerup = (e) => { if(e.pointerType !== 'mouse') setTimeout(salir, 1400); };
+}
+
+function renderPeso(){
+  const body = document.getElementById('pesoBody');
+  const todo = pesoSerie(), act = pesoActual();
+  const rango = PESO_RANGOS.find(r => r[0] === state.pesoRango) || PESO_RANGOS[1];
+  const ult = todo.length ? todo[todo.length - 1].t : 0;
+  let s = rango[1] ? todo.filter(x => x.t > ult - rango[1] * 864e5) : todo;
+  const cambio = s.length > 1 ? s[s.length - 1].kg - s[0].kg : null;
+  const ritmo = pesoRitmo();
+  const meta = state.weightGoal;
+
+  let llegada = '';
+  if(meta && act && ritmo && Math.abs(meta - act) >= 0.25 && Math.sign(meta - act) === Math.sign(ritmo) && Math.abs(ritmo) >= 0.05){
+    const semanas = (meta - act) / ritmo;
+    if(semanas < 104){
+      const f = new Date(Date.now() + semanas * 7 * 864e5);
+      llegada = `a este ritmo, ~${f.toLocaleDateString('es-AR', {day:'numeric', month:'short'}).replace('.', '')}`;
+    }
+  }
+  const nombreRango = ({'1S':'esta semana','1M':'en el mes','3M':'en 3 meses','6M':'en 6 meses','1A':'en el año','Todo':'desde el inicio'})[rango[0]];
+
+  body.innerHTML = `
+    <div class="pw-hero">
+      <div class="pw-lbl">${todo.length ? `Último pesaje · ${fmtDia(todo[todo.length - 1].dk)}` : 'Peso del perfil'}</div>
+      <div class="pw-big">${act ? fmtKg(act) : '–'}<small>kg</small></div>
+      ${cambio != null ? `<div class="pw-delta ${pesoTono(cambio)}">${flechaDelta(cambio)}${cambio > 0 ? '+' : ''}${fmtKg(cambio)} kg <span>${nombreRango}</span></div>` : ''}
+    </div>
+    <div class="pw-rangos">${PESO_RANGOS.map(r => `<button data-prango="${r[0]}" class="${r === rango ? 'on' : ''}">${r[0]}</button>`).join('')}</div>
+    <div class="card pw-chart">
+      ${s.length ? pesoGrafico(s) + '<div class="pw-tt" id="pesoTt"></div>'
+        : `<div class="pw-vacio">Todavía no hay pesajes${todo.length ? ' en este período' : ''}.<br>Cargá uno con el + y acá vas a ver tu curva.</div>`}
+    </div>
+    <div class="pw-stats">
+      <div class="pw-st">
+        <div class="pw-st-l">Inicio</div>
+        <div class="pw-st-v">${todo.length ? fmtKg(todo[0].kg) : '–'}<small>kg</small></div>
+        <div class="pw-st-d">${todo.length ? fmtDia(todo[0].dk) : 'sin pesajes'}</div>
+      </div>
+      <div class="pw-st">
+        <div class="pw-st-l">Cambio total</div>
+        <div class="pw-st-v">${todo.length > 1 ? `${act - todo[0].kg > 0 ? '+' : ''}${fmtKg(act - todo[0].kg)}<small>kg</small>` : '–'}</div>
+        <div class="pw-st-d">${todo.length} ${todo.length === 1 ? 'pesaje' : 'pesajes'}</div>
+      </div>
+      <div class="pw-st">
+        <div class="pw-st-l">Ritmo</div>
+        <div class="pw-st-v">${ritmo != null ? `${ritmo > 0 ? '+' : ''}${fmtKg(ritmo, 2)}<small>kg/sem</small>` : '–'}</div>
+        <div class="pw-st-d">${ritmo != null ? 'últimas 4 semanas' : 'hace falta 1 semana'}</div>
+      </div>
+      <button class="pw-st edit" id="pesoMetaBtn">
+        <div class="pw-st-l">Meta</div>
+        <div class="pw-st-v">${meta ? fmtKg(meta) : 'Definir'}${meta ? '<small>kg</small>' : ''}</div>
+        <div class="pw-st-d">${meta && act ? (Math.abs(meta - act) < 0.25 ? 'cumplida' : (llegada || `faltan ${fmtKg(Math.abs(meta - act))} kg`)) : 'tocá para elegir'}</div>
+      </button>
+    </div>
+    ${todo.length ? `
+    <div class="card">
+      <div class="card-header"><div class="card-title">Historial</div></div>
+      ${todo.slice().reverse().slice(0, 60).map((x, i, a) => {
+        const prev = a[i + 1];
+        const d = prev ? x.kg - prev.kg : null;
+        return `<div class="pw-hist-row">
+          <div class="pw-hist-f">${dkToDate(x.dk).toLocaleDateString('es-AR', {weekday:'short', day:'numeric', month:'short'}).replace(/\./g, '')}</div>
+          <div class="pw-hist-kg">${fmtKg(x.kg)} kg</div>
+          <div class="pw-hist-d ${d != null ? pesoTono(d) : ''}">${d == null ? '' : (Math.abs(d) < 0.05 ? '=' : `${d > 0 ? '+' : ''}${fmtKg(d)}`)}</div>
+          <button class="pw-hist-rm" data-pedit="${x.dk}" aria-label="Editar">›</button>
+        </div>`;
+      }).join('')}
+    </div>` : ''}
+  `;
+  body.querySelectorAll('[data-prango]').forEach(b => b.onclick = () => { state.pesoRango = b.dataset.prango; saveState(); renderPeso(); });
+  body.querySelectorAll('[data-pedit]').forEach(b => b.onclick = () => openPesoSheet('peso', b.dataset.pedit));
+  document.getElementById('pesoMetaBtn').onclick = () => openPesoSheet('meta');
+  pesoScrub();
+}
+
+/* ---- Hoja para cargar un pesaje o la meta ---- */
+let pesoSheetModo = 'peso';
+function openPesoSheet(modo, dk){
+  pesoSheetModo = modo;
+  const el = document.getElementById('pesoSheetBody');
+  const fecha = dk || todayKey();
+  const valor = modo === 'meta'
+    ? (state.weightGoal || pesoActual() || 70)
+    : (state.weightLog[fecha] ?? pesoActual() ?? 70);
+  el.innerHTML = `
+    <div class="modal-title">${modo === 'meta' ? 'Meta de peso' : 'Registrar peso'}</div>
+    <div class="pw-step">
+      <button data-pstep="-0.1" aria-label="Menos">−</button>
+      <div class="pw-in-wrap"><input class="pw-in" id="pesoIn" type="number" inputmode="decimal" step="0.1" min="30" max="250" value="${(+valor).toFixed(1)}"><small>kg</small></div>
+      <button data-pstep="0.1" aria-label="Más">+</button>
+    </div>
+    ${modo === 'peso' ? `<div class="pw-fecha">Fecha <input type="date" id="pesoFecha" value="${fecha}" max="${todayKey()}"></div>` : ''}
+    <div class="pw-nota" id="pesoNota"></div>
+    <button class="cta" id="pesoGuardar">Guardar</button>
+    ${modo === 'meta' && state.weightGoal ? '<button class="pw-borrar" id="pesoBorrar">Quitar meta</button>' : ''}
+    ${modo === 'peso' ? '<button class="pw-borrar" id="pesoBorrar" style="display:none">Borrar este pesaje</button>' : ''}
+  `;
+  const inp = document.getElementById('pesoIn');
+  const nota = () => {
+    const n = document.getElementById('pesoNota');
+    if(modo === 'meta'){
+      const act = pesoActual(), v = +inp.value;
+      n.textContent = act && v ? (Math.abs(v - act) < 0.25 ? 'Igual a tu peso actual: mantener.' : `${v < act ? 'Bajar' : 'Subir'} ${fmtKg(Math.abs(v - act))} kg desde hoy.`) : '';
+      return;
+    }
+    const f = document.getElementById('pesoFecha').value;
+    const hay = state.weightLog[f] != null;
+    n.textContent = hay ? `Ese día ya tenía ${fmtKg(state.weightLog[f])} kg: se reemplaza.` : '';
+    document.getElementById('pesoBorrar').style.display = hay ? '' : 'none';
+  };
+  el.querySelectorAll('[data-pstep]').forEach(b => b.onclick = () => {
+    inp.value = Math.min(Math.max((+inp.value || 0) + +b.dataset.pstep, 30), 250).toFixed(1);
+    nota();
+  });
+  // El input se ajusta al número para que "kg" quede pegado
+  const ctx = document.createElement('canvas').getContext('2d');
+  const ancho = () => {
+    const cs = getComputedStyle(inp);
+    ctx.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+    inp.style.width = Math.ceil(ctx.measureText(inp.value || '00').width + 6) + 'px';
+  };
+  inp.addEventListener('input', ancho); ancho();
+  el.querySelectorAll('[data-pstep]').forEach(b => b.addEventListener('click', ancho));
+  inp.oninput = nota;
+  if(modo === 'peso') document.getElementById('pesoFecha').onchange = nota;
+  nota();
+  document.getElementById('pesoGuardar').onclick = guardarPeso;
+  const borrar = document.getElementById('pesoBorrar');
+  if(borrar) borrar.onclick = () => {
+    if(modo === 'meta') state.weightGoal = null;
+    else delete state.weightLog[document.getElementById('pesoFecha').value];
+    pesoCambiado(modo === 'meta' ? 'Meta quitada' : 'Pesaje borrado');
+  };
+  document.getElementById('pesoSheet').classList.add('show');
+}
+function closePesoSheet(){ document.getElementById('pesoSheet').classList.remove('show'); }
+function guardarPeso(){
+  const v = Math.round(parseFloat(String(document.getElementById('pesoIn').value).replace(',', '.')) * 10) / 10;
+  if(!(v >= 30 && v <= 250)){ toast('Poné un peso entre 30 y 250 kg'); return; }
+  if(pesoSheetModo === 'meta'){
+    state.weightGoal = v;
+    pesoCambiado('Meta guardada');
+    return;
+  }
+  const f = document.getElementById('pesoFecha').value || todayKey();
+  state.weightLog[f] = v;
+  pesoCambiado('Peso guardado');
+}
+function pesoCambiado(msg){
+  // El último pesaje es el peso con el que se calculan los objetivos.
+  const s = pesoSerie();
+  if(s.length) state.profile.weight = s[s.length - 1].kg;
+  saveState();
+  closePesoSheet();
+  renderPesoCard();
+  if(isOpen('pesoScreen')) renderPeso();
+  if(state.currentTab === 'overall') renderResumen();
+  toast(msg);
+}
+
 /* ==================== VENTANA: REGISTRAR COMIDA ==================== */
 let logDesdeCal = false;
 function abrirPantalla(id){
@@ -5768,7 +6277,7 @@ function abrirPantalla(id){
 function cerrarPantalla(id){
   document.getElementById(id).classList.remove('open', 'top');
   document.getElementById(id).setAttribute('aria-hidden', 'true');
-  if(!isOpen('logScreen') && !isOpen('libScreen') && !isOpen('labScreen') && !isOpen('chatScreen')) document.body.classList.remove('screen-open');
+  if(!isOpen('logScreen') && !isOpen('libScreen') && !isOpen('labScreen') && !isOpen('chatScreen') && !isOpen('pesoScreen')) document.body.classList.remove('screen-open');
 }
 
 function openLogScreen(dk){
@@ -7284,7 +7793,7 @@ function init(){
 
   // Registro, explorador y tema
   document.getElementById('goToMeals').onclick = () => openLogScreen(null);
-  document.getElementById('fabLog').onclick = () => openLogScreen(null);
+  document.getElementById('fabLog').onclick = openChat;
   document.getElementById('logClose').onclick = closeLogScreen;
   document.getElementById('logDone').onclick = closeLogScreen;
   document.getElementById('logPrevDay').onclick = () => moverDia(-1);
@@ -7295,6 +7804,10 @@ function init(){
   document.getElementById('openLab').onclick = openLab;
   document.getElementById('openChat').onclick = openChat;
   document.getElementById('chatClose').onclick = closeChat;
+  document.getElementById('pesoClose').onclick = closePeso;
+  document.getElementById('pesoAddTop').onclick = () => openPesoSheet('peso');
+  document.getElementById('pesoSheetClose').onclick = closePesoSheet;
+  document.getElementById('pesoSheet').onclick = (e) => { if(e.target.id === 'pesoSheet') closePesoSheet(); };
   document.getElementById('chatForm').onsubmit = (e) => { e.preventDefault(); chEnviar(); };
   document.getElementById('labClose').onclick = closeLab;
   document.getElementById('labNext').onclick = labOtra;
@@ -7316,7 +7829,9 @@ function init(){
   // Atrás del sistema / Escape cierra lo que esté arriba
   document.addEventListener('keydown', (e) => {
     if(e.key !== 'Escape') return;
-    if(document.getElementById('qtySheet').classList.contains('show')) closeQtySheet();
+    if(document.getElementById('pesoSheet').classList.contains('show')) closePesoSheet();
+    else if(document.getElementById('qtySheet').classList.contains('show')) closeQtySheet();
+    else if(isOpen('pesoScreen')) closePeso();
     else if(isOpen('libScreen')) closeLibrary();
     else if(isOpen('labScreen')) closeLab();
     else if(isOpen('chatScreen')) closeChat();
