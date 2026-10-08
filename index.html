@@ -2073,6 +2073,95 @@ body.screen-open{overflow:hidden}
 .lt-men{display:none}
 .lt-liq{transition:transform 1s cubic-bezier(.25,1.3,.4,1)}
 .lt-b{fill:rgba(255,255,255,.55)}
+
+/* ---- Asistente ---- */
+.chat-entry{width:100%;display:flex;align-items:center;gap:10px;margin-top:12px;padding:12px 14px;border-radius:16px;border:1px solid var(--line);background:var(--panel-2);text-align:left;color:var(--text-3);font-size:14px}
+.chat-entry-ico{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;background:rgba(var(--brand-rgb),.12);color:var(--brand);flex-shrink:0}
+.chat-entry-ico svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.chat-log{display:flex;flex-direction:column;gap:10px;padding-top:10px}
+.cm{max-width:86%;padding:10px 13px;border-radius:18px;font-size:14.5px;line-height:1.45}
+.cm p{margin:0}
+.cm.bot{align-self:flex-start;background:var(--panel);border:1px solid var(--line);border-bottom-left-radius:6px}
+.cm.yo{align-self:flex-end;background:var(--grad);color:#fff;border-bottom-right-radius:6px}
+.cm-items{display:grid;gap:6px;margin-top:10px}
+.cm-item{display:flex;align-items:center;gap:8px;padding:4px 0;border-top:1px solid var(--line)}
+.cm-item:first-child{border-top:none}
+.cm-name{flex:1;min-width:0;font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cm-q{font-variant-numeric:tabular-nums;font-size:13.5px}
+.cm .lx-step button{width:28px;height:28px;font-size:16px}
+.cm .lx-step span{min-width:50px;font-size:12.5px}
+.cm-x{width:26px;height:26px;border-radius:50%;color:var(--text-4);font-size:18px}
+.cm-duda{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+.cm-duda p{font-weight:600;margin-bottom:6px}
+.cm-opts{display:flex;flex-wrap:wrap;gap:6px}
+.cm-opts button{padding:6px 11px;border-radius:999px;border:1px solid rgba(var(--brand-rgb),.4);color:var(--brand);font-size:12.5px;font-weight:600;background:rgba(var(--brand-rgb),.06)}
+.cm-opts button.no{border-color:var(--line);color:var(--text-3);background:transparent}
+.cm-tot{margin-top:10px;font-size:12.5px;color:var(--text-3);font-variant-numeric:tabular-nums}
+.cm-ok{width:100%;margin-top:8px}
+.cm-ok:disabled{opacity:.5}
+.chat-foot{gap:8px}
+.chat-foot .search{flex:1;margin:0;border-radius:999px}
+.chat-foot .btn{flex:0 0 48px;height:46px;padding:0;border-radius:50%;display:grid;place-items:center}
+.cm.bot.ancho{max-width:100%;width:100%}
+
+/* ---- Asistente v2 ---- */
+#chatScreen{background:
+  radial-gradient(500px 260px at 50% -40px, rgba(var(--brand-rgb),.16), transparent 70%),
+  var(--bg)}
+.ch-head{flex:1;display:flex;align-items:center;justify-content:center;gap:10px}
+.ch-head b{display:block;font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:800;letter-spacing:-.02em}
+.ch-head span{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--text-3)}
+.ch-head span i{width:7px;height:7px;border-radius:50%;background:var(--good);box-shadow:0 0 0 3px rgba(var(--good-rgb),.18)}
+.ch-ava{width:40px;height:40px;border-radius:14px;flex-shrink:0;background:url('icon-192.png?v=3') center/cover;box-shadow:0 6px 14px -6px rgba(var(--brand-rgb),.6)}
+.ch-ava.sm{width:28px;height:28px;border-radius:10px;box-shadow:none;align-self:flex-end}
+.chat-log{gap:12px;padding-top:14px;padding-bottom:14px}
+.cm-wrap{display:flex;gap:8px;align-items:flex-end;max-width:100%;animation:ch-in .28s cubic-bezier(.2,.8,.2,1)}
+.cm{animation:ch-in .28s cubic-bezier(.2,.8,.2,1)}
+@keyframes ch-in{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+.cm.bot{background:var(--panel);border:1px solid var(--line);box-shadow:0 6px 18px -12px rgba(var(--ink-rgb),.25);border-bottom-left-radius:6px;max-width:calc(100% - 40px)}
+.cm.bot.ancho{flex:1;width:auto;max-width:calc(100% - 36px)}
+.cm.yo{box-shadow:0 8px 18px -10px rgba(var(--brand-rgb),.6)}
+.ch-typing{display:flex;gap:4px;padding:14px 16px}
+.ch-typing i{width:7px;height:7px;border-radius:50%;background:var(--text-4);animation:ch-dot 1s infinite ease-in-out}
+.ch-typing i:nth-child(2){animation-delay:.15s} .ch-typing i:nth-child(3){animation-delay:.3s}
+@keyframes ch-dot{0%,80%,100%{transform:translateY(0);opacity:.5}40%{transform:translateY(-4px);opacity:1}}
+.ch-ticket{margin-top:10px;border-radius:16px;background:var(--panel-2);border:1px solid var(--line);padding:4px 10px 10px}
+.ch-ticket.listo{opacity:.85}
+.ch-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line)}
+.ch-row .row-thumb{width:32px;height:32px;border-radius:10px}
+.ch-row .row-thumb .ico{width:17px;height:17px}
+.ch-tot{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.ch-mc{display:inline-flex;align-items:baseline;gap:3px;font-size:11.5px;color:var(--text-3);padding:4px 9px;border-radius:999px;background:var(--panel);border:1px solid var(--line)}
+.ch-mc b{font-size:13px;color:var(--text);font-variant-numeric:tabular-nums}
+.ch-mc.p b{color:var(--brand-2)} .ch-mc.c b{color:var(--carb)} .ch-mc.f b{color:var(--fat)} .ch-mc.k b{color:var(--brand)}
+.ch-ok-tag{display:flex;align-items:center;gap:6px;margin-top:10px;font-size:12.5px;font-weight:700;color:var(--good)}
+.ch-ok-tag .ico{width:15px;height:15px;fill:var(--good);stroke:var(--good)}
+.cm-duda{margin-top:8px;padding-top:4px;border-top:none}
+.cm-opts button{background:var(--panel)}
+.cm-ok{border-radius:14px;padding:12px}
+.ch-buscar{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:13px;font-weight:600;color:var(--brand)}
+.ch-buscar .ico{width:15px;height:15px}
+.ch-quick{display:flex;gap:8px;overflow-x:auto;padding:0 16px 10px;scrollbar-width:none}
+.ch-quick::-webkit-scrollbar{display:none}
+.ch-quick button{flex-shrink:0;padding:8px 13px;border-radius:999px;background:var(--panel);border:1px solid var(--line);font-size:13px;color:var(--text-2);box-shadow:0 4px 12px -8px rgba(var(--ink-rgb),.3)}
+.ch-quick button:active{border-color:var(--brand);color:var(--brand)}
+.chat-foot{background:rgba(var(--panel-rgb),.8)}
+.ch-input{flex:1;display:flex;align-items:center;gap:6px;padding:5px 5px 5px 16px;border-radius:999px;background:var(--panel);border:1px solid var(--line);box-shadow:0 8px 20px -14px rgba(var(--brand-rgb),.6);transition:border-color .15s, box-shadow .15s}
+.ch-input:focus-within{border-color:var(--brand);box-shadow:0 0 0 4px rgba(var(--brand-rgb),.12)}
+.ch-input input{flex:1;min-width:0;border:none;background:transparent;font-size:15px;color:var(--text);padding:8px 0}
+.ch-input input:focus{outline:none}
+.ch-input input::placeholder{color:var(--text-4)}
+.ch-input button{width:40px;height:40px;border-radius:50%;background:var(--grad);color:#fff;display:grid;place-items:center;flex-shrink:0;box-shadow:0 6px 14px -6px rgba(var(--brand-rgb),.7)}
+.ch-input button:active{transform:scale(.92)}
+@media (prefers-reduced-motion: reduce){.cm,.cm-wrap,.ch-typing i{animation:none}}
+
+.ch-row .cm-name{font-size:14px}
+.ch-row .lx-step span{min-width:46px}
+.ch-tot{flex-wrap:nowrap;gap:5px}
+.ch-mc{padding:4px 8px;font-size:11px;white-space:nowrap}
+.ch-mc b{font-size:12.5px}
+.ch-head{justify-content:flex-start;padding-left:4px}
+.ch-row .cm-name{white-space:normal;line-height:1.2;font-size:13.5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 </style>
 </head>
 <body>
@@ -2123,6 +2212,10 @@ body.screen-open{overflow:hidden}
       </div>
       <div id="todayMeals"></div>
       <div id="quickFavs"></div>
+      <button class="chat-entry" id="openChat">
+        <span class="chat-entry-ico"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/></svg></span>
+        <span class="chat-entry-txt">Contame qué comiste…</span>
+      </button>
       <button class="cta" id="goToMeals">
         <span class="cta-plus">+</span> Registrar comida
       </button>
@@ -2297,6 +2390,28 @@ body.screen-open{overflow:hidden}
       <div class="foot-sum" id="logFootSum"></div>
       <button class="btn primary" id="logDone">Listo</button>
     </div>
+  </div>
+
+  <!-- VENTANA: ASISTENTE -->
+  <div class="screen" id="chatScreen" aria-hidden="true">
+    <div class="screen-top">
+      <button class="icon-btn" id="chatClose" aria-label="Volver">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="ch-head">
+        <div class="ch-ava"></div>
+        <div><b>Picoteo</b><span><i></i>tu asistente de comidas</span></div>
+      </div>
+      <div style="width:38px"></div>
+    </div>
+    <div class="screen-body chat-log" id="chatLog"></div>
+    <div class="ch-quick" id="chatQuick"></div>
+    <form class="screen-foot chat-foot" id="chatForm">
+      <div class="ch-input">
+        <input type="text" id="chatInput" placeholder="Contame qué comiste…" autocomplete="off">
+        <button type="submit" aria-label="Enviar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      </div>
+    </form>
   </div>
 
   <!-- VENTANA: LAB DE PLATOS -->
@@ -3198,7 +3313,7 @@ function parseIngEntry(eid){
   return {id, qty};
 }
 function fmtNum(n){ return (Math.round(n * 10) / 10).toLocaleString('es-AR'); }
-function qtyLabel(ing, qty){ return ing.unit === 'u' ? `${fmtNum(qty)} u` : `${fmtNum(qty)} g`; }
+function qtyLabel(ing, qty){ return ing.unit === 'u' ? `${fmtNum(qty)} u` : `${fmtNum(qty)} ${ing.cat === 'bebida' || ing.id === 'milk' || ing.id === 'milk_desc' ? 'ml' : 'g'}`; }
 
 /* ==================== STATE ==================== */
 const STORAGE_KEY = 'nutricore_v1';
@@ -5653,7 +5768,7 @@ function abrirPantalla(id){
 function cerrarPantalla(id){
   document.getElementById(id).classList.remove('open', 'top');
   document.getElementById(id).setAttribute('aria-hidden', 'true');
-  if(!isOpen('logScreen') && !isOpen('libScreen') && !isOpen('labScreen')) document.body.classList.remove('screen-open');
+  if(!isOpen('logScreen') && !isOpen('libScreen') && !isOpen('labScreen') && !isOpen('chatScreen')) document.body.classList.remove('screen-open');
 }
 
 function openLogScreen(dk){
@@ -6841,6 +6956,278 @@ function labGuardar(){
   toast('Guardada en tus recetas y favoritos');
 }
 
+/* ==================== ASISTENTE: "CONTAME QUÉ COMISTE" ====================
+   Entiende frases como "2 empanadas de carne, media pizza y una coca" sin IA:
+   separa la frase en partes, saca cantidad y unidad de cada una y busca el
+   alimento en la base (con sinónimos argentinos). Lo ambiguo lo pregunta. */
+const CH_NUM = {un:1, una:1, uno:1, dos:2, tres:3, cuatro:4, cinco:5, seis:6, siete:7, ocho:8, nueve:9, diez:10, media:0.5, medio:0.5, par:2};
+const CH_UNIDAD = [
+  // [palabras, gramos por unidad o null si es "porción"]
+  [['kg','kilo','kilos'], 1000], [['g','gr','grs','gramo','gramos'], 1], [['ml','cc'], 1], [['litro','litros','l'], 1000],
+  [['taza','tazas'], 240], [['vaso','vasos'], 250], [['lata','latas'], 350], [['botella','botellita'], 500],
+  [['copa','copas'], 150], [['cucharada','cucharadas'], 15], [['cucharadita','cucharaditas'], 5],
+  [['feta','fetas','rodaja','rodajas','tostada','tostadas'], 25], [['punado','punados'], 30],
+  [['porcion','porciones','plato','platos','porcioncita'], null]
+];
+/* Frases que hay que reconocer antes de cortar por "con" o "y". */
+const CH_FRASES = {
+  'arroz con pollo':'@arroz_pollo', 'fideos con tuco':'@fideos_tuco', 'flan con dulce de leche':'@flan_ddl', 'flan con dulce':'@flan_ddl',
+  'cafe con leche':'cafe , 100 ml de leche', 'jamon y queso':'jyq'
+};
+/* Palabras sueltas → alimento (uno) o varios (se pregunta). */
+const CH_SIN = {
+  'coca zero':'gaseosa_zero', 'coca light':'gaseosa_zero', 'coca cola':'gaseosa', 'coca':'gaseosa', 'gaseosa':'gaseosa', 'sprite':'gaseosa', 'fanta':'gaseosa',
+  'birra':'cerveza', 'cerveza':'cerveza', 'vino':'vino', 'cafe':'cafe', 'mate':'mate', 'mates':'mate',
+  'muzza':'pizza_muzza', 'muzzarella':'pizza_muzza', 'fugazzeta':'pizza_fugazzeta', 'fugazza':'pizza_fugazza', 'faina':'faina',
+  'pizza':['pizza_muzza','pizza_napo','pizza_fugazzeta','pizza_jym','pizza_calabresa','pizza_cuatroq'],
+  'empanada':['emp_carne','emp_pollo','emp_jyq','emp_humita','emp_caprese','emp_verdura','emp_cyq'],
+  'milanesa':['milanesa','mila_pollo','mila_soja','mila_napo'], 'milanga':['milanesa','mila_pollo','mila_soja','mila_napo'],
+  'huevo':'egg', 'huevos':'egg', 'huevo duro':'huevo_duro', 'huevo frito':'huevo_frito',
+  'pollo':'pollo_p', 'pechuga':'pollo_p', 'carne':'carne_m', 'bife':'bife', 'asado':'asado_tira', 'vacio':'vacio',
+  'chori':'choripan', 'choripan':'choripan', 'hamburguesa':'hamburguesa', 'pancho':'pancho', 'tostado':'tostado',
+  'medialuna':'medialuna', 'factura':'factura', 'alfajor':['alfajor_choco','alfajor_maicena'], 'chipa':'chipa',
+  'arroz':'rice_wh', 'fideos':'pasta', 'pasta':'pasta', 'noquis':'noquis', 'ravioles':'ravioles', 'locro':'locro', 'guiso':'guiso_lentejas',
+  'papa':'papa', 'papas':'papa', 'papas fritas':'papas_fritas', 'ensalada':'ensalada_mixta', 'tarta':['tarta_jyq','tarta_verdura'],
+  'yogur':'yog_nat', 'yogurt':'yog_nat', 'leche':'milk', 'queso':['queso_cr','queso_mz','queso_dambo','queso_ps'],
+  'pan':'pan_frances', 'tostada':'pan_lact', 'tostadas':'pan_lact', 'avena':'oat', 'atun':'atun', 'lentejas':'lent', 'garbanzos':'garb', 'tofu':'tofu',
+  'whey':'whey', 'proteina':'whey', 'manteca de mani':'mani_pst', 'helado':'helado', 'flan':'flan_ddl', 'jyq':'tostado',
+  'banana':'banana', 'manzana':'manzana', 'naranja':'naranja', 'mandarina':'mandarina', 'palta':'palta', 'nueces':'nuez', 'almendras':'almendra'
+};
+/* Porción por defecto cuando dicen "una"/"un plato" de algo medido en gramos. */
+function chPorcion(i){
+  const fija = {gaseosa:350, gaseosa_zero:350, cerveza:350, vino:150, cafe:150, mate:250, jugo_naranja:250, milk:250, milk_desc:250,
+    asado_tira:250, vacio:250, chorizo:100, morcilla:80, helado:150, bizcochitos:30, pan_frances:60, rice_wh:200, rice_br:200, pasta:250, pasta_int:250,
+    papas_fritas:150, papa:200, manteca:10, crema:30, mayonesa:15, dulce_leche:20, mermelada:20, queso_unt:30, queso_cr:40, queso_mz:40, oliva:10, pan_lact:50};
+  if(fija[i.id]) return fija[i.id];
+  if(i.unit === 'u') return 1;
+  return porcionTipica(i) || 100;
+}
+const CH_STOP = new Set(['de','del','la','el','los','las','al','a','me','comi','tome','tomé','almorce','cene','desayune','meriende','hoy','recien','un','una','uno','unos','unas','algo','poco','mucho','con','sin','en','y','e','para','que','como','tipo','casi']);
+function chTokens(t){ return norm(t).replace(/[^a-z0-9ñ\s]/g, ' ').split(/\s+/).filter(Boolean); }
+function chRaiz(w){ return w.length > 4 ? w.replace(/(es|s)$/, '') : w; }
+
+/* Busca el alimento de un pedazo de frase. Devuelve {ids:[...], seguro:bool}. */
+function chBuscar(texto){
+  const t = ' ' + norm(texto).replace(/[^a-z0-9ñ\s_]/g, ' ').replace(/\s+/g, ' ') + ' ';
+  const diet = dietaDe(state.profile);
+  // 1) sinónimo, el más largo que aparezca
+  const claves = Object.keys(CH_SIN).sort((a, b) => b.length - a.length);
+  for(const k of claves){
+    if(t.includes(' ' + k + ' ') || t.includes(' ' + k + 's ')){
+      let v = CH_SIN[k];
+      // Si la frase dice algo más ("arroz integral"), buscar una variante que tenga todo.
+      const extra = chTokens(t.replace(k, ' ')).filter(w => !CH_STOP.has(w) && w.length > 2 && isNaN(+w) && !CH_UNIDAD.some(([pals]) => pals.includes(w)))
+        .flatMap(w => w === 'jyq' ? ['jamon','queso'] : [w]).map(chRaiz);
+      if(extra.length){
+        const raizK = chRaiz(chTokens(k)[0]);
+        const variante = INGREDIENTS.filter(i => {
+          const n = chTokens(i.name).map(chRaiz);
+          const tiene = r => n.some(x => x === r || (r.length > 3 && (x.startsWith(r) || r.startsWith(x))));
+          return (tiene(raizK) || (Array.isArray(v) && v.includes(i.id))) && extra.every(tiene);
+        });
+        // Sin "frita" en la frase, se asume la versión al horno.
+        const sinFrito = extra.some(w => w.startsWith('frit')) ? variante : variante.filter(i => !/frit/i.test(i.name));
+        if(sinFrito.length === 1) return {ids:[sinFrito[0].id], seguro:true};
+        if(variante.length === 1) return {ids:[variante[0].id], seguro:true};
+        if(variante.length > 1 && variante.length <= 6) return {ids:variante.map(i => i.id), seguro:false};
+      }
+      if(Array.isArray(v)){
+        // si el resto de la frase desempata ("empanada de carne"), usar el nombre
+        const resto = chTokens(t.replace(k, ' ')).filter(w => !CH_STOP.has(w) && w.length > 2).map(chRaiz);
+        if(resto.length){
+          const afin = v.filter(id => { const n = chTokens(INGR_BY_ID[id].name).map(chRaiz); return resto.every(r => n.some(x => x.startsWith(r) || r.startsWith(x))); });
+          if(afin.length === 1) return {ids:afin, seguro:true};
+          if(afin.length > 1) v = afin;
+        }
+        return {ids:v.filter(id => INGR_BY_ID[id] && ingApto(INGR_BY_ID[id], diet)).concat(v.filter(id => INGR_BY_ID[id] && !ingApto(INGR_BY_ID[id], diet))), seguro:false};
+      }
+      if(INGR_BY_ID[v]) return {ids:[v], seguro:true};
+    }
+  }
+  // 2) parecido por palabras con los nombres de la base
+  const pal = chTokens(t).filter(w => !CH_STOP.has(w) && w.length > 2 && isNaN(+w)).map(chRaiz);
+  if(!pal.length) return {ids:[], seguro:false};
+  const puntajes = INGREDIENTS.map(i => {
+    const n = chTokens(i.name.replace(/\(.*\)/, '')).filter(w => !CH_STOP.has(w)).map(chRaiz);
+    let hit = 0;
+    pal.forEach(p => { if(n.some(x => x === p || (p.length > 3 && (x.startsWith(p) || p.startsWith(x))))) hit++; });
+    const sc = hit / pal.length + hit / Math.max(n.length, 1) * 0.5 + (n[0] && pal.includes(n[0]) ? 0.2 : 0);
+    return {id:i.id, sc, hit};
+  }).filter(x => x.hit > 0).sort((a, b) => b.sc - a.sc);
+  if(!puntajes.length) return {ids:[], seguro:false};
+  const top = puntajes[0].sc;
+  const empatados = puntajes.filter(x => x.sc >= top - 0.05).map(x => x.id);
+  return {ids: empatados.slice(0, 5), seguro: empatados.length === 1 && top >= 0.9};
+}
+
+/* Saca cantidad y unidad del pedazo: "2", "media", "150 g", "un plato". */
+function chCantidad(texto){
+  const w = chTokens(texto);
+  let n = null, gramos = null, porcion = false;
+  for(let k = 0; k < w.length; k++){
+    const x = w[k];
+    const num = parseFloat(x.replace(',', '.'));
+    let v = !isNaN(num) && /^\d/.test(x) ? num : (CH_NUM[x] ?? null);
+    if(v !== null){
+      if(n === null) n = v; else if(v === 0.5 && n >= 1) n += 0.5; // "una y media"
+      const pegado = x.match(/^\d+(?:[.,]\d+)?(kg|g|gr|ml|cc|l)$/);
+      const sig = pegado ? pegado[1] : w[k + 1];
+      for(const [pals, g] of CH_UNIDAD){
+        if(sig && pals.includes(sig)){ if(g === null) porcion = true; else gramos = n * g; break; }
+      }
+      continue;
+    }
+    for(const [pals, g] of CH_UNIDAD){ if(pals.includes(x) && g === null) porcion = true; }
+  }
+  return {n: n === null ? 1 : n, gramos, porcion};
+}
+/* Cantidad final en la unidad del ingrediente. */
+function chQty(i, c){
+  // "media pizza" es media pizza entera (4 porciones), no media porción.
+  if(i.id.startsWith('pizza_') && !c.porcion && c.gramos === null && c.n < 1) return c.n * 8;
+  if(c.gramos !== null) return i.unit === 'u' ? Math.max(0.5, Math.round(c.gramos / i.per * 2) / 2) : Math.round(c.gramos);
+  if(i.unit === 'u') return c.n;
+  return Math.round(c.n * chPorcion(i));
+}
+
+/* Corta la frase en alimentos y arma la respuesta del asistente. */
+function chInterpretar(frase){
+  let t = ' ' + norm(frase) + ' ';
+  // Platos con "con"/"y" en el nombre: se marcan antes de cortar la frase.
+  const marcas = [];
+  Object.keys(CH_FRASES).forEach(f => {
+    const v = CH_FRASES[f];
+    const rep = v[0] === '@' ? ' frasemarca' + (marcas.push(v.slice(1)) - 1) + ' ' : ' ' + v + ' ';
+    t = t.split(f).join(rep);
+  });
+  const partes = t.split(/,|;|\n|\.(?!\d)|\s+y\s+|\s+e\s+|\s+mas\s+|\s\+\s|\s+con\s+|\s+despues\s+|\s+tambien\s+/).map(s => s.trim()).filter(s => chTokens(s).some(w => !CH_STOP.has(w)));
+  const items = [], dudas = [], noEntendi = [];
+  let agua = 0;
+  partes.forEach(p => {
+    const c = chCantidad(p);
+    if(/\bagua\b/.test(p)){ agua += c.gramos !== null ? c.gramos : c.n * 250; return; }
+    // id directo (vino de CH_FRASES)
+    const m = p.match(/frasemarca(\d+)/);
+    const r = m ? {ids:[marcas[+m[1]]], seguro:true} : chBuscar(p);
+    if(!r.ids.length){ noEntendi.push(p); return; }
+    if(r.seguro || r.ids.length === 1){
+      const i = INGR_BY_ID[r.ids[0]];
+      items.push({id:i.id, qty:chQty(i, c)});
+    } else {
+      dudas.push({texto:p, cant:c, ids:r.ids});
+    }
+  });
+  return {items, dudas, noEntendi, agua};
+}
+
+/* ---- Interfaz del chat ---- */
+let chMsgs = [];
+function chSaludo(){
+  const h = new Date().getHours();
+  const q = h < 11 ? '¿Qué desayunaste?' : h < 15 ? '¿Qué almorzaste?' : h < 19 ? '¿Qué merendaste?' : '¿Qué cenaste?';
+  return `¡Hola! ${q} Contámelo como te salga, por ejemplo: "2 empanadas de carne, media pizza de muzza y una coca".`;
+}
+function openChat(){
+  if(!chMsgs.length) chMsgs.push({de:'bot', texto:chSaludo()});
+  abrirPantalla('chatScreen');
+  renderChat();
+  setTimeout(() => document.getElementById('chatInput').focus(), 350);
+}
+function closeChat(){ cerrarPantalla('chatScreen'); if(state.currentTab === 'overall') renderResumen(); }
+let chEscribiendo = false;
+function chEnviar(textoForzado){
+  const inp = document.getElementById('chatInput');
+  const txt = (textoForzado || inp.value).trim();
+  if(!txt || chEscribiendo) return;
+  inp.value = '';
+  chMsgs.push({de:'yo', texto:txt});
+  chEscribiendo = true;
+  renderChat();
+  setTimeout(() => {
+    chEscribiendo = false;
+    const r = chInterpretar(txt);
+    if(!r.items.length && !r.dudas.length && !r.agua){
+      chMsgs.push({de:'bot', texto:'No lo encontré en la base. Probá con otras palabras, como "milanesa de pollo" o "150 g de arroz", o buscalo a mano.', buscar:true});
+    } else {
+      const n = r.items.length + r.dudas.length;
+      chMsgs.push({de:'bot', texto: n ? `Anoté ${n === 1 ? 'esto' : 'estas ' + n + ' cosas'}. Ajustá lo que haga falta y confirmá.` : '', ...r, listo:false});
+    }
+    renderChat();
+  }, 550);
+}
+function chTotal(items){ return computeMealNutrition({items}); }
+const CH_RAPIDAS = ['2 empanadas de carne y una coca', 'café con leche y 2 medialunas', 'milanesa de pollo con ensalada', 'yogur con avena y una banana'];
+function renderChat(){
+  const el = document.getElementById('chatLog');
+  const chip = (cls, v, l) => `<span class="ch-mc ${cls}"><b>${v}</b>${l}</span>`;
+  el.innerHTML = chMsgs.map((m, k) => {
+    if(m.de === 'yo') return `<div class="cm yo"><p>${escapeHtml(m.texto)}</p></div>`;
+    let html = m.texto ? `<p>${m.texto}</p>` : '';
+    const conItems = m.items && (m.items.length || m.dudas.length || m.agua);
+    if(conItems){
+      html += `<div class="ch-ticket ${m.listo ? 'listo' : ''}">
+        ${m.items.map((x, j) => { const i = INGR_BY_ID[x.id]; return `
+          <div class="ch-row">
+            ${ingThumb(i)}
+            <span class="cm-name">${nombreCorto(i)}</span>
+            ${m.listo ? `<b class="cm-q">${qtyLabel(i, x.qty)}</b>` : `
+            <div class="lx-step">
+              <button data-cmenos="${k}:${j}" aria-label="Menos">−</button><span>${qtyLabel(i, x.qty)}</span><button data-cmas="${k}:${j}" aria-label="Más">+</button>
+            </div>`}
+          </div>`; }).join('')}
+        ${m.agua ? `<div class="ch-row">${thumbHtml('drop', 'var(--water)')}<span class="cm-name">Agua</span><b class="cm-q">${m.agua} ml</b></div>` : ''}
+        ${!m.listo && m.dudas.length ? m.dudas.map((d, j) => `
+          <div class="cm-duda">
+            <p>¿Cuál ${escapeHtml(chTokens(d.texto).filter(w => !CH_STOP.has(w) && isNaN(+w)).slice(0, 2).join(' ') || 'era')}?</p>
+            <div class="cm-opts">${d.ids.map(id => `<button data-celegir="${k}:${j}:${id}">${nombreCorto(INGR_BY_ID[id])}</button>`).join('')}<button class="no" data-cdescartar="${k}:${j}">Ninguna</button></div>
+          </div>`).join('') : ''}
+        ${m.items.length ? (() => { const n = chTotal(m.items); return `
+          <div class="ch-tot">${chip('k', n.kcal, ' kcal')}${chip('p', 'P ' + Math.round(n.p), '')}${chip('c', 'C ' + Math.round(n.c), '')}${chip('f', 'G ' + Math.round(n.f), '')}</div>`; })() : ''}
+        ${m.listo ? `<div class="ch-ok-tag">${ico('star')}Sumado a hoy</div>` : ''}
+      </div>`;
+      if(!m.listo && (m.items.length || m.agua)){
+        html += `<button class="btn primary cm-ok" data-cconfirmar="${k}" ${m.dudas.length ? 'disabled' : ''}>${m.dudas.length ? 'Elegí una opción arriba' : 'Sumar a hoy'}</button>`;
+      }
+    }
+    if(m.buscar) html += `<button class="ch-buscar" data-cbuscar="1">${ico('search')}Buscar a mano</button>`;
+    return `<div class="cm-wrap"><div class="ch-ava sm"></div><div class="cm bot ${conItems ? 'ancho' : ''}">${html}</div></div>`;
+  }).join('') + (chEscribiendo ? `<div class="cm-wrap"><div class="ch-ava sm"></div><div class="cm bot ch-typing"><i></i><i></i><i></i></div></div>` : '');
+
+  // Sugerencias rápidas: solo al principio de la charla
+  const q = document.getElementById('chatQuick');
+  q.innerHTML = chMsgs.length <= 1 ? CH_RAPIDAS.map(t => `<button data-crapida="${escapeHtml(t)}">${t}</button>`).join('') : '';
+  q.querySelectorAll('[data-crapida]').forEach(b => b.onclick = () => chEnviar(b.dataset.crapida));
+  el.scrollTop = el.scrollHeight;
+  const par = s => s.split(':').map((v, n) => n < 2 ? +v : v);
+  el.querySelectorAll('[data-cmas],[data-cmenos]').forEach(b => b.onclick = () => {
+    const [k, j] = par(b.dataset.cmas || b.dataset.cmenos), x = chMsgs[k].items[j], i = INGR_BY_ID[x.id];
+    const paso = i.unit === 'u' ? (x.qty % 1 ? 0.5 : 1) : (x.qty >= 100 ? 25 : 10);
+    const nuevo = Math.round((x.qty + (b.dataset.cmas ? paso : -paso)) * 10) / 10;
+    if(nuevo <= 0) chMsgs[k].items.splice(j, 1); else x.qty = nuevo;
+    renderChat();
+  });
+  el.querySelectorAll('[data-cquitar]').forEach(b => b.onclick = () => { const [k, j] = par(b.dataset.cquitar); chMsgs[k].items.splice(j, 1); renderChat(); });
+  el.querySelectorAll('[data-celegir]').forEach(b => b.onclick = () => {
+    const [k, j, id] = par(b.dataset.celegir), m = chMsgs[k], d = m.dudas[j], i = INGR_BY_ID[id];
+    m.items.push({id, qty:chQty(i, d.cant)}); m.dudas.splice(j, 1); renderChat();
+  });
+  el.querySelectorAll('[data-cdescartar]').forEach(b => b.onclick = () => { const [k, j] = par(b.dataset.cdescartar); chMsgs[k].dudas.splice(j, 1); renderChat(); });
+  el.querySelectorAll('[data-cbuscar]').forEach(b => b.onclick = () => { closeChat(); openLogScreen(null); });
+  el.querySelectorAll('[data-cconfirmar]').forEach(b => b.onclick = () => {
+    const m = chMsgs[+b.dataset.cconfirmar], tk = todayKey();
+    if(!state.selectedByDate[tk]) state.selectedByDate[tk] = [];
+    m.items.forEach(x => { state.selectedByDate[tk].push(ingEntryId(x.id, x.qty)); state.lastQty[x.id] = x.qty; });
+    if(m.agua){ if(!state.waterByDate[tk]) state.waterByDate[tk] = []; state.waterByDate[tk].push(m.agua); }
+    m.listo = true;
+    saveState(); renderSegTags();
+    const t = computeTargets(state.profile, tk), tot = aggregateMeals(state.selectedByDate[tk]);
+    const n = chTotal(m.items);
+    const faltaK = Math.round(t.kcal - tot.kcal), faltaP = Math.round(t.protein - tot.p);
+    chMsgs.push({de:'bot', texto: `Listo, sumé ${n.kcal} kcal${m.agua ? ` y ${m.agua} ml de agua` : ''}. ` +
+      (faltaK > 0 ? `Te quedan ${faltaK} kcal${faltaP > 0 ? ` y ${faltaP} g de proteína` : ''} para hoy. ¿Algo más?` : 'Ya cubriste las calorías de hoy. ¿Algo más?')});
+    renderChat();
+  });
+}
 /* ==================== TOAST ==================== */
 let toastTimer;
 function toast(msg){
@@ -6906,6 +7293,9 @@ function init(){
   document.getElementById('logSearch').oninput = (e) => { state.logSearch = e.target.value.trim(); renderLog(); };
   document.getElementById('openLibrary').onclick = openLibrary;
   document.getElementById('openLab').onclick = openLab;
+  document.getElementById('openChat').onclick = openChat;
+  document.getElementById('chatClose').onclick = closeChat;
+  document.getElementById('chatForm').onsubmit = (e) => { e.preventDefault(); chEnviar(); };
   document.getElementById('labClose').onclick = closeLab;
   document.getElementById('labNext').onclick = labOtra;
   document.getElementById('labAdd').onclick = labSumar;
@@ -6929,6 +7319,7 @@ function init(){
     if(document.getElementById('qtySheet').classList.contains('show')) closeQtySheet();
     else if(isOpen('libScreen')) closeLibrary();
     else if(isOpen('labScreen')) closeLab();
+    else if(isOpen('chatScreen')) closeChat();
     else if(isOpen('logScreen')) closeLogScreen();
   });
   document.getElementById('openCal').onclick = openCalModal;
