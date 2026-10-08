@@ -8077,11 +8077,11 @@ function renderLab(){
         </div>`; }).join('')}
     </div>` : `<div class="lx-empty">${ico('receta')}<p>Tu plato está vacío</p><span>Echá ingredientes y mirá cómo suben los tubos</span></div>`}
 
-    <div class="lx-sec"><span>${q ? 'Resultados' : (plate.length ? 'Para completar' : 'Para empezar')}</span></div>
     <div class="search-wrap lx-search">
       ${ico('search')}
       <input type="search" class="search" id="labBusca" placeholder="Buscar un alimento" value="${escapeHtml(L.busca || '')}" autocomplete="off">
     </div>
+    <div class="lx-sec"><span>${q ? 'Resultados' : (plate.length ? 'Para completar' : 'Para empezar')}</span></div>
     <div class="lx-sugs">
       ${q ? encontrados.map(i => `<button class="lx-sug" data-ladd="${i.id}" data-lq="${defaultQty(i)}">${ingThumb(i)}<b>${nombreCorto(i)}</b><span>${qtyLabel(i, defaultQty(i))}</span></button>`).join('')
           : sugeridas.map(o => `<button class="lx-sug" data-ladd="${o.i.id}" data-lq="${o.q}">${ingThumb(o.i)}<b>${nombreCorto(o.i)}</b><span>${qtyLabel(o.i, o.q)}</span></button>`).join('')}
