@@ -3280,6 +3280,24 @@ const INGREDIENTS = [
   {id:'isotonica', cat:'bebida', name:'Bebida isotónica', per:100, unit:'g', kcal:26, p:0, c:6.4, f:0, Fe:0, B12:0, Zn:0, Ca:0, O3:0, ED:0, O6:0, D:0, Mg:0, fb:0, Na:41, K:12},
   {id:'cerveza', cat:'bebida', name:'Cerveza', per:100, unit:'g', kcal:43, p:0.5, c:3.6, f:0, Fe:0, B12:0.02, Zn:0, Ca:4, O3:0, ED:0, O6:0, D:0, Mg:6, fb:0, Na:4, K:27},
   {id:'vino', cat:'bebida', name:'Vino tinto', per:100, unit:'g', kcal:85, p:0.1, c:2.6, f:0, Fe:0.5, B12:0, Zn:0.1, Ca:8, O3:0, ED:0, O6:0, D:0, Mg:12, fb:0, Na:4, K:127},
+  // PASTAS ARGENTINAS POR MARCA (fideos secos: valores del paquete crudo)
+  {id:'mat_clasico', cat:'cereal', name:'Fideos Matarazzo (spaghetti, tallarín, mostachol) seco', per:100, unit:'g', kcal:334, p:11.3, c:70, f:1.0, Fe:3.2, B12:0, Zn:1.2, Ca:20, O3:0.02, ED:0, O6:0.4, D:0, Mg:45, fb:3.1, Na:10, K:180},
+  {id:'mat_integral', cat:'cereal', name:'Fideos Matarazzo Integral seco', per:100, unit:'g', kcal:344, p:11.3, c:71, f:1.6, Fe:3.6, B12:0, Zn:2.2, Ca:30, O3:0.02, ED:0, O6:0.6, D:0, Mg:110, fb:7.3, Na:10, K:260},
+  {id:'mat_sin_tacc', cat:'cereal', name:'Fideos Matarazzo Libre de gluten seco', per:100, unit:'g', kcal:357, p:7.0, c:79, f:1.2, Fe:1.0, B12:0, Zn:1.0, Ca:10, O3:0.02, ED:0, O6:0.5, D:0, Mg:40, fb:1.5, Na:10, K:120},
+  {id:'mat_huevo', cat:'cereal', name:'Fettuccine al huevo Rina Matarazzo seco', per:100, unit:'g', kcal:349, p:13.0, c:68, f:3.0, Fe:3.4, B12:0.2, Zn:1.4, Ca:30, O3:0.02, ED:0, O6:0.6, D:0, Mg:45, fb:2.8, Na:25, K:190},
+  {id:'mat_rav_ricota', cat:'cereal', name:'Ravioles de ricota Matarazzo (frescos)', per:100, unit:'g', kcal:254, p:9.2, c:38, f:7.2, Fe:1.2, B12:0.2, Zn:0.9, Ca:110, O3:0.02, ED:0, O6:0.8, D:0, Mg:25, fb:1.5, Na:420, K:150},
+  {id:'luc_clasico', cat:'cereal', name:'Fideos Lucchetti (mostachol, tirabuzón, spaghetti) seco', per:100, unit:'g', kcal:335, p:10.8, c:70, f:1.0, Fe:3.2, B12:0, Zn:1.2, Ca:20, O3:0.02, ED:0, O6:0.4, D:0, Mg:45, fb:3.0, Na:10, K:180},
+  {id:'luc_huevo', cat:'cereal', name:'Fideos Lucchetti Fatti al huevo seco', per:100, unit:'g', kcal:347, p:12.0, c:69, f:2.4, Fe:3.4, B12:0.2, Zn:1.3, Ca:28, O3:0.02, ED:0, O6:0.5, D:0, Mg:45, fb:2.8, Na:20, K:185},
+  {id:'dv_huevo', cat:'cereal', name:'Tallarín al huevo Don Vicente seco', per:100, unit:'g', kcal:348, p:11.5, c:70, f:2.4, Fe:3.4, B12:0.2, Zn:1.3, Ca:28, O3:0.02, ED:0, O6:0.5, D:0, Mg:45, fb:3.0, Na:20, K:185},
+  {id:'gia_cap_carne', cat:'cereal', name:'Capelettinis de carne Giacomo', per:100, unit:'g', kcal:357, p:10.1, c:68, f:4.9, Fe:2.6, B12:0.3, Zn:1.6, Ca:30, O3:0.02, ED:0, O6:0.7, D:0, Mg:40, fb:2.5, Na:520, K:200},
+  {id:'gia_cap_verdura', cat:'cereal', name:'Capelettinis de verdura Giacomo', per:100, unit:'g', kcal:371, p:10.0, c:68.6, f:6.3, Fe:2.8, B12:0.1, Zn:1.2, Ca:60, O3:0.02, ED:0, O6:0.9, D:0, Mg:45, fb:3.0, Na:480, K:220},
+  {id:'gia_cap_jyq', cat:'cereal', name:'Capelettinis de jamón y queso Giacomo', per:100, unit:'g', kcal:365, p:11.0, c:66, f:6.0, Fe:2.4, B12:0.3, Zn:1.4, Ca:120, O3:0.02, ED:0, O6:0.8, D:0, Mg:35, fb:2.2, Na:560, K:190},
+  {id:'sal_rav_ricota', cat:'cereal', name:'Ravioles de ricota La Salteña', per:100, unit:'g', kcal:278, p:8.6, c:48, f:5.7, Fe:1.4, B12:0.2, Zn:0.9, Ca:100, O3:0.02, ED:0, O6:0.7, D:0, Mg:25, fb:1.8, Na:430, K:150},
+  {id:'sal_rav_jyq', cat:'cereal', name:'Ravioles de jamón y queso La Salteña', per:100, unit:'g', kcal:273, p:9.0, c:46, f:5.8, Fe:1.4, B12:0.3, Zn:1.1, Ca:90, O3:0.02, ED:0, O6:0.7, D:0, Mg:25, fb:1.6, Na:520, K:160},
+  {id:'sal_rav_pollo', cat:'cereal', name:'Ravioles de pollo y verdura La Salteña', per:100, unit:'g', kcal:285, p:9.2, c:46, f:7.0, Fe:1.6, B12:0.2, Zn:1.0, Ca:40, O3:0.02, ED:0, O6:1.0, D:0, Mg:28, fb:2.0, Na:450, K:180},
+  {id:'sal_noquis', cat:'cereal', name:'Ñoquis de papa La Salteña', per:100, unit:'g', kcal:169, p:4.0, c:35, f:1.2, Fe:0.8, B12:0, Zn:0.4, Ca:12, O3:0.02, ED:0, O6:0.3, D:0, Mg:20, fb:1.8, Na:380, K:250},
+  {id:'sal_tapa_emp', cat:'cereal', name:'Tapa de empanada criolla La Salteña', per:28, unit:'u', kcal:76, p:1.6, c:12, f:2.4, Fe:0.6, B12:0, Zn:0.2, Ca:4, O3:0.02, ED:0, O6:0.2, D:0, Mg:4, fb:0.4, Na:170, K:25},
+  {id:'sal_tapa_tarta', cat:'cereal', name:'Tapa de tarta La Salteña (1/7)', per:30, unit:'u', kcal:79, p:2.0, c:12, f:2.6, Fe:0.7, B12:0, Zn:0.2, Ca:5, O3:0.02, ED:0, O6:0.3, D:0, Mg:5, fb:0.8, Na:199, K:25},
   // SUPLEMENTOS (por unidad: scoop, cápsula o comprimido)
   {id:'creatina', cat:'supl', name:'Creatina monohidrato (5 g)', per:5, unit:'u', kcal:0, p:0, c:0, f:0, Fe:0, B12:0, Zn:0, Ca:0, O3:0, ED:0, O6:0, D:0, Mg:0, fb:0, Na:0, K:0},
   {id:'prot_veg', cat:'supl', name:'Proteína vegana blend (scoop 30g)', per:30, unit:'u', kcal:115, p:22, c:3, f:2, Fe:5, B12:0, Zn:1.5, Ca:60, O3:0, ED:0, O6:0.5, D:0, Mg:40, fb:1, Na:280, K:150},
@@ -5605,7 +5623,8 @@ ICONS.supl = ICONS.capsula;
 'miel'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'miel');
 'oat granola muesli copos_maiz'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'bowl_copos');
 'rice_br rice_wh rice_bas quinoa cous burgol mijo amaranto trigo_sarr cebada arroz_pollo'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'arroz');
-'pasta pasta_int fideos_arroz noquis fideos_tuco ravioles'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'pasta');
+'pasta pasta_int fideos_arroz noquis fideos_tuco ravioles mat_clasico mat_integral mat_sin_tacc mat_huevo mat_rav_ricota luc_clasico luc_huevo dv_huevo gia_cap_carne gia_cap_verdura gia_cap_jyq sal_rav_ricota sal_rav_jyq sal_rav_pollo sal_noquis'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'pasta');
+ICO_ALIMENTO.sal_tapa_emp = 'tortilla'; ICO_ALIMENTO.sal_tapa_tarta = 'tarta';
 'pan_int pan_lact pan_lact_int pan_lact_salv pan_lact_sem pan_lact_cer pan_lact_neg pan_lact_avena pan_lact_cer0 pan_arts pan_brioche'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'pan_molde');
 'pan_frances'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'baguette');
 'pan_arb tortilla tortilla_papa faina'.split(' ').forEach(id => ICO_ALIMENTO[id] = 'tortilla');
@@ -6399,9 +6418,13 @@ function favKeyValida(k){
   return !!getMealById(k) && !state.hiddenMeals.includes(k);
 }
 /* Cantidad por defecto de un ingrediente: la última usada o una porción típica. */
+/* Porción de paquete: el fideo seco se pesa crudo (80 g es un plato). */
+const PORCION_DEF = {mat_clasico:80, mat_integral:80, mat_sin_tacc:80, mat_huevo:80, luc_clasico:80, luc_huevo:80, dv_huevo:80,
+  gia_cap_carne:70, gia_cap_verdura:70, gia_cap_jyq:70, sal_noquis:200, sal_rav_ricota:180, sal_rav_jyq:180, sal_rav_pollo:180, mat_rav_ricota:180};
 function defaultQty(ing){
   const q = state.lastQty[ing.id];
   if(q > 0) return q;
+  if(PORCION_DEF[ing.id]) return PORCION_DEF[ing.id];
   return ing.unit === 'u' ? 1 : 100;
 }
 /* Suma un favorito o reciente al día de un toque. */
@@ -7574,10 +7597,10 @@ function renderDaySheet(){
    Respeta la dieta (omnívoro / vegetariano / vegano) y el modo keto. */
 const CON_CARNE = new Set(['pizza_jym','pizza_calabresa','pizza_rucula','pizza_anana','emp_carne','emp_carne_frita','emp_pollo','emp_jyq',
   'mila_napo','mila_pollo','sand_mila','choripan','asado_tira','vacio','chorizo','morcilla','hamburguesa','pancho','tostado','tarta_jyq',
-  'locro','guiso_lentejas','arroz_pollo','pastel_papa','longaniza','salame','panceta','anchoas','bizcochitos','medialuna_grasa','milanesa','omega3_pez','colageno']);
+  'locro','guiso_lentejas','arroz_pollo','pastel_papa','longaniza','salame','panceta','anchoas','bizcochitos','medialuna_grasa','milanesa','omega3_pez','colageno','gia_cap_carne','gia_cap_jyq','sal_rav_jyq','sal_rav_pollo','sal_tapa_emp']);
 const CON_LACTEO_HUEVO = new Set(['pizza_muzza','pizza_napo','pizza_fugazzeta','pizza_cuatroq','emp_humita','emp_caprese','emp_verdura','emp_cyq',
   'provoleta','tarta_verdura','tortilla_papa','ravioles','medialuna','factura','alfajor_choco','alfajor_maicena','chipa','flan_ddl','helado',
-  'provolone','huevo_frito','salsa_golf','mayonesa','dulce_leche','pesto','gal_avena','pan_brioche','masa_hoj','whey','caseina']);
+  'provolone','huevo_frito','salsa_golf','mayonesa','dulce_leche','pesto','gal_avena','pan_brioche','masa_hoj','whey','caseina','mat_huevo','luc_huevo','dv_huevo','mat_rav_ricota','sal_rav_ricota','gia_cap_verdura','sal_noquis']);
 function ingApto(i, diet){
   if(diet === 'omni') return true;
   if(i.cat === 'animal' || CON_CARNE.has(i.id)) return false;
@@ -7603,7 +7626,7 @@ function porcionTipica(i){
 }
 const REC_CATS = new Set(['animal','legumbre','lact','veg','fruta','fs','cereal','arg']);
 // Condimentos o ingredientes que no se comen solos en una porción.
-const NO_RECO = new Set(['perejil','jengibre','ajo','limon','tomate_seco','aceit_n','aceit_v','algas','lev_nut','harina','harina_int','harina_garb','tapioca','polenta','masa_emp','masa_pizza','masa_tarta','masa_hoj','pan_rall','soja_sal','miso','manteca','crema','coco_lec','mate','cebolla','verdeo','puerro','apio','tomate_tr']);
+const NO_RECO = new Set(['mat_clasico','mat_integral','mat_sin_tacc','mat_huevo','luc_clasico','luc_huevo','dv_huevo','sal_tapa_emp','sal_tapa_tarta','perejil','jengibre','ajo','limon','tomate_seco','aceit_n','aceit_v','algas','lev_nut','harina','harina_int','harina_garb','tapioca','polenta','masa_emp','masa_pizza','masa_tarta','masa_hoj','pan_rall','soja_sal','miso','manteca','crema','coco_lec','mate','cebolla','verdeo','puerro','apio','tomate_tr']);
 const MICRO_NOMBRE = {fb:'la fibra', Fe:'el hierro', Ca:'el calcio', Mg:'el magnesio', K:'el potasio', Zn:'el zinc', B12:'la B12', D:'la vitamina D', O3:'el omega 3'};
 
 function contextoAhora(dk){
@@ -7778,7 +7801,7 @@ function rolDe(i){
 }
 /* Qué ingrediente va en qué hueco de cada tipo de plato, para que las
    combinaciones tengan sentido (nada de sardinas con arándanos). */
-const LAB_FUERA = new Set(['higado','milanesa','jamon_coc','jamon_cru','morcilla','chorizo','asado_tira','clara','milk','milk_desc','milk_alm','milk_soja','milk_avena','gal_arroz','copos_maiz','pochoclo','muesli','granola','gal_avena','pan_rall','fideos_arroz','coco_rall','almendra_pst','mani_pst','sal']);
+const LAB_FUERA = new Set(['mat_clasico','mat_integral','mat_sin_tacc','mat_huevo','mat_rav_ricota','luc_clasico','luc_huevo','dv_huevo','gia_cap_carne','gia_cap_verdura','gia_cap_jyq','sal_rav_ricota','sal_rav_jyq','sal_rav_pollo','sal_noquis','sal_tapa_emp','sal_tapa_tarta','higado','milanesa','jamon_coc','jamon_cru','morcilla','chorizo','asado_tira','clara','milk','milk_desc','milk_alm','milk_soja','milk_avena','gal_arroz','copos_maiz','pochoclo','muesli','granola','gal_avena','pan_rall','fideos_arroz','coco_rall','almendra_pst','mani_pst','sal']);
 function slotOk(i, slot){
   if(LAB_FUERA.has(i.id) || i.cat === 'supl') return false;
   const r = rolDe(i);
@@ -8283,6 +8306,8 @@ const CH_SIN = {
   'pollo':'pollo_p', 'pechuga':'pollo_p', 'carne':'carne_m', 'bife':'bife', 'asado':'asado_tira', 'vacio':'vacio',
   'chori':'choripan', 'choripan':'choripan', 'hamburguesa':'hamburguesa', 'pancho':'pancho', 'tostado':'tostado',
   'medialuna':'medialuna', 'factura':'factura', 'alfajor':['alfajor_choco','alfajor_maicena'], 'chipa':'chipa',
+  'matarazzo':'mat_clasico', 'lucchetti':'luc_clasico', 'don vicente':'dv_huevo', 'giacomo':['gia_cap_carne','gia_cap_verdura','gia_cap_jyq'],
+  'capelettinis':['gia_cap_carne','gia_cap_verdura','gia_cap_jyq'], 'capelettini':['gia_cap_carne','gia_cap_verdura','gia_cap_jyq'],
   'arroz':'rice_wh', 'fideos':'pasta', 'pasta':'pasta', 'noquis':'noquis', 'ravioles':'ravioles', 'locro':'locro', 'guiso':'guiso_lentejas',
   'papa':'papa', 'papas':'papa', 'papas fritas':'papas_fritas', 'ensalada':'ensalada_mixta', 'tarta':['tarta_jyq','tarta_verdura'],
   'yogur':'yog_nat', 'yogurt':'yog_nat', 'leche':'milk', 'queso':['queso_cr','queso_mz','queso_dambo','queso_ps'],
@@ -8293,7 +8318,7 @@ const CH_SIN = {
 const VEG_EQUIV = {milk:'milk_soja', milk_desc:'milk_soja', whey:'prot_veg'};
 /* Porción por defecto cuando dicen "una"/"un plato" de algo medido en gramos. */
 function chPorcion(i){
-  const fija = {gaseosa:350, gaseosa_zero:350, cerveza:350, vino:150, cafe:150, mate:250, jugo_naranja:250, milk:250, milk_desc:250,
+  const fija = {mat_clasico:80, mat_integral:80, mat_sin_tacc:80, mat_huevo:80, luc_clasico:80, luc_huevo:80, dv_huevo:80, gia_cap_carne:70, gia_cap_verdura:70, gia_cap_jyq:70, sal_noquis:200, sal_rav_ricota:180, sal_rav_jyq:180, sal_rav_pollo:180, mat_rav_ricota:180, gaseosa:350, gaseosa_zero:350, cerveza:350, vino:150, cafe:150, mate:250, jugo_naranja:250, milk:250, milk_desc:250,
     asado_tira:250, vacio:250, chorizo:100, morcilla:80, helado:150, bizcochitos:30, pan_frances:60, rice_wh:200, rice_br:200, pasta:250, pasta_int:250,
     papas_fritas:150, papa:200, manteca:10, crema:30, mayonesa:15, dulce_leche:20, mermelada:20, queso_unt:30, queso_cr:40, queso_mz:40, oliva:10, pan_lact:50};
   if(fija[i.id]) return fija[i.id];
