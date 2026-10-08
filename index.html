@@ -2439,6 +2439,67 @@ body.screen-open{overflow:hidden}
 .ni-head{display:flex;align-items:center;justify-content:space-between;margin:2px 2px 10px}
 .ni-head h2{font-family:var(--font-d);font-size:18px;font-weight:800;letter-spacing:-.02em}
 #nutriInline{animation:detailIn .25s ease}
+
+/* ---- Lab: tubos más chicos y con líquido mate ---- */
+.lt-svg{width:46px;height:135px}
+.rack-back{top:73px !important;height:11px !important}
+.rack-base{top:127px !important;height:10px !important}
+.lt-pct{margin-top:9px;font-size:13px}
+.lt-s1{stop-color:color-mix(in srgb, var(--lc) 58%, #a8a29e)}
+.lt-s2{stop-color:color-mix(in srgb, var(--lc) 66%, #44403c)}
+.lt-wave.back{fill:color-mix(in srgb, var(--lc) 50%, #57534e);opacity:.45}
+.lt-hl{opacity:.25}
+.lt-shine{opacity:.35}
+.lt-b{fill:rgba(255,255,255,.42);animation:lt-sube 3.4s ease-in infinite}
+.lt-b.b2{animation-delay:.6s} .lt-b.b3{animation-delay:1.3s} .lt-b.b4{animation-delay:1.9s;animation-duration:4s}
+.lt-b.b5{animation-delay:2.5s;animation-duration:3s} .lt-b.b6{animation-delay:.2s;animation-duration:4.4s}
+
+/* ---- Inicio: fecha con calendario desplegable ---- */
+.ph-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.cal-btn{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:var(--panel);border:1px solid var(--line);transition:transform .15s}
+.cal-btn svg{width:16px;height:16px;fill:none;stroke:var(--text-2);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cal-btn.on{background:var(--text);border-color:var(--text)}
+.cal-btn.on svg{stroke:var(--bg)}
+.cal-btn:active{transform:scale(.92)}
+.calx{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:14px 12px 12px;margin-bottom:14px;animation:detailIn .25s ease}
+.calx-head{display:flex;align-items:center;justify-content:space-between;padding:0 4px 10px}
+.calx-head b{font-family:var(--font-d);font-size:16px;font-weight:800;letter-spacing:-.02em}
+.calx-head button{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:var(--text-2)}
+.calx-head button:active{background:rgba(var(--ink-rgb),.06)}
+.calx-head button:disabled{opacity:.25}
+.calx-head svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.calx-grid{display:grid;grid-template-columns:repeat(7,1fr);row-gap:4px;justify-items:center}
+.calx-dow{font-size:11px;font-weight:700;color:var(--text-4);padding-bottom:4px}
+.cd{position:relative;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-size:13.5px;font-weight:600;color:var(--text-2);font-variant-numeric:tabular-nums}
+.cd span{position:relative;z-index:1}
+.cd.vacio{visibility:hidden}
+.cd.futuro{color:var(--text-4);pointer-events:none}
+.cd.hay::before{content:'';position:absolute;inset:2px;border-radius:50%;
+  background:conic-gradient(var(--c) calc(var(--p) * 1%), rgba(var(--ink-rgb),.08) 0);
+  -webkit-mask:radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2.5px));
+  mask:radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2.5px))}
+.cd.alto{--c:var(--good)} .cd.medio{--c:var(--brand)} .cd.bajo{--c:var(--warn)}
+.cd.hoy{color:var(--brand);font-weight:800}
+.cd.hoy::after{content:'';position:absolute;bottom:3px;left:50%;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--brand)}
+.cd.sel{background:var(--text);color:var(--bg)}
+.cd.sel::after{background:var(--bg)}
+.cd:active{transform:scale(.92)}
+.calx-leg{display:flex;justify-content:center;gap:14px;margin:10px 0 2px;font-size:11px;color:var(--text-3)}
+.calx-leg i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:0}
+.calx-det{margin-top:12px;padding:12px 6px 2px;border-top:1px solid var(--line)}
+.cdt-top{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.cdt-top b{font-family:var(--font-d);font-size:15px;font-weight:800}
+.cdt-top span{font-size:12.5px;color:var(--text-3);font-variant-numeric:tabular-nums}
+.cdt-mac{display:flex;gap:12px;margin:4px 0 8px;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums}
+.cdt-mac .p{color:var(--m-p)} .cdt-mac .c{color:var(--m-c)} .cdt-mac .f{color:var(--m-f)}
+.cdt-row{display:flex;align-items:center;gap:10px;padding:6px 0}
+.cdt-row .row-thumb{width:32px;height:32px;border-radius:10px}
+.cdt-row .row-thumb .ico{width:16px;height:16px}
+.cdt-row span{flex:1;min-width:0;font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cdt-row small{font-size:12px;color:var(--text-3);white-space:nowrap}
+.cdt-row button{width:26px;height:26px;border-radius:8px;color:var(--text-4);font-size:17px;line-height:1}
+.cdt-vacio{font-size:13px;color:var(--text-3);padding:6px 0}
+.cdt-add{width:100%;margin-top:8px;padding:11px;border-radius:14px;background:rgba(var(--brand-rgb),.1);color:var(--brand);font-weight:700;font-size:13.5px}
 </style>
 </head>
 <body>
@@ -2470,13 +2531,17 @@ body.screen-open{overflow:hidden}
   <!-- PAGE: OVERALL -->
   <section class="page active" id="page-overall">
     <div class="page-head">
-      <div class="page-title" id="dateStamp"></div>
+      <div class="ph-row">
+        <div class="page-title" id="dateStamp"></div>
+        <button class="cal-btn" id="calToggle" aria-label="Ver calendario"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg></button>
+      </div>
       <h1 class="page-subtitle">Tu día</h1>
     </div>
+    <div class="calx" id="calInline" hidden></div>
 
     <!-- Atajos, como pastillas -->
     <div class="hp-pills" id="homePills">
-      <button data-hp="hist"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg>Historial</button>
+      <button data-hp="resumen" class="on"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3zM13 21h8V11h-8zM3 21h8v-6H3zM13 3v6h8V3z"/></svg>Resumen general</button>
       <button data-hp="peso"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M8.5 9.5a5 5 0 0 1 7 0"/><path d="M12 9.5l1.2-1.6"/></svg>Trackeo de peso</button>
       <button data-hp="nutri"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9h-9z"/><path d="M15 2.6A9 9 0 0 1 21.4 9H15z"/></svg>Nutrientes</button>
       <button data-hp="metas"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r=".8"/></svg>Metas</button>
@@ -4803,9 +4868,88 @@ function fmtDiaCorto(dk){
 
 /* ==================== MODAL: CALENDARIO ==================== */
 function openCalModal(){
-  document.getElementById('calDetailCard').style.display = 'none';
-  renderCalendar();
-  document.getElementById('calModal').classList.add('show');
+  state.calOpen = true;
+  renderCalx();
+  document.getElementById('calInline').scrollIntoView({block:'start', behavior:'smooth'});
+}
+/* ---- Calendario desplegable del inicio ----
+   Cada día lleva un anillo que se llena con el cumplimiento; tocar un día
+   muestra lo que comiste y deja cargarle comida. */
+function cerrarCalendario(){ state.calOpen = false; renderCalx(); }
+function renderCalx(){
+  const el = document.getElementById('calInline');
+  const btn = document.getElementById('calToggle');
+  btn.classList.toggle('on', !!state.calOpen);
+  if(!state.calOpen){ el.hidden = true; return; }
+  el.hidden = false;
+  const hoyD = new Date();
+  if(!state.calMonth) state.calMonth = {y:hoyD.getFullYear(), m:hoyD.getMonth()};
+  const {y, m} = state.calMonth;
+  const tk = todayKey();
+  if(!state.calSel) state.calSel = tk;
+  const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  const primero = new Date(y, m, 1), dias = new Date(y, m + 1, 0).getDate();
+  const offset = (primero.getDay() + 6) % 7; // lunes primero
+  const esMesActual = y === hoyD.getFullYear() && m === hoyD.getMonth();
+  const celdas = [];
+  for(let i = 0; i < offset; i++) celdas.push('<div class="cd vacio"></div>');
+  for(let d = 1; d <= dias; d++){
+    const dk = `${y}-${String(m + 1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const sel = state.selectedByDate[dk] || [];
+    let cls = '', p = 0;
+    if(sel.length){
+      p = Math.round(completionPercent(computeTargets(state.profile, dk), aggregateMeals(sel)) * 100);
+      cls = 'hay ' + (p >= 80 ? 'alto' : p >= 60 ? 'medio' : 'bajo');
+    }
+    if(dk === tk) cls += ' hoy';
+    if(dk > tk) cls += ' futuro';
+    if(dk === state.calSel) cls += ' sel';
+    celdas.push(`<button class="cd ${cls}" data-cdk="${dk}" style="--p:${Math.min(p, 100)}"><span>${d}</span></button>`);
+  }
+  // Detalle del día elegido
+  const dk = state.calSel;
+  const ents = state.selectedByDate[dk] || [];
+  const tot = aggregateMeals(ents);
+  const obj = computeTargets(state.profile, dk);
+  const grupos = [];
+  ents.forEach(e => { const g = grupos.find(x => x.e === e); if(g) g.n++; else grupos.push({e, n:1}); });
+  const fl = dkToDate(dk).toLocaleDateString('es-AR', {weekday:'long', day:'numeric', month:'long'});
+  const etiqueta = dk === tk ? 'Hoy' : fl.charAt(0).toUpperCase() + fl.slice(1);
+  el.innerHTML = `
+    <div class="calx-head">
+      <button data-cmes="-1" aria-label="Mes anterior"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <b>${MESES[m]} ${y}</b>
+      <button data-cmes="1" aria-label="Mes siguiente" ${esMesActual ? 'disabled' : ''}><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+    </div>
+    <div class="calx-grid">
+      ${['L','M','M','J','V','S','D'].map(x => `<div class="calx-dow">${x}</div>`).join('')}
+      ${celdas.join('')}
+    </div>
+    <div class="calx-leg"><span><i style="background:var(--good)"></i>80%+</span><span><i style="background:var(--brand)"></i>60-80%</span><span><i style="background:var(--warn)"></i>menos</span></div>
+    <div class="calx-det">
+      <div class="cdt-top"><b>${etiqueta}</b><span>${ents.length ? `${Math.round(tot.kcal).toLocaleString('es-AR')} de ${Math.round(obj.kcal).toLocaleString('es-AR')} kcal` : ''}</span></div>
+      ${ents.length ? `
+        <div class="cdt-mac"><span class="p">${Math.round(tot.p)}g prot</span><span class="c">${Math.round(tot.c)}g carbos</span><span class="f">${Math.round(tot.f)}g grasa</span></div>
+        ${grupos.map(g => { const mm = getMealById(g.e); return mm ? `
+          <div class="cdt-row">${mealThumb(mm)}<span>${mm.name}${g.n > 1 ? ` ×${g.n}` : ''}</span><small>${Math.round(mm.kcal * g.n)} kcal</small><button data-cdrm="${escapeHtml(g.e)}" aria-label="Quitar">×</button></div>` : ''; }).join('')}`
+        : `<div class="cdt-vacio">Sin comidas cargadas.</div>`}
+      <button class="cdt-add" id="cdtAdd">+ Cargar comida ${dk === tk ? 'a hoy' : 'a este día'}</button>
+    </div>`;
+  el.querySelectorAll('[data-cmes]').forEach(b => b.onclick = () => {
+    const nm = new Date(y, m + +b.dataset.cmes, 1);
+    state.calMonth = {y:nm.getFullYear(), m:nm.getMonth()};
+    renderCalx();
+  });
+  el.querySelectorAll('[data-cdk]').forEach(b => b.onclick = () => { state.calSel = b.dataset.cdk; renderCalx(); });
+  el.querySelectorAll('[data-cdrm]').forEach(b => b.onclick = () => {
+    const arr = state.selectedByDate[dk] || [];
+    const i = arr.lastIndexOf(b.dataset.cdrm);
+    if(i < 0) return;
+    arr.splice(i, 1);
+    if(!arr.length) delete state.selectedByDate[dk];
+    saveState(); renderResumen(); toast('Quitado');
+  });
+  document.getElementById('cdtAdd').onclick = () => openLogScreen(dk === tk ? null : dk);
 }
 function closeCalModal(){
   document.getElementById('calModal').classList.remove('show');
@@ -4997,6 +5141,7 @@ function renderResumen(){
 
   renderDiaCard(totals, targets);
   renderDiario();
+  renderCalx();
 }
 
 /* ---- Inicio: el día en una tarjeta chica ---- */
@@ -5126,9 +5271,16 @@ function setVistaInicio(v){
   document.getElementById('nutriInline').hidden = !nutri;
   document.getElementById('pesoCard').hidden = nutri;
   document.getElementById('diaCard').hidden = nutri;
-  document.querySelectorAll('#homePills [data-hp]').forEach(b => b.classList.toggle('on', b.dataset.hp === 'nutri' && nutri));
+  document.querySelectorAll('#homePills [data-hp]').forEach(b => b.classList.toggle('on', b.dataset.hp === (nutri ? 'nutri' : 'resumen')));
 }
 function openNutri(){ setVistaInicio(state.homeVista === 'nutri' ? 'dia' : 'nutri'); }
+/* Resumen general: vuelve a la pantalla inicial tal cual arranca. */
+function irAlResumen(){
+  setVistaInicio('dia');
+  cerrarCalendario();
+  window.scrollTo({top:0, behavior:'smooth'});
+  document.querySelector('.app') && document.querySelector('.app').scrollTo && document.querySelector('.app').scrollTo({top:0, behavior:'smooth'});
+}
 function closeNutri(){ setVistaInicio('dia'); }
 
 /* Estado de cumplimiento de un KPI: 'good' en rango, 'over' pasado, '' en
@@ -8054,9 +8206,9 @@ function renderLab(){
             <path class="lt-wave back" d="M-40 3 Q-30 -3 -20 3 T0 3 T20 3 T40 3 T60 3 T80 3 T100 3 V200 H-40 Z"/>
             <path class="lt-wave" d="M-40 5 Q-30 -1 -20 5 T0 5 T20 5 T40 5 T60 5 T80 5 T100 5 V200 H-40 Z" fill="url(#${id}g)"/>
             <rect x="14" y="7" width="32" height="200" fill="url(#${id}s)"/>
-            ${p > 0.1 ? '<circle class="lt-b b1" cx="22" cy="140" r="2.2"/><circle class="lt-b b2" cx="34" cy="150" r="1.6"/><circle class="lt-b b3" cx="28" cy="146" r="1.2"/>' : ''}
+            ${p > 0.04 ? '<circle class="lt-b b1" cx="22" cy="140" r="2.4"/><circle class="lt-b b2" cx="34" cy="150" r="1.7"/><circle class="lt-b b3" cx="28" cy="146" r="1.3"/><circle class="lt-b b4" cx="38" cy="132" r="2"/><circle class="lt-b b5" cx="19" cy="152" r="1.5"/><circle class="lt-b b6" cx="30" cy="158" r="2.2"/>' : ''}
           </g>` : ''}
-          <rect x="14" y="0" width="32" height="176" fill="url(#${id}h)"/>
+          <rect x="14" y="0" width="32" height="176" fill="url(#${id}h)" class="lt-hl"/>
         </g>
         ${ticks}
         <line x1="14" x2="46" y1="${yMeta}" y2="${yMeta}" class="lt-meta"/>
@@ -8638,9 +8790,10 @@ function init(){
   document.getElementById('openLibrary').onclick = openLibrary;
   document.getElementById('openLab').onclick = openLab;
   document.getElementById('nutriVolver').onclick = closeNutri;
+  document.getElementById('calToggle').onclick = () => { state.calOpen = !state.calOpen; if(state.calOpen){ const d = new Date(); state.calMonth = {y:d.getFullYear(), m:d.getMonth()}; state.calSel = todayKey(); } renderCalx(); };
   document.getElementById('recFoto').onchange = (e) => { cambiarFotoReceta(e.target.files[0]); e.target.value = ''; };
   document.querySelectorAll('#homePills [data-hp]').forEach(b => b.onclick = () => {
-    ({hist:openCalModal, peso:openPeso, nutri:openNutri, metas:openProfile})[b.dataset.hp]();
+    ({resumen:irAlResumen, peso:openPeso, nutri:openNutri, metas:openProfile})[b.dataset.hp]();
   });
   document.getElementById('chatClose').onclick = closeChat;
   document.getElementById('pesoClose').onclick = closePeso;
