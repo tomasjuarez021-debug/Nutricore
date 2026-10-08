@@ -2327,6 +2327,57 @@ body.screen-open{overflow:hidden}
 .mo-mac{font-size:11.5px;color:var(--text-3);margin-top:2px;font-variant-numeric:tabular-nums}
 .mo-rm{width:28px;height:28px;border-radius:8px;color:var(--text-4);font-size:19px;line-height:1;flex-shrink:0}
 .mo-rm:active{background:rgba(var(--ink-rgb),.07)}
+
+/* ==================== EXPLORADOR SIMPLE + COCINA ==================== */
+.lib-cerrado{padding:40px 20px}
+.lib-row{cursor:pointer;padding-top:9px;padding-bottom:9px}
+.lib-row .row-name{font-size:14.5px}
+.lib-row.abierta{border-color:rgba(var(--brand-rgb),.35)}
+.lib-v{font-size:12.5px;font-weight:700;color:var(--text-3);font-variant-numeric:tabular-nums;white-space:nowrap}
+.lib-mac{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;margin-bottom:12px;font-size:12px;color:var(--text-3)}
+.lib-mac b{font-family:var(--font-d);font-size:16px;color:var(--text);font-weight:800}
+.lib-mac .p b{color:var(--m-p)} .lib-mac .c b{color:var(--m-c)} .lib-mac .f b{color:var(--m-f)}
+.lib-mac small{font-size:11px;color:var(--text-4);margin-left:auto}
+
+.ck-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-top:4px}
+.ck-card{text-align:left;display:flex;flex-direction:column;gap:8px;transition:transform .15s}
+.ck-card:active{transform:scale(.97)}
+.ck-foto{width:100%;aspect-ratio:1;border-radius:20px;background:var(--panel-2) center/cover no-repeat;border:1px solid var(--line);display:grid;place-items:center;overflow:hidden}
+.ck-foto.sin-foto .ico{width:44px;height:44px;stroke-width:1.5}
+.ck-nom{font-family:var(--font-d);font-size:14px;font-weight:700;line-height:1.25;padding:0 2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ck-nueva .ck-foto{border:1.5px dashed var(--line-2);background:transparent}
+.ck-nueva .ck-foto span{width:46px;height:46px;border-radius:50%;background:var(--grad);color:#fff;font-size:26px;display:grid;place-items:center;box-shadow:0 8px 18px -8px rgba(var(--brand-rgb),.8)}
+.ck-nueva .ck-nom{color:var(--brand)}
+
+#recScreen{z-index:97}
+.rc-body{padding:0 0 30px}
+.rc-hero{position:relative}
+.rc-foto{width:100%;height:280px;background:var(--panel-2) center/cover no-repeat;display:grid;place-items:center}
+.rc-foto.sin-foto .ico{width:84px;height:84px;stroke-width:1.2}
+.rc-back,.rc-cam{position:absolute;top:calc(12px + env(safe-area-inset-top));background:rgba(var(--panel-rgb),.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.rc-back{left:14px} .rc-cam{right:14px}
+.rc-main{position:relative;margin-top:-26px;background:var(--bg);border-radius:26px 26px 0 0;padding:22px 18px 0}
+.rc-nom{font-family:var(--font-d);font-size:25px;font-weight:800;letter-spacing:-.03em;line-height:1.15}
+.rc-mac{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:16px 0}
+.rc-mac div{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 6px;text-align:center}
+.rc-mac b{display:block;font-family:var(--font-d);font-size:18px;font-weight:800;font-variant-numeric:tabular-nums}
+.rc-mac span{font-size:11px;color:var(--text-3)}
+.rc-mac .p b{color:var(--m-p)} .rc-mac .c b{color:var(--m-c)} .rc-mac .f b{color:var(--m-f)}
+.rc-sumar{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.rc-sumar .cta{margin-top:0}
+.rc-sumado{font-size:13px;font-weight:600;color:var(--good)}
+.rc-sec{margin-top:20px}
+.rc-sec h2{font-family:var(--font-d);font-size:17px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+.rc-ing{display:flex;align-items:center;gap:11px;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+.rc-ing .row-thumb{width:34px;height:34px;border-radius:10px}
+.rc-ing .row-thumb .ico{width:17px;height:17px}
+.rc-ing span{flex:1;min-width:0}
+.rc-ing b{font-weight:600;color:var(--text-3);font-size:13px;white-space:nowrap}
+.rc-prep{font-size:14px;line-height:1.6;color:var(--text-2)}
+.rc-acc{margin-top:20px}
+.rc-acciones{display:flex;gap:10px;margin-top:16px}
+.rc-acciones .btn{flex:1}
+.rc-del{color:var(--bad)}
 </style>
 </head>
 <body>
@@ -2543,6 +2594,12 @@ body.screen-open{overflow:hidden}
     </div>
   </div>
 
+  <!-- VENTANA: RECETA (ficha completa) -->
+  <div class="screen" id="recScreen" aria-hidden="true">
+    <div class="screen-body rc-body" id="recBody"></div>
+    <input type="file" id="recFoto" accept="image/*" hidden>
+  </div>
+
   <!-- VENTANA: PESO -->
   <div class="screen" id="pesoScreen" aria-hidden="true">
     <div class="screen-top">
@@ -2646,14 +2703,14 @@ body.screen-open{overflow:hidden}
     <div class="screen-body">
       <div class="seg2" id="libTabs">
         <button data-lib="ing" class="active">Ingredientes</button>
-        <button data-lib="rec">Recetas</button>
+        <button data-lib="rec">Cocina</button>
       </div>
       <div class="search-wrap">
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
         <input type="search" class="search" id="libSearch" placeholder="Buscar…" autocomplete="off">
       </div>
       <div class="chips scroll-x" id="libCats"></div>
-      <div class="lib-tools">
+      <div class="lib-tools" id="libTools">
         <label class="lib-sort">Ordenar por
           <select id="libSort"></select>
         </label>
@@ -3610,7 +3667,7 @@ let state = {
   logCat: 'todos',
   logOpen: null,      // receta desplegada en el registro
   lab: {modo:'comida', pins:[], seed:1, busca:'', plate:[]},
-  lib: {tab:'ing', cat:'todos', sort:'p', recSort:'quality', search:'', open:null},
+  lib: {tab:'ing', cat:null, sort:'p', recSort:'quality', search:'', open:null},
   currentTab: 'resumen',
   sortBy: 'quality', // 'quality' | 'protein'
   search: '',
@@ -6355,6 +6412,7 @@ function renderQuickFavs(){
 
 /* Repinta lo que esté a la vista después de cualquier cambio de datos. */
 function refreshViews(){
+  if(isOpen('recScreen') && recAbierta) renderReceta();
   if(isOpen('logScreen')) renderLog();
   if(isOpen('libScreen')) renderLib();
   if(document.getElementById('calModal').classList.contains('show')){
@@ -6764,7 +6822,7 @@ function abrirPantalla(id){
 function cerrarPantalla(id){
   document.getElementById(id).classList.remove('open', 'top');
   document.getElementById(id).setAttribute('aria-hidden', 'true');
-  if(!isOpen('logScreen') && !isOpen('libScreen') && !isOpen('labScreen') && !isOpen('chatScreen') && !isOpen('pesoScreen') && !isOpen('nutriScreen')) document.body.classList.remove('screen-open');
+  if(!isOpen('logScreen') && !isOpen('libScreen') && !isOpen('labScreen') && !isOpen('chatScreen') && !isOpen('pesoScreen') && !isOpen('nutriScreen') && !isOpen('recScreen')) document.body.classList.remove('screen-open');
 }
 
 function openLogScreen(dk){
@@ -6978,7 +7036,7 @@ function rowMeal(m, sel){
     ${m.prep ? `<div style="margin-bottom:10px;line-height:1.5">${m.prep}</div>` : ''}
     <div class="row-actions">
       ${m.items ? `<button class="btn" data-editmeal="${m.id}">Editar receta</button>` : ''}
-      <button class="btn" data-libmeal="${m.id}">Ver análisis completo</button>
+      <button class="btn" data-libmeal="${m.id}">Ver receta</button>
     </div>
   </div>` : ''}`;
 }
@@ -7009,11 +7067,7 @@ function bindRows(root){
     state.logOpen = state.logOpen === b.dataset.ropen ? null : b.dataset.ropen; renderLog();
   });
   root.querySelectorAll('[data-editmeal]').forEach(b => b.onclick = () => openEditMealModal(b.dataset.editmeal));
-  root.querySelectorAll('[data-libmeal]').forEach(b => b.onclick = () => {
-    state.lib.tab = 'rec'; state.lib.search = ''; state.lib.open = b.dataset.libmeal;
-    state.expanded.add(b.dataset.libmeal);
-    openLibrary();
-  });
+  root.querySelectorAll('[data-libmeal]').forEach(b => b.onclick = () => openReceta(b.dataset.libmeal));
   root.querySelectorAll('[data-rmentry]').forEach(b => b.onclick = () => removeEntry(b.dataset.rmentry));
   root.querySelectorAll('[data-dupentry]').forEach(b => b.onclick = () => {
     const eid = b.dataset.dupentry;
@@ -7137,10 +7191,11 @@ function renderLib(){
   const L = state.lib;
   document.querySelectorAll('#libTabs [data-lib]').forEach(b => b.classList.toggle('active', b.dataset.lib === L.tab));
   const sortSel = document.getElementById('libSort');
-  const t = computeTargets(state.profile);
+  const tools = document.getElementById('libTools');
   const q = norm(L.search);
   const list = document.getElementById('libList');
   const cats = document.getElementById('libCats');
+  document.getElementById('libSearch').placeholder = L.tab === 'ing' ? 'Buscar un alimento…' : 'Buscar una receta…';
 
   if(L.tab === 'ing'){
     cats.style.display = '';
@@ -7148,37 +7203,35 @@ function renderLib(){
       const n = c.k === 'todos' ? INGREDIENTS.length : INGREDIENTS.filter(i => i.cat === c.k).length;
       return `<button class="chip ${L.cat === c.k ? 'active' : ''}" data-libcat="${c.k}">${c.k === 'todos' ? 'Todos' : c.label}<span class="n">${n}</span></button>`;
     }).join('');
-    cats.querySelectorAll('[data-libcat]').forEach(b => b.onclick = () => { L.cat = b.dataset.libcat; renderLib(); });
+    // Tocar la categoría activa la vuelve a cerrar.
+    cats.querySelectorAll('[data-libcat]').forEach(b => b.onclick = () => { L.cat = L.cat === b.dataset.libcat ? null : b.dataset.libcat; L.open = null; renderLib(); });
 
+    // Cerrado hasta que se busque algo o se elija una categoría.
+    if(!q && !L.cat){
+      tools.style.display = 'none';
+      list.innerHTML = `<div class="empty lib-cerrado"><div class="big">${ico('search')}</div>Buscá un alimento o elegí una categoría.<br>Tocá cualquiera para ver su información.</div>`;
+      return;
+    }
+    tools.style.display = '';
     sortSel.innerHTML = LIB_SORTS.map(o => `<option value="${o.k}">${o.l}</option>`).join('');
     sortSel.value = L.sort;
     const so = LIB_SORTS.find(o => o.k === L.sort) || LIB_SORTS[0];
-
-    let items = INGREDIENTS.filter(i => (L.cat === 'todos' || i.cat === L.cat) && (!q || norm(i.name).includes(q)));
+    let items = INGREDIENTS.filter(i => (!L.cat || L.cat === 'todos' || i.cat === L.cat) && (!q || norm(i.name).includes(q)));
     if(so.k === 'name') items.sort((a,b) => a.name.localeCompare(b.name, 'es'));
     else items.sort((a,b) => por100(b, so.k) - por100(a, so.k));
-    const max = so.k === 'name' ? 0 : Math.max(...items.map(i => por100(i, so.k)), 0.0001);
-    document.getElementById('libCount').textContent = `${items.length} ingredientes · valores por 100g`;
+    document.getElementById('libCount').textContent = `${items.length} ${items.length === 1 ? 'alimento' : 'alimentos'}`;
 
+    // Fila mínima: ícono y nombre. La información aparece al tocar.
     list.innerHTML = items.length ? items.map(i => {
       const v = so.k === 'name' ? null : por100(i, so.k);
-      const vd = so.t && t[so.t] > 0 && v !== null ? Math.round(v / t[so.t] * 100) : null;
-      const key = 'ing:' + i.id;
-      const abierto = L.open === i.id;
       const dec = v === null ? 0 : (v >= 100 ? 0 : (v >= 10 ? 1 : 2));
+      const abierto = L.open === i.id;
       return `
-      <div class="row" data-iid="${i.id}">
+      <div class="row lib-row ${abierto ? 'abierta' : ''}" data-iid="${i.id}" data-libopen="${i.id}">
         ${ingThumb(i)}
-        <div class="row-info" data-libopen="${i.id}">
-          <div class="row-name">${i.name}</div>
-          <div class="row-meta">${Math.round(por100(i,'kcal'))} kcal · P ${fmtNum(por100(i,'p'))}g · C ${fmtNum(por100(i,'c'))}g · G ${fmtNum(por100(i,'f'))}g</div>
-        </div>
-        ${v !== null ? `<div class="lib-val">
-          <b>${v.toFixed(dec)}</b><small>${so.u}</small>
-          <div class="bar"><i style="width:${v / max * 100}%"></i></div>
-          ${vd !== null ? `<span class="vd">${vd}% VD</span>` : ''}
-        </div>` : ''}
-        ${starBtn(key)}
+        <div class="row-info"><div class="row-name">${i.name}</div></div>
+        ${v !== null ? `<span class="lib-v">${fmtNum(+v.toFixed(dec))}${so.u}</span>` : ''}
+        ${starBtn('ing:' + i.id)}
       </div>
       ${abierto ? `<div class="row-detail">
         ${renderIngDetail(i)}
@@ -7187,21 +7240,127 @@ function renderLib(){
         </div>
       </div>` : ''}`;
     }).join('') : `<div class="empty"><div class="big">${ico('search')}</div>Sin coincidencias.</div>`;
+    bindRows(list);
+    list.querySelectorAll('[data-libopen]').forEach(b => b.onclick = (e) => {
+      if(e.target.closest('[data-fav]')) return;
+      L.open = L.open === b.dataset.libopen ? null : b.dataset.libopen; renderLib();
+    });
   } else {
+    // Cocina: solo foto y nombre; la ficha completa se abre al tocar.
     cats.style.display = 'none';
-    const RS = [{k:'quality', l:'Calidad nutricional'}, ...LIB_SORTS.filter(o => o.k !== 'name')];
-    sortSel.innerHTML = RS.map(o => `<option value="${o.k}">${o.l}</option>`).join('');
-    sortSel.value = L.recSort;
+    tools.style.display = 'none';
     const meals = allMeals()
       .filter(m => !q || norm(m.name + ' ' + (m.ing || []).join(' ')).includes(q))
-      .sort((a,b) => valorReceta(b, L.recSort) - valorReceta(a, L.recSort));
-    document.getElementById('libCount').textContent = `${meals.length} recetas · por porción`;
-    renderRecipeCards(list, meals);
+      .sort((a,b) => (state.mealPhotos[b.id] ? 1 : 0) - (state.mealPhotos[a.id] ? 1 : 0) || a.name.localeCompare(b.name, 'es'));
+    list.innerHTML = `<div class="ck-grid">
+      ${q ? '' : `<button class="ck-card ck-nueva" id="ckNueva"><div class="ck-foto"><span>+</span></div><div class="ck-nom">Nueva receta</div></button>`}
+      ${meals.map(m => `
+        <button class="ck-card" data-receta="${m.id}">
+          ${fotoReceta(m, 'ck-foto')}
+          <div class="ck-nom">${m.name}</div>
+        </button>`).join('')}
+    </div>
+    ${meals.length ? '' : `<div class="empty"><div class="big">${ico('search')}</div>Ninguna receta con "${escapeHtml(L.search)}".</div>`}`;
+    const nueva = document.getElementById('ckNueva');
+    if(nueva) nueva.onclick = openAddMealModal;
+    list.querySelectorAll('[data-receta]').forEach(b => b.onclick = () => openReceta(b.dataset.receta));
   }
-  bindRows(list);
-  list.querySelectorAll('[data-libopen]').forEach(b => b.onclick = () => {
-    L.open = L.open === b.dataset.libopen ? null : b.dataset.libopen; renderLib();
+}
+
+/* Foto de la receta, o su ícono grande sobre el color del macro que manda. */
+function fotoReceta(m, cls){
+  if(state.mealPhotos[m.id]) return `<div class="${cls}" style="background-image:url('${state.mealPhotos[m.id]}')"></div>`;
+  const c = colorMacro(m);
+  return `<div class="${cls} sin-foto" style="color:${c};background:color-mix(in srgb, ${c} 12%, var(--panel))">${ico(iconoReceta(m))}</div>`;
+}
+
+/* ---- Ficha de una receta ---- */
+let recAbierta = null;
+function openReceta(id){
+  recAbierta = id;
+  renderReceta();
+  abrirPantalla('recScreen');
+  document.getElementById('recScreen').classList.add('top');
+  document.getElementById('recBody').scrollTop = 0;
+}
+function closeReceta(){ cerrarPantalla('recScreen'); recAbierta = null; }
+function renderReceta(){
+  const m = getMealById(recAbierta);
+  const el = document.getElementById('recBody');
+  if(!m){ closeReceta(); return; }
+  const sel = state.selectedByDate[targetDateKey()] || [];
+  const n = sel.filter(x => entBase(x) === m.id).length;
+  const score = qualityScore(m), tier = qualityTier(score);
+  const abierto = !!state.accOpen.recinfo;
+  el.innerHTML = `
+    <div class="rc-hero">
+      ${fotoReceta(m, 'rc-foto')}
+      <button class="icon-btn rc-back" id="recClose" aria-label="Volver"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <button class="icon-btn rc-cam" id="recCam" aria-label="Cambiar foto"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-2.5h6L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></button>
+    </div>
+    <div class="rc-main">
+      <h1 class="rc-nom">${m.name}</h1>
+      <div class="rc-mac">
+        <div><b>${Math.round(m.kcal)}</b><span>kcal</span></div>
+        <div class="p"><b>${fmtNum(m.p)}g</b><span>proteína</span></div>
+        <div class="c"><b>${fmtNum(m.c)}g</b><span>carbos</span></div>
+        <div class="f"><b>${fmtNum(m.f)}g</b><span>grasa</span></div>
+      </div>
+      <div class="rc-sumar">
+        ${n ? `<div class="mini-step"><button data-rcdec aria-label="Quitar">−</button><span>${n}</span><button class="plus" data-rcinc aria-label="Sumar otra">+</button></div>
+               <span class="rc-sumado">${n === 1 ? 'Sumada' : `${n} porciones`} ${editandoOtroDia() ? 'ese día' : 'hoy'}</span>`
+             : `<button class="cta" data-rcinc>Sumar a ${editandoOtroDia() ? 'ese día' : 'hoy'}</button>`}
+      </div>
+      ${(m.items && m.items.length) ? `
+      <div class="rc-sec">
+        <h2>Ingredientes</h2>
+        ${m.items.map(it => { const i = INGR_BY_ID[it.id]; return i ? `
+          <div class="rc-ing">${ingThumb(i)}<span>${i.name}</span><b>${qtyLabel(i, it.qty)}</b></div>` : ''; }).join('')}
+      </div>` : ((m.ing && m.ing.length) ? `<div class="rc-sec"><h2>Ingredientes</h2><ul class="detail-list">${m.ing.map(x => `<li>${x}</li>`).join('')}</ul></div>` : '')}
+      ${m.prep ? `<div class="rc-sec"><h2>Preparación</h2><p class="rc-prep">${m.prep}</p></div>` : ''}
+      <div class="acc rc-acc ${abierto ? 'open' : ''}">
+        <div class="acc-head" id="recInfoTog">
+          <div class="acc-title">Información nutricional<div class="acc-sum">Calidad ${score}% · Fe ${m.Fe || 0} mg · fibra ${m.fb || 0} g</div></div>
+          <div class="acc-chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg></div>
+        </div>
+        <div class="acc-body">
+          <div class="detail-section">
+            <div class="detail-title">Calidad nutricional</div>
+            <div style="display:flex;align-items:center;gap:10px;margin-top:4px">
+              <div class="q-badge q-${tier}" style="min-width:56px;height:32px;font-size:14px;padding:0 10px">${score}<span class="pct">%</span></div>
+              <div style="flex:1;font-size:11.5px;color:var(--text-3)">Cuánto de tus micronutrientes cubre cada 100 kcal.</div>
+            </div>
+          </div>
+          ${m.protQuality ? renderProteinQualitySection(m.protQuality) : ''}
+          ${renderMealMicrosSection(m)}
+        </div>
+      </div>
+      <div class="rc-acciones">
+        ${m.items ? `<button class="btn ghost" data-editmeal="${m.id}">Editar receta</button>` : ''}
+        <button class="btn ghost rc-del" data-delmeal="${m.id}">Eliminar</button>
+      </div>
+    </div>`;
+  document.getElementById('recClose').onclick = closeReceta;
+  document.getElementById('recCam').onclick = () => document.getElementById('recFoto').click();
+  document.getElementById('recInfoTog').onclick = () => { state.accOpen.recinfo = !abierto; saveState(); renderReceta(); };
+  el.querySelectorAll('[data-rcinc]').forEach(b => b.onclick = () => incrementMeal(m.id, +1));
+  el.querySelectorAll('[data-rcdec]').forEach(b => b.onclick = () => incrementMeal(m.id, -1));
+  el.querySelectorAll('[data-editmeal]').forEach(b => b.onclick = () => openEditMealModal(b.dataset.editmeal));
+  el.querySelectorAll('[data-delmeal]').forEach(b => b.onclick = () => {
+    const antes = allMeals().length;
+    deleteMeal(b.dataset.delmeal);
+    if(allMeals().length < antes) closeReceta();
   });
+}
+async function cambiarFotoReceta(file){
+  if(!file || !recAbierta) return;
+  try{
+    state.mealPhotos[recAbierta] = await comprimirFoto(file);
+    saveState();
+    renderReceta();
+    if(isOpen('libScreen')) renderLib();
+    toast('Foto guardada');
+  }catch(e){ toast('No se pudo cargar la foto'); }
 }
 
 /* ==================== PLAN DEL DÍA ==================== */
@@ -8318,6 +8477,7 @@ function init(){
   document.getElementById('openLibrary').onclick = openLibrary;
   document.getElementById('openLab').onclick = openLab;
   document.getElementById('nutriClose').onclick = closeNutri;
+  document.getElementById('recFoto').onchange = (e) => { cambiarFotoReceta(e.target.files[0]); e.target.value = ''; };
   document.querySelectorAll('#homePills [data-hp]').forEach(b => b.onclick = () => {
     ({hist:openCalModal, peso:openPeso, nutri:openNutri, metas:openProfile})[b.dataset.hp]();
   });
@@ -8351,6 +8511,7 @@ function init(){
     else if(document.getElementById('qtySheet').classList.contains('show')) closeQtySheet();
     else if(isOpen('pesoScreen')) closePeso();
     else if(isOpen('nutriScreen')) closeNutri();
+    else if(isOpen('recScreen')) closeReceta();
     else if(isOpen('libScreen')) closeLibrary();
     else if(isOpen('labScreen')) closeLab();
     else if(isOpen('chatScreen')) closeChat();
