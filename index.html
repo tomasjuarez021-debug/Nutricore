@@ -2378,6 +2378,36 @@ body.screen-open{overflow:hidden}
 .rc-acciones{display:flex;gap:10px;margin-top:16px}
 .rc-acciones .btn{flex:1}
 .rc-del{color:var(--bad)}
+
+/* ==================== REGISTRO TIPO COCINA + MICROS DEL LAB ==================== */
+.lg-row{padding:9px 10px;gap:13px}
+.lg-thumb.row-thumb{width:52px;height:52px;border-radius:15px}
+.lg-thumb.row-thumb .ico{width:25px;height:25px}
+.lg-row .row-name{font-size:15px;font-weight:700}
+.lg-row .row-meta{font-size:12px;margin-top:2px}
+
+.lx-sec small{font-size:11px;color:var(--text-4);font-weight:500;margin-left:auto;text-transform:none;letter-spacing:0}
+.lx-search{margin:0 0 10px}
+.lm-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:16px}
+.lm-res{font-size:13.5px;line-height:1.45;color:var(--text-2);margin-bottom:12px}
+.lm-res b{color:var(--text)}
+.lm-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 14px}
+.lm-top{display:flex;justify-content:space-between;align-items:baseline;gap:6px;font-size:12px;color:var(--text-2);font-weight:600}
+.lm-top b{font-size:12px;font-variant-numeric:tabular-nums}
+.lm-bar{height:5px;border-radius:5px;background:rgba(var(--ink-rgb),.07);margin:5px 0 3px;overflow:hidden}
+.lm-bar i{display:block;height:100%;border-radius:5px;background:var(--brand);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.lm-it small{font-size:10.5px;color:var(--text-4);font-variant-numeric:tabular-nums}
+.lm-it.ok .lm-bar i{background:var(--good)} .lm-it.ok .lm-top b{color:var(--good)}
+.lm-it.bajo .lm-bar i{background:var(--warn)} .lm-it.bajo .lm-top b{color:var(--warn)}
+.lm-bal{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.lm-b{border-radius:12px;padding:8px 10px;background:var(--panel-2)}
+.lm-b span{display:block;font-size:11px;color:var(--text-3);font-weight:600}
+.lm-b b{display:block;font-family:var(--font-d);font-size:16px;font-weight:800;margin:1px 0;font-variant-numeric:tabular-nums}
+.lm-b small{font-size:10.5px;color:var(--text-4)}
+.lm-b.ok b{color:var(--good)} .lm-b.mal b{color:var(--warn)}
+.lm-tips{list-style:none;margin-top:12px;display:grid;gap:7px}
+.lm-tips li{font-size:12.5px;line-height:1.45;color:var(--text-2);padding-left:14px;position:relative}
+.lm-tips li::before{content:'';position:absolute;left:2px;top:7px;width:5px;height:5px;border-radius:50%;background:var(--brand)}
 </style>
 </head>
 <body>
@@ -6933,8 +6963,8 @@ function renderLog(){
   let html = '';
   if(buscando){
     const q = norm(state.logSearch);
-    const recs = allMeals().filter(m => norm(m.name + ' ' + (m.ing || []).join(' ')).includes(q));
-    const ings = INGREDIENTS.filter(i => norm(i.name).includes(q))
+    const recs = filtrarBusqueda(allMeals(), m => m.name + ' ' + (m.ing || []).join(' '), q);
+    const ings = filtrarBusqueda(INGREDIENTS, i => i.name, q)
       .sort((a,b) => norm(a.name).indexOf(q) - norm(b.name).indexOf(q));
     if(!recs.length && !ings.length){
       html = `<div class="empty"><div class="big">${ico('search')}</div>Nada con "<b>${escapeHtml(state.logSearch)}</b>".<br>Probá con otra palabra o creá una receta.</div>`;
@@ -7013,46 +7043,32 @@ function rowKey(k, sel){
 /* Fila de receta: stepper con la cantidad del día y detalle al tocar. */
 function rowMeal(m, sel){
   const n = sel.filter(x => x === m.id).length;
-  const abierta = state.logOpen === m.id;
   return `
-  <div class="row ${n ? 'logged' : ''}">
-    ${mealThumb(m)}
-    <div class="row-info" data-ropen="${m.id}">
+  <div class="row lg-row ${n ? 'logged' : ''}">
+    ${mealThumb(m, 'lg-thumb')}
+    <div class="row-info" data-libmeal="${m.id}">
       <div class="row-name">${m.name}</div>
-      <div class="row-meta"><b>${m.kcal} kcal</b> · P ${m.p}g · C ${m.c}g · G ${m.f}g</div>
+      <div class="row-meta">${Math.round(m.kcal)} kcal · receta</div>
     </div>
     ${starBtn(m.id)}
     ${n ? `<div class="mini-step">
       <button data-mdec="${m.id}" aria-label="Quitar">−</button><span>${n}</span><button class="plus" data-minc="${m.id}" aria-label="Sumar">+</button>
     </div>` : `<button class="add" data-minc="${m.id}" aria-label="Sumar">+</button>`}
-  </div>
-  ${abierta ? `
-  <div class="row-detail">
-    <div class="grid4">
-      <div><b>${m.kcal}</b><span>kcal</span></div><div><b>${m.p}g</b><span>prot</span></div>
-      <div><b>${m.c}g</b><span>carb</span></div><div><b>${m.f}g</b><span>grasa</span></div>
-    </div>
-    ${(m.ing && m.ing.length) ? `<ul>${m.ing.map(x => `<li>${x}</li>`).join('')}</ul>` : ''}
-    ${m.prep ? `<div style="margin-bottom:10px;line-height:1.5">${m.prep}</div>` : ''}
-    <div class="row-actions">
-      ${m.items ? `<button class="btn" data-editmeal="${m.id}">Editar receta</button>` : ''}
-      <button class="btn" data-libmeal="${m.id}">Ver receta</button>
-    </div>
-  </div>` : ''}`;
+  </div>`;
 }
 /* Fila de ingrediente: + abre la hoja de cantidad. */
 function rowIng(i, sel){
   if(!i) return '';
   const logged = sel.map(parseIngEntry).filter(x => x && x.id === i.id);
   const tot = logged.reduce((a, x) => a + x.qty, 0);
-  const per = i.unit === 'u' ? `1 u (${i.per}g)` : '100g';
+  const per = i.unit === 'u' ? 'por unidad' : 'cada 100 g';
   const key = 'ing:' + i.id;
   return `
-  <div class="row ${tot ? 'logged' : ''}">
-    ${ingThumb(i)}
+  <div class="row lg-row ${tot ? 'logged' : ''}">
+    ${ingThumb(i, 'lg-thumb')}
     <div class="row-info" data-iqty="${i.id}">
       <div class="row-name">${i.name}${tot ? ` <span class="row-tag">${qtyLabel(i, tot)}</span>` : ''}</div>
-      <div class="row-meta">${per}: <b>${i.kcal} kcal</b> · P ${i.p}g · C ${i.c}g · G ${i.f}g</div>
+      <div class="row-meta">${i.kcal} kcal · ${per}</div>
     </div>
     ${starBtn(key)}
     <button class="add" data-iqty="${i.id}" aria-label="Sumar">+</button>
@@ -7216,7 +7232,7 @@ function renderLib(){
     sortSel.innerHTML = LIB_SORTS.map(o => `<option value="${o.k}">${o.l}</option>`).join('');
     sortSel.value = L.sort;
     const so = LIB_SORTS.find(o => o.k === L.sort) || LIB_SORTS[0];
-    let items = INGREDIENTS.filter(i => (!L.cat || L.cat === 'todos' || i.cat === L.cat) && (!q || norm(i.name).includes(q)));
+    let items = filtrarBusqueda(INGREDIENTS.filter(i => !L.cat || L.cat === 'todos' || i.cat === L.cat), i => i.name, q);
     if(so.k === 'name') items.sort((a,b) => a.name.localeCompare(b.name, 'es'));
     else items.sort((a,b) => por100(b, so.k) - por100(a, so.k));
     document.getElementById('libCount').textContent = `${items.length} ${items.length === 1 ? 'alimento' : 'alimentos'}`;
@@ -7267,6 +7283,13 @@ function renderLib(){
   }
 }
 
+/* Coincidencia de búsqueda: alguna palabra del nombre empieza con lo buscado.
+   Si nada empieza así, vale que lo contenga en cualquier parte. */
+function filtrarBusqueda(lista, nombre, q){
+  if(!q) return lista;
+  const inicio = lista.filter(x => norm(nombre(x)).split(/[^a-z0-9ñ]+/).some(w => w.startsWith(q)) || norm(nombre(x)).startsWith(q));
+  return inicio.length ? inicio : lista.filter(x => norm(nombre(x)).includes(q));
+}
 /* Foto de la receta, o su ícono grande sobre el color del macro que manda. */
 function fotoReceta(m, cls){
   if(state.mealPhotos[m.id]) return `<div class="${cls}" style="background-image:url('${state.mealPhotos[m.id]}')"></div>`;
@@ -7929,7 +7952,7 @@ function renderLab(){
   const n = computeMealNutrition({items:plate});
   const q = norm(L.busca || '');
   const enPlato = new Set(plate.map(x => x.id));
-  const encontrados = q ? INGREDIENTS.filter(i => ingApto(i, diet) && norm(i.name).includes(q) && !enPlato.has(i.id)).slice(0, 8) : [];
+  const encontrados = q ? filtrarBusqueda(INGREDIENTS.filter(i => ingApto(i, diet) && !enPlato.has(i.id)), i => i.name, q).slice(0, 8) : [];
   const sugeridas = q ? [] : labSugerencias(plate, T, 8);
 
   // Tubo de ensayo en SVG. El interior representa 125% del objetivo, así
@@ -8027,7 +8050,7 @@ function renderLab(){
       ${plate.map((x, k) => { const i = INGR_BY_ID[x.id]; const abierto = L.open === k; const nn = abierto ? computeMealNutrition({items:[x]}) : null; return `
         <div class="lx-row ${abierto ? 'open' : ''}">
           <button class="lx-name" data-lopen="${k}">
-            <i class="lx-dot" style="background:${CAT_COLOR[i.cat] || 'var(--brand)'}"></i>${nombreCorto(i)}
+            <i class="lx-dot" style="background:${colorMacro(i)}"></i>${nombreCorto(i)}
             ${ingredientClass(i) ? `<span class="lq-mini ${ingredientClass(i)}" title="Calidad de su proteína">${ingredientClass(i)}</span>` : ''}
           </button>
           <div class="lx-step">
@@ -8044,14 +8067,15 @@ function renderLab(){
     </div>` : `<div class="lx-empty">${ico('receta')}<p>Tu plato está vacío</p><span>Echá ingredientes y mirá cómo suben los tubos</span></div>`}
 
     <div class="lx-sec"><span>${q ? 'Resultados' : (plate.length ? 'Para completar' : 'Para empezar')}</span></div>
+    <div class="search-wrap lx-search">
+      ${ico('search')}
+      <input type="search" class="search" id="labBusca" placeholder="Buscar un alimento" value="${escapeHtml(L.busca || '')}" autocomplete="off">
+    </div>
     <div class="lx-sugs">
       ${q ? encontrados.map(i => `<button class="lx-sug" data-ladd="${i.id}" data-lq="${defaultQty(i)}">${ingThumb(i)}<b>${nombreCorto(i)}</b><span>${qtyLabel(i, defaultQty(i))}</span></button>`).join('')
           : sugeridas.map(o => `<button class="lx-sug" data-ladd="${o.i.id}" data-lq="${o.q}">${ingThumb(o.i)}<b>${nombreCorto(o.i)}</b><span>${qtyLabel(o.i, o.q)}</span></button>`).join('')}
     </div>
-    <div class="search-wrap lx-search">
-      ${ico('search')}
-      <input type="search" class="search" id="labBusca" placeholder="Buscar otro alimento" value="${escapeHtml(L.busca || '')}" autocomplete="off">
-    </div>
+    ${plate.length ? labMicrosHtml(n) : ''}
   `;
 
   requestAnimationFrame(() => requestAnimationFrame(() => {
@@ -8087,6 +8111,75 @@ function renderLab(){
   if(v) v.onclick = () => { L.plate = []; L.open = null; saveState(); renderLab(); };
   const busca = document.getElementById('labBusca');
   busca.oninput = () => { L.busca = busca.value; renderLab(); const nb = document.getElementById('labBusca'); nb.focus(); nb.setSelectionRange(nb.value.length, nb.value.length); };
+}
+/* Micros y balances del plato contra lo que le toca a una comida (objetivo
+   del día dividido por las comidas que hacés). Arriba, un resumen en una
+   línea; abajo, cada micro y los balances que importan. */
+const LAB_MICROS = [
+  {k:'B12', l:'B12', lc:'B12', u:'µg', d:1}, {k:'Fe', l:'Hierro', lc:'hierro', u:'mg', d:1}, {k:'Zn', l:'Zinc', lc:'zinc', u:'mg', d:1},
+  {k:'Ca', l:'Calcio', lc:'calcio', u:'mg', d:0}, {k:'D', l:'Vitamina D', lc:'vitamina D', u:'µg', d:1}, {k:'Mg', l:'Magnesio', lc:'magnesio', u:'mg', d:0},
+  {k:'fb', l:'Fibra', lc:'fibra', u:'g', d:1}, {k:'K', l:'Potasio', lc:'potasio', u:'mg', d:0},
+  {k:'O3', l:'Omega 3 vegetal', lc:'omega 3 vegetal', u:'g', d:2}, {k:'ED', l:'Omega 3 EPA+DHA', lc:'omega 3 EPA+DHA', u:'mg', d:0}
+];
+function labMicrosHtml(n){
+  const t = computeTargets(state.profile, todayKey());
+  const partes = comidasDelDia().n;
+  const diet = dietaDe(state.profile);
+  const filas = LAB_MICROS.map(m => {
+    const obj = (t[m.k] || 0) / partes;
+    const v = n[m.k] || 0;
+    const p = obj > 0 ? v / obj : 0;
+    return {...m, v, obj, p, est: p >= 1 ? 'ok' : (p >= 0.5 ? 'medio' : 'bajo')};
+  });
+  const fuertes = filas.filter(x => x.p >= 1).sort((a, b) => b.p - a.p).map(x => x.lc);
+  const flojos = filas.filter(x => x.p < 0.35).sort((a, b) => a.p - b.p).map(x => x.lc);
+  const lista = a => a.length > 1 ? a.slice(0, -1).join(', ') + ' y ' + a[a.length - 1] : a[0];
+  const resumen = [
+    fuertes.length ? `Fuerte en <b>${lista(fuertes.slice(0, 3))}</b>` : '',
+    flojos.length ? `flojo en <b>${lista(flojos.slice(0, 3))}</b>` : ''
+  ].filter(Boolean).join(' · ') || 'Micros parejos, sin faltantes marcados';
+
+  // Balances
+  const o3 = (n.O3 || 0) + (n.ED || 0) / 1000, o6 = n.O6 || 0;
+  const r63 = o3 > 0 ? o6 / o3 : null;
+  const naK = n.K > 0 ? (n.Na || 0) / n.K : null;
+  const caMg = n.Mg > 0 ? (n.Ca || 0) / n.Mg : null;
+  const fib1000 = n.kcal > 0 ? (n.fb || 0) / n.kcal * 1000 : 0;
+  const bal = [
+    {l:'Omega 6 : 3', v: r63 === null ? (o6 > 0.5 ? 'sin omega 3' : '—') : `${fmtNum(+r63.toFixed(1))} : 1`, ok: r63 !== null && r63 <= 4, meta:'ideal < 4 : 1'},
+    {l:'Sodio : potasio', v: naK === null ? '—' : `${fmtNum(+naK.toFixed(2))}`, ok: naK !== null && naK <= 1, meta:'ideal < 1'},
+    {l:'Calcio : magnesio', v: caMg === null ? '—' : `${fmtNum(+caMg.toFixed(1))} : 1`, ok: caMg !== null && caMg >= 1 && caMg <= 3, meta:'ideal ~2 : 1'},
+    {l:'Fibra cada 1000 kcal', v: `${fmtNum(+fib1000.toFixed(1))} g`, ok: fib1000 >= 14, meta:'ideal ≥ 14 g'}
+  ];
+
+  // Consejos según lo que pasa en el plato
+  const tips = [];
+  const b12 = filas.find(x => x.k === 'B12');
+  if(b12.p < 0.35) tips.push(diet === 'vegan'
+    ? 'B12: en una dieta vegana solo llega con suplemento o alimentos fortificados.'
+    : 'B12: viene de huevo, lácteos, carne o pescado. Sumá alguno o tenelo en cuenta en otra comida.');
+  if(r63 !== null && r63 > 8) tips.push('Mucho omega 6 para el omega 3: sumá chía, lino, nueces o pescado azul.');
+  if(naK !== null && naK > 1) tips.push('Más sodio que potasio: verduras, legumbres, papa o fruta lo equilibran.');
+  if((n.Ca || 0) > 300 && (n.Fe || 0) > 2) tips.push('El calcio de este plato frena la absorción del hierro: si buscás hierro, separá los lácteos.');
+  if((n.D || 0) < 1 && filas.find(x => x.k === 'D').obj > 0) tips.push('Vitamina D: casi no está en los alimentos. Sol o suplemento.');
+
+  return `
+    <div class="lx-sec"><span>Micros del plato</span><small>vs. lo de una comida</small></div>
+    <div class="lm-card">
+      <p class="lm-res">${resumen}.</p>
+      <div class="lm-grid">
+        ${filas.map(x => `
+        <div class="lm-it ${x.est}">
+          <div class="lm-top"><span>${x.l}</span><b>${Math.round(x.p * 100)}%</b></div>
+          <div class="lm-bar"><i style="width:${Math.min(x.p, 1) * 100}%"></i></div>
+          <small>${fmtNum(+x.v.toFixed(x.d))} de ${fmtNum(+x.obj.toFixed(x.d))} ${x.u}</small>
+        </div>`).join('')}
+      </div>
+      <div class="lm-bal">
+        ${bal.map(x => `<div class="lm-b ${x.v === '—' ? '' : (x.ok ? 'ok' : 'mal')}"><span>${x.l}</span><b>${x.v}</b><small>${x.meta}</small></div>`).join('')}
+      </div>
+      ${tips.length ? `<ul class="lm-tips">${tips.map(x => `<li>${x}</li>`).join('')}</ul>` : ''}
+    </div>`;
 }
 /* Sorprendeme: arma un plato completo para una comida de tu día. */
 function labOtra(){
