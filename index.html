@@ -2495,6 +2495,40 @@ body.screen-open{overflow:hidden}
 .cdt-row button{width:26px;height:26px;border-radius:8px;color:var(--text-4);font-size:17px;line-height:1}
 .cdt-vacio{font-size:13px;color:var(--text-3);padding:6px 0}
 .cdt-add{width:100%;margin-top:8px;padding:11px;border-radius:14px;background:rgba(var(--brand-rgb),.1);color:var(--brand);font-weight:700;font-size:13.5px}
+
+/* ==================== LAB: mesa de laboratorio ====================
+   Fondo propio (índigo profundo con cuadrícula y un resplandor violeta)
+   para que se sienta otro lugar; las tarjetas siguen siendo las de la app. */
+#labScreen{
+  background:
+    radial-gradient(120% 55% at 50% -5%, rgba(139,92,246,.55), transparent 62%),
+    radial-gradient(80% 40% at 100% 100%, rgba(6,182,212,.18), transparent 70%),
+    linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px) 0 0/22px 22px,
+    linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px) 0 0/22px 22px,
+    linear-gradient(180deg, #1e1b4b 0%, #18163f 55%, #0f1229 100%);
+  color-scheme:dark;
+}
+:root[data-theme="dark"] #labScreen{
+  background:
+    radial-gradient(120% 55% at 50% -5%, rgba(139,92,246,.4), transparent 62%),
+    radial-gradient(80% 40% at 100% 100%, rgba(6,182,212,.12), transparent 70%),
+    linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px) 0 0/22px 22px,
+    linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px) 0 0/22px 22px,
+    linear-gradient(180deg, #14123a 0%, #0e0c2a 60%, #080a1c 100%);
+}
+#labScreen .screen-title{color:#fff}
+#labScreen .lab-title span{color:rgba(224,231,255,.6)}
+#labScreen .screen-top .icon-btn{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.16)}
+#labScreen .screen-top .icon-btn svg{stroke:#fff}
+#labScreen .lx-sec{color:rgba(224,231,255,.72)}
+#labScreen .lx-sec small{color:rgba(224,231,255,.45)}
+#labScreen .lx-link{color:#c4b5fd}
+#labScreen .lx-empty{color:rgba(224,231,255,.62)}
+#labScreen .lx-hero{box-shadow:0 18px 50px -14px rgba(139,92,246,.55), 0 0 0 1px rgba(255,255,255,.06)}
+#labScreen .lx-search .search{box-shadow:0 8px 22px -12px rgba(0,0,0,.6)}
+#labScreen .screen-foot{background:rgba(15,18,41,.94);border-top:1px solid rgba(255,255,255,.08)}
+#labScreen .screen-foot #labAdd{background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.16)}
+#labScreen .screen-foot #labAdd:disabled{opacity:.35}
 </style>
 </head>
 <body>
@@ -8348,7 +8382,7 @@ function labMicrosHtml(n){
   const resumen = [
     fuertes.length ? `Fuerte en <b>${lista(fuertes.slice(0, 3))}</b>` : '',
     flojos.length ? `flojo en <b>${lista(flojos.slice(0, 3))}</b>` : ''
-  ].filter(Boolean).join(' · ') || 'Micros parejos, sin faltantes marcados';
+  ].filter(Boolean).join(' · ').replace(/^./, c => c.toUpperCase()) || 'Micros parejos, sin faltantes marcados';
 
   // Balances
   const o3 = (n.O3 || 0) + (n.ED || 0) / 1000, o6 = n.O6 || 0;
