@@ -90,7 +90,8 @@
 
 /* ============ RESET ============ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;overflow-x:hidden}
+html{overflow-x:hidden}
+body{overflow-x:clip;min-height:100%}
 body{
   font-family:var(--font);
   background:var(--bg);
@@ -116,9 +117,7 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
 .header{
   position:sticky;top:0;z-index:40;
   padding:14px 18px 12px;
-  background:rgba(var(--bg-rgb),.92);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
+  background:var(--bg);
   border-bottom:1px solid var(--linea);
   display:flex;align-items:center;justify-content:space-between;
 }
@@ -149,9 +148,7 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
 .tabs{
   position:fixed;bottom:0;left:0;right:0;z-index:40;
   max-width:480px;margin:0 auto;
-  background:rgba(var(--panel-rgb),.97);
-  backdrop-filter:blur(24px);
-  -webkit-backdrop-filter:blur(24px);
+  background:var(--panel);
   border-top:1px solid var(--linea);
   padding:8px 6px calc(8px + env(safe-area-inset-bottom));
   display:grid;grid-template-columns:repeat(4,1fr);gap:2px;
@@ -178,12 +175,9 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
    El top es la altura de .header: 14 + 38 (alto del botón de perfil) + 12 + 1
    de borde. Si cambia el padding de .header, hay que mover este valor. */
 .page-head{
-  position:sticky;top:65px;z-index:30;
+  position:relative;
   margin:-18px -18px 14px;
   padding:14px 18px 10px;
-  background:linear-gradient(180deg, rgba(var(--bg-rgb),.98) 78%, rgba(var(--bg-rgb),0) 100%);
-  backdrop-filter:blur(16px);
-  -webkit-backdrop-filter:blur(16px);
 }
 /* filete dorado del logo, para que el título se lea como una barra propia */
 .page-head::after{
@@ -1303,7 +1297,7 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
    ===================================================================== */
 body{font-size:14px;letter-spacing:-.003em;background:var(--bg);color:var(--text);transition:background .25s,color .25s}
 .display{letter-spacing:.02em}
-.header{background:rgba(var(--bg-rgb),.82);border-bottom:1px solid var(--line)}
+.header{background:var(--bg);border-bottom:1px solid var(--line)}
 .brand-text{font-family:var(--font-d);letter-spacing:-.02em;font-size:19px;font-weight:800}
 .brand-text .dot{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .brand-mark{border-radius:11px;border-color:var(--line)}
@@ -1315,12 +1309,12 @@ body{font-size:14px;letter-spacing:-.003em;background:var(--bg);color:var(--text
 :root[data-theme="dark"] #themeToggle .ico-sun{display:block}
 :root[data-theme="dark"] #themeToggle .ico-moon{display:none}
 
-.tabs{background:rgba(var(--panel-rgb),.9);border-top:1px solid var(--line)}
+.tabs{background:var(--panel);border-top:1px solid var(--line)}
 .tab{font-size:10px;letter-spacing:.01em;text-transform:none;color:var(--text-4);border-radius:12px;font-weight:600}
 .tab.active{color:var(--brand);background:rgba(var(--brand-rgb),.1)}
 .tab-tag{color:var(--good)}
 
-.page-head{background:linear-gradient(180deg, rgba(var(--bg-rgb),.97) 78%, rgba(var(--bg-rgb),0) 100%)}
+.page-head{background:transparent}
 .page-head::after{display:none}
 .page-title{font-family:var(--font);font-size:12px;letter-spacing:.01em;color:var(--text-3);font-weight:500;text-transform:none}
 .page-title::before{background:var(--grad);width:7px;height:7px}
@@ -1478,11 +1472,11 @@ body.screen-open{overflow:hidden}
 .day-switch{display:flex;align-items:center;justify-content:center;gap:14px;padding:0 14px 10px}
 .day-label{min-width:150px;text-align:center;font-weight:700;font-size:14px}
 .day-label small{display:block;font-weight:500;font-size:11px;color:var(--text-3)}
-.screen-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:2px 16px 20px}
+.screen-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:2px 16px 20px}
 .screen-foot{
   display:flex;align-items:center;gap:12px;
   padding:12px 16px calc(12px + env(safe-area-inset-bottom));
-  background:rgba(var(--panel-rgb),.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  background:var(--panel);
   border-top:1px solid var(--line);
 }
 .screen-foot .btn{flex:0 0 auto;padding:12px 26px;font-size:14px}
@@ -1874,7 +1868,7 @@ body.screen-open{overflow:hidden}
 #labScreen .screen-body{padding-top:4px}
 .lx-hero{
   position:relative;overflow:hidden;
-  border-radius:28px;padding:20px 20px 18px;margin-bottom:22px;
+  border-radius:28px;padding:20px 20px 18px;margin-bottom:12px;
   background:
     radial-gradient(120% 90% at 100% 0%, rgba(var(--brand-rgb),.16), transparent 60%),
     radial-gradient(90% 80% at 0% 100%, rgba(6,182,212,.10), transparent 60%),
@@ -1913,7 +1907,7 @@ body.screen-open{overflow:hidden}
 
 .lx-sec{display:flex;justify-content:space-between;align-items:center;margin:0 4px 10px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3)}
 .lx-link{font-size:12.5px;font-weight:600;color:var(--text-3);letter-spacing:0;text-transform:none}
-.lx-list{background:var(--panel);border:1px solid var(--line);border-radius:22px;overflow:hidden;margin-bottom:24px}
+.lx-list{background:var(--panel);border:1px solid var(--line);border-radius:22px;overflow:hidden;margin-bottom:14px}
 .lx-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:8px 8px 8px 16px}
 .lx-row + .lx-row{border-top:1px solid var(--line)}
 .lx-row.open{background:rgba(var(--brand-rgb),.04)}
@@ -1929,9 +1923,9 @@ body.screen-open{overflow:hidden}
 .lx-det span{font-size:11px;color:var(--text-3)}
 .lx-quitar{font-size:12.5px;font-weight:700;color:var(--bad);padding:6px 10px;border-radius:999px;background:rgba(var(--bad-rgb),.08)}
 
-.lx-empty{text-align:center;padding:26px 16px 30px;color:var(--text-3)}
-.lx-empty .ico{width:40px;height:40px;margin:0 auto 10px;color:var(--brand);stroke-width:1.4}
-.lx-empty p{font-family:var(--font-d);font-weight:800;font-size:17px;color:var(--text);margin-bottom:2px}
+.lx-empty{text-align:center;padding:0 16px 10px;color:var(--text-3);font-size:12.5px}
+.lx-empty .ico{width:30px;height:30px;margin:0 auto 6px;color:var(--brand);stroke-width:1.4}
+.lx-empty p{font-family:var(--font-d);font-weight:800;font-size:15px;color:var(--text);margin-bottom:1px}
 .lx-empty span{font-size:13px}
 
 .lx-sugs{display:flex;gap:10px;overflow-x:auto;padding:2px 2px 6px;margin:0 -16px 12px;padding-left:16px;padding-right:16px;scrollbar-width:none}
@@ -2435,6 +2429,7 @@ body.screen-open{overflow:hidden}
 
 /* Inicio: Nutrientes en el lugar de peso y hoy */
 .hp-pills button.on{background:var(--text);color:var(--bg);border-color:var(--text)}
+.hp-pills button{flex:1;justify-content:center;white-space:nowrap;padding-left:10px;padding-right:10px}
 .hp-pills button.on svg{stroke:var(--bg)}
 .ni-head{display:flex;align-items:center;justify-content:space-between;margin:2px 2px 10px}
 .ni-head h2{font-family:var(--font-d);font-size:18px;font-weight:800;letter-spacing:-.02em}
@@ -2542,9 +2537,7 @@ body.screen-open{overflow:hidden}
     <!-- Atajos, como pastillas -->
     <div class="hp-pills" id="homePills">
       <button data-hp="resumen" class="on"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3zM13 21h8V11h-8zM3 21h8v-6H3zM13 3v6h8V3z"/></svg>Resumen general</button>
-      <button data-hp="peso"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M8.5 9.5a5 5 0 0 1 7 0"/><path d="M12 9.5l1.2-1.6"/></svg>Trackeo de peso</button>
       <button data-hp="nutri"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9h-9z"/><path d="M15 2.6A9 9 0 0 1 21.4 9H15z"/></svg>Nutrientes</button>
-      <button data-hp="metas"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r=".8"/></svg>Metas</button>
     </div>
 
     <!-- Peso: lo primero que se ve -->
@@ -2814,8 +2807,8 @@ body.screen-open{overflow:hidden}
     </div>
     <div class="screen-body">
       <div class="seg2" id="libTabs">
-        <button data-lib="ing" class="active">Ingredientes</button>
-        <button data-lib="rec">Comidas cargadas</button>
+        <button data-lib="rec" class="active">Comidas cargadas</button>
+        <button data-lib="ing">Ingredientes</button>
       </div>
       <div class="search-wrap">
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
@@ -3806,7 +3799,7 @@ let state = {
   logCat: 'todos',
   logOpen: null,      // receta desplegada en el registro
   lab: {modo:'comida', pins:[], seed:1, busca:'', plate:[]},
-  lib: {tab:'ing', cat:null, sort:'p', recSort:'quality', search:'', open:null},
+  lib: {tab:'rec', cat:null, sort:'p', recSort:'quality', search:'', open:null},
   currentTab: 'resumen',
   sortBy: 'quality', // 'quality' | 'protein'
   search: '',
@@ -8282,7 +8275,7 @@ function renderLab(){
             <button class="lx-quitar" data-lquitar="${k}">Quitar</button>
           </div>` : ''}
         </div>`; }).join('')}
-    </div>` : `<div class="lx-empty">${ico('receta')}<p>Tu plato está vacío</p><span>Echá ingredientes y mirá cómo suben los tubos</span></div>`}
+    </div>` : `<div class="lx-empty">Plato vacío · buscá o tocá una opción para echarla al tubo</div>`}
 
     <div class="search-wrap lx-search">
       ${ico('search')}
@@ -8793,7 +8786,7 @@ function init(){
   document.getElementById('calToggle').onclick = () => { state.calOpen = !state.calOpen; if(state.calOpen){ const d = new Date(); state.calMonth = {y:d.getFullYear(), m:d.getMonth()}; state.calSel = todayKey(); } renderCalx(); };
   document.getElementById('recFoto').onchange = (e) => { cambiarFotoReceta(e.target.files[0]); e.target.value = ''; };
   document.querySelectorAll('#homePills [data-hp]').forEach(b => b.onclick = () => {
-    ({resumen:irAlResumen, peso:openPeso, nutri:openNutri, metas:openProfile})[b.dataset.hp]();
+    ({resumen:irAlResumen, nutri:openNutri})[b.dataset.hp]();
   });
   document.getElementById('chatClose').onclick = closeChat;
   document.getElementById('pesoClose').onclick = closePeso;
